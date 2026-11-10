@@ -1,0 +1,191 @@
+{
+  "T1_BEACH_SAND_color": {
+    "id": 109989986731172,
+    "sha256": "555acc92d7a8aa424098a95d3f0b026fc19f9f0c60120f74dd48d1c81bb1bba0",
+    "sha256_scope": "Sanitized local file bytes, not remote upload or permission proof",
+    "recorded_upload_sha256": "555acc92d7a8aa424098a95d3f0b026fc19f9f0c60120f74dd48d1c81bb1bba0",
+    "remote_validation": "not performed; existing public asset ID retained"
+  },
+  "T1_BEACH_SAND_ncolor": {
+    "id": 101951013813069,
+    "sha256": "59a86e5de579ccf106a388ef87086e5a9fa6942abffcf3c6001b8ae89df8070c",
+    "sha256_scope": "Sanitized local file bytes, not remote upload or permission proof",
+    "recorded_upload_sha256": "59a86e5de579ccf106a388ef87086e5a9fa6942abffcf3c6001b8ae89df8070c",
+    "remote_validation": "not performed; existing public asset ID retained"
+  },
+  "T1_BEACH_SAND_normal": {
+    "id": 102144804916695,
+    "sha256": "77e2389538d729fb4b4a2ce24844695a19c1d4748966bd4c26b4bfb48c7c4cfa",
+    "sha256_scope": "Sanitized local file bytes, not remote upload or permission proof",
+    "recorded_upload_sha256": "77e2389538d729fb4b4a2ce24844695a19c1d4748966bd4c26b4bfb48c7c4cfa",
+    "remote_validation": "not performed; existing public asset ID retained"
+  },
+  "T2_SHALLOW_WATER_BED_color": {
+    "id": 83620595005880,
+    "sha256": "552fe14abb89b3b25ddb56eb7e450030775f39aed6170abf0870e990ed38002a",
+    "sha256_scope": "Sanitized local file bytes, not remote upload or permission proof",
+    "recorded_upload_sha256": "552fe14abb89b3b25ddb56eb7e450030775f39aed6170abf0870e990ed38002a",
+    "remote_validation": "not performed; existing public asset ID retained"
+  },
+  "T2_SHALLOW_WATER_BED_ncolor": {
+    "id": 76295319155139,
+    "sha256": "e7172d98d6b8abd73a71b19ad8034cacdfde477869497651a947d31cf52da3a4",
+    "sha256_scope": "Sanitized local file bytes, not remote upload or permission proof",
+    "recorded_upload_sha256": "e7172d98d6b8abd73a71b19ad8034cacdfde477869497651a947d31cf52da3a4",
+    "remote_validation": "not performed; existing public asset ID retained"
+  },
+  "T2_SHALLOW_WATER_BED_normal": {
+    "id": 115474542124048,
+    "sha256": "2be67e5aded2093d946720035dc61e18ef61109f494043dd9aaa5ebc3b624770",
+    "sha256_scope": "Sanitized local file bytes, not remote upload or permission proof",
+    "recorded_upload_sha256": "2be67e5aded2093d946720035dc61e18ef61109f494043dd9aaa5ebc3b624770",
+    "remote_validation": "not performed; existing public asset ID retained"
+  },
+  "T3_COASTAL_ROCK_color": {
+    "id": 82220071472126,
+    "sha256": "6a3af2173a864f7f46ef8722b721ad9700ca7e32a71900b6e75b06307f33e837",
+    "sha256_scope": "Sanitized local file bytes, not remote upload or permission proof",
+    "recorded_upload_sha256": "6a3af2173a864f7f46ef8722b721ad9700ca7e32a71900b6e75b06307f33e837",
+    "remote_validation": "not performed; existing public asset ID retained"
+  },
+  "T3_COASTAL_ROCK_ncolor": {
+    "id": 105461070565837,
+    "sha256": "2ed3a6a942e47353c9defbe6023819bfb9d9661ac079cb6d6f8ff7ec6fc19433",
+    "sha256_scope": "Sanitized local file bytes, not remote upload or permission proof",
+    "recorded_upload_sha256": "2ed3a6a942e47353c9defbe6023819bfb9d9661ac079cb6d6f8ff7ec6fc19433",
+    "remote_validation": "not performed; existing public asset ID retained"
+  },
+  "T3_COASTAL_ROCK_normal": {
+    "id": 132911832432450,
+    "sha256": "22ffa3e7e1190081daabd3bf1ef8627dab2342524e36b0c72e7fc5efe0baa3a3",
+    "sha256_scope": "Sanitized local file bytes, not remote upload or permission proof",
+    "recorded_upload_sha256": "22ffa3e7e1190081daabd3bf1ef8627dab2342524e36b0c72e7fc5efe0baa3a3",
+    "remote_validation": "not performed; existing public asset ID retained"
+  },
+  "T4_GRASS_TROPICAL_color": {
+    "id": 138703431739769,
+    "sha256": "180250d9eec51d7573b8fd402d2036cd8baa01f47e5d5722a22d75bce98773a1",
+    "sha256_scope": "Sanitized local file bytes, not remote upload or permission proof",
+    "recorded_upload_sha256": "180250d9eec51d7573b8fd402d2036cd8baa01f47e5d5722a22d75bce98773a1",
+    "remote_validation": "not performed; existing public asset ID retained"
+  },
+  "T4_GRASS_TROPICAL_ncolor": {
+    "id": 70382049627447,
+    "sha256": "6260b5d873e0d715d5d2b577216fb3bc67fd81ea542d2d849193719a66306564",
+    "sha256_scope": "Sanitized local file bytes, not remote upload or permission proof",
+    "recorded_upload_sha256": "6260b5d873e0d715d5d2b577216fb3bc67fd81ea542d2d849193719a66306564",
+    "remote_validation": "not performed; existing public asset ID retained"
+  },
+  "T4_GRASS_TROPICAL_normal": {
+    "id": 115418124543095,
+    "sha256": "8d03ce122232ed72ea1063c136cac8e4035f761f8768ec24513b8d3385e5b99f",
+    "sha256_scope": "Sanitized local file bytes, not remote upload or permission proof",
+    "recorded_upload_sha256": "8d03ce122232ed72ea1063c136cac8e4035f761f8768ec24513b8d3385e5b99f",
+    "remote_validation": "not performed; existing public asset ID retained"
+  },
+  "T5_SHIP_DECK_color": {
+    "id": 104660745410446,
+    "sha256": "3809e288cf6a4bb9f0362b7ce72c14fe007772b2abb85c0662dc628dd9f88da4",
+    "sha256_scope": "Sanitized local file bytes, not remote upload or permission proof",
+    "recorded_upload_sha256": "3809e288cf6a4bb9f0362b7ce72c14fe007772b2abb85c0662dc628dd9f88da4",
+    "remote_validation": "not performed; existing public asset ID retained"
+  },
+  "T5_SHIP_DECK_ncolor": {
+    "id": 79864900508533,
+    "sha256": "b5e54435d0fc48e6d23f97af2a41d998a9be0280ad5e41e17cf15b45c1f65b57",
+    "sha256_scope": "Sanitized local file bytes, not remote upload or permission proof",
+    "recorded_upload_sha256": "b5e54435d0fc48e6d23f97af2a41d998a9be0280ad5e41e17cf15b45c1f65b57",
+    "remote_validation": "not performed; existing public asset ID retained"
+  },
+  "T5_SHIP_DECK_normal": {
+    "id": 114830472382596,
+    "sha256": "6b88156e9d1d0b9c8db5ca1c2c99e87fbe8e9a19f09658886bef465878b700a6",
+    "sha256_scope": "Sanitized local file bytes, not remote upload or permission proof",
+    "recorded_upload_sha256": "6b88156e9d1d0b9c8db5ca1c2c99e87fbe8e9a19f09658886bef465878b700a6",
+    "remote_validation": "not performed; existing public asset ID retained"
+  },
+  "T6_CREAM_COBBLE_color": {
+    "id": 132206076636089,
+    "sha256": "6a957fd039b285de13cf4031a01e587717e111859ee0441ef4b413373971afe4",
+    "sha256_scope": "Sanitized local file bytes, not remote upload or permission proof",
+    "recorded_upload_sha256": "6a957fd039b285de13cf4031a01e587717e111859ee0441ef4b413373971afe4",
+    "remote_validation": "not performed; existing public asset ID retained"
+  },
+  "T6_CREAM_COBBLE_ncolor": {
+    "id": 80227363125641,
+    "sha256": "a7539e7b3ca130e1797f6d54b3bf41daab98375508da077a885e72baace7d38d",
+    "sha256_scope": "Sanitized local file bytes, not remote upload or permission proof",
+    "recorded_upload_sha256": "a7539e7b3ca130e1797f6d54b3bf41daab98375508da077a885e72baace7d38d",
+    "remote_validation": "not performed; existing public asset ID retained"
+  },
+  "T6_CREAM_COBBLE_normal": {
+    "id": 100500331486856,
+    "sha256": "fd1b72a4e46ff66bfefbe63bb5d9bfb3352c87a5731b9dbd427ff3b459dd5854",
+    "sha256_scope": "Sanitized local file bytes, not remote upload or permission proof",
+    "recorded_upload_sha256": "fd1b72a4e46ff66bfefbe63bb5d9bfb3352c87a5731b9dbd427ff3b459dd5854",
+    "remote_validation": "not performed; existing public asset ID retained"
+  },
+  "T7_COAST_ROCK_color": {
+    "id": 98174477441561,
+    "sha256": "84f61085455dd8a38a9acedf722695f008a1823646a932fd7f9c9a69a597dd53",
+    "sha256_scope": "Sanitized local file bytes, not remote upload or permission proof",
+    "recorded_upload_sha256": "f4bb3fad0f25f4d0eec027f0bd552f95e97a28a8a147f3f97ecd618568b2c6b5",
+    "remote_validation": "not performed; existing public asset ID retained"
+  },
+  "T7_COAST_ROCK_ncolor": {
+    "id": 110835552854373,
+    "sha256": "e4898e3c6dd477a9b9087f65259f6b7bb7710cf826ed4656343bab3297efaa50",
+    "sha256_scope": "Sanitized local file bytes, not remote upload or permission proof",
+    "recorded_upload_sha256": "ff8873e87f75e5b219647400b7c54c6ce402329f0239d7a59b5668427d730156",
+    "remote_validation": "not performed; existing public asset ID retained"
+  },
+  "T7_COAST_ROCK_normal": {
+    "id": 132712894341313,
+    "sha256": "13dd4ba6a35eea92b2dc7bb296170cceb4a2e584060c383cb3fefe9676acc300",
+    "sha256_scope": "Sanitized local file bytes, not remote upload or permission proof",
+    "recorded_upload_sha256": "5db652b33ff2ce7608ddd8149d3931c5de2a795ea810c9402b3fc16e08c9eb75",
+    "remote_validation": "not performed; existing public asset ID retained"
+  },
+  "T8_SEA_GRASS_color": {
+    "id": 101318709650114,
+    "sha256": "7d4943ad93edcab01412b3a3f9a46f986c448bc58987043e77ecfda4b7c4f8ff",
+    "sha256_scope": "Sanitized local file bytes, not remote upload or permission proof",
+    "recorded_upload_sha256": "0dd66763850d5a90be68106d820487a45177905a50e7e4cb13d36a008a68814d",
+    "remote_validation": "not performed; existing public asset ID retained"
+  },
+  "T8_SEA_GRASS_ncolor": {
+    "id": 75632910150075,
+    "sha256": "734a5dc1eea227387eca0f7c337856d3a04d305367959a3f66702bee9ad2d6d7",
+    "sha256_scope": "Sanitized local file bytes, not remote upload or permission proof",
+    "recorded_upload_sha256": "10736d1132d8b213e81baa801603e85a18784b8fa982d8966710df6311fa2f4e",
+    "remote_validation": "not performed; existing public asset ID retained"
+  },
+  "T8_SEA_GRASS_normal": {
+    "id": 94899580038843,
+    "sha256": "4f83cfcebeec543f688d4c167aba568a54d8113a867d4fb679eb6f29837093e3",
+    "sha256_scope": "Sanitized local file bytes, not remote upload or permission proof",
+    "recorded_upload_sha256": "ea8e7fcdc4420c2480c82eb537098e33172f2bbcdf0d6ec4829191539d35b62a",
+    "remote_validation": "not performed; existing public asset ID retained"
+  },
+  "T9_COVE_COBBLE_color": {
+    "id": 92352111838984,
+    "sha256": "ed314289ad61afbc2dd8cb4c6f3bbe4e522f43360877cd98d95f3a1fefa831bb",
+    "sha256_scope": "Sanitized local file bytes, not remote upload or permission proof",
+    "recorded_upload_sha256": "08a5923e9e2890cde18c53694968ec4caa08e65d97dee29274b3e3fd3cce6751",
+    "remote_validation": "not performed; existing public asset ID retained"
+  },
+  "T9_COVE_COBBLE_ncolor": {
+    "id": 86347507888878,
+    "sha256": "4840bb0f21d5d79ea49f678c25a8bc3caf97660c2259a96e7ad25acb42908d72",
+    "sha256_scope": "Sanitized local file bytes, not remote upload or permission proof",
+    "recorded_upload_sha256": "acb391a05850b0b5b71a252679052cb4b4d2c58ed73bab0cd0d3af6da8013a79",
+    "remote_validation": "not performed; existing public asset ID retained"
+  },
+  "T9_COVE_COBBLE_normal": {
+    "id": 139082458216639,
+    "sha256": "7321352f527f4ef680d634f03866a586a81ad315da9a6a4da10689c5af446537",
+    "sha256_scope": "Sanitized local file bytes, not remote upload or permission proof",
+    "recorded_upload_sha256": "8ff2f73df84f2aaa9dc9a32ad91336d61687656ce05371655a209da2ebe736d5",
+    "remote_validation": "not performed; existing public asset ID retained"
+  }
+}

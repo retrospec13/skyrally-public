@@ -1,0 +1,58 @@
+[
+  {
+    "instance_path": "PermissionsBossPublishedCheck/WakuSkyRallyBossPack/WakuSkyRallyBossPack/Cinderwing/BakedClips",
+    "class": "ModuleScript",
+    "source_property_type": "string",
+    "source_bytes": 88293,
+    "source_file": "models/boss-pack-source/Cinderwing.luau",
+    "sha256": "b0201f421639fe8eb556c66d57885a8db4bcd02b66a1c95ba8802785f242c603"
+  },
+  {
+    "instance_path": "PermissionsBossPublishedCheck/WakuSkyRallyBossPack/WakuSkyRallyBossPack/Frosthorn/BakedClips",
+    "class": "ModuleScript",
+    "source_property_type": "string",
+    "source_bytes": 95908,
+    "source_file": "models/boss-pack-source/Frosthorn.luau",
+    "sha256": "f35507c9cf93a88344c701dc4f60321b85ca706b580b185d9c534fda8f0214e1"
+  },
+  {
+    "instance_path": "PermissionsBossPublishedCheck/WakuSkyRallyBossPack/WakuSkyRallyBossPack/Clattershell/BakedClips",
+    "class": "ModuleScript",
+    "source_property_type": "string",
+    "source_bytes": 142579,
+    "source_file": "models/boss-pack-source/Clattershell.luau",
+    "sha256": "dfecd3803689c6dda73019f9f072c7e0524c32dda9c1af59d4c7aedebdf998b1"
+  },
+  {
+    "instance_path": "PermissionsBossPublishedCheck/WakuSkyRallyBossPack/WakuSkyRallyBossPack/Emberbeetle/BakedClips",
+    "class": "ModuleScript",
+    "source_property_type": "string",
+    "source_bytes": 143950,
+    "source_file": "models/boss-pack-source/Emberbeetle.luau",
+    "sha256": "314630da1c03aca8bef731b4404b8e2bddfab227d1b0abf287de48f1c0bcf38e"
+  },
+  {
+    "instance_path": "PermissionsBossPublishedCheck/WakuSkyRallyBossPack/WakuSkyRallyBossPack/Thunderwright/BakedClips",
+    "class": "ModuleScript",
+    "source_property_type": "string",
+    "source_bytes": 134773,
+    "source_file": "models/boss-pack-source/Thunderwright.luau",
+    "sha256": "ad43f7419052197cfb06be3924e86390fef120c190bbd9495a926ca2141eb5c4"
+  },
+  {
+    "instance_path": "PermissionsBossPublishedCheck/WakuSkyRallyBossPack/WakuSkyRallyBossPack/ClipMath",
+    "class": "ModuleScript",
+    "source_property_type": "string",
+    "source_bytes": 9388,
+    "source_file": "models/boss-pack-source/ClipMath.luau",
+    "sha256": "6112c9c42b4742941384a406698bb3a769274d780db9e3c0239cb0d4c6856330"
+  },
+  {
+    "instance_path": "PermissionsBossPublishedCheck/WakuSkyRallyBossPack/WakuSkyRallyBossPack/ClipPlayer",
+    "class": "ModuleScript",
+    "source_property_type": "string",
+    "source_bytes": 705,
+    "source_file": "models/boss-pack-source/ClipPlayer.luau",
+    "sha256": "a4a5be73081456b9fbec417b12b0d12aa77a3b57ce5048b2f5d547e697032839"
+  }
+]

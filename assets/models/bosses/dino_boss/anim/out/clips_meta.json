@@ -1,0 +1,37 @@
+{
+  "fps": 30,
+  "boss": "dino_boss",
+  "module": "Cinderwing",
+  "clips": {
+    "fly": {
+      "frames": 24,
+      "loop": true,
+      "speedRef": null,
+      "mask": null
+    },
+    "glide": {
+      "frames": 72,
+      "loop": true,
+      "speedRef": null,
+      "mask": null
+    },
+    "hit": {
+      "frames": 24,
+      "loop": false,
+      "speedRef": null,
+      "mask": null
+    },
+    "roar": {
+      "frames": 60,
+      "loop": false,
+      "speedRef": null,
+      "mask": null
+    },
+    "attack": {
+      "frames": 21,
+      "loop": false,
+      "speedRef": null,
+      "mask": null
+    }
+  }
+}

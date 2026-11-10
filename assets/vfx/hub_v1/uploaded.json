@@ -1,0 +1,16 @@
+{
+  "gull_flap_2x2": {
+    "id": 111924507130107,
+    "sha256": "3bbca0ebc45035797749047aabc40259683ee4187d43739347717b209c84aae9",
+    "sha256_scope": "Sanitized local file bytes, not remote upload or permission proof",
+    "recorded_upload_sha256": "3bbca0ebc45035797749047aabc40259683ee4187d43739347717b209c84aae9",
+    "remote_validation": "not performed; existing public asset ID retained"
+  },
+  "surf_foam": {
+    "id": 93369481926810,
+    "sha256": "39d8ae0fb2d23782810d97d0f90cc1f1bd8869c598d9b1081184c02e635ca2ca",
+    "sha256_scope": "Sanitized local file bytes, not remote upload or permission proof",
+    "recorded_upload_sha256": "39d8ae0fb2d23782810d97d0f90cc1f1bd8869c598d9b1081184c02e635ca2ca",
+    "remote_validation": "not performed; existing public asset ID retained"
+  }
+}

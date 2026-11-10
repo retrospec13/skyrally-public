@@ -1,0 +1,211 @@
+{
+ "portal_gate": {
+  "ref": "assets/models/arches_v3/stone_arch_v3/ref_concept_crop.png",
+  "ref_label": "approved hub concept 04 (carved stone style)",
+  "opening_txt": "28.8 wide to y 31",
+  "replaces_txt": "HUB PortalArch_<ZONE>",
+  "collides": true,
+  "replaces": {
+   "prefab_keys": "PortalArch_DINO/FOREST/ISLAND/SNOW/SPACE",
+   "zone": "HUB",
+   "instances": 5,
+   "original_bbox_min": [
+    -20.6,
+    0,
+    -5
+   ],
+   "original_bbox_max": [
+    20.6,
+    43.4,
+    5
+   ],
+   "original_collides": true,
+   "supersedes": "world_v1 portal_arch (scale 1.35) and portal_arch_trim; may also serve DINO StoneArchway_* tall arches via the dino_arch rule"
+  },
+  "origin": "prefab pivot = the portal's ground point: opening centred on x = 0, depth centred on z = 0, base buried 0.5 (y -0.5). Place with align 'origin', scale 1 (NOT 1.35). No Neon trim.",
+  "opening_note": "Required clear opening: |x| < 14 up to y 30.5 (the veil is 24 wide x 20 tall at y 0.5..20.5; the zone sign is 26 x 5.5 at y 23.25..28.75; both fit between the piers with margin). Actual (measured from the front raster): |x| 14.3..14.5 at the road, 15.3..16.3 from y 5 to y 30 (the piers carry shallow plinth steps), lintel underside (crown) at y 30.96. 0 vertices and 0 collider samples inside the required opening.",
+  "kept": "Veil Glass (24 x 20 x 0.6 at (0,10.5,0)), the Glass cap disc, the Fabric banners and the light stay as built (keepMaterials Glass, Fabric; keepLights). The orb crest, the old Sandstone parts and the Neon crest gem are replaced by the mesh (the crown block carries the emblem).",
+  "integration": "ArtSwapRules hub_portal: meshes = {'portal_gate'}, scale = 1, trim removed, align origin. The banners (Fabric) at x +-15.2 sit on the pier faces: pier faces are at |x| about 14.3..22, front face at z about -4.5: re-seat banners at z -4.7 (pierFront = 4.5).",
+  "sign": {
+   "problem": "Owner screenshot 2026-10-19: with the world_v1 portal_arch at 1.35 the crown (y 20..30, 11.4 deep, solid across the opening top) swallowed TrackFlow's PortalSign (26 x 5.5 x 0.6 at the veil centre, y 23.25..28.75, z 0) and its 'needs N Sky' label.",
+   "fix": "portal_gate has NO masonry across the opening below y 30.96. The sign (client-built in TrackFlow.labelPortals at veil.CFrame * (0, 10 + 5.5, 0), i.e. centre y 26, z 0, both faces carry the SurfaceGui) hangs in the open window between the piers, 2.3 studs clear of each pier (measured opening half-width 15.3 or more at y 23..29) and 2.2 studs under the lintel (sign top y 28.75, lintel underside y 30.96). The slab is 9 deep with the sign at its middle: from the plaza the sign reads against the open window with the lintel's carved crown block above it; the label text is on the sign face (z -0.3), in front of the veil glass.",
+   "where_relative_to_mesh": "sign centre = mesh origin + (0, 26, 0); label = the sign's Gate TextLabel (lower 36% of the sign face). Nothing in the mesh occupies |x| < 15.3 for y 5..30, y 0..30.96. Check image: out/art_v3_qc/portal_gate_sign_check.png.",
+   "if_still_hidden": "Keep the sign at centre y 26: the lintel is 8.5 thick above y 30.96, so anything higher is behind masonry."
+  },
+  "notes": "# HUB portal gate v3: portal_gate (hub portals, replaces the rejected world_v1 portal_arch swap)\n\n- Targets: HUB PortalArch_<ZONE> x5 (veil opening 24 wide kept), sign/label readable (owner bug 2026-10-19).\n- 2D concept: Higgsfield nano_banana_2 1k 1:1, job `{job}` (see `concept_jobs.json`: refs, prompt, credits). Refs = approved SkyRally concepts / props concepts plus `proportion_guide.png` (flat front silhouette with the required opening). Tripo input `concept_tripo_input.png` = the concept with the dark passage painted out to the background grey (otherwise Tripo closes the opening).\n- 3D: Tripo image-to-model task `{tt}` (v3.1, smart_low_poly, face_limit 4500, texture detailed, delight, pbr off, aligned to image), 50 credits. `tripo_task.json`.\n- Fit + QC: `win/art_v3_fit.py arch ... 1024 6000 open=open.json depth=9 bury=0.5 clear=0.3 pk=0.75 rect=1` (Blender 4.3 headless on the PC, via `tools/art_v3/run_fit.py`). Opening-aware warp: Z scaled so the raw opening crown lands on the target crown; X remapped per height row so the raw opening edge lands on the required opening (+clearance) and the masonry/timber outside it keeps its proportions (piers x0.75). Small boundary holes closed, welded, triangulated, 35 degree smoothing, 1024 JPEG albedo, metallic 0.\n- Result: {tris} tris, {size} studs. Preview `preview.png`, sheet `out/art_v3_qc/portal_gate_vs_concept.png`, stats `stats.json` (opening, colliders, intrusion check), manifest entry in `manifest.json`.\n- Shape choice: a flat-topped trilithon gate (two carved knot-panel piers + scroll lintel + crown emblem block) instead of a round arch, precisely so that the zone sign and 'needs N Sky' label have a clear window. Knot panel and scroll relief come from the approved hub concept style. Open: a thin sliver gap near the crown block top (Tripo).\n- Not done: not uploaded, not wired into ArtSwapRules, not seen in Studio.\n"
+ },
+ "space_arch": {
+  "ref": "assets/models/arches_v3/_refs/space_crop.png",
+  "ref_label": "approved space concept 20 (stone-and-iron arches)",
+  "opening_txt": "round-topped oval, 46 wide to y 40",
+  "replaces_txt": "SPACE SkywayArch_0/1/2",
+  "collides": false,
+  "replaces": {
+   "prefab_keys": "SkywayArch_0/1/2",
+   "zone": "SPACE",
+   "instances": 9,
+   "original_bbox_min": [
+    -29.6,
+    7.2,
+    -3.9
+   ],
+   "original_bbox_max": [
+    29.6,
+    55.15,
+    3.9
+   ],
+   "original_collides": false,
+   "supersedes": "arches_v2 skyway_arch; the same model could stand in for GlassVaultRib/GlassVaultPortal only with a non-uniform scale (their ellipse is wider), not recommended"
+  },
+  "origin": "model base (pedestal feet) at y 0, buried 0.8 (y -0.8); opening centred on x = 0. The original arch starts at prefab y 7.2 (parapet caps): use ArtSwap align 'bbox' with scale 1 (bury 0.8 rests the feet 0.8 into the caps), NOT align 'origin'.",
+  "opening_note": "Required: pedestal inner faces |x| < 22.9 to model y 9, then the original neon-strip ellipse (a 23.95, b 35.75 about y 4) up to y 39.75 (= prefab 46.95), modelled as a superellipse n 2.4 (rounder crown) with a flat 14-wide top. Actual: |x| 23.1 at the road, 23.9 at y 10, [-22.68, 22.57], ... crown (centre column) at y 40.12. The keystone/lantern block dips about 1.5 studs into the top of the original ellipse (non-colliding original, 189 vertices near the crown, centre column clear to 40.12); rest of the ring stays outside (collider samples inside: 0, all < 0.3 stud).",
+  "kept": "12 Neon soffit strips follow the old ellipse; the mesh opening is a superellipse that is rounder than the old ellipse, so the strips float up to about 1.5 studs inside the ring at the shoulders: hide them, or lay them on the ring's inner face. The Neon lamp orb: the mesh crown carries a baked amber lantern; drop the orb or keep it as the light source.",
+  "integration": "ArtSwapRules: skyway_arch rule -> meshes {'space_arch'}, align 'bbox', scale 1. Width is 66 vs the original 59: the pedestals stand about 3.5 studs wider each side (non-colliding).",
+  "notes": "# SPACE skyway arch v3: space_arch\n\n- Targets: SPACE SkywayArch_0/1/2 (9 instances, non-colliding; the most-seen SPACE arch).\n- 2D concept: Higgsfield nano_banana_2 1k 1:1, job `{job}` (see `concept_jobs.json`: refs, prompt, credits). Refs = approved SkyRally concepts / props concepts plus `proportion_guide.png` (flat front silhouette with the required opening). Tripo input `concept_tripo_input.png` = the concept with the dark passage painted out to the background grey (otherwise Tripo closes the opening).\n- 3D: Tripo image-to-model task `{tt}` (v3.1, smart_low_poly, face_limit 5000, texture detailed, delight, pbr off, aligned to image), 50 credits. `tripo_task.json`.\n- Fit + QC: `win/art_v3_fit.py arch ... 1024 6000 open=open.json depth=8 bury=0.8 clear=0.3 pk=0.8 rh=0.93` (Blender 4.3 headless on the PC, via `tools/art_v3/run_fit.py`). Opening-aware warp: Z scaled so the raw opening crown lands on the target crown; X remapped per height row so the raw opening edge lands on the required opening (+clearance) and the masonry/timber outside it keeps its proportions (piers x0.8). Small boundary holes closed, welded, triangulated, 35 degree smoothing, 1024 JPEG albedo, metallic 0.\n- Result: {tris} tris, {size} studs. Preview `preview.png`, sheet `out/art_v3_qc/space_arch_vs_concept.png`, stats `stats.json` (opening, colliders, intrusion check), manifest entry in `manifest.json`.\n- Style: weathered grey-blue stone brick with a dark steel band, rivets, brass pedestal caps and an amber lamp block at the crown (concept 20's viaduct arches). Revision 2 (the first concept/model, kept in `rejected_r1/`, was a thin pointed oval: ring too thin, rejected by me after the sheet review; 50 extra Tripo credits for r2 with a thicker-ring guide and prompt, concept job in `concept_jobs.json` second entry). The warp uses a superellipse opening (a pure ellipse pinched the crown into a point) and holds the raw opening width above 93 percent of the crown so the lantern keystone is not pinched.\n- Not done: not uploaded, not wired into ArtSwapRules, not seen in Studio.\n"
+ },
+ "start_gantry": {
+  "ref": "assets/models/props/island/dock_section/concept.png",
+  "ref_label": "style ref: island dock_section concept (painted timber)",
+  "opening_txt": "60.8 wide to y 21.2",
+  "replaces_txt": "ISLAND StartFinishArch + HUB StartFinishGantry",
+  "collides": true,
+  "replaces": {
+   "prefab_keys": "StartFinishArch (ISLAND-2) and StartFinishGantry (HUB-0)",
+   "zone": "ISLAND, HUB",
+   "instances": 2,
+   "original_bbox_min": [
+    -36.2,
+    -0.3,
+    -3.9
+   ],
+   "original_bbox_max": [
+    36.2,
+    32,
+    3.9
+   ],
+   "original_collides": true,
+   "supersedes": "arches_v2 island_start_gantry and hub_start_gantry (one model for both: the hub opening |x| 28.7 to y 19.9 is inside the island opening |x| 29.9 to 20.6)"
+  },
+  "origin": "prefab pivot (road point): opening centred on x = 0, depth centred on z = 0, base buried 0.3. Align 'origin', scale 1.",
+  "opening_note": "Required: |x| < 29.9 to y 20.6 (+0.6 clearance). Actual: |x| 30.4..30.6 up to y 20, beam underside (crown) at y 21.2. 0 intrusions.",
+  "kept": "The Fabric checker banner / banner (island: Fabric banner; hub: Fabric checker + plum/gold sign) were designed to hang UNDER the original beam; this mesh's beam (y 21.2..30) takes that volume, so the banner overlaps the beam: drop Fabric from keepMaterials or move it 4.3 in front (z -4.3) and hang it from y 21..13. The mesh carries a carved sun emblem on the beam. The start-line checker tiles on the ISLAND road decal stay in the road, not in the mesh.",
+  "integration": "Two rules (ISLAND StartFinishArch, HUB StartFinishGantry) -> meshes {'start_gantry'}, align origin, scale 1, collider 'arch' (2 post boxes). Tint is optional: the timber is warm and the teal caps match the island concept; the hub plum/gold sign is a separate kept part.",
+  "notes": "# Start gantry v3: start_gantry (ISLAND and HUB start/finish)\n\n- Targets: ISLAND StartFinishArch and HUB StartFinishGantry (1 model, 2 families).\n- 2D concept: Higgsfield nano_banana_2 1k 1:1, job `{job}` (see `concept_jobs.json`: refs, prompt, credits). Refs = approved SkyRally concepts / props concepts plus `proportion_guide.png` (flat front silhouette with the required opening). Tripo input `concept_tripo_input.png` = the concept with the dark passage painted out to the background grey (otherwise Tripo closes the opening).\n- 3D: Tripo image-to-model task `{tt}` (v3.1, smart_low_poly, face_limit 3500, texture detailed, delight, pbr off, aligned to image), 50 credits. `tripo_task.json`.\n- Fit + QC: `win/art_v3_fit.py arch ... 1024 6000 open=open.json depth=8 bury=0.3 clear=0.6 pk=0.75 rect=1` (Blender 4.3 headless on the PC, via `tools/art_v3/run_fit.py`). Opening-aware warp: Z scaled so the raw opening crown lands on the target crown; X remapped per height row so the raw opening edge lands on the required opening (+clearance) and the masonry/timber outside it keeps its proportions (piers x0.75). Small boundary holes closed, welded, triangulated, 35 degree smoothing, 1024 JPEG albedo, metallic 0.\n- Result: {tris} tris, {size} studs. Preview `preview.png`, sheet `out/art_v3_qc/start_gantry_vs_concept.png`, stats `stats.json` (opening, colliders, intrusion check), manifest entry in `manifest.json`.\n- Style: chunky painted timber posts with rope lashings on stone footing blocks, teal caps, planked crossbeam with a sun emblem (island dock style). No concept existed for these gantries in the map proposals, so the asset concept is derived from the dock_section and market_stall prop concepts.\n- Not done: not uploaded, not wired into ArtSwapRules, not seen in Studio.\n"
+ },
+ "snow_finish_gantry": {
+  "ref": "assets/models/arches_v3/_refs/snow_crop.png",
+  "ref_label": "approved snow concept 05 (grey stone, snow caps)",
+  "opening_txt": "110 wide to y 47",
+  "replaces_txt": "SNOW FinishGantry",
+  "collides": true,
+  "replaces": {
+   "prefab_keys": "FinishGantry",
+   "zone": "SNOW",
+   "instances": 1,
+   "original_bbox_min": [
+    -61.1,
+    -10.1,
+    -5.4
+   ],
+   "original_bbox_max": [
+    61.1,
+    63.2,
+    5.4
+   ],
+   "original_collides": true,
+   "supersedes": "arches_v2 snow_finish_gantry"
+  },
+  "origin": "prefab pivot y 0 = model y 0: opening centred on x = 0, piers buried 3 (feet to y -3; the original footings reach -10 into the river, raise bury or add a plinth if the river bed is below -3). Align 'origin', scale 1.",
+  "opening_note": "Required: |x| < 49.5 from the river bed (prefab y -2) to y 44.5 (the kept banner bottom). Modelled from y 0 to 46.5 (+0.5). Actual: |x| 54.8..55.9 from the road to y 30, 50..52 at y 35..40, 49.5 at y 45, beam underside (crown) at y 47.2, i.e. about 5 studs wider than required on each side (posts stand wider than the original 52). 12 vertices (icicle tips at the beam ends, y > 42, non-colliding) hang inside the original opening; colliders carved clear: 0 samples.",
+  "kept": "Checker banner (SmoothPlastic), sign and Neon lanterns of the original: the banner sits where the mesh beam is (beam y 47..55, banner from y 44.5): drop it from keep or hang it in front at z -6. Icicles hang about 5 studs under the beam ends.",
+  "integration": "Single rule, collider 'arch' (30 strip boxes: 2 piers + beam), scale 1, align origin.",
+  "notes": "# Snow finish gantry v3: snow_finish_gantry\n\n- Targets: SNOW FinishGantry (1 instance, the finish line of the SNOW race).\n- 2D concept: Higgsfield nano_banana_2 1k 1:1, job `{job}` (see `concept_jobs.json`: refs, prompt, credits). Refs = approved SkyRally concepts / props concepts plus `proportion_guide.png` (flat front silhouette with the required opening). Tripo input `concept_tripo_input.png` = the concept with the dark passage painted out to the background grey (otherwise Tripo closes the opening).\n- 3D: Tripo image-to-model task `{tt}` (v3.1, smart_low_poly, face_limit 4000, texture detailed, delight, pbr off, aligned to image), 50 credits. `tripo_task.json`.\n- Fit + QC: `win/art_v3_fit.py arch ... 1024 6000 open=open.json depth=11 bury=3.0 clear=0.5 pk=0.55 rect=1 (pk 0.55 slims the piers)` (Blender 4.3 headless on the PC, via `tools/art_v3/run_fit.py`). Opening-aware warp: Z scaled so the raw opening crown lands on the target crown; X remapped per height row so the raw opening edge lands on the required opening (+clearance) and the masonry/timber outside it keeps its proportions (piers x0.55). Small boundary holes closed, welded, triangulated, 35 degree smoothing, 1024 JPEG albedo, metallic 0.\n- Result: {tris} tris, {size} studs. Preview `preview.png`, sheet `out/art_v3_qc/snow_finish_gantry_vs_concept.png`, stats `stats.json` (opening, colliders, intrusion check), manifest entry in `manifest.json`.\n- Style: grey stone block posts with snow caps and carved finials, stone beam with a snow cap and icicles (concept 05's snow-capped masonry). Posts stand at |x| about 55 (the original 52), overall 125 wide x 82 tall vs the original 122 x 73 (finials 9 taller).\n- Not done: not uploaded, not wired into ArtSwapRules, not seen in Studio.\n"
+ },
+ "cavern_arch": {
+  "ref": "assets/models/arches_v3/_refs/cavern_crop.png",
+  "ref_label": "approved island concept 10 (cave mouth arch)",
+  "opening_txt": "63.4 wide, round, crown 61",
+  "replaces_txt": "ISLAND CavernArchRib x10 + CavernMouthArch/CavernExitArch",
+  "collides": true,
+  "replaces": {
+   "prefab_keys": "CavernArchRib (10), CavernMouthArch, CavernExitArch (2)",
+   "zone": "ISLAND",
+   "instances": 12,
+   "original_bbox_min": [
+    -39.5,
+    -1.6,
+    -6
+   ],
+   "original_bbox_max": [
+    39.5,
+    71.2,
+    6
+   ],
+   "original_collides": true,
+   "supersedes": "arches_v2 cavern_rib and cavern_mouth. One model: ribs use scale 1.0 (opening 63.4 >= 62.5), mouth/exit use uniform scale 1.07 (opening 67.8 >= 67, crown 65.4 >= 64.5; depth 13.9)"
+  },
+  "origin": "prefab pivot (road point): opening centred on x = 0, depth centred on z = 0, base buried 1.5. Align 'origin'. Rib scale 1.0, mouth/exit scale 1.07.",
+  "opening_note": "Required (rib): jambs |x| < 31.25 to y 30, round arch r 31.5 about (0,30) clamped at crown 60.5 (+0.5 clearance). Actual: |x| 31.6..31.9 (63.4 wide) up to y 35, then round, crown y 61.1 (x 10.3 at y 60). Up to 0.25 stud of the ring touches the original circle in 12 vertices / 2 collider samples (raster resolution).",
+  "kept": "Metal brackets and the Neon lanterns with their lights (positions on the jamb inner faces: the jamb faces are at |x| 31.7, 0.45 from the original, so the lanterns/brackets float 0.45 off the face; move 0.45 outward if needed).",
+  "integration": "Rules: cavern_rib (10, scale 1) and cavern_mouth (2, scale 1.07), meshes {'cavern_arch'}, align origin, collider 'arch'. 10 ribs in a row = 10 instances of one MeshPart (instancing OK).",
+  "notes": "# Cavern arch v3: cavern_arch (island cavern ribs and mouth)\n\n- Targets: ISLAND CavernArchRib x10 and CavernMouthArch/CavernExitArch x2 (one model, two scales).\n- 2D concept: Higgsfield nano_banana_2 1k 1:1, job `{job}` (see `concept_jobs.json`: refs, prompt, credits). Refs = approved SkyRally concepts / props concepts plus `proportion_guide.png` (flat front silhouette with the required opening). Tripo input `concept_tripo_input.png` = the concept with the dark passage painted out to the background grey (otherwise Tripo closes the opening).\n- 3D: Tripo image-to-model task `{tt}` (v3.1, smart_low_poly, face_limit 5000, texture detailed, delight, pbr off, aligned to image), 50 credits. `tripo_task.json`.\n- Fit + QC: `win/art_v3_fit.py arch ... 1024 6000 open=open.json depth=13 bury=1.5 clear=0.5 pk=0.75` (Blender 4.3 headless on the PC, via `tools/art_v3/run_fit.py`). Opening-aware warp: Z scaled so the raw opening crown lands on the target crown; X remapped per height row so the raw opening edge lands on the required opening (+clearance) and the masonry/timber outside it keeps its proportions (piers x0.75). Small boundary holes closed, welded, triangulated, 35 degree smoothing, 1024 JPEG albedo, metallic 0.\n- Result: {tris} tris, {size} studs. Preview `preview.png`, sheet `out/art_v3_qc/cavern_arch_vs_concept.png`, stats `stats.json` (opening, colliders, intrusion check), manifest entry in `manifest.json`.\n- Style: bevelled grey stone voussoir ring on block-course jambs with a larger keystone and a little moss, as in concept 10's cave mouth (concept has no timber lining on the arch itself).\n- Not done: not uploaded, not wired into ArtSwapRules, not seen in Studio.\n"
+ },
+ "mine_portal": {
+  "ref": "assets/models/props/snow/timber_fence/concept.png",
+  "ref_label": "style ref: snow timber_fence concept (timber, snow)",
+  "opening_txt": "48 wide to y 33.7",
+  "replaces_txt": "SNOW MineTunnelPortal",
+  "collides": true,
+  "replaces": {
+   "prefab_keys": "MineTunnelPortal",
+   "zone": "SNOW",
+   "instances": 2,
+   "original_bbox_min": [
+    -32.8,
+    -2.1,
+    -6.3
+   ],
+   "original_bbox_max": [
+    32.8,
+    45.3,
+    6.3
+   ],
+   "original_collides": true,
+   "supersedes": "arches_v2 mine_portal"
+  },
+  "origin": "prefab pivot (road point): opening centred on x = 0, depth centred on z = 0, base buried 2.0. Align 'origin', scale 1.",
+  "opening_note": "Required: |x| < 19 up to y 33 (lintel underside) +0.6. Actual: |x| 24..25.5 between the posts (6 studs wider than required each side), narrowing to 22 at y 30 where the corner braces start, lintel underside (crown) at y 33.7. 0 intrusions (rz 1.0 includes the brace rows).",
+  "kept": "Hanging Neon lantern at (0, 30.5, -3.6): inside the opening, under the lintel, as before.",
+  "integration": "Rule meshes {'mine_portal'}, scale 1, collider 'arch' (15 boxes: footings, posts, lintel and roof).",
+  "notes": "# Mine portal v3: mine_portal (SNOW mine entrances)\n\n- Targets: SNOW MineTunnelPortal x2.\n- 2D concept: Higgsfield nano_banana_2 1k 1:1, job `{job}` (see `concept_jobs.json`: refs, prompt, credits). Refs = approved SkyRally concepts / props concepts plus `proportion_guide.png` (flat front silhouette with the required opening). Tripo input `concept_tripo_input.png` = the concept with the dark passage painted out to the background grey (otherwise Tripo closes the opening).\n- 3D: Tripo image-to-model task `{tt}` (v3.1, smart_low_poly, face_limit 4000, texture detailed, delight, pbr off, aligned to image), 50 credits. `tripo_task.json`.\n- Fit + QC: `win/art_v3_fit.py arch ... 1024 6000 open=open.json depth=12 bury=2.0 clear=0.6 pk=0.75 rect=1 rz=1.0` (Blender 4.3 headless on the PC, via `tools/art_v3/run_fit.py`). Opening-aware warp: Z scaled so the raw opening crown lands on the target crown; X remapped per height row so the raw opening edge lands on the required opening (+clearance) and the masonry/timber outside it keeps its proportions (piers x0.75). Small boundary holes closed, welded, triangulated, 35 degree smoothing, 1024 JPEG albedo, metallic 0.\n- Result: {tris} tris, {size} studs. Preview `preview.png`, sheet `out/art_v3_qc/mine_portal_vs_concept.png`, stats `stats.json` (opening, colliders, intrusion check), manifest entry in `manifest.json`.\n- Style: thick timber posts on stone footing blocks, corner braces, a heavy lintel and a snow-dusted pitched plank roof.\n- Not done: not uploaded, not wired into ArtSwapRules, not seen in Studio.\n"
+ },
+ "mesa_portal": {
+  "ref": "assets/models/arches_v3/_refs/space_crop.png",
+  "ref_label": "approved space concept 20 (stone brick + iron)",
+  "opening_txt": "41 wide to y 34.6",
+  "replaces_txt": "SPACE MesaTunnelPortal",
+  "collides": true,
+  "replaces": {
+   "prefab_keys": "MesaTunnelPortal",
+   "zone": "SPACE",
+   "instances": 2,
+   "original_bbox_min": [
+    -32.1,
+    -1.9,
+    -5.1
+   ],
+   "original_bbox_max": [
+    32.1,
+    46.7,
+    5.1
+   ],
+   "original_collides": true,
+   "supersedes": "arches_v2 mesa_portal"
+  },
+  "origin": "prefab pivot (road point): opening centred on x = 0, depth centred on z = 0, base buried 1.9. Align 'origin', scale 1.",
+  "opening_note": "Required: |x| < 20 to y 34 (+0.6). Actual: |x| 20.5 to y 30, lintel underside y 34.6. 0 intrusions. The recessed inner steel band under the lintel shows frayed edges (357 open edges before hole filling, 21 after): visible only from inside the portal.",
+  "kept": "The separate MesaTunnelChevron prefab (neon chevrons at z +1.45, y 28.6..34.2) stays as built: it sits in the opening just under the lintel.",
+  "integration": "Rule meshes {'mesa_portal'}, scale 1, collider 'arch' (12 boxes).",
+  "notes": "# Mesa portal v3: mesa_portal (SPACE tunnel portal)\n\n- Targets: SPACE MesaTunnelPortal x2.\n- 2D concept: Higgsfield nano_banana_2 1k 1:1, job `{job}` (see `concept_jobs.json`: refs, prompt, credits). Refs = approved SkyRally concepts / props concepts plus `proportion_guide.png` (flat front silhouette with the required opening). Tripo input `concept_tripo_input.png` = the concept with the dark passage painted out to the background grey (otherwise Tripo closes the opening).\n- 3D: Tripo image-to-model task `{tt}` (v3.1, smart_low_poly, face_limit 4000, texture detailed, delight, pbr off, aligned to image), 50 credits. `tripo_task.json`.\n- Fit + QC: `win/art_v3_fit.py arch ... 1024 6000 open=open.json depth=10 bury=1.9 clear=0.6 pk=0.75 rect=1` (Blender 4.3 headless on the PC, via `tools/art_v3/run_fit.py`). Opening-aware warp: Z scaled so the raw opening crown lands on the target crown; X remapped per height row so the raw opening edge lands on the required opening (+clearance) and the masonry/timber outside it keeps its proportions (piers x0.75). Small boundary holes closed, welded, triangulated, 35 degree smoothing, 1024 JPEG albedo, metallic 0.\n- Result: {tris} tris, {size} studs. Preview `preview.png`, sheet `out/art_v3_qc/mesa_portal_vs_concept.png`, stats `stats.json` (opening, colliders, intrusion check), manifest entry in `manifest.json`.\n- Style: stone-brick jambs with a riveted dark steel frame and a brass cornice lintel (concept 20). Weakest of the set: the lintel is heavy and the inner steel band is torn where Tripo's reveal was stretched.\n- Not done: not uploaded, not wired into ArtSwapRules, not seen in Studio.\n"
+ }
+}

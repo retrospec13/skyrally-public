@@ -1,0 +1,203 @@
+{
+  "conventions": "glTF space: +Y up, -Z forward, 1 unit = 1 stud, transforms applied, origin as stated per file. No textures: colour is vertex colour (COLOR_0, raw 0..1 values of the sRGB hex chosen; MeshPart.IgnoreVertexColors must stay false). Material has backface culling. Normals are smoothed with edge splits (45-60 deg).",
+  "files": [
+    {
+      "file": "ring_frame.glb",
+      "triangles": 2736,
+      "size_studs_xyz": [
+        30.2,
+        30.2,
+        4.8
+      ],
+      "bbox_min": [
+        -15.1,
+        -15.1,
+        -2.4
+      ],
+      "bbox_max": [
+        15.1,
+        15.1,
+        2.4
+      ],
+      "pivot_orientation": "origin = ring centre; ring lies in the XY plane, axis along Z (symmetric front/back); outer rim radius 14.6, clasps reach 15.1 (same as today's 13.4 +/- 1.2 housing + clasps); opening radius 10.0",
+      "moving_parts": "none (static)",
+      "colour": "vertex colours (COLOR_0)"
+    },
+    {
+      "file": "ring_glow.glb",
+      "triangles": 768,
+      "size_studs_xyz": [
+        20.7,
+        20.7,
+        2.0
+      ],
+      "bbox_min": [
+        -10.35,
+        -10.35,
+        -1.0
+      ],
+      "bbox_max": [
+        10.35,
+        10.35,
+        1.0
+      ],
+      "pivot_orientation": "same origin/axis as ring_frame: place both at the same CFrame",
+      "moving_parts": "ring_glow may spin about Z or pulse (Transparency/Color); frame static",
+      "colour": "vertex colours (COLOR_0); white base, tint with MeshPart.Color"
+    },
+    {
+      "file": "portal_arch.glb",
+      "triangles": 2256,
+      "size_studs_xyz": [
+        30.84,
+        22.27,
+        8.44
+      ],
+      "bbox_min": [
+        -15.42,
+        -0.02,
+        -4.21
+      ],
+      "bbox_max": [
+        15.42,
+        22.25,
+        4.22
+      ],
+      "pivot_orientation": "origin = ground centre (x=0, z=mid depth); opening faces -Z but the mesh is front/back symmetric; clear opening 18 wide at the base (jamb to jamb), 18.65 high at the apex (springline at y=6.8, horseshoe bulge to 19.3 wide at y=9); overall 30.8 x 22.3 x 8.4 incl. feet",
+      "moving_parts": "none (static)",
+      "colour": "vertex colours (COLOR_0); light-grey base, tint with MeshPart.Color"
+    },
+    {
+      "file": "portal_arch_trim.glb",
+      "triangles": 436,
+      "size_studs_xyz": [
+        19.7,
+        18.7,
+        6.1
+      ],
+      "bbox_min": [
+        -9.85,
+        0.15,
+        -3.05
+      ],
+      "bbox_max": [
+        9.85,
+        18.85,
+        3.05
+      ],
+      "pivot_orientation": "same origin and orientation as portal_arch; place with the same CFrame, opening 18.0 wide",
+      "moving_parts": "none (static)",
+      "colour": "vertex colours (COLOR_0); white base, tint with MeshPart.Color"
+    },
+    {
+      "file": "stone_arch.glb",
+      "triangles": 1992,
+      "size_studs_xyz": [
+        45.22,
+        18.78,
+        8.63
+      ],
+      "bbox_min": [
+        -22.61,
+        -0.02,
+        -4.31
+      ],
+      "bbox_max": [
+        22.6,
+        18.76,
+        4.32
+      ],
+      "pivot_orientation": "origin = ground centre; opening faces -Z (symmetric); clear opening 32 wide at the ground, apex 15 above ground, towers 13.25 high; overall 43.8 x 18.8 x 8.6",
+      "moving_parts": "none (static)",
+      "colour": "vertex colours (COLOR_0); light-grey base, tint with MeshPart.Color"
+    },
+    {
+      "file": "oak_a.glb",
+      "triangles": 1036,
+      "size_studs_xyz": [
+        16.8,
+        18.29,
+        12.94
+      ],
+      "bbox_min": [
+        -8.43,
+        -0.35,
+        -6.81
+      ],
+      "bbox_max": [
+        8.37,
+        17.94,
+        6.13
+      ],
+      "pivot_orientation": "origin = trunk centre at ground (trunk base buried 0.35 below y=0); 18 tall",
+      "moving_parts": "none (static)",
+      "colour": "vertex colours (COLOR_0)"
+    },
+    {
+      "file": "oak_b.glb",
+      "triangles": 1036,
+      "size_studs_xyz": [
+        20.94,
+        22.07,
+        13.22
+      ],
+      "bbox_min": [
+        -10.09,
+        -0.35,
+        -6.98
+      ],
+      "bbox_max": [
+        10.85,
+        21.72,
+        6.25
+      ],
+      "pivot_orientation": "same as oak_a",
+      "moving_parts": "none (static)",
+      "colour": "vertex colours (COLOR_0)"
+    },
+    {
+      "file": "oak_c.glb",
+      "triangles": 1008,
+      "size_studs_xyz": [
+        14.61,
+        14.5,
+        10.07
+      ],
+      "bbox_min": [
+        -7.27,
+        -0.35,
+        -5.03
+      ],
+      "bbox_max": [
+        7.33,
+        14.15,
+        5.04
+      ],
+      "pivot_orientation": "same as oak_a",
+      "moving_parts": "none (static)",
+      "colour": "vertex colours (COLOR_0)"
+    },
+    {
+      "file": "bush.glb",
+      "triangles": 720,
+      "size_studs_xyz": [
+        9.17,
+        5.07,
+        8.47
+      ],
+      "bbox_min": [
+        -4.66,
+        -0.19,
+        -4.2
+      ],
+      "bbox_max": [
+        4.52,
+        4.88,
+        4.27
+      ],
+      "pivot_orientation": "origin = centre at ground (buried 0.24)",
+      "moving_parts": "none (static)",
+      "colour": "vertex colours (COLOR_0)"
+    }
+  ]
+}

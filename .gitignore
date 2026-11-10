@@ -1,0 +1,15 @@
+/out/
+# Editable boss sources live under anim/out and must be tracked.
+win/calls/
+win/patch_serversize.ps1
+out_check_place.ps1
+check_place.ps1
+*.lock
+*.rbxlx.lock
+__pycache__/
+*.pyc
+assets/concepts/*/logs/
+.claude/
+config.local.json
+.env
+.pytest_cache/

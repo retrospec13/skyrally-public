@@ -1,0 +1,1367 @@
+[
+  {
+    "path": "assets/audio/battle_barrier/src/barrier_snore.wav",
+    "sha256": "5c13539008860489c8785aaa615eb3effde5317a37417535f184510dcab3870d",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/battle_barrier/upload/barrier_snore.ogg",
+    "sha256": "9bc639e6bc4f806dacf0ccafab117bbfaed3add7f3074b2bc2a9e0c25a7cd5f1",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/boost_whoosh.wav",
+    "sha256": "7d53073a46bcf3949ae85be5de339e69ac7d14176c3c23ed20ff69e810080683",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/crash_thud.wav",
+    "sha256": "9a33e971cf54f8d6ad4f11186317aead16d48f054cacf6b64f22611c8856fb1f",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/curtain_kart/src/chip_best.wav",
+    "sha256": "ee412360b657a7862034e9ee0b2566b227d9a81e98b0366d8471725f8a58de96",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/curtain_kart/src/chip_blip.wav",
+    "sha256": "efe3c6a68d4b9ea0b67c3016a6c8feef822b84b12706ed21ebc849e957ae0f84",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/curtain_kart/src/chip_engine.wav",
+    "sha256": "69e7e463d03def013b8753450eeeada616e96650230b3e590750ad9447c5bed4",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/curtain_kart/src/chip_go.wav",
+    "sha256": "dec084f488829d0b5e1a177961a6196a3758cdd8b9460dd6402ab12445c429a4",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/curtain_kart/src/chip_pass.wav",
+    "sha256": "12453c6ba42d1c8004f6e1351496abdf9dcb737e436293c2b8432e76f553d096",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/curtain_kart/src/chip_passed.wav",
+    "sha256": "8708b203bc1045266c2067200fe9354be6b1363295cd1fb10301601b377736fe",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/curtain_kart/upload/chip_best.ogg",
+    "sha256": "82dd9bb66606161957375e621c190f426b7e6c8f522e847b1823131edc87e2c1",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/curtain_kart/upload/chip_blip.ogg",
+    "sha256": "bbc8f1c3057fdcf0a0fd07044f79709c288e91e5819478a34f6b182421eea3f4",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/curtain_kart/upload/chip_engine.ogg",
+    "sha256": "6d49e5ddc8a763dfb65a46b52f381426ceae7c4cca5bcc6019294def29747021",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/curtain_kart/upload/chip_go.ogg",
+    "sha256": "88cdae6a257ca173087287704e9bacc6b8853d790b3db5e641f75116e01ea49d",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/curtain_kart/upload/chip_pass.ogg",
+    "sha256": "da0b42b6f6f0ac50de6d39e172ad1946fb9732f053677487af4951b1b56ee59a",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/curtain_kart/upload/chip_passed.ogg",
+    "sha256": "fbe382bdac3a2435f36488957fdd35f6b161477ab253c4fec7e19c6fd39a0fdc",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/engine_loop.wav",
+    "sha256": "5a4e707ae142c8f4bc1968ee368b790d8e09569b49a37ef605443960b37b7194",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/items_v1/upload/item_beep.ogg",
+    "sha256": "4ea063ada6df3e83d3467320e5d8c77dea0a5be0046d345fd0f9e6d1da38e275",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/items_v1/upload/item_bonk.ogg",
+    "sha256": "aaed78c55755015f98abd7fa7a3969de23780f337b5cdec85e11d69e84cfff29",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/items_v1/upload/item_dizzy.ogg",
+    "sha256": "c19911d5b4eead7880a5c4b02e0330f0b32523d2cf47f5411a6106d7ebe4dc72",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/items_v1/upload/item_flyby.ogg",
+    "sha256": "434852d3ed74afee831b38e2c71bdf5c8d1f88553484e995b145594a61cc56a4",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/items_v1/upload/item_gotcha.ogg",
+    "sha256": "7f59d003a0ccb7302dbff75142348f846de5592781b2725a8542e4e55baf7177",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/items_v1/upload/item_revenge.ogg",
+    "sha256": "e787ed756b70a1570f02021551978af953150e9f6e7d57392c256bd9e6824402",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/items_v1/upload/taunt_pop.ogg",
+    "sha256": "7a7d8ca2d7c1c984422e2135ab9c55ce7b723d29b65c58989d22e5da12039edb",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/lap_fanfare.wav",
+    "sha256": "1d243e5af19039cef9372930141e5a2fb1705cfe844178e97279a153f602443d",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/lava_ambience.wav",
+    "sha256": "6ddf1f0c01fb382cbae040e09366dc70fb98b2ffe2f6a7df58da22d0dba6918f",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v1/jingle_finallap.mp3",
+    "sha256": "bd56ddcf63f07471b0718315b9fc6c6fb43e7b5424fdb9ad26bc5555927bcd44",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v1/rejected_roar_clattershell_1.mp3",
+    "sha256": "b59389a5ed4605a11ef2980263e33b3c257d39465d39d55b162e1fdf66cecb0b",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v1/roar_cinderwing.mp3",
+    "sha256": "40ce9a82894fac56fbab571eed8014b49f45935cb234b74bb7c2f115cd065b7e",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v1/roar_clattershell.mp3",
+    "sha256": "0433defb9959933151e6d93197e0efd6e05adce7d906de6b836c197daf42386c",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v1/roar_emberbeetle.mp3",
+    "sha256": "1fbb9ab1e31cdca6a11f47518528527297290a7293f54fb9e01279fed249573f",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v1/roar_frosthorn.mp3",
+    "sha256": "88212a32bbb0f4313432f0c643a09863fbd38614db0e96384108945c7cb51614",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v1/roar_thunderwright.mp3",
+    "sha256": "e296d1f8c691999e7ea7f0294c45a3bb3c5488c63b3763c2a6aae54277a3ad99",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v1/upload/chip_find.ogg",
+    "sha256": "d294853851747a50495d705a535a351a0756a553c7b7e5dab8ba1e17fd22ff19",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v1/upload/chip_secret.ogg",
+    "sha256": "0d96e9e5abe1c98537cc676df335ec80e79738dea119bcc2fa59ff8ab6a86926",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v1/upload/jingle_countdown.ogg",
+    "sha256": "e64a5cbebc25f02c255a453f2890f87981e99be94e394bcef454312885043ed5",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v1/upload/jingle_finallap.ogg",
+    "sha256": "077d1e66288d9e560491fc414242f616956737a9abf9eea0fa8a6cc8236a3367",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v1/upload/jingle_last.ogg",
+    "sha256": "9a8e67ecc6988bcbc5fbfce0b85ba4e3bed2eb5e5b60849c9684bc5674908f67",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v1/upload/jingle_midpack.ogg",
+    "sha256": "be5327127173baf7127171bcd24f06de9bd56f1ec9f0a4324548ac216a75d1b8",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v1/upload/jingle_place2.ogg",
+    "sha256": "90987918bbb32a8242c75007913355756c8490d5be6ce67ed173540f6f2f3e19",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v1/upload/jingle_place3.ogg",
+    "sha256": "82abdfb3f623f6b3bd9d2e81cdc9ac306587ffba98c38aacd64928aa602873d1",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v1/upload/jingle_victory.ogg",
+    "sha256": "528daf1c82a42ae27e40e6ef02f6ae8f421d323b25d5673a78139487a7163807",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v1/upload/music_boss_dino.ogg",
+    "sha256": "a5a563d59a2655893733773686be28ef415f0d151d2291ded15eb9733574848e",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v1/upload/music_boss_forest.ogg",
+    "sha256": "94882ebdd1bc09da96e756518d34380e180419cbc736336169375eb8bcde2683",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v1/upload/music_boss_hub.ogg",
+    "sha256": "9b9049f902bac7d68a3438ecf7e5731b38c07f4b5bdbfabd4dcb3d049cf80228",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v1/upload/music_boss_island.ogg",
+    "sha256": "8785c73f71092f9f4697b91e2cc3b30afeb2d8d439a41956b186efa0b4884a2e",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v1/upload/music_boss_snow.ogg",
+    "sha256": "0dd32f8a192016332e02ed757106b829a45fc063cc05a9a0fd38371190c77d83",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v1/upload/music_dino.ogg",
+    "sha256": "52f4026d96022c8a65cc0105cc1b792ba5bae9e8acafe63e6f6c2dd952cc7ebe",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v1/upload/music_forest.ogg",
+    "sha256": "5bd7c8fcb8e9042786462cdb58383b13609e9306cc573383e1b33ddecdd5b83c",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v1/upload/music_hub.ogg",
+    "sha256": "83b82a45165627bb7b7b6b03ff780b895e21d4b525bd2411d2aeac848a7023a8",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v1/upload/music_island.ogg",
+    "sha256": "c9cedfcb090828dfb323016a3c90ea03e42b9975fe6babefa03ac6be8156c16a",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v1/upload/music_snow.ogg",
+    "sha256": "a87127a56c3784c7de11e17ac8b2052d8bc46378072f9e2058abe1ce71a20668",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v1/upload/music_space.ogg",
+    "sha256": "380e71760258ee95508ab14cb2288592c6c297f8a8f1ebf1cabf859c5b36831c",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v1/upload/roar_cinderwing.ogg",
+    "sha256": "625afe66d0fc046b9086608c8a48cb18a592a05d4b552d06748eb1caf8300ba3",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v1/upload/roar_clattershell.ogg",
+    "sha256": "b6be9fe0c0bd2ec657d4a1c57493321ffeeaf068511fad9890f8f0f4dad5890b",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v1/upload/roar_emberbeetle.ogg",
+    "sha256": "a3bd01ca32531fba02f3f0643cb76f983073a9c39735ef591d5a8486cec777d9",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v1/upload/roar_frosthorn.ogg",
+    "sha256": "65e1f808ea60a633dc894dd34fc73cdbf10eadf2aedd5effddd3a52c4ce5f6f6",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v1/upload/roar_thunderwright.ogg",
+    "sha256": "f3b195fe1b8bc25ec5e748110bebd97c6ac6ad13bc5f8b580a9ae2e01347fbfe",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v2/final/music_boss_hub.ogg",
+    "sha256": "4f5e63302d0eb7c36ee529c93ea5faf6bc778d981063cec2a38a77e0121c7a37",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v2/final/music_boss_island.ogg",
+    "sha256": "01edc4d3ed928513baceb1e704df69c32c1f02ba2ed0dd1ce268bb847a163207",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v2/final/music_boss_snow.ogg",
+    "sha256": "da252186a68a593b27404bde83a6353c032af8daebc29cb23bbb5673d4bb7b61",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v2/final/music_forest.ogg",
+    "sha256": "50cf2b538185386614d6c68e9cd75c84c034e82c49744f95263c8c89b02fc3bc",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v2/final/music_island.ogg",
+    "sha256": "bfb2afafb671c8a77c2bc7e077bbb8c27665e77d0897f239d401dea2f0c2610d",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v2/final/music_stormcup.ogg",
+    "sha256": "abea1f5cb2f3ded22fcd20abf201ba64c13b08762c5fb47877a33e5827e0f141",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v2/upload/jingle_finallap_r2t2.ogg",
+    "sha256": "a53fdecf2b39d234736134038d2f54b3e72f0ef6ffe5ab939d1933e89d1536db",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v2/upload/jingle_midpack_r1t3.ogg",
+    "sha256": "c967acbeabfa3f5f057ae74f8583d1a56a5c56811a589bdef6520608a6acb276",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v2/upload/jingle_place2_r2t2.ogg",
+    "sha256": "128aa60f33a1a4763e8e5fec2725b8a6cf0211b01047474b997142dbb3660426",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v2/upload/jingle_place3_r1t1.ogg",
+    "sha256": "9dcd993dcb64a7ace843a74350a8d19d712cb1198ab6d5fafd413bfdaa75f1de",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v2/upload/jingle_victory_r1t3.ogg",
+    "sha256": "04903f1be84d90e199c35215b53a43a04db0e856c0f79324c9a13528631ba269",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v2/upload/music_dino_r2_t2.ogg",
+    "sha256": "209f3eea91d011bf1d3f2cfa392c63c2e8c7957c52c2d2ab5512549f8464c21b",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v2/upload/music_hub_r2_t3.ogg",
+    "sha256": "e2afcef5316863f15970190de9c99a3c215eb51b7a7389b12a00f7b574767144",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v2/upload/music_snow_r2_t3.ogg",
+    "sha256": "4becaea1b8bed488035995a276f125680e3337f3a0e3e3aeb66f2fd2b2d3d25e",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v2/upload/music_space_r2_t3.ogg",
+    "sha256": "80c0884277242fa4ee8f78cdb681c80abb21d3d59954bcd5add054cb54962189",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v3/music_dino.mid",
+    "sha256": "06fccfd75905ccdfec91ed6bc2700c66e96d8eb541ebc93f1379155fe1197a57",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v3/music_dino.ogg",
+    "sha256": "d14734cd0243256aa4c742de8c304983a15f0a0470fb8a7bd48c4caeb81f3a11",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v3/music_hub.mid",
+    "sha256": "be919fb2a721df54a91061ef7d070d3b22fc39813d00f8a4a279a3ccefdaf43a",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v3/music_hub.ogg",
+    "sha256": "41faac4c1fcd1e86a5014ff2ea029ece6fbbb50aa0871cd3263f54f7c1815334",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v3/music_snow.mid",
+    "sha256": "55c94245b34ffd5099a79b48563c86c9c0148098acf97572f5ebfc5b5a038cb7",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v3/music_snow.ogg",
+    "sha256": "a658c8db232f544d5173d26974463738fe09059d7271e1156b711ac33b27afce",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/payoffs_v1/upload/confetti_pop.ogg",
+    "sha256": "cdf7935bd4d6a1ad7be03dd4ef0284a47d881c379b0cc0491dd4d1aeaa59a2ba",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/payoffs_v1/upload/crate_kazoo.ogg",
+    "sha256": "f9931f935d9648e737adb6b8ef50f98208a792da39707decd8d912bcc4c4cf21",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/payoffs_v1/upload/crate_thud.ogg",
+    "sha256": "cdad84a352e267852efb78a277fe3a5c2e6a3739334a274a900d00499df83ed2",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/payoffs_v1/upload/crate_whistle.ogg",
+    "sha256": "d2a78dbda821f9c514b50b33db0b249570251dba3dc44fb598b8ed1e4d0f6674",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/payoffs_v1/upload/drumroll.ogg",
+    "sha256": "83f839cd058b67bf9f1e68679a0a805815c8e500b9905315ffd8eea215da3174",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/payoffs_v1/upload/garage_honk.ogg",
+    "sha256": "94097146f0feb742eadb7f466269f4e416fa9953db8b33f24fba594b091fdc2a",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/payoffs_v1/upload/garage_paint.ogg",
+    "sha256": "77ce9f3624b91adb7f9a25f5832f8e42f3d2378b8c08629f1bbd18d971add469",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/payoffs_v1/upload/garage_redline.ogg",
+    "sha256": "70bdf890aba46f4235cdd7cf0ae277d7ba82e43a1c732ba2a2bd20e824ad4421",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/payoffs_v1/upload/garage_rev.ogg",
+    "sha256": "6208d8bde0bbaf803f7fd02f93876aaab82819932d54cee74930a79c239fcf06",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/payoffs_v1/upload/iris_open.ogg",
+    "sha256": "1bf969f76d0af1b47d689367638259a4d3e9bb465380fe598a7269f8f9d47f5e",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/payoffs_v1/upload/photo_develop.ogg",
+    "sha256": "2ad940a424dba7ea0e494f73c2a40ac632313da2e3f2f618bc8adaf91c4ccc1c",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/payoffs_v1/upload/photo_shutter.ogg",
+    "sha256": "2b622a6af77eda85d4fca29d35f2b21e5c8530c578b8f8a7fdd287b1e1e9b4fa",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/payoffs_v1/upload/podium_drop.ogg",
+    "sha256": "bad29e4ffbce777c17d75b75fa79dc82e2960cc4d222895dea570c5eae2df5a7",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/payoffs_v1/upload/portal_cancel.ogg",
+    "sha256": "31a9197379badc95dd96b118eecd62f3dee212a59aa9c7ed8d5ca1280d6c4260",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/payoffs_v1/upload/portal_plunge.ogg",
+    "sha256": "88336366b90890ac8f9501a85554a560bf687663f8ebea29fd66589fa2056a0b",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/payoffs_v1/upload/portal_spit.ogg",
+    "sha256": "a3d69493bd11ae5c6d2e4626a7c1e19cf5fcf3c868385818bdaf70fa569810cc",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/payoffs_v1/upload/portal_suck.ogg",
+    "sha256": "bc3edd2f826f0412ea6276c37843c687f81b825a0b32db553d668d2d02e13876",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/payoffs_v1/upload/portal_wake.ogg",
+    "sha256": "2b17ecdc623db7892048e592bdc5141283ab55b2de84075f7e8a696cb7148c8b",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/payoffs_v1/upload/token_land.ogg",
+    "sha256": "3bc739ea93f87a5cd065a9c501a78b302ebbad93ea8830618399c58453bf7115",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/payoffs_v1/upload/token_whoosh.ogg",
+    "sha256": "501fe2abe21e089927d66b1d572197d46d82d8965e077870d50721e8f4d1d330",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/pickup_chime.wav",
+    "sha256": "8deb9418a18bed576d83c4bfa7f5e0bfa142c61220dac06bb6c0f7f65db7a46a",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/set_pieces/raw/boss_tumble.mp3",
+    "sha256": "6c315f35803d6ba49bc3d595f0c277f35c6768c992a3e9304bb6784fe2985fe3",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/set_pieces/raw/cannon_boom.mp3",
+    "sha256": "277d12a2f4a17d63590343adb40a46a9e6f221077bb8f4801690d7b8fba81eab",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/set_pieces/raw/cannon_boom_mix.wav",
+    "sha256": "21f9e4088db271a4b0cd3833288d0ff85d809c86cd2d9d09fcc86f3028aa7095",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/set_pieces/raw/cannon_fuse.wav",
+    "sha256": "34dfe54821149ccc695fb666d2149427805caeec5417eebd473f547149b59344",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/set_pieces/raw/dizzy_tweets.wav",
+    "sha256": "b4fc5ae27026354330a9baf28e63f3603a590d707a993f5b5a2491b26908034a",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/set_pieces/raw/duck_squeak.mp3",
+    "sha256": "beb517c86200aaf90d65cfee2fee534ede176ec5a9bb4e3fc386638449e2e30c",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/set_pieces/raw/golden_quack.mp3",
+    "sha256": "53a0173063dbb794b31aff6e262f27d87aa39bab6b36afb639e194f429a13969",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/set_pieces/raw/gull_squawk.mp3",
+    "sha256": "591ecad8676a3dfbacd4380caaa69979a9f9c3fad47afe2feadc7c3df07aed40",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/set_pieces/raw/ice_freeze.mp3",
+    "sha256": "e89ee6d35f0d55c4262dba092b4b470fa332c711383cd671284029170e7ec564",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/set_pieces/raw/monorail_chime.mp3",
+    "sha256": "94e709f1fcbcdf7c3738baa6f4f4b56acfd7f78b0ef9dcb4aec020ae3e59474b",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/set_pieces/raw/monorail_toot.mp3",
+    "sha256": "3fb892d552f97800ae08cc2a1672029a81ac88b63138850a718d6b2ccf9fb113",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/set_pieces/raw/monorail_win.wav",
+    "sha256": "4e35ebd121ee5d839d5be1a2e4586ba753530c68fa86f60d4cf2eb7270649eae",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/set_pieces/raw/rejected_cannon_boom_1.mp3",
+    "sha256": "7ebc9a9596cbed7373bf57be38a88b0ddf3fe7812196ea1d76961a50fcc5fc19",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/set_pieces/raw/rejected_cannon_fuse_1.mp3",
+    "sha256": "9c6d1249bd6548bc74136b1766937ece6ca47529828b93477c008ce06e6341f6",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/set_pieces/raw/rejected_duck_squeak_1.mp3",
+    "sha256": "51eecbd68cfccc22f97d8744a69cb205c9c9627c50e78e2cedcfc5175c3154f5",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/set_pieces/raw/retire_poof.wav",
+    "sha256": "cdcbabad69ee4f1ba2323407dadc0b85ced50491f48874c20623c476e6791526",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/set_pieces/raw/shell_flip.mp3",
+    "sha256": "c59591b4d7869fa0e5531bda4b891e1ea5ed6a824d15f8393702fd9e41353eef",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/set_pieces/raw/slide_whistle.wav",
+    "sha256": "75049217175e1d2abe88d697bb4dbd12a29aa6857f8779092b379e059b8defd1",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/set_pieces/raw/splash_pluck.mp3",
+    "sha256": "22903f8252fc68623f49fc0d1595139397e3d30f6494fec02ab5b00c5d131a6f",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/set_pieces/raw/wheels_off.mp3",
+    "sha256": "c82b8f3e952a69646f24584415edf7c9ecad9d84a203a0a10d2cab67039536ee",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/set_pieces/upload/boss_tumble.ogg",
+    "sha256": "550ccb171b2282cfd2f1ce26eefd5cf3e2178dbfbdf9969940756635554879bd",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/set_pieces/upload/cannon_boom.ogg",
+    "sha256": "cbfe9f56468e6c56c748bd60d2e529f23e068b1be50ae2914dc777cb7d87b916",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/set_pieces/upload/cannon_fuse.ogg",
+    "sha256": "dac36bd27daf7e64fe29611e9c446944f1e271cc3d7616273a9f20bb74ced903",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/set_pieces/upload/dizzy_tweets.ogg",
+    "sha256": "c38aadf4530cd0cd5b0c68709d1ac9b3c1427f3bbc53215e8dc79026cde2fca7",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/set_pieces/upload/duck_squeak.ogg",
+    "sha256": "a7f49c79c609975616f4105014f074613afdf48be1d50ec10c2daa1311501b0b",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/set_pieces/upload/golden_quack.ogg",
+    "sha256": "4a4ad107208e13e451517e501e4846f5aaf5ac3a4de9e304f0e5cf4e65d0c5dc",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/set_pieces/upload/gull_squawk.ogg",
+    "sha256": "af67bd58f819107c05a674571feffe2fa0bccde1b248a8ff76ea7dde5db2a47c",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/set_pieces/upload/ice_freeze.ogg",
+    "sha256": "ae48789cec1d7267350313fb649d489136f6dd6b744da32f94bf7011d6bb1f22",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/set_pieces/upload/monorail_chime.ogg",
+    "sha256": "014aa60ba7ee78926e66ff4ab446b815a4074600cf6ae6313383090595fb5670",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/set_pieces/upload/monorail_toot.ogg",
+    "sha256": "69d678b3ece7301ab2bc740f93264e2b8aeee8c086f46ec05a97ec22759e7ecd",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/set_pieces/upload/monorail_win.ogg",
+    "sha256": "ca929ea0ee85ca39b99a07f670afea0c8d36e3f9c6ecbeed3378378149192b42",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/set_pieces/upload/retire_poof.ogg",
+    "sha256": "9be27aa7811b382a58cd556849f97cd4c63bf2a5bafb6e94edc04847c06536a5",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/set_pieces/upload/shell_flip.ogg",
+    "sha256": "c7e7526cdbbfda3d7bb082030be4833ffb8534e09db4075e7a88a68f17cb3a66",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/set_pieces/upload/slide_whistle.ogg",
+    "sha256": "445511c1da2a68d6947559e1463043793d8990fe1bf68e12dcafcc43950bd70c",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/set_pieces/upload/splash_pluck.ogg",
+    "sha256": "4e4352e9b7a9d234e831325d576e228dba75e1ef6f6429e49bf328c8bda50a36",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/set_pieces/upload/wheels_off.ogg",
+    "sha256": "42c334aa432651e6fa0f535fb9e102279853ef44f6e69a8eb81b18c86bcd3cb2",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/sfx_v2/boost_kick.ogg",
+    "sha256": "2e8d3aa4a5bea124c4a95d0a8371d7054f822d66871961488a3946412d21be36",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/sfx_v2/boost_loop.ogg",
+    "sha256": "7a94ea5e56dd8410b6ba96efd59e1195b1daf16dac795754d6366e72db58bde7",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/sfx_v2/boost_overcharge.ogg",
+    "sha256": "6e2a834ec5af4a9d974b9e72a6f4f75206641312834d328b1af836dbc059e39a",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/sfx_v2/coin_all.ogg",
+    "sha256": "5eacac54c6cdd4dbf92296ee65eb7f110d9bd0d8ae3625b751ff62e3c7ad8460",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/sfx_v2/coin_pickup.ogg",
+    "sha256": "0f391a62bc04c6c9c49cecb7235837ff9372c6dd61201d192f92b1ba6215a9ff",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/sfx_v2/countdown_v2.ogg",
+    "sha256": "e3fd97f8c0b677e4e8a280e09e513968e304f69c580e08e302fab1b86654e9f1",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/sfx_v2/crash_hit.ogg",
+    "sha256": "0d566815cc042511ddba94edd33d0517a0d8d7b8fb97e9a4b0d25e5dc563606d",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/sfx_v2/finish_tada.ogg",
+    "sha256": "314c0c6e198fe7dc2510b51ef711f69ce5d1f8bd0867083f9ae2772c44dda33b",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/sfx_v2/grid_rev.ogg",
+    "sha256": "b776fefb917ab5c6ef71937bba2471951d849f5ae8163a0fdb6fcbcedcf14d58",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/sfx_v2/land_thud.ogg",
+    "sha256": "2541c922cc6f224feffaeb6a8bff2eae30481fc42b7d0049b66767b2cb2982ba",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/sfx_v2/lap_ding.ogg",
+    "sha256": "69a459e17faa536475dce4ba5b812d7c793b7d28b109951742fa356604ff6a24",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/sfx_v2/magnet_lock.ogg",
+    "sha256": "2cf7f7736b411d001f82865a91c17dc2abe8231c9c823f9bb52992636759f148",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/sfx_v2/mine_blast.ogg",
+    "sha256": "35dfc1ca476e7c509d4b30cc68f5c7eed7680ad17a20a504bc5bca06815ab2c1",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/sfx_v2/missile_explode.ogg",
+    "sha256": "8042b1b01807001ba127ed8daf4f5ceace74a7f06f81b332e57fa79d3bf0cb53",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/sfx_v2/missile_launch.ogg",
+    "sha256": "246fb7b152cc42c7827abfdf2a57119969e290af91e523536df42d30d2808885",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/sfx_v2/missile_loop.ogg",
+    "sha256": "96b4980361fe739055a2d84a1d8c5a9f0b842920c337a64f32b36f7769ef4515",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/sfx_v2/oil_slip.ogg",
+    "sha256": "0f3b057bec96140d1d162ef62f090782a864e5e6be1509599bc50c9266d18e08",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/sfx_v2/oil_splat.ogg",
+    "sha256": "ee710a71ad2e6b3680d7664f2bf34ea7451848b7c39932367c7e33e7c9c49539",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/sfx_v2/pad_zip.ogg",
+    "sha256": "5f5575b9a84ed8c84048a89c652960c17041f48c917f2306d96fb70f3ae84452",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/sfx_v2/place_down.ogg",
+    "sha256": "5034a4024dab00b33c5cfcdda59442095b06769cddab0bbf1c9a38682ae491c3",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/sfx_v2/place_up.ogg",
+    "sha256": "e317bf55815d13efd529840cb4d8b3af8130a984b3cddea5a6ecef343da43b50",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/sfx_v2/pod_pickup.ogg",
+    "sha256": "d3068693c3689d5a3c50f1bd478853e0c106673a8ea1ba032d05a4cefa044a41",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/sfx_v2/pod_pop.ogg",
+    "sha256": "d616e826c15944c5e112bf885a7068413dc81e250ec9700380042c6e05fd456b",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/sfx_v2/respawn_pop.ogg",
+    "sha256": "52c7b0ecb0c4f8793759dc2833f0760bb66185f7dd6f90325ff0ebd72af8a68d",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/sfx_v2/ring_pass.ogg",
+    "sha256": "84e75e8e6505e7122f38edce003a33065792aaac883008de49b400e80b1f845c",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/sfx_v2/shield_block.ogg",
+    "sha256": "4316fe503c852f59c72a1d4429540dd7343ffc8b9e74848a6149601cbbcc3eb9",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/sfx_v2/shield_break.ogg",
+    "sha256": "73f712240af71ca86f83eef52c6d5aa864b1ca930db0630ee2068a7c5a77bed3",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/sfx_v2/shield_loop.ogg",
+    "sha256": "5e532d564cd8fe06346e0a7979b9250ceb988de2cb6f91de3f67c8604243b30d",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/sfx_v2/shield_up.ogg",
+    "sha256": "e524eabd289fba79e099ea6a3e86e60312c6fe347e235a9c34bcbaa01707842b",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/sfx_v2/splash_big.ogg",
+    "sha256": "ae8e4202f81b7b58f9e818f86d5e66b6d23b9d7d345ae52c97b0d6289c3f8dc4",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/sfx_v2/splash_small.ogg",
+    "sha256": "746ed75432cfbe803853d7a2593c6d20eb49c9a0b7915db066837bbaac51c5d4",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/sfx_v2/trap_arm.ogg",
+    "sha256": "38015524f5895c36e3c63831f5c825e29c046c1502a7f067733b08ec9f12c198",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/sfx_v2/trap_drop.ogg",
+    "sha256": "17be8bb270cdcdcfd227eb86b513a654486a2af51f8ad9d1499d3525e6940d44",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/sfx_v2/unlock_fanfare.ogg",
+    "sha256": "eeaf5def2fdeb6e763236dbe19013edafd6125830c7c172c8148374d59a9195a",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/sfx_v2/vote_pip.ogg",
+    "sha256": "990cc50578b4301d2d8d165cc0a1518e76f33c764485f5dcf8122885e4cbb859",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/sfx_v2/wall_bump.ogg",
+    "sha256": "e838b5685baac9911e719523126dc552807208f15f3a7d5bd98fc93ed2dd8fe5",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/sfx_v2/wall_scrape.ogg",
+    "sha256": "c95b6ff959d4a1ee0c142e4e344f403826a7a57f6191c80e5dc1f88a7080e85a",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/sfx_v2/wrong_way.ogg",
+    "sha256": "5b46cb4720fbd5f15864509f0637300cd381701d94afcb8a13b31cb8855efbff",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/soundscape_v1/raw/amb_dino.mp3",
+    "sha256": "43b7c7b312e8ca34b2edeeafc73ba13788fb185e2420b4f820e0f58d68c57606",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/soundscape_v1/raw/amb_forest.mp3",
+    "sha256": "25441e1806f5536e8dac84189f48719ea939d09a52817f94477c756c319b1666",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/soundscape_v1/raw/amb_hub.mp3",
+    "sha256": "7c1c43a8e3b33e21602541ffdb13f09d577fd700f89539198088889a399afb10",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/soundscape_v1/raw/amb_island.mp3",
+    "sha256": "276460fa8fad0d4098f59a547684cd1f56f1d9dc867b3a320a4dda17ae669d03",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/soundscape_v1/raw/amb_snow.mp3",
+    "sha256": "943c40948e5ebc3acdfc52cada320e2ba077df214106694f71b7ddf1e725b4d5",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/soundscape_v1/raw/amb_space.mp3",
+    "sha256": "daabf00ebadbc77f9e59ed95339f5e7ab58be46bce10ce798400c36ff2211962",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/soundscape_v1/raw/amb_storm.mp3",
+    "sha256": "a3ea5b436269285617d5218fb2fbd8df4c2f23bb80a4d53d35d1afee5dbc2d68",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/soundscape_v1/raw/sfx_airhorn.mp3",
+    "sha256": "316d6ff441b48e5e5dfa16075ebce56d7ef27d0af911b1385947b6d1539721f0",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/soundscape_v1/raw/sfx_airhorn_2.mp3",
+    "sha256": "8428a73da3abecf5c5eb716f7bdb7ee42954ec86a0aca048919dcaa517d6df1d",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/soundscape_v1/upload/amb_dino.ogg",
+    "sha256": "02348474f88afe48c98caa96b193044b031d434da7461cc6aaf992f81fc8a15e",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/soundscape_v1/upload/amb_forest.ogg",
+    "sha256": "e5cda313a324b7803b666c3c494c44b4dfc7fb660a7bf1ea51c1ed92d0e22b6a",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/soundscape_v1/upload/amb_hub.ogg",
+    "sha256": "5bc4bc7b0dc45a7e660dd20921c3b67b44e13d72124c2d9143e79d85142f14f9",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/soundscape_v1/upload/amb_island.ogg",
+    "sha256": "3e1ef94e4e03eddfcf2fcbb7d7a85083d01442c1cd4593801ef41c4bfba36228",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/soundscape_v1/upload/amb_snow.ogg",
+    "sha256": "c0fbb0280fabfbbfdd9d15036480d1678e1f3e86da6008e84bfcc160f5b1d226",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/soundscape_v1/upload/amb_space.ogg",
+    "sha256": "67be4c7e4355f25b436c4f684b66cd196edf1107cd5662331496a8f6bc4a6af5",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/soundscape_v1/upload/amb_storm.ogg",
+    "sha256": "79f109873d0a14c714e33a079ac76c38e64713f7a65b6180887fc7808cfc2eed",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/soundscape_v1/upload/clock_last.ogg",
+    "sha256": "f217854d2a4cde207d5618da025957c11953818bfab5ec3ca64ae1a5bac46bec",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/soundscape_v1/upload/clock_tick.ogg",
+    "sha256": "47f0ab605af2655403735b19e2b785e75e0ec2fa9da3bda5b99da84f38f7fa65",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/soundscape_v1/upload/clock_tock.ogg",
+    "sha256": "6e4680e5232618ff5a6581ed59ba188da3235693ba9dc27d1e622aa91ceb9e4c",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/soundscape_v1/upload/eng_backfire.ogg",
+    "sha256": "00dd1333ef2a4721a49692747f73fcc60784a42f49df6f0125fbce6e1cc7d819",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/soundscape_v1/upload/eng_car_high.ogg",
+    "sha256": "befcd843e3fdabb97dea104cedf3088034f39809d45ae984af45019c0be2ab9e",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/soundscape_v1/upload/eng_car_low.ogg",
+    "sha256": "a6e920843915aa5eb23fedfead17d37607f9a35ec1e2c32fa5b841406c779060",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/soundscape_v1/upload/eng_plane_high.ogg",
+    "sha256": "788c90a9642aaed29c21198aff65ff5689bf77675da54a44ceae8a79263e8dbc",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/soundscape_v1/upload/eng_plane_low.ogg",
+    "sha256": "e3fbaa592d24f88382fafc3d3aeff9330be97225c93b5258c9894d536b97f713",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/soundscape_v1/upload/eng_voice_prop.ogg",
+    "sha256": "b6b9a0deeefc40d261fbd411486e9a91aaefb1ee7673a593f863b9212e659c9a",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/soundscape_v1/upload/eng_voice_putt.ogg",
+    "sha256": "08ad8875e8bbaad11cfb16222ac4bfd8533cf2f9153da3b60470827905e8fb91",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/soundscape_v1/upload/eng_voice_turbo.ogg",
+    "sha256": "23decd1678d3033d2d26a72f0b9df5a555f24a490ff3103f811a1caf13e901d6",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/soundscape_v1/upload/eng_voice_twin.ogg",
+    "sha256": "91ef05bc57d37a80524cea2c9e8db9b1bd7b516f05fcf0fca8a34d8a3ec47b34",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/soundscape_v1/upload/flyby_whoosh.ogg",
+    "sha256": "74062b5bf7d13b3dd21dca0ef20b3e556002e61c04b0d700ab49eb0b46d6b1b4",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/soundscape_v1/upload/music_battle_egg.ogg",
+    "sha256": "e4bc94055098a7529f3291cad559a2d61f45d2f4835b2fa51ec97680ef2c6133",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/soundscape_v1/upload/music_battle_hoard.ogg",
+    "sha256": "7642e8a3014c72668de032aed957a88831aeacab77d04b5b229dd59e9f07e421",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/soundscape_v1/upload/music_battle_survival.ogg",
+    "sha256": "91d466ccbeaf4535b9bd4e4977b2f48aad2eb6762187aa3df8419bea5cb48d99",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/soundscape_v1/upload/music_battle_water.ogg",
+    "sha256": "03ec18e14e92fa69f03efaab2051d6d04f895336f0ee9053ba50c2e922581358",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/soundscape_v1/upload/music_stormcup.ogg",
+    "sha256": "3f79ce7eba0c2b9aff8ba96f10abe4e4a54a638a484eebbb3bfc3e72ff22bd6a",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/soundscape_v1/upload/sfx_airhorn.ogg",
+    "sha256": "549246f0e9ec75865ab82134d55b4ae8e09714f1e2f740ed5672231829aedcc3",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/soundscape_v1/upload/wind_rush.ogg",
+    "sha256": "579c824da9b8f263c1e25af9f902a9d42016335d3137c082c3d5e3c89c16a729",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/style_v1/upload/drift_tier1.ogg",
+    "sha256": "295b1033e6e6a7333517363c51feda9fe67711bfef8bc40fbba86cffdc059dee",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/style_v1/upload/drift_tier2.ogg",
+    "sha256": "ffd726ebde379bca342ab3ff71923fec7ca55847b2d5f35a97bc550cb4e3f5e5",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/style_v1/upload/drift_tier3.ogg",
+    "sha256": "bd37a7396a58c006d73f4aca1d573424425d105bb9fe863268a7131bcb8ed89c",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/style_v1/upload/lava_sizzle.ogg",
+    "sha256": "558d96a1960feb02cd2297a849cb4701229351d78c588ab04a4064b41303b1f7",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/style_v1/upload/leash_warn.ogg",
+    "sha256": "f47a1e5211cad42deb022fe9cdcd171484f7889262fe2de899b369f82e7fcc81",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/style_v1/upload/near_miss.ogg",
+    "sha256": "36167dc1d00f79562c9457379d1619aa1e4c2ab7a6aa4f075c6d101c0a947d45",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/style_v1/upload/style_break.ogg",
+    "sha256": "8a6515903271e21a4ef0d8c6650bad06ed734783724ca6986842e98e86023bbc",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/style_v1/upload/style_tick.ogg",
+    "sha256": "f4c0994da6e8776551e22cea5b7186a91d97f9d72958c48748ba0cbebeb03b99",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/style_v1/upload/style_zone.ogg",
+    "sha256": "56b7fbb74e05f104570e7d2b2cb29f37770b4e28baff75630247dd09d7413e9d",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/tricks_v1/upload/hop_boing.ogg",
+    "sha256": "e3fe91419adb5478acd547d67bf2101f7f6a244bccdcc35e0356a0fd0c678556",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/tricks_v1/upload/roll_whoosh_l.ogg",
+    "sha256": "539ac19986da27a0f03010ce34ca7b221e8b8d745a9cd70244e003af215ef737",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/tricks_v1/upload/roll_whoosh_r.ogg",
+    "sha256": "5b1df0e098328fa051abdce9d061a294715b4f937c4015bb190f4a4eb8fa6f23",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/tricks_v1/upload/start_flood.ogg",
+    "sha256": "c90125864e0f114f42df31436453ee18bfb227965d4880d0e2a3e01011ad266c",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/tricks_v1/upload/start_perfect.ogg",
+    "sha256": "2dbd2cfcad73bd2599e9c6e508030093ec52649bf591d801dd0f3c807fc85b68",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/tricks_v1/upload/trick_flub.ogg",
+    "sha256": "33868e074c6b71336b4845eea211f42769140c9d1b5fd98b014ae5e285dc9dce",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/tricks_v1/upload/trick_stuck.ogg",
+    "sha256": "b00b62e7b66a715874c08fd92ca77f1a2131900c02c911bca1c2c281ccd7390b",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/tricks_v1/upload/trick_whoosh.ogg",
+    "sha256": "23cd834ec97722b5673483dcbd2acdc89a7aca3b34ed1bdd094f40589181fecf",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/ui_v1/ui_kit_preview.ogg",
+    "sha256": "dae8b762f4f8db915b6ee0422d9092d00692fbf8ac1379ad3ae891150a451564",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/ui_v1/upload/ui_back.ogg",
+    "sha256": "7bd58ce4653bc8f893657105e2692506f4f49c90475308172f9e4db41d9ca5a8",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/ui_v1/upload/ui_confirm.ogg",
+    "sha256": "aa51971af92bc5f40cf55c01a12b6127a324fb66bcdb52470bdc7335c6792fdc",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/ui_v1/upload/ui_deny.ogg",
+    "sha256": "a894e961483ff45336709a079ec302c3b8d1101d5b82c5358f33f01e4d4502c3",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/ui_v1/upload/ui_marimba.ogg",
+    "sha256": "23c0e5e0f8bdd982078f1d7f29771d0a24e0916ea24d1f42774dc438d4de9eaf",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/ui_v1/upload/ui_purchase.ogg",
+    "sha256": "9e219cc8b165dcd8bc62060e84f7773bbb39b9ef729a64fc1ee90d61b1b4f9f5",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/ui_v1/upload/ui_stone.ogg",
+    "sha256": "bedfd0d3a87e69cd71937b53fe5c791135a91e679920ce9f5c304e7224760d61",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/ui_v1/upload/ui_tab.ogg",
+    "sha256": "0f32c98e03f410000ce94d40f88cbefdb5709480d73da2f4122fd774282a0616",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/ui_v1/upload/ui_tap.ogg",
+    "sha256": "134d8cbdea2c77733974c5f4784f1aaae043b9813cdc515d90858dd631cd4845",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/world_moments/raw/ans_chime.wav",
+    "sha256": "beb1f4aec8a0e3d2a5fc26bb420b3db0f5d6097e60ce6834db61f043aff348ac",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/world_moments/raw/ans_cuckoo.wav",
+    "sha256": "ee5838cddfc68976ffb8af37e451756f742f1203fccc98b1d55639561ea15ecf",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/world_moments/raw/ans_foghorn.wav",
+    "sha256": "9df9847dc387882f3302cb8963bcb165acdefd265e7fd9b70acb47db1c00328d",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/world_moments/raw/ans_fountain.mp3",
+    "sha256": "276b0abddeeb93d28b2a76c5e96deb015dd5b3258a5d08422ff5c33f6356c8b9",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/world_moments/raw/ans_puff.wav",
+    "sha256": "12c0b74461eed161ea3c2f52ae53b45c8daeb204e594fbf3b6c954e45b4a40f7",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/world_moments/raw/hatch_squawk.mp3",
+    "sha256": "01a5089f2c52a024dd5c5cc3e98e64ee0ef59178f923c3109b7f7bb62226a8ff",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/world_moments/raw/sneeze_honk.mp3",
+    "sha256": "2754549da31a975411181f356533f0795dbd080d68cfb156932e20f25667e788",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/world_moments/raw/sneeze_inhale.mp3",
+    "sha256": "6b9d405791ff0f12efcb3919c7057bed913d7a3fb0c6b2ff1e699f40f8b6a382",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/world_moments/upload/ans_chime.ogg",
+    "sha256": "2ec4b5ad6f96ac0105fee0c61671f6d3358706e1f055f9be3251820858cc135a",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/world_moments/upload/ans_cuckoo.ogg",
+    "sha256": "d037ac971960cebfc6b1a62f6fcec52781233d8f42b9f6c226eca2df5fd8bcf3",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/world_moments/upload/ans_foghorn.ogg",
+    "sha256": "18ed9be5484343355f107a12c193113d0051ee7dd48c44f2aa553f870303e24b",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/world_moments/upload/ans_fountain.ogg",
+    "sha256": "daae2be46f3fff0284cb27cb36fb1f1b1031cf5b112dac5627d59f40131119ba",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/world_moments/upload/ans_puff.ogg",
+    "sha256": "52bb40e5ff0741cffcf73c0e49d790a8b75d7f53103160cf0f77501c50fc7c58",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/world_moments/upload/hatch_squawk.ogg",
+    "sha256": "f404dce9daba5e65e18dbdbed351d0ce9df437de8ba494d62fb55b0c2c81bb10",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/world_moments/upload/sneeze_honk.ogg",
+    "sha256": "82eafac40842d480c395daa9cb485ca156bfd6a52ebb0070fa658454ca5573ee",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/world_moments/upload/sneeze_inhale.ogg",
+    "sha256": "762dad5b5148f9f13d4d6ef9cce7b1e8cb77fb483baa6c76f824fb256f8d2a42",
+    "reason": "Separate composition/recording grant not supplied; runtime IDs, catalogs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v1/music_boss_snow.m4a",
+    "sha256": "507191a868f76c28b554746ba79b09c4d6d967aff78f232a409abaef18a4afe7",
+    "reason": "Separate composition/recording distribution grant not supplied; runtime IDs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v1/music_hub.m4a",
+    "sha256": "e92dd62401b4f902dba24c54c24615fc056d903b42138c22814df8eb0ffc00eb",
+    "reason": "Separate composition/recording distribution grant not supplied; runtime IDs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v1/music_forest.m4a",
+    "sha256": "cbc725f0c6891a320863bfc6e8dcc27f7c890a49d483885549e7251af25ebb1c",
+    "reason": "Separate composition/recording distribution grant not supplied; runtime IDs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v1/jingle_midpack.m4a",
+    "sha256": "b53e4218ffd07504eb2706e2a890edc22489f04ab9acafc6b0318309333276ca",
+    "reason": "Separate composition/recording distribution grant not supplied; runtime IDs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v1/music_snow.m4a",
+    "sha256": "87e4a3f1d540893bf9cb8636002eec0f7c875e501855a9f3def06172ac440cff",
+    "reason": "Separate composition/recording distribution grant not supplied; runtime IDs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v1/music_boss_forest.m4a",
+    "sha256": "e3fd3d6ad459a3f27ad1dcf5f755ca5b92081e42cf557274ef980896e50def2d",
+    "reason": "Separate composition/recording distribution grant not supplied; runtime IDs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v1/music_dino.m4a",
+    "sha256": "3528096f56abbb2276035a4a9e8613ab1c7534e25225ada98bc8539107d6bb1e",
+    "reason": "Separate composition/recording distribution grant not supplied; runtime IDs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v1/jingle_victory.m4a",
+    "sha256": "bd35ee0547ffecf00641b5474514c396b635250d711198e85a39e76b454aa592",
+    "reason": "Separate composition/recording distribution grant not supplied; runtime IDs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v1/music_boss_dino.m4a",
+    "sha256": "d651d17dbc621b36d1ac61a2ac1ee6a95040ad3f819354f4d979b2b126f079ad",
+    "reason": "Separate composition/recording distribution grant not supplied; runtime IDs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v1/jingle_place3.m4a",
+    "sha256": "bf99590abc1e3b872f3d819c5cbe2df191f3111d638384b0a83f41745028b174",
+    "reason": "Separate composition/recording distribution grant not supplied; runtime IDs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v1/jingle_finallap_sonilo.m4a",
+    "sha256": "a76f48776c4c4ce68a9907ee063db293398710a4c0e1d92de6b6e6c3bdaa8356",
+    "reason": "Separate composition/recording distribution grant not supplied; runtime IDs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v1/music_island.m4a",
+    "sha256": "831e037eed60e237aa39783618d1b62f56a3b4efb199d323fc1cee2ccb05697a",
+    "reason": "Separate composition/recording distribution grant not supplied; runtime IDs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v1/jingle_place2.m4a",
+    "sha256": "1aec2524e1c11784ce3fc787b4e5c8848a61c2b7d0f6ff1c0da554a1bee3831a",
+    "reason": "Separate composition/recording distribution grant not supplied; runtime IDs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v1/music_boss_island.m4a",
+    "sha256": "db362f8c28950284611c39e6ae073eca9c8fe2310e27b6d2f0995f30b87d3af3",
+    "reason": "Separate composition/recording distribution grant not supplied; runtime IDs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v1/music_space.m4a",
+    "sha256": "4c8e8c071f34e73a4ae486bd67fee6c8295b18ab038d2426906ea344fda016bf",
+    "reason": "Separate composition/recording distribution grant not supplied; runtime IDs and notices retained."
+  },
+  {
+    "path": "assets/audio/music_v1/music_boss_hub.m4a",
+    "sha256": "343da51a7a9c8fa08761167679489f5f13c27d03e1d98805fd9db36b4161670e",
+    "reason": "Separate composition/recording distribution grant not supplied; runtime IDs and notices retained."
+  },
+  {
+    "path": "assets/audio/soundscape_v1/raw/music_battle_water.m4a",
+    "sha256": "7419739f37e4ceda4c83fb0a9627a8056435967a2df6e278a433e623a211e49f",
+    "reason": "Separate composition/recording distribution grant not supplied; runtime IDs and notices retained."
+  },
+  {
+    "path": "assets/audio/soundscape_v1/raw/music_stormcup.m4a",
+    "sha256": "7a3b3fcd975d7ed8f8b59fc23a5350b11e5f90b588e84efb8a7d6faf24c92999",
+    "reason": "Separate composition/recording distribution grant not supplied; runtime IDs and notices retained."
+  },
+  {
+    "path": "assets/audio/soundscape_v1/raw/music_battle_egg.m4a",
+    "sha256": "e06d0f243f1d3eb41d141a9363f3ae0d628abdd492766e980605b7097dc8ac53",
+    "reason": "Separate composition/recording distribution grant not supplied; runtime IDs and notices retained."
+  },
+  {
+    "path": "assets/audio/soundscape_v1/raw/music_battle_hoard.m4a",
+    "sha256": "6f5c7b5159309c5956150ecf4f0026c3a57130188589814370114029763c9fe5",
+    "reason": "Separate composition/recording distribution grant not supplied; runtime IDs and notices retained."
+  },
+  {
+    "path": "assets/audio/soundscape_v1/raw/music_battle_survival.m4a",
+    "sha256": "9d031620d11169067d4bebdd7a994ba9d916ea58cd88d9d593f6a60fc70e6a92",
+    "reason": "Separate composition/recording distribution grant not supplied; runtime IDs and notices retained."
+  }
+]

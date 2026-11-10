@@ -1,0 +1,444 @@
+{
+"parts": [
+{
+"color": "#b26842",
+"mesh": false,
+"castShadow": true,
+"unit": "Landmarks/RoamingGreenSauropod",
+"cf": [
+20,
+139,
+-158,
+1,
+0,
+0,
+0,
+1,
+0,
+0,
+0,
+1
+],
+"transparency": 0,
+"name": "PlinthRoot",
+"query": true,
+"collide": false,
+"material": "Sandstone",
+"shape": "B",
+"size": [
+23.399999618530273,
+2.3399999141693115,
+17.15999984741211
+]
+},
+{
+"color": "#e4b680",
+"mesh": false,
+"castShadow": true,
+"unit": "Landmarks/RoamingGreenSauropod",
+"cf": [
+12.200000762939453,
+148.36000061035156,
+-161.50999450683594,
+1,
+0,
+0,
+0,
+1,
+0,
+0,
+0,
+1
+],
+"transparency": 0,
+"name": "Leg_1",
+"query": true,
+"collide": false,
+"material": "Sandstone",
+"shape": "B",
+"size": [
+5.303999900817871,
+17.15999984741211,
+5.303999900817871
+]
+},
+{
+"color": "#e4b680",
+"mesh": false,
+"castShadow": true,
+"unit": "Landmarks/RoamingGreenSauropod",
+"cf": [
+12.200000762939453,
+148.36000061035156,
+-154.49000549316406,
+1,
+0,
+0,
+0,
+1,
+0,
+0,
+0,
+1
+],
+"transparency": 0,
+"name": "Leg_2",
+"query": true,
+"collide": false,
+"material": "Sandstone",
+"shape": "B",
+"size": [
+5.303999900817871,
+17.15999984741211,
+5.303999900817871
+]
+},
+{
+"color": "#e4b680",
+"mesh": false,
+"castShadow": true,
+"unit": "Landmarks/RoamingGreenSauropod",
+"cf": [
+27.799999237060547,
+147.5800018310547,
+-161.50999450683594,
+1,
+0,
+0,
+0,
+1,
+0,
+0,
+0,
+1
+],
+"transparency": 0,
+"name": "Leg_3",
+"query": true,
+"collide": false,
+"material": "Sandstone",
+"shape": "B",
+"size": [
+5.303999900817871,
+17.15999984741211,
+5.303999900817871
+]
+},
+{
+"color": "#e4b680",
+"mesh": false,
+"castShadow": true,
+"unit": "Landmarks/RoamingGreenSauropod",
+"cf": [
+27.799999237060547,
+147.5800018310547,
+-154.49000549316406,
+1,
+0,
+0,
+0,
+1,
+0,
+0,
+0,
+1
+],
+"transparency": 0,
+"name": "Leg_4",
+"query": true,
+"collide": false,
+"material": "Sandstone",
+"shape": "B",
+"size": [
+5.303999900817871,
+17.15999984741211,
+5.303999900817871
+]
+},
+{
+"color": "#e4b680",
+"mesh": false,
+"castShadow": true,
+"unit": "Landmarks/RoamingGreenSauropod",
+"cf": [
+20,
+158.5,
+-158,
+0.9848077297210693,
+-0.1736481785774231,
+0,
+0.1736481785774231,
+0.9848077297210693,
+0,
+0,
+0,
+1
+],
+"transparency": 0,
+"name": "Torso",
+"query": true,
+"collide": false,
+"material": "Sandstone",
+"shape": "B",
+"size": [
+21.84000015258789,
+11.699999809265137,
+10.920000076293945
+]
+},
+{
+"color": "#f4c688",
+"mesh": false,
+"castShadow": true,
+"unit": "Landmarks/RoamingGreenSauropod",
+"cf": [
+12.199999809265137,
+161.6199951171875,
+-158,
+0.9612616896629333,
+-0.27563735842704773,
+0,
+0.27563735842704773,
+0.9612616896629333,
+0,
+0,
+0,
+1
+],
+"transparency": 0,
+"name": "ChestShoulder",
+"query": true,
+"collide": false,
+"material": "Sandstone",
+"shape": "B",
+"size": [
+11.699999809265137,
+10.920000076293945,
+9.75
+]
+},
+{
+"color": "#f6ca8e",
+"mesh": false,
+"castShadow": true,
+"unit": "Landmarks/RoamingGreenSauropod",
+"cf": [
+7.520000457763672,
+170.97999572753906,
+-158,
+0.9271838665008545,
+-0.37460657954216003,
+0,
+0.37460657954216003,
+0.9271838665008545,
+0,
+0,
+0,
+1
+],
+"transparency": 0,
+"name": "Neck1",
+"query": true,
+"collide": false,
+"material": "Sandstone",
+"shape": "B",
+"size": [
+6.62999963760376,
+14.039999008178711,
+6.62999963760376
+]
+},
+{
+"color": "#f8d094",
+"mesh": false,
+"castShadow": true,
+"unit": "Landmarks/RoamingGreenSauropod",
+"cf": [
+3.6200008392333984,
+181.1199951171875,
+-158,
+0.9510565400123596,
+-0.30901700258255005,
+0,
+0.30901700258255005,
+0.9510565400123596,
+0,
+0,
+0,
+1
+],
+"transparency": 0,
+"name": "Neck2",
+"query": true,
+"collide": false,
+"material": "Sandstone",
+"shape": "B",
+"size": [
+5.771999835968018,
+14.039999008178711,
+5.771999835968018
+]
+},
+{
+"color": "#f8d094",
+"mesh": false,
+"castShadow": true,
+"unit": "Landmarks/RoamingGreenSauropod",
+"cf": [
+0.5,
+191.25999450683594,
+-158,
+0.9781476259231567,
+-0.20791170001029968,
+0,
+0.20791170001029968,
+0.9781476259231567,
+0,
+0,
+0,
+1
+],
+"transparency": 0,
+"name": "Neck3",
+"query": true,
+"collide": false,
+"material": "Sandstone",
+"shape": "B",
+"size": [
+5.069999694824219,
+13.25999927520752,
+5.069999694824219
+]
+},
+{
+"color": "#fcd69c",
+"mesh": false,
+"castShadow": true,
+"unit": "Landmarks/RoamingGreenSauropod",
+"cf": [
+-4.180000305175781,
+197.88999938964844,
+-158,
+1,
+0,
+0,
+0,
+1,
+0,
+0,
+0,
+1
+],
+"transparency": 0,
+"name": "Head",
+"query": true,
+"collide": false,
+"material": "Sandstone",
+"shape": "B",
+"size": [
+9.75,
+5.615999698638916,
+5.615999698638916
+]
+},
+{
+"color": "#fcd69c",
+"mesh": false,
+"castShadow": true,
+"unit": "Landmarks/RoamingGreenSauropod",
+"cf": [
+-1.8400001525878906,
+201.79000854492188,
+-158,
+-4.371138828673793e-08,
+0,
+-1,
+0,
+1,
+0,
+1,
+0,
+-4.371138828673793e-08
+],
+"transparency": 0,
+"name": "HeadCrest",
+"query": true,
+"collide": false,
+"material": "Sandstone",
+"shape": "W",
+"size": [
+5.069999694824219,
+4.36799955368042,
+5.303999900817871
+]
+},
+{
+"color": "#e4b680",
+"mesh": false,
+"castShadow": true,
+"unit": "Landmarks/RoamingGreenSauropod",
+"cf": [
+34.81999969482422,
+155.3800048828125,
+-158,
+0.9702957272529602,
+0.24192190170288086,
+0,
+-0.24192190170288086,
+0.9702957272529602,
+0,
+0,
+0,
+1
+],
+"transparency": 0,
+"name": "Tail1",
+"query": true,
+"collide": false,
+"material": "Sandstone",
+"shape": "B",
+"size": [
+14.039999008178711,
+7.409999847412109,
+7.409999847412109
+]
+},
+{
+"color": "#f4c688",
+"mesh": false,
+"castShadow": true,
+"unit": "Landmarks/RoamingGreenSauropod",
+"cf": [
+45.73999786376953,
+152.64999389648438,
+-158,
+0.9902680516242981,
+0.13917310535907745,
+0,
+-0.13917310535907745,
+0.9902680516242981,
+0,
+0,
+0,
+1
+],
+"transparency": 0,
+"name": "Tail2",
+"query": true,
+"collide": false,
+"material": "Sandstone",
+"shape": "B",
+"size": [
+14.039999008178711,
+5.303999900817871,
+5.303999900817871
+]
+}
+],
+"meshes": [],
+"source": {
+"builder": "builder_dino4.luau",
+"head": "7e68ab29c5956e912b55e0da3b77cec76d019e05",
+"utc": "2026-10-18 15:24:55Z"
+}
+}

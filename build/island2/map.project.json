@@ -1,0 +1,21 @@
+{
+  "name": "ISLAND-2",
+  "tree": {
+    "$className": "DataModel",
+    "Workspace": {
+      "$className": "Workspace"
+    },
+    "Lighting": {
+      "$className": "Lighting",
+      "$properties": {
+        "Technology": "ShadowMap"
+      }
+    },
+    "ServerScriptService": {
+      "$className": "ServerScriptService",
+      "MapBuilder": {
+        "$path": "./builder.server.luau"
+      }
+    }
+  }
+}

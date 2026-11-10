@@ -1,0 +1,40 @@
+{
+  "_doc": "Item cubes v3 layout rules (docs/design/ITEM_BOXES.md section 11). Read by tools/map/item_rows.py (author scripts, map tests) and tools/tests/item_cubes_spec.luau. Runtime numbers (shared 1.0 s respawn, rank lock, ghost cycle, pod heights, plane pickup lift) live in src/shared/ItemRules.luau CUBES. Stations are race stations along the lap (studs). A set is a front rank of 2 cubes and a back rank of 3, rankDepth studs further on (the owner's 'Staggered 2 + 3' mockup), so a racer can chain one cube of each rank on purpose: the second one levels the held item up (DKR).",
+  "maxCubesPerMap": 40,
+  "_maxCubesPerMap": "Above the 32 guide: 40 on SPACE-4 (8 sets of 5), 35 elsewhere. Each cube is 14 parts (ItemArt.CUBE_PARTS: glass, 12 edge bars, core; v2 was 22), so 40 cubes are 560 parts, under the v2 budget of 28 x 22 = 616. Only cubes within CUBES.animRange (340) animate: sets are at least 350 apart, so about 10, at most 15, tumble at once; the rest are anchored and still.",
+  "cubeParts": 14,
+  "maxCubeParts": 616,
+  "itemTypes": ["Red", "Blue", "Yellow", "Green", "Rainbow"],
+  "singleTypes": ["Speed", "Air"],
+  "singleClearOfSet": 120,
+  "rankDepthRange": [25, 40],
+  "maxChainAngleDeg": 20,
+  "car": {
+    "setsPerLap": [6, 8],
+    "minGap": 350,
+    "maxGap": 700,
+    "firstRowMin": 300,
+    "lastRowMargin": 250,
+    "rankDepth": 32,
+    "ranks": {
+      "default": [[-8, 8], [-16, 0, 16]],
+      "space4": [[-6, 6], [-12, 0, 12]]
+    },
+    "minSpacing": 9
+  },
+  "plane": {
+    "setsPerLap": [7, 7],
+    "minGap": 450,
+    "maxGap": 900,
+    "firstRowMin": 300,
+    "lastRowMargin": 250,
+    "rankDepth": 36,
+    "ranks": {
+      "default": [[-6, 6], [-10, 0, 10]]
+    },
+    "rankHeights": {
+      "default": [[3, -3], [-3, 3, -3]]
+    },
+    "minSpacing": 9
+  }
+}

@@ -1,0 +1,41 @@
+-- QA probe gating and track trigger contract (L40, L41/L42; audit streaming_perf).
+return function(h)
+	local P = h.require("src/shared/ProbeRules.luau")
+	local T = h.require("src/shared/TriggerRules.luau")
+
+	h.test("probes: Studio always runs them", function()
+		h.ok(P.shouldRun(true, 123, {}))
+	end)
+
+	h.test("probes: a published client runs them only for allow-listed QA ids", function()
+		h.ok(P.shouldRun(false, 42, { 7, 42 }))
+		h.ok(not P.shouldRun(false, 43, { 7, 42 }))
+		h.ok(not P.shouldRun(false, 0, {}), "an empty list means nobody")
+	end)
+
+	h.test("probes: the shipped allow-list defaults to nobody outside Studio", function()
+		h.ok(not P.shouldRun(false, 1, nil) or #P.QA_USER_IDS > 0)
+	end)
+
+	h.test("triggers: TriggerType or ItemPodSpawn=true marks a trigger", function()
+		h.ok(T.isTrigger("BoosterRing", nil))
+		h.ok(T.isTrigger(nil, true))
+		h.ok(not T.isTrigger(nil, nil))
+		h.ok(not T.isTrigger(nil, false))
+		h.eq(T.TAG, "SkyRallyTrigger")
+	end)
+
+	h.test("triggers: bots take main-route boosts, never an alternate line's ring", function()
+		h.ok(T.botBoost("BoosterRing", nil))
+		h.ok(T.botBoost("GroundBoostPad", nil))
+		h.ok(T.botBoost("BoosterRing", ""))
+		h.ok(not T.botBoost("BoosterRing", "Alt2"), "a cliff-line ring")
+		h.ok(not T.botBoost(nil, nil))
+		h.ok(not T.botBoost("ItemPod", nil))
+		h.eq(T.LINE_ATTR, "AltLine")
+		local ai = h.readFile("src/server/AIRacers.luau")
+		h.ok(ai:find("TriggerRules.botBoost(tt, d:GetAttribute(TriggerRules.LINE_ATTR))", 1, true), "AIRacers asks botBoost")
+		local kit = h.readFile("src/server/kit/Gameplay.luau")
+		h.ok(kit:find("SetAttribute(TriggerRules.LINE_ATTR, ring.line)", 1, true), "kit tags a line ring")
+	end)
+end

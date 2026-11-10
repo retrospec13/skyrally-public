@@ -1,0 +1,495 @@
+tools/map30: vendored copy of the 30MAPS map compiler, with SkyRally patches
+
+origin    30MAPS compiler (owner-controlled upstream; private source locator omitted)
+Rights: owner-controlled 30MAPS compiler/template code is included under the approved MIT owned-code grant; pinned provenance below is preserved.
+commit    aa9a4519513aa8dec9abf5151f657d22a41611fa  (= origin/main, the only branch; vendored 2026-10-18)
+vendored  tools/build_plan.py, tools/builder_template.luau, tools/overview_template.luau, NOTES.md
+          -> tools/map30/<same base name>. Nothing else from 30MAPS is copied (not build_manifest.py,
+          games/, fragments/, win/, build_output/).
+SkyRally  tests/ (unittest + lune harness) and source_txt.py are SkyRally files, not from 30MAPS.
+
+SkyRally patches (each hunk is marked "SKYRALLY PATCH" / "# SKYRALLY PATCH" in the file)
+ 1. Root (builder_template.luau): the map builds under Workspace.Maps.<NAME> (Workspace.Maps is created if
+    missing). Only Maps.<NAME> is destroyed and recreated; the stock Workspace.Map and other maps are untouched.
+ 2. Readiness (builder_template.luau, build_plan.py): on the root, MapBuildErrors = number of warned failures
+    (terrain FAILED + each failed instance), then MapBuilt = true; then workspace attribute
+    MapBuilt_<NAME with every char outside [A-Za-z0-9_] replaced by "_"> = true (Roblox attribute names allow
+    only those characters, so DINO-4 -> MapBuilt_DINO_4; build_plan.ready_attribute() is the rule). That
+    attribute is set false when a build starts. The unscoped workspace MapBuilt is no longer set.
+    "[30MAPS] DONE ..." is unchanged and still the last log line; a warn precedes it when errors > 0.
+    MapBuilt means finished, not succeeded: check MapBuildErrors == 0.
+ 3. Lighting (builder_template.luau): a plan lighting block is never applied (logged once, then dropped, which
+    also keeps lights.on and lighting.water out of PointLights and Terrain water). SkyRally owns Lighting
+    through LightingProfiles. applyLighting stays defined but is never called.
+ 4. Spawn (builder_template.luau): no SpawnLocation is moved or resized; Spawn markers are counted and logged.
+ 5. Templates (builder_template.luau): ServerStorage.30MAPS_Templates.<NAME>, destroyed and recreated before
+    the build makes any template (stock made a new 30MAPS_Templates folder on every run).
+ 6. Project (build_plan.py): the generated rojo project sets no Workspace.StreamingEnabled and has no
+    SpawnLocation (it still sets Lighting.Technology = ShadowMap and mounts ServerScriptService.MapBuilder;
+    it is the P2 smoke-test project, not the game project).
+ 7. terrain.cell (build_plan.py): optional, default 4 (stock raised KeyError in the summary print after the
+    outputs were written). The "terrain" key stays REQUIRED as on aa9a451; a map without ground passes
+    {"nx": 1, "nz": 1}, which the builder skips with no Terrain side effects.
+ 8. CLI (build_plan.py): --out, --project and --name are required (stock defaults write into the compiler's
+    own tree, here tools/, and the stock name is the plan stem, "plan" for map/<key>/plan.json). The summary
+    prints the root, the readiness attribute and what was ignored.
+ 9. Plan checks (build_plan.py): null groups/markers/labels read as empty lists; a non-list, a marker that is
+    not an object, a Checkpoint/Objective/Teleport marker without a numeric p [x,y,z] (or with a name/index
+    that is not a string or number), and a label without a string text and p [x,y,z] exit before anything is
+    written. The builder reads these outside any pcall, so stock stopped the Script before readiness was set.
+10. Header path (build_plan.py): the builder header names the plan by its repo-relative path (absolute only
+    for a plan outside the repo), so a committed builder is the same from every checkout.
+11. Terrain bake (builder_template.luau, build_plan.py; perf pass 2026-10-19): build_plan.py stamps TERRAIN_HASH
+    (sha256 prefix of the template's terrain code, see 12, plus the packed terrain block). When ServerStorage.TerrainBakes.<NAME> is
+    a TerrainRegion whose TerrainHash attribute equals it, the terrain step pastes it at the step's minimum cell
+    (PasteRegion, empty cells included) instead of running the chunk loop; colours, water look and Decoration are
+    still applied as before. Any other bake is ignored with one log line and the terrain builds as on aa9a451. The
+    root gets TerrainHash, TerrainBaked and (with terrain) TerrainCellMin/TerrainCellMax (inclusive voxel cells),
+    which tools/bake_terrain.py reads to copy exactly the voxels the loop writes.
+12. Boot time (builder_template.luau, build_plan.py; V1 D1 2026-10-22): the instance loop yields after YIELD_SLICE
+    (0.1 s) of work instead of after every 50 instances (each yield is a whole server frame, 0.1-0.15 s while a map
+    loads in Studio; SPACE-4 made 65). TERRAIN_HASH now covers only the template's terrain code (build_plan
+    terrain_code: everything above the "prefabs" section line) plus the terrain block, so a change below that line
+    keeps the bakes; tools/restamp_terrain_bakes.py moved the existing bakes to the new stamp after proving the
+    terrain code unchanged.
+
+Check: python3 -m unittest discover -s tools/map30/tests -v   (also checks this file is current)
+Refresh the block below after any patch: python3 tools/map30/source_txt.py   (--check to verify only)
+
+----- BEGIN GENERATED (python3 tools/map30/source_txt.py) -----
+clone HEAD at generation: aa9a4519513aa8dec9abf5151f657d22a41611fa
+
+sha256 (original at the commit above  ->  vendored copy in tools/map30)
+build_plan.py           bb56c5a69398f102eb1bf2400d945f486ef9faa8fcf65984d3a567af15a57542 -> 06249ce622583348a5386a7bb8ca173c5baf484ef4d43ea65b45d05b138e26c7  PATCHED
+builder_template.luau   3eea6c3da43f410aadefc1ce942c247421c419b79c873730e59e69455bc81a67 -> e820c6952ec1e42c5d522bb31195e252118e6fa6e79a639a82e7b238fc35c93c  PATCHED
+overview_template.luau  259cecd3d118a40baa3a7c93a4f2a425cdcea03f4245fe4c8a09b760b5260f0e -> 259cecd3d118a40baa3a7c93a4f2a425cdcea03f4245fe4c8a09b760b5260f0e  unmodified
+NOTES.md                e31a9c186bb8887116995c72a64d6883ad0a6cfa5d7f57bc9fcd4056adcab374 -> f11cff50302d3f19b4a9c9eb66b0e598858bc1b338758febdc3c392e8d2f6c05  PATCHED
+
+--- a/tools/build_plan.py
++++ b/tools/map30/build_plan.py
+@@ -12,15 +12,24 @@
+ 
+ usage: build_plan.py PLAN.json [--out build_output] [--project default.project.json]
+                      [--overview-cam] [--name NAME]
++
++SKYRALLY PATCH: vendored from 30MAPS aa9a451 (tools/map30/SOURCE.txt lists every
++patch). --out, --project and --name are required; the map builds under
++Workspace.Maps.<NAME>, never touches Lighting or SpawnLocations, and the project
++sets neither StreamingEnabled nor a SpawnLocation.
+ """
+ import argparse
++import hashlib  # SKYRALLY PATCH (terrain bake)
+ import json
+ import math
+ import os
++import re
+ import sys
+ 
+ HERE = os.path.dirname(os.path.abspath(__file__))
+ ROOT = os.path.dirname(HERE)
++REPO = os.path.dirname(ROOT)  # SKYRALLY PATCH: repo root (this file is tools/map30/build_plan.py)
++PAD_KINDS = ("Checkpoint", "Objective", "Teleport")  # SKYRALLY PATCH: marker kinds the builder turns into pads
+ 
+ 
+ def rnd(v, nd=3):
+@@ -37,12 +46,55 @@
+ def load_plan(path):
+     with open(path) as f:
+         plan = json.load(f)
++    # SKYRALLY PATCH (doc only): "terrain" stays required as on aa9a451; a map without a height grid
++    # passes {"nx": 1, "nz": 1}, which the builder skips ("no terrain in plan") with no Terrain side effects.
+     for k in ("instances", "prefabs", "terrain"):
+         if k not in plan:
+             sys.exit(f"plan {path} has no '{k}'")
++    # SKYRALLY PATCH: the builder reads markers and labels outside any pcall, so a bad entry stopped the Script
++    # before the readiness attribute was set; reject it here instead (a null list reads as empty)
++    for k in ("groups", "markers", "labels"):
++        if plan.get(k) is None:
++            plan[k] = []
++        elif not isinstance(plan[k], list):
++            sys.exit(f"plan {path}: '{k}' must be a list")
++    for i, m in enumerate(plan["markers"], 1):
++        if not isinstance(m, dict):
++            sys.exit(f"marker {i}: not an object")
++        if m.get("kind") in PAD_KINDS and not (is_vec3(m.get("p")) and is_scalar(m.get("name"))
++                                               and is_scalar(m.get("index"))):
++            sys.exit(f"marker {i} ({m['kind']}): needs p [x,y,z] and a string or number name/index")
++    for i, lab in enumerate(plan["labels"], 1):
++        if not (isinstance(lab, dict) and isinstance(lab.get("text"), str) and is_vec3(lab.get("p"))):
++            sys.exit(f"label {i}: needs a string text and p [x,y,z]")
+     return plan
+ 
+ 
++def is_num(v):  # SKYRALLY PATCH (plan checks)
++    return isinstance(v, (int, float)) and not isinstance(v, bool) and math.isfinite(v)
++
++
++def is_vec3(v):  # SKYRALLY PATCH (plan checks)
++    return isinstance(v, list) and len(v) == 3 and all(is_num(x) for x in v)
++
++
++def is_scalar(v):  # SKYRALLY PATCH (plan checks): nil or a value Luau can concatenate and store as an attribute
++    return v is None or isinstance(v, str) or is_num(v)
++
++
++def source_label(plan_path):
++    # SKYRALLY PATCH: repo-relative plan path in the builder header, so a committed builder is identical from
++    # every checkout (stock embedded the absolute path); a plan outside the repo keeps its absolute path
++    p = os.path.abspath(plan_path)
++    try:
++        rel = os.path.relpath(p, REPO)
++    except ValueError:  # another Windows drive
++        return p
++    if rel == os.pardir or rel.startswith(os.pardir + os.sep):
++        return p
++    return rel.replace(os.sep, "/")
++
++
+ def pack(plan, name):
+     prefabs = plan["prefabs"]
+     keys = sorted(prefabs)
+@@ -80,6 +132,9 @@
+         part_count += len(prefabs[k]["parts"])
+ 
+     t = dict(plan["terrain"])
++    # SKYRALLY PATCH: cell is optional (the builder already defaults it to 4); aa9a451 raised KeyError
++    # in the summary print after the outputs were written
++    t.setdefault("cell", 4)
+     n = t["nx"] * t["nz"]
+     for key in ("heights", "materials", "ceilings"):
+         if key in t and len(t[key]) != n:
+@@ -106,22 +161,46 @@
+     return None
+ 
+ 
++# SKYRALLY PATCH (terrain bake, V1 D1): the template's terrain step (header, helpers, buildTerrain and its call) ends
++# where this section starts; nothing after it writes voxels, so a change to the prefab/instance code keeps the bakes.
++TERRAIN_CODE_END = "------------------------------------------------------------------ prefabs"
++
++
++def terrain_code(tpl):
++    # SKYRALLY PATCH (terrain bake, V1 D1): the part of the template that decides the voxels
++    i = tpl.find(TERRAIN_CODE_END)
++    if i < 0:
++        sys.exit(f"builder template has no {TERRAIN_CODE_END!r} line (terrain hash scope)")
++    return tpl[:i]
++
++
++def terrain_hash(tpl, data):
++    # SKYRALLY PATCH (terrain bake): identifies the voxels the builder's terrain step writes: the template's terrain
++    # code (terrain_code, V1 D1: no longer the whole template) plus the packed terrain block (the data). A baked
++    # TerrainRegion is used only while its TerrainHash equals this.
++    h = hashlib.sha256()
++    h.update(terrain_code(tpl).encode("utf-8"))
++    h.update(b"\0")
++    h.update(json.dumps(data["terrain"], sort_keys=True, separators=(",", ":")).encode("utf-8"))
++    return h.hexdigest()[:16]
++
++
++def ready_attribute(name):
++    # SKYRALLY PATCH: per-map readiness attribute on Workspace. Roblox attribute names allow only
++    # [A-Za-z0-9_] (max 100 chars), so "DINO-4" -> "MapBuilt_DINO_4". MapAdapter must use the same rule.
++    key = "MapBuilt_" + re.sub(r"[^A-Za-z0-9_]", "_", name)
++    if len(key) > 100:
++        sys.exit(f"map name {name!r} too long for a Roblox attribute name")
++    return key
++
++
+ def write_project(path, name, out_rel, overview, spawn):
++    # SKYRALLY PATCH: no Workspace.StreamingEnabled (the game project owns streaming) and no
++    # SpawnLocation (the game owns spawns); Spawn markers are ignored, so `spawn` is unused here
+     tree = {
+         "$className": "DataModel",
+         "Workspace": {
+             "$className": "Workspace",
+-            "$properties": {"StreamingEnabled": False},
+-            "SpawnLocation": {
+-                "$className": "SpawnLocation",
+-                "$properties": {
+-                    "Anchored": True,
+-                    "Size": [12, 1, 12],
+-                    "CFrame": {"CFrame": {"position": [0, 50, 0], "orientation": [[1, 0, 0], [0, 1, 0], [0, 0, 1]]}},
+-                    "Neutral": True,
+-                    "Duration": 0,
+-                },
+-            },
+         },
+         "Lighting": {
+             "$className": "Lighting",
+@@ -132,10 +211,7 @@
+             "MapBuilder": {"$path": f"{out_rel}/builder.server.luau"},
+         },
+     }
+-    if spawn:
+-        sp = tree["Workspace"]["SpawnLocation"]["$properties"]
+-        sp["CFrame"]["CFrame"]["position"] = rnd(spawn["p"])
+-        sp["Size"] = spawn.get("size", [12, 1, 12])
++    # SKYRALLY PATCH: stock placed the project SpawnLocation at the first Spawn marker here
+     if overview:
+         tree["StarterPlayer"] = {
+             "$className": "StarterPlayer",
+@@ -153,9 +229,11 @@
+ def main():
+     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+     ap.add_argument("plan")
+-    ap.add_argument("--out", default=os.path.join(ROOT, "build_output"))
+-    ap.add_argument("--project", default=os.path.join(ROOT, "default.project.json"))
+-    ap.add_argument("--name", default=None, help="place/map name (default: plan file stem)")
++    # SKYRALLY PATCH: required; the stock defaults write under tools/ here, and the name keys
++    # Workspace.Maps.<NAME> (map/<key>/plan.json would otherwise become "plan")
++    ap.add_argument("--out", required=True)
++    ap.add_argument("--project", required=True)
++    ap.add_argument("--name", required=True, help="map id, e.g. DINO-4 (Workspace.Maps child name)")
+     ap.add_argument("--overview-cam", action="store_true", help="add the QA orbit camera LocalScript")
+     a = ap.parse_args()
+ 
+@@ -170,7 +248,9 @@
+     os.makedirs(a.out, exist_ok=True)
+     with open(os.path.join(HERE, "builder_template.luau")) as f:
+         tpl = f.read()
+-    src = tpl.replace("@@SOURCE@@", os.path.abspath(a.plan)).replace("@@DATA@@", blob)
++    ready = ready_attribute(name)  # SKYRALLY PATCH
++    src = (tpl.replace("@@SOURCE@@", source_label(a.plan)).replace("@@READY@@", ready)
++           .replace("@@TERRAIN_HASH@@", terrain_hash(tpl, data)).replace("@@DATA@@", blob))  # SKYRALLY PATCH (terrain bake)
+     builder = os.path.join(a.out, "builder.server.luau")
+     with open(builder, "w") as f:
+         f.write(src)
+@@ -208,6 +288,11 @@
+     print(f"parts      {data['partCount']}")
+     t = data["terrain"]
+     print(f"terrain    {t['nx']}x{t['nz']} nodes, cell {t['cell']}, palette {len(t.get('palette', []))}")
++    # SKYRALLY PATCH: say what the builder will ignore and which attribute signals readiness
++    spawns = sum(1 for m in plan.get("markers", []) if m.get("kind") == "Spawn")
++    if plan.get("lighting") is not None or spawns:
++        print(f"ignored    lighting block: {'yes' if plan.get('lighting') is not None else 'no'}, Spawn markers: {spawns}")
++    print(f"root       Workspace.Maps.{name} (ready: workspace.{ready})")
+     print(f"builder    {builder} ({os.path.getsize(builder)} bytes)")
+     if a.overview_cam:
+         print(f"overview   {ov_path}")
+
+--- a/tools/builder_template.luau
++++ b/tools/map30/builder_template.luau
+@@ -11,6 +11,13 @@
+ 	labels and lighting. Progress goes to the output as "[30MAPS] ..." lines;
+ 	the last line is "[30MAPS] DONE ...". Workspace attribute MapBuilt = true
+ 	when finished.
++
++	SKYRALLY PATCH (overrides the lines above): vendored at tools/map30 from
++	30MAPS aa9a451, patches listed in tools/map30/SOURCE.txt. The map builds under
++	Workspace.Maps.<name> and only that child is replaced. Plan lighting and Spawn
++	markers are ignored. When finished the root gets MapBuildErrors (count of
++	warned failures) and MapBuilt = true, then Workspace attribute @@READY@@
++	= true. MapBuilt means finished, not succeeded.
+ ]]
+ 
+ local HttpService = game:GetService("HttpService")
+@@ -27,6 +34,19 @@
+ log(("plan '%s' decoded: %d prefabs, %d instances, %d parts (%.2fs)"):format(
+ 	DATA.name, #DATA.prefabs, #DATA.instances, DATA.partCount, os.clock() - T0))
+ 
++-- SKYRALLY PATCH: per-map readiness (attribute names allow only [A-Za-z0-9_]; build_plan.py sanitizes);
++-- cleared first so a rebuild in the same server never reads as ready early
++local READY_ATTR = "@@READY@@"
++workspace:SetAttribute(READY_ATTR, false)
++local buildErrors = 0 -- every warn(TAG, ...) failure below counts once
++-- SKYRALLY PATCH (terrain bake): sha256 prefix of this template's terrain code (everything above the "prefabs" section
++-- line, build_plan.terrain_code; V1 D1) and the packed terrain block (build_plan.py). A
++-- TerrainRegion in ServerStorage.TerrainBakes.<name> whose TerrainHash attribute equals it holds exactly the voxels the
++-- terrain loop below writes, and is pasted in one call instead (tools/bake_terrain.py makes it from this builder).
++local TERRAIN_HASH = "@@TERRAIN_HASH@@"
++local terrainCells = nil -- SKYRALLY PATCH (terrain bake): { min, max } voxel cells the terrain step covers
++local terrainBaked = false -- SKYRALLY PATCH (terrain bake): true when the bake was pasted
++
+ ------------------------------------------------------------------ helpers
+ local function color(hex, fallback)
+ 	if type(hex) ~= "string" then
+@@ -73,21 +93,15 @@
+ end
+ 
+ ------------------------------------------------------------------ spawn
+-local spawnMarker
++-- SKYRALLY PATCH: the game owns its SpawnLocations; Spawn markers never move or resize one
++local spawnMarkers = 0
+ for _, m in DATA.markers do
+ 	if m.kind == "Spawn" then
+-		spawnMarker = m
++		spawnMarkers += 1
+ 	end
+ end
+-local spawn = workspace:FindFirstChildOfClass("SpawnLocation")
+-if spawnMarker and spawn then
+-	local f = spawnMarker.face or { 0, -1 }
+-	-- character faces the spawn's LookVector; CFrame.Angles(0, yaw, 0) looks along (-sin yaw, 0, -cos yaw)
+-	local yaw = math.atan2(-f[1], -f[2])
+-	spawn.Anchored = true
+-	spawn.Size = v3(spawnMarker.size or { 12, 1, 12 })
+-	spawn.CFrame = CFrame.new(v3(spawnMarker.p)) * CFrame.Angles(0, yaw, 0)
+-	log("spawn placed at", spawn.Position)
++if spawnMarkers > 0 then
++	log(("%d Spawn marker(s) ignored (SkyRally owns spawns)"):format(spawnMarkers))
+ end
+ 
+ ------------------------------------------------------------------ lighting
+@@ -160,7 +174,12 @@
+ 	end
+ 	log("lighting applied", L.lookLabel or L.look or "")
+ end
+-applyLighting(DATA.lighting)
++-- SKYRALLY PATCH: SkyRally owns Lighting through LightingProfiles; a plan lighting block is never applied
++-- (dropping it also keeps lights.on and lighting.water out of PointLights and Terrain water)
++if DATA.lighting ~= nil then
++	log("plan lighting block ignored (SkyRally LightingProfiles owns Lighting)")
++	DATA.lighting = nil
++end
+ 
+ ------------------------------------------------------------------ terrain
+ local RES = 4
+@@ -336,7 +355,22 @@
+ 	local done, voxels = 0, 0
+ 	log(("terrain: %dx%d nodes, cell %d, %d chunks, Y %d..%d"):format(nx, nz, cell, total, minY, maxY))
+ 
+-	for cz = 0, chunksZ - 1 do
++	-- SKYRALLY PATCH (terrain bake): every voxel the loop below can write lies in these cells (inclusive)
++	local cellMin = Vector3int16.new(gx0 // RES, minY // RES, gz0 // RES)
++	local cellMax = Vector3int16.new(gx0 // RES + colsX - 1, maxY // RES - 1, gz0 // RES + colsZ - 1)
++	terrainCells = { cellMin, cellMax }
++	local bakes = ServerStorage:FindFirstChild("TerrainBakes")
++	local bake = bakes and bakes:FindFirstChild(DATA.name)
++	if bake and bake:IsA("TerrainRegion") and bake:GetAttribute("TerrainHash") == TERRAIN_HASH then
++		terrainBaked = pcall(function()
++			terrain:PasteRegion(bake, cellMin, true)
++		end)
++		log(("terrain bake %s %s (%.1fs)"):format(TERRAIN_HASH, if terrainBaked then "pasted" else "FAILED, building", os.clock() - T0))
++	elseif bake then
++		log(("terrain bake ignored: hash %s, this builder %s"):format(tostring(bake:GetAttribute("TerrainHash")), TERRAIN_HASH))
++	end
++
++	for cz = 0, (if terrainBaked then -1 else chunksZ - 1) do
+ 		for cx = 0, chunksX - 1 do
+ 			local nX = math.min(CHUNK, colsX - cx * CHUNK)
+ 			local nZ = math.min(CHUNK, colsZ - cz * CHUNK)
+@@ -451,14 +485,38 @@
+ 
+ local okTerrain, errTerrain = pcall(buildTerrain, DATA.terrain)
+ if not okTerrain then
++	buildErrors += 1 -- SKYRALLY PATCH
+ 	warn(TAG, "terrain FAILED:", errTerrain)
+ end
+ 
+ ------------------------------------------------------------------ prefabs
+ local HALF_PI = math.pi / 2
+-local templateFolder = Instance.new("Folder")
+-templateFolder.Name = "30MAPS_Templates"
+-templateFolder.Parent = ServerStorage
++-- SKYRALLY PATCH: shared folders (Workspace.Maps, ServerStorage.30MAPS_Templates) are created once and
++-- never replaced; a build replaces only its own <name> child
++local function ensureFolder(parent: Instance, name: string): Instance
++	local existing = parent:FindFirstChild(name)
++	if existing then
++		return existing
++	end
++	local f = Instance.new("Folder")
++	f.Name = name
++	f.Parent = parent
++	return f
++end
++local function replaceFolder(parent: Instance, name: string): Folder
++	local old = parent:FindFirstChild(name)
++	if old then
++		old:Destroy()
++	end
++	local f = Instance.new("Folder")
++	f.Name = name
++	f.Parent = parent
++	return f
++end
++
++-- SKYRALLY PATCH: ServerStorage.30MAPS_Templates.<name>, recreated before this build makes any template,
++-- so rebuilds and several maps do not pile up templates
++local templateFolder = replaceFolder(ensureFolder(ServerStorage, "30MAPS_Templates"), DATA.name)
+ 
+ -- cone footprint (vertices at pi/n + k*2pi/n, x = R sin, z = R cos)
+ local function coneBounds(n)
+@@ -675,13 +733,17 @@
+ end
+ 
+ ------------------------------------------------------------------ instances
+-local mapFolder = workspace:FindFirstChild("Map")
+-if mapFolder then
+-	mapFolder:Destroy()
+-end
+-mapFolder = Instance.new("Folder")
+-mapFolder.Name = "Map"
+-mapFolder.Parent = workspace
++-- SKYRALLY PATCH: root is Workspace.Maps.<name>; only this map's child is replaced, other maps and any
++-- stock root stay untouched
++local mapFolder = replaceFolder(ensureFolder(workspace, "Maps"), DATA.name)
++-- SKYRALLY PATCH (terrain bake): what tools/bake_terrain.py copies, and whether this build pasted a bake
++mapFolder:SetAttribute("TerrainHash", TERRAIN_HASH)
++mapFolder:SetAttribute("TerrainBaked", terrainBaked)
++if terrainCells then
++	local a, b = terrainCells[1], terrainCells[2]
++	mapFolder:SetAttribute("TerrainCellMin", Vector3.new(a.X, a.Y, a.Z))
++	mapFolder:SetAttribute("TerrainCellMax", Vector3.new(b.X, b.Y, b.Z))
++end
+ 
+ local groupFolders = {}
+ local function groupFolder(g)
+@@ -706,6 +768,12 @@
+ 
+ local N = #DATA.instances
+ local parts = 0
++-- SKYRALLY PATCH (boot time, V1 D1): yield after YIELD_SLICE seconds of work, not after every 50 instances. Each
++-- yield costs one whole server frame, and while a map loads in Studio (server and client in one process, the client
++-- receiving and drawing the parts just added) such a frame ran about 0.1-0.15 s: SPACE-4's 3268 instances made 65
++-- yields, most of its 9-10 s build. Same parts, same order, same places: only fewer yields.
++local YIELD_SLICE = 0.1
++local sliceT0 = os.clock()
+ for i, inst in DATA.instances do
+ 	-- inst = { prefabIndex, group, x, y, z, r, s }
+ 	local ok, err = pcall(function()
+@@ -716,10 +784,12 @@
+ 		parts += #model:GetChildren()
+ 	end)
+ 	if not ok then
++		buildErrors += 1 -- SKYRALLY PATCH
+ 		warn(TAG, "instance", i, "failed:", err)
+ 	end
+-	if i % 50 == 0 then
++	if os.clock() - sliceT0 >= YIELD_SLICE then -- SKYRALLY PATCH (boot time, V1 D1)
+ 		task.wait()
++		sliceT0 = os.clock()
+ 	end
+ 	if i % 250 == 0 or i == N then
+ 		log(("built %d/%d instances (%d parts, %.1fs)"):format(i, N, parts, os.clock() - T0))
+@@ -780,6 +850,13 @@
+ 	anchor.Parent = markerFolder
+ end
+ 
+-workspace:SetAttribute("MapBuilt", true)
++-- SKYRALLY PATCH: root attributes first so a waiter woken by READY_ATTR sees the error count;
++-- the unscoped Workspace MapBuilt is dropped (with several maps it would mean "some map finished")
++mapFolder:SetAttribute("MapBuildErrors", buildErrors)
++mapFolder:SetAttribute("MapBuilt", true)
++workspace:SetAttribute(READY_ATTR, true)
++if buildErrors > 0 then
++	warn(TAG, ("%s finished with %d build error(s); see the warnings above"):format(DATA.name, buildErrors))
++end
+ log(("DONE %s: %d/%d instances, %d parts, %d markers, %d labels in %.1fs"):format(
+ 	DATA.name, N, N, parts, #DATA.markers, #DATA.labels, os.clock() - T0))
+
+--- a/NOTES.md
++++ b/tools/map30/NOTES.md
+@@ -73,9 +73,4 @@
+ - `--overview-cam` adds a QA LocalScript that holds an orbit camera on `plan.camera.focus`; press V to
+   return to the player camera. Leave it off for shipped places.
+ 
+-## Windows run ([private checkout omitted])
+-- `win/run_30maps.ps1`: rojo build -> launch an OWNED Studio on the rbxlx (newest Versions folder) ->
+-  wait for a NEW Studio process whose title has the place name -> ENTER, click viewport, F5 -> wait
+-  for `[30MAPS] DONE` in the session log -> window-rect screenshots (overview, then V -> player view).
+-  Never kills other Studio windows (shared PC).
+-- Launched through `win/run_30maps.vbs` (hidden console) from a `/IT` scheduled task.
++<!-- SKYRALLY PATCH: private workstation instructions omitted from public notes. -->
+
+----- END GENERATED -----

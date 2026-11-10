@@ -1,0 +1,409 @@
+{
+ "confetti_burst_4x4": {
+  "file": "assets/vfx/flip_v2/confetti_burst_4x4.png",
+  "size": [
+   1024,
+   1024
+  ],
+  "grid": "Grid4x4",
+  "frames": 16,
+  "loop": false,
+  "emissive": false,
+  "source": "blender:confetti_burst",
+  "suggested": {
+   "lifetime": [
+    1.2,
+    1.6
+   ],
+   "size": [
+    8,
+    10
+   ],
+   "speed": [
+    0,
+    1
+   ],
+   "lightEmission": 0.1,
+   "color": "#FFFFFF",
+   "flipbookMode": "OneShot",
+   "notes": "finish / key / token moments; already coloured"
+  }
+ },
+ "dust_burst_4x4": {
+  "file": "assets/vfx/flip_v2/dust_burst_4x4.png",
+  "size": [
+   1024,
+   1024
+  ],
+  "grid": "Grid4x4",
+  "frames": 16,
+  "loop": false,
+  "emissive": false,
+  "source": "blender:dust_burst",
+  "suggested": {
+   "lifetime": [
+    0.6,
+    0.9
+   ],
+   "size": [
+    3,
+    6
+   ],
+   "speed": [
+    0,
+    1
+   ],
+   "lightEmission": 0,
+   "color": "#E6D2B4",
+   "flipbookMode": "OneShot",
+   "notes": "ground kick: landings, drifts (Orientation FacingCamera)"
+  }
+ },
+ "electric_arc_4x4": {
+  "file": "assets/vfx/flip_v2/electric_arc_4x4.png",
+  "size": [
+   1024,
+   1024
+  ],
+  "grid": "Grid4x4",
+  "frames": 16,
+  "loop": true,
+  "emissive": true,
+  "source": "proc:electric_arc_4x4",
+  "suggested": {
+   "lifetime": [
+    0.4,
+    0.6
+   ],
+   "size": [
+    3,
+    5
+   ],
+   "speed": [
+    0,
+    0
+   ],
+   "lightEmission": 0.6,
+   "color": "#FFFFFF",
+   "flipbookMode": "Loop",
+   "flipbookFramerate": 24,
+   "rotation": [
+    0,
+    360
+   ],
+   "notes": "lightning hazard, coils, shock items"
+  }
+ },
+ "explosion_8x8": {
+  "file": "assets/vfx/flip_v2/explosion_8x8.png",
+  "size": [
+   1024,
+   1024
+  ],
+  "grid": "Grid8x8",
+  "frames": 64,
+  "loop": false,
+  "emissive": true,
+  "source": "blender:explosion_puff",
+  "suggested": {
+   "lifetime": [
+    0.9,
+    1.1
+   ],
+   "size": [
+    8,
+    14
+   ],
+   "speed": [
+    0,
+    2
+   ],
+   "lightEmission": 0.35,
+   "color": "#FFFFFF",
+   "flipbookMode": "OneShot",
+   "rotation": [
+    0,
+    360
+   ],
+   "notes": "fireball + rolling smoke; pair with spark_streak. LightEmission also makes the dark smoke partly additive (lighter, more see-through on sky); for heavier smoke use 0.15-0.2 or add a smoke_puff emitter"
+  }
+ },
+ "fire_loop_8x8": {
+  "file": "assets/vfx/flip_v2/fire_loop_8x8.png",
+  "size": [
+   1024,
+   1024
+  ],
+  "grid": "Grid8x8",
+  "frames": 64,
+  "loop": true,
+  "emissive": true,
+  "source": "blender:fire_loop",
+  "suggested": {
+   "lifetime": [
+    0.5,
+    0.8
+   ],
+   "size": [
+    2,
+    3.5
+   ],
+   "speed": [
+    2,
+    4
+   ],
+   "lightEmission": 0.45,
+   "color": "#FFFFFF",
+   "flipbookMode": "Loop",
+   "flipbookFramerate": 30,
+   "notes": "boost flames, lava vents, fireball hazard"
+  }
+ },
+ "lightning_bolt_2x2": {
+  "file": "assets/vfx/flip_v2/lightning_bolt_2x2.png",
+  "size": [
+   1024,
+   1024
+  ],
+  "grid": "Grid2x2",
+  "frames": 4,
+  "loop": false,
+  "emissive": true,
+  "source": "proc:lightning_bolt_2x2",
+  "suggested": {
+   "lifetime": [
+    0.15,
+    0.25
+   ],
+   "size": [
+    12,
+    18
+   ],
+   "speed": [
+    0,
+    0
+   ],
+   "lightEmission": 0.7,
+   "color": "#FFFFFF",
+   "flipbookMode": "Random",
+   "notes": "4 bolt variants: FlipbookMode Random picks one per particle"
+  }
+ },
+ "magic_swirl_8x8": {
+  "file": "assets/vfx/flip_v2/magic_swirl_8x8.png",
+  "size": [
+   1024,
+   1024
+  ],
+  "grid": "Grid8x8",
+  "frames": 64,
+  "loop": true,
+  "emissive": true,
+  "source": "proc:magic_swirl_8x8",
+  "suggested": {
+   "lifetime": [
+    2,
+    2
+   ],
+   "size": [
+    6,
+    6
+   ],
+   "speed": [
+    0,
+    0
+   ],
+   "lightEmission": 0.6,
+   "color": "#FFFFFF",
+   "flipbookMode": "Loop",
+   "flipbookFramerate": 30,
+   "notes": "portals, boss auras, key glow. Authored violet/magenta/cyan: Color multiplies, so keep white or tint toward the same hues (a green/orange tint goes muddy)"
+  }
+ },
+ "shockwave_8x8": {
+  "file": "assets/vfx/flip_v2/shockwave_8x8.png",
+  "size": [
+   1024,
+   1024
+  ],
+  "grid": "Grid8x8",
+  "frames": 64,
+  "loop": false,
+  "emissive": true,
+  "source": "proc:shockwave_8x8",
+  "suggested": {
+   "lifetime": [
+    0.45,
+    0.6
+   ],
+   "size": [
+    10,
+    10
+   ],
+   "speed": [
+    0,
+    0
+   ],
+   "lightEmission": 0.7,
+   "color": "#FFFFFF",
+   "flipbookMode": "OneShot",
+   "orientation": "VelocityPerpendicular or FacingCamera",
+   "notes": "the ring grows inside the sheet; keep Size constant"
+  }
+ },
+ "smoke_puff_8x8": {
+  "file": "assets/vfx/flip_v2/smoke_puff_8x8.png",
+  "size": [
+   1024,
+   1024
+  ],
+  "grid": "Grid8x8",
+  "frames": 64,
+  "loop": false,
+  "emissive": false,
+  "source": "blender:smoke_puff",
+  "suggested": {
+   "lifetime": [
+    1.0,
+    1.4
+   ],
+   "size": [
+    3,
+    7
+   ],
+   "speed": [
+    1,
+    3
+   ],
+   "lightEmission": 0,
+   "color": "#FFFFFF",
+   "flipbookMode": "OneShot",
+   "rotation": [
+    0,
+    360
+   ],
+   "notes": "neutral grey-white; tint with Color"
+  }
+ },
+ "snow_burst_4x4": {
+  "file": "assets/vfx/flip_v2/snow_burst_4x4.png",
+  "size": [
+   1024,
+   1024
+  ],
+  "grid": "Grid4x4",
+  "frames": 16,
+  "loop": false,
+  "emissive": false,
+  "source": "blender:snow_burst",
+  "suggested": {
+   "lifetime": [
+    0.7,
+    1.0
+   ],
+   "size": [
+    4,
+    7
+   ],
+   "speed": [
+    0,
+    2
+   ],
+   "lightEmission": 0.2,
+   "color": "#FFFFFF",
+   "flipbookMode": "OneShot",
+   "notes": "powder puff with glints"
+  }
+ },
+ "sparkle_star_4x4": {
+  "file": "assets/vfx/flip_v2/sparkle_star_4x4.png",
+  "size": [
+   1024,
+   1024
+  ],
+  "grid": "Grid4x4",
+  "frames": 16,
+  "loop": true,
+  "emissive": true,
+  "source": "proc:sparkle_star_4x4",
+  "suggested": {
+   "lifetime": [
+    0.6,
+    1.0
+   ],
+   "size": [
+    1.5,
+    3
+   ],
+   "speed": [
+    0,
+    0
+   ],
+   "lightEmission": 0.8,
+   "color": "#FFFFFF",
+   "flipbookMode": "Loop",
+   "flipbookFramerate": 24,
+   "notes": "token/coin glints, key twinkle"
+  }
+ },
+ "speed_streak": {
+  "file": "assets/vfx/flip_v2/speed_streak.png",
+  "size": [
+   256,
+   1024
+  ],
+  "grid": "None",
+  "frames": 1,
+  "loop": false,
+  "emissive": true,
+  "source": "proc:speed_streak",
+  "suggested": {
+   "lifetime": [
+    0.15,
+    0.3
+   ],
+   "size": [
+    0.3,
+    0.3
+   ],
+   "speed": [
+    0,
+    0
+   ],
+   "lightEmission": 1,
+   "color": "#FFFFFF",
+   "flipbookMode": "None",
+   "squash": "particles are square quads, so the 1:4 texture is squeezed to 1:1: use Orientation VelocityParallel with Squash ~2-3 to stretch it along velocity. As a Trail/Beam texture rotate it 90 degrees first (their texture runs lengthwise along X); check in Studio"
+  }
+ },
+ "water_splash_8x8": {
+  "file": "assets/vfx/flip_v2/water_splash_8x8.png",
+  "size": [
+   1024,
+   1024
+  ],
+  "grid": "Grid8x8",
+  "frames": 64,
+  "loop": false,
+  "emissive": false,
+  "source": "blender:water_splash",
+  "suggested": {
+   "lifetime": [
+    0.8,
+    1.0
+   ],
+   "size": [
+    6,
+    9
+   ],
+   "speed": [
+    0,
+    0
+   ],
+   "lightEmission": 0.1,
+   "color": "#FFFFFF",
+   "flipbookMode": "OneShot",
+   "notes": "crown splash; spawn at the water line, no rotation. Near-white ice blue, so Color tints it (white = clear water; e.g. #9FD8FF deep water, #C8F07A swamp, #FFB070 lava)"
+  }
+ }
+}

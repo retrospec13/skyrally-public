@@ -1,0 +1,19 @@
+# External asset provenance
+
+These dependency records preserve original attribution. Public availability is not permission to redistribute standalone assets. Rights and group permissions remain unresolved. IDs stay unchanged pending coordinated remapping.
+
+## Storm dragon stand-in
+The storm dragon runtime uses a temporary model; review BossConfig and model-bake manifests before replacement.
+
+| ID | Title | Creator | Type | Used | Why | Replacement | Date |
+|---|---|---|---|---|---|---|---|
+| 12221990 | electronicpingshort.wav | Roblox (1) | audio, short electronic ping | src/shared/ToolboxAudio.luau missile_lock_beep; client/ItemJuice incoming-missile warning (pitch and interval accelerate with ItemRules.beepPitch/beepInterval) | Runtime dependency; permission not verified during release preparation | Confirm reuse rights or replace before standalone redistribution | 2026-10-20 |
+| 12222030 | HalloweenThunder.wav | Roblox (1) | audio, 4 s thunder roll | ToolboxAudio storm_thunder_1; client/HubStorm clap after each bolt, client/Soundscape claps over a Storm Cup race | Runtime dependency; permission not verified during release preparation | Confirm reuse rights or replace before standalone redistribution | 2026-10-20 |
+| 12222019 | HalloweenLightning.wav | Roblox (1) | audio, 5 s crack and roll | ToolboxAudio storm_thunder_2; HubStorm, Soundscape | Runtime dependency; permission not verified during release preparation | Confirm reuse rights or replace before standalone redistribution | 2026-10-20 |
+| 3149249837 | Cannon_Explode | Roblox (1) | audio, 4 s boom | ToolboxAudio storm_thunder_3 (pitch 0.45, a far roll) and eruption_rumble (pitch 0.4); DINO eruption set pieces call ToolboxCues.playAt | Runtime dependency; permission not verified during release preparation | Confirm reuse rights or replace before standalone redistribution | 2026-10-20 |
+| 15675043410 | Roblox_UI_Tonal_Stinger | Roblox (1) | audio, 1 s tonal sting | ToolboxAudio tier_up_sting; NotifySpec shard_tier_up through client/NotifyKit and PayoffSound | Runtime dependency; permission not verified during release preparation | Confirm reuse rights or replace before standalone redistribution | 2026-10-20 |
+| 17208361335 | Roblox GUI - Notification High | Roblox (1) | audio, short bright chime | ToolboxAudio badge_chime; NotifySpec badge_earned through client/NotifyKit and PayoffSound | Runtime dependency; permission not verified during release preparation | Confirm reuse rights or replace before standalone redistribution | 2026-10-20 |
+| 162670150 | UFO Idle | Roblox (1) | audio, 6 s sci-fi idle hum, looped | ToolboxAudio holo_hum; client/SpaceNeon, ONE positional loop on the nearest SPACE-4 hologram figure (pitch 0.8, volume 0.12, range 260 studs) | Runtime dependency; permission not verified during release preparation | Confirm reuse rights or replace before standalone redistribution | 2026-10-20 |
+| 15930283552 | Roblox_RetroSFX_05 | Roblox (1) | audio, short retro glitch blip | ToolboxAudio holo_glitch; client/SpaceNeon, one positional crackle each time a billboard tears (in earshot only) | Runtime dependency; permission not verified during release preparation | Confirm reuse rights or replace before standalone redistribution | 2026-10-20 |
+| 12222095 | Rocket whoosh 01.wav | Roblox (1) | audio, 6 s whoosh | ToolboxAudio geyser_whoosh; geyser jets call ToolboxCues.playAt (DINO / SNOW set pieces on their own branches) | Runtime dependency; permission not verified during release preparation | Confirm reuse rights or replace before standalone redistribution | 2026-10-20 |
+| 16480570986 | Audio/Roblox_Pinball_Bumper_Low_Bells_02 | Roblox (1) | audio, 1 s low bell | ToolboxAudio sail_gate_chime; the FOREST sail gate calls ToolboxCues.playAt | Runtime dependency; permission not verified during release preparation | Confirm reuse rights or replace before standalone redistribution | 2026-10-20 |

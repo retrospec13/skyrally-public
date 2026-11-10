@@ -1,0 +1,52 @@
+{
+  "SR_SPACE_MetalPlates": {
+    "base": "DiamondPlate",
+    "tex": "T1_METAL_PLATES",
+    "studsPerTile": 12
+  },
+  "SR_SPACE_RoadPlates": {
+    "base": "Slate",
+    "tex": "T7_ROAD_PANELS",
+    "studsPerTile": 32
+  },
+  "SR_SPACE_NeonRoad": {
+    "base": "Slate",
+    "tex": "T2_NEON_ROAD",
+    "studsPerTile": 28
+  },
+  "SR_SPACE_MoonRock": {
+    "base": "Limestone",
+    "tex": "T3_MOON_ROCK",
+    "studsPerTile": 36
+  },
+  "SR_SPACE_MoonDust": {
+    "base": "Salt",
+    "tex": "T3_MOON_ROCK",
+    "studsPerTile": 60
+  },
+  "SR_SPACE_GlassPanels": {
+    "base": "Plastic",
+    "tex": "T4_GLASS_PANELS",
+    "studsPerTile": 8
+  },
+  "SR_SPACE_BrassMachine": {
+    "base": "Metal",
+    "tex": "T5_BRASS_MACHINE",
+    "studsPerTile": 10
+  },
+  "SR_SPACE_StoneArch": {
+    "base": "Brick",
+    "tex": "T6_STONE_ARCH",
+    "studsPerTile": 12
+  },
+  "SR_SPACE_StoneBlocks": {
+    "base": "Concrete",
+    "tex": "T6_STONE_ARCH",
+    "studsPerTile": 18
+  },
+  "SR_SPACE_Plaza": {
+    "base": "Pavement",
+    "tex": "T6_STONE_ARCH",
+    "studsPerTile": 32
+  }
+}

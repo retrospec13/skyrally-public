@@ -1,0 +1,52 @@
+{
+  "SR_SNOW_Drift": {
+    "base": "Snow",
+    "tex": "T1_SNOW_DRIFT",
+    "studsPerTile": 56
+  },
+  "SR_SNOW_Glacier": {
+    "base": "Glacier",
+    "tex": "T2_GLACIER_ICE",
+    "studsPerTile": 44
+  },
+  "SR_SNOW_RiverIce": {
+    "base": "Ice",
+    "tex": "T3_FROZEN_RIVER",
+    "studsPerTile": 64
+  },
+  "SR_SNOW_Rock": {
+    "base": "Rock",
+    "tex": "T4_GRANITE_SNOWCAP",
+    "studsPerTile": 60
+  },
+  "SR_SNOW_Wind": {
+    "base": "Ground",
+    "tex": "T1_SNOW_DRIFT",
+    "studsPerTile": 70
+  },
+  "SR_SNOW_Hollow": {
+    "base": "Mud",
+    "tex": "T1_SNOW_DRIFT",
+    "studsPerTile": 90
+  },
+  "SR_SNOW_Fieldstone": {
+    "base": "Granite",
+    "tex": "T4_GRANITE_SNOWCAP",
+    "studsPerTile": 16
+  },
+  "SR_SNOW_Ashlar": {
+    "base": "Slate",
+    "tex": "T5_ICE_PAVERS",
+    "studsPerTile": 22
+  },
+  "SR_SNOW_Pavers": {
+    "base": "Pavement",
+    "tex": "T5_ICE_PAVERS",
+    "studsPerTile": 11
+  },
+  "SR_SNOW_Timber": {
+    "base": "WoodPlanks",
+    "tex": "T6_TIMBER",
+    "studsPerTile": 10
+  }
+}

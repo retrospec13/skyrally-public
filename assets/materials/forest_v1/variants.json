@@ -1,0 +1,42 @@
+{
+  "SR_FOREST_Meadow": {
+    "base": "Grass",
+    "tex": "T7_MEADOW_SOFT",
+    "studsPerTile": 56
+  },
+  "SR_FOREST_MeadowDeep": {
+    "base": "Mud",
+    "tex": "T7_MEADOW_SOFT",
+    "studsPerTile": 68
+  },
+  "SR_FOREST_Dirt": {
+    "base": "Ground",
+    "tex": "T2_DIRT_PATH",
+    "studsPerTile": 26
+  },
+  "SR_FOREST_MossyStone": {
+    "base": "Limestone",
+    "tex": "T3_MOSSY_STONE",
+    "studsPerTile": 84
+  },
+  "SR_FOREST_Crops": {
+    "base": "LeafyGrass",
+    "tex": "T4_FIELD_CROPS",
+    "studsPerTile": 36
+  },
+  "SR_FOREST_Cobble": {
+    "base": "Cobblestone",
+    "tex": "T5_COBBLE_ROAD",
+    "studsPerTile": 9
+  },
+  "SR_FOREST_MillWood": {
+    "base": "WoodPlanks",
+    "tex": "T6_MILL_WOOD",
+    "studsPerTile": 10
+  },
+  "SR_FOREST_Masonry": {
+    "base": "Slate",
+    "tex": "T3_MOSSY_STONE",
+    "studsPerTile": 14
+  }
+}

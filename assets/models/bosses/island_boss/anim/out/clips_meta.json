@@ -1,0 +1,47 @@
+{
+  "fps": 30,
+  "boss": "island_boss",
+  "module": "Clattershell",
+  "clips": {
+    "walk": {
+      "frames": 40,
+      "loop": true,
+      "speedRef": 6.36,
+      "mask": null
+    },
+    "idle": {
+      "frames": 90,
+      "loop": true,
+      "speedRef": null,
+      "mask": null
+    },
+    "hit": {
+      "frames": 24,
+      "loop": false,
+      "speedRef": null,
+      "mask": null
+    },
+    "roar": {
+      "frames": 60,
+      "loop": false,
+      "speedRef": null,
+      "mask": null
+    },
+    "attack": {
+      "frames": 21,
+      "loop": false,
+      "speedRef": null,
+      "mask": [
+        "Shell",
+        "ArmL",
+        "ClawL",
+        "PincerL",
+        "ArmR",
+        "ClawR",
+        "PincerR",
+        "EyeL",
+        "EyeR"
+      ]
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "toolbox_temp_ledger": "docs/ASSETS_TOOLBOX_TEMP.md",
+  "non_asset_numbers": {},
+  "exceptions": {},
+  "note": "Public default: no permission claims, no account bindings. Fresh operator classification required."
+}

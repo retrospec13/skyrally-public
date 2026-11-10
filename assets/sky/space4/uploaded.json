@@ -1,0 +1,44 @@
+{
+  "down": {
+    "id": 129843924038498,
+    "sha256": "c6479724541b618c2cb3086d476924525ae9b24583c53ecbc11cf153fb7a8314",
+    "sha256_scope": "Sanitized local file bytes, not remote upload or permission proof",
+    "recorded_upload_sha256": "c6479724541b618c2cb3086d476924525ae9b24583c53ecbc11cf153fb7a8314",
+    "remote_validation": "not performed; existing public asset ID retained"
+  },
+  "side": {
+    "id": 119553142425296,
+    "sha256": "0678626df2001d28154a312d5e0174d8220a138f8ee8dc7d4be9bdbbc2a9cbb5",
+    "sha256_scope": "Sanitized local file bytes, not remote upload or permission proof",
+    "recorded_upload_sha256": "0678626df2001d28154a312d5e0174d8220a138f8ee8dc7d4be9bdbbc2a9cbb5",
+    "remote_validation": "not performed; existing public asset ID retained"
+  },
+  "up": {
+    "id": 105097928875724,
+    "sha256": "cc96f2fcf182d0f825d56cf5c02eaab5ca4b79fd87f34c6f18dc59aa8169d05d",
+    "sha256_scope": "Sanitized local file bytes, not remote upload or permission proof",
+    "recorded_upload_sha256": "cc96f2fcf182d0f825d56cf5c02eaab5ca4b79fd87f34c6f18dc59aa8169d05d",
+    "remote_validation": "not performed; existing public asset ID retained"
+  },
+  "earth": {
+    "id": 115726552981676,
+    "sha256": "cb42dea161b8a11a7583cf60229e7b5737a188a34c6159a41dc79d31bfcede30",
+    "sha256_scope": "Sanitized local file bytes, not remote upload or permission proof",
+    "recorded_upload_sha256": "cb42dea161b8a11a7583cf60229e7b5737a188a34c6159a41dc79d31bfcede30",
+    "remote_validation": "not performed; existing public asset ID retained"
+  },
+  "planet": {
+    "id": 84779122734216,
+    "sha256": "bfa9711e8b6f06292480e55e0704a914736dc5e42206318e860427a580a5cefa",
+    "sha256_scope": "Sanitized local file bytes, not remote upload or permission proof",
+    "recorded_upload_sha256": "bfa9711e8b6f06292480e55e0704a914736dc5e42206318e860427a580a5cefa",
+    "remote_validation": "not performed; existing public asset ID retained"
+  },
+  "earthface": {
+    "id": 130564565590011,
+    "sha256": "9bc704a836f166c193f0b7f180644d0da60cbd0056cf036a9acc0592d3309400",
+    "sha256_scope": "Sanitized local file bytes, not remote upload or permission proof",
+    "recorded_upload_sha256": "9bc704a836f166c193f0b7f180644d0da60cbd0056cf036a9acc0592d3309400",
+    "remote_validation": "not performed; existing public asset ID retained"
+  }
+}

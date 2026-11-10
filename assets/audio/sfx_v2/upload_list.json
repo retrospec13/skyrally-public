@@ -1,0 +1,230 @@
+[
+  {
+    "role": "boost_kick",
+    "volume": 0.6,
+    "loop": false,
+    "duration_s": 0.947
+  },
+  {
+    "role": "boost_overcharge",
+    "volume": 0.65,
+    "loop": false,
+    "duration_s": 1.15
+  },
+  {
+    "role": "boost_loop",
+    "volume": 0.36,
+    "loop": true,
+    "duration_s": 1.5
+  },
+  {
+    "role": "ring_pass",
+    "volume": 0.48,
+    "loop": false,
+    "duration_s": 0.847
+  },
+  {
+    "role": "pad_zip",
+    "volume": 0.44,
+    "loop": false,
+    "duration_s": 0.497
+  },
+  {
+    "role": "pod_pickup",
+    "volume": 0.52,
+    "loop": false,
+    "duration_s": 0.57
+  },
+  {
+    "role": "pod_pop",
+    "volume": 0.71,
+    "loop": false,
+    "duration_s": 0.303
+  },
+  {
+    "role": "countdown_v2",
+    "volume": 0.94,
+    "loop": false,
+    "duration_s": 4.2
+  },
+  {
+    "role": "lap_ding",
+    "volume": 0.56,
+    "loop": false,
+    "duration_s": 1.1
+  },
+  {
+    "role": "finish_tada",
+    "volume": 0.76,
+    "loop": false,
+    "duration_s": 1.9
+  },
+  {
+    "role": "place_up",
+    "volume": 0.31,
+    "loop": false,
+    "duration_s": 0.215
+  },
+  {
+    "role": "place_down",
+    "volume": 0.25,
+    "loop": false,
+    "duration_s": 0.237
+  },
+  {
+    "role": "respawn_pop",
+    "volume": 0.58,
+    "loop": false,
+    "duration_s": 0.739
+  },
+  {
+    "role": "land_thud",
+    "volume": 0.63,
+    "loop": false,
+    "duration_s": 0.417
+  },
+  {
+    "role": "wall_scrape",
+    "volume": 0.45,
+    "loop": false,
+    "duration_s": 0.49
+  },
+  {
+    "role": "wall_bump",
+    "volume": 0.68,
+    "loop": false,
+    "duration_s": 0.447
+  },
+  {
+    "role": "crash_hit",
+    "volume": 0.79,
+    "loop": false,
+    "duration_s": 0.947
+  },
+  {
+    "role": "splash_big",
+    "volume": 0.81,
+    "loop": false,
+    "duration_s": 0.997
+  },
+  {
+    "role": "splash_small",
+    "volume": 0.57,
+    "loop": false,
+    "duration_s": 0.497
+  },
+  {
+    "role": "missile_launch",
+    "volume": 0.86,
+    "loop": false,
+    "duration_s": 0.811
+  },
+  {
+    "role": "missile_loop",
+    "volume": 0.32,
+    "loop": true,
+    "duration_s": 1.0
+  },
+  {
+    "role": "missile_explode",
+    "volume": 0.9,
+    "loop": false,
+    "duration_s": 0.947
+  },
+  {
+    "role": "trap_drop",
+    "volume": 0.72,
+    "loop": false,
+    "duration_s": 0.417
+  },
+  {
+    "role": "oil_splat",
+    "volume": 0.63,
+    "loop": false,
+    "duration_s": 0.547
+  },
+  {
+    "role": "oil_slip",
+    "volume": 0.5,
+    "loop": false,
+    "duration_s": 0.796
+  },
+  {
+    "role": "mine_blast",
+    "volume": 0.76,
+    "loop": false,
+    "duration_s": 0.588
+  },
+  {
+    "role": "trap_arm",
+    "volume": 0.24,
+    "loop": false,
+    "duration_s": 0.17
+  },
+  {
+    "role": "shield_up",
+    "volume": 0.56,
+    "loop": false,
+    "duration_s": 0.886
+  },
+  {
+    "role": "shield_loop",
+    "volume": 0.28,
+    "loop": true,
+    "duration_s": 1.0
+  },
+  {
+    "role": "shield_block",
+    "volume": 0.76,
+    "loop": false,
+    "duration_s": 0.547
+  },
+  {
+    "role": "shield_break",
+    "volume": 0.82,
+    "loop": false,
+    "duration_s": 0.705
+  },
+  {
+    "role": "magnet_lock",
+    "volume": 0.59,
+    "loop": false,
+    "duration_s": 0.997
+  },
+  {
+    "role": "coin_pickup",
+    "volume": 0.5,
+    "loop": false,
+    "duration_s": 0.447
+  },
+  {
+    "role": "coin_all",
+    "volume": 0.56,
+    "loop": false,
+    "duration_s": 1.1
+  },
+  {
+    "role": "unlock_fanfare",
+    "volume": 0.65,
+    "loop": false,
+    "duration_s": 1.5
+  },
+  {
+    "role": "vote_pip",
+    "volume": 0.25,
+    "loop": false,
+    "duration_s": 0.133
+  },
+  {
+    "role": "wrong_way",
+    "volume": 0.56,
+    "loop": false,
+    "duration_s": 0.547
+  },
+  {
+    "role": "grid_rev",
+    "volume": 0.4,
+    "loop": false,
+    "duration_s": 0.896
+  }
+]

@@ -1,0 +1,13 @@
+{
+  "_doc": "Per-key approach lines for the real-key pilot (win/key_pilot.js goal=qa route=...). World studs: [x, y, z, vmax]. The pilot flies the spline until it is within 220 studs of the first point, then waypoint to waypoint (16 stud horizontal arrival), braking above vmax, and last to the HiddenKey (QAGoal). Harness only; nothing here is read by the game. A track without an entry uses QAGoal alone (DINO-4, ISLAND-2, FOREST-1 keys were reached that way). The final point must equal TrackData.hiddenKey.pos (tools/tests/test_key_approach.py).",
+  "SNOW-1": {
+    "note": "Key in a 136-stud slot cut into the west gorge wall behind the west pier of the over/under arch (map/snow1 KEY_NOTCH local x -116..-40, z -186..-50, floor 46, lip 76; world x = local - 8000). The spline passes under the arch at z=0 heading north (-z) on x=-8000, plane about 16 over the ice. The line stays on the river through the arch, bends west in a 40 stud radius and slows to 70 studs/s over the last 40 studs so the plane can swerve into the slot under the lip.",
+    "route": [
+      [-8000, 55, 40, 9999],
+      [-8000, 56, -55, 110],
+      [-8022, 56, -88, 85],
+      [-8048, 56, -110, 75],
+      [-8073.9969, 56.0456, -115.06, 70]
+    ]
+  }
+}

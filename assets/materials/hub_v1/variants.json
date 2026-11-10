@@ -1,0 +1,61 @@
+{
+  "SR_HUB_PlazaStone": {
+    "base": "Pavement",
+    "tex": "T1_PLAZA_STONE",
+    "studsPerTile": 12,
+    "colorMap": "T1_PLAZA_STONE_softn"
+  },
+  "SR_HUB_Masonry": {
+    "base": "Sandstone",
+    "tex": "T1_PLAZA_STONE",
+    "studsPerTile": 10
+  },
+  "SR_HUB_Roof": {
+    "base": "ClayRoofTiles",
+    "tex": "T2_TERRACOTTA_ROOF",
+    "studsPerTile": 10,
+    "neutral": true
+  },
+  "SR_HUB_Grass": {
+    "base": "LeafyGrass",
+    "tex": "T3_ISLAND_GRASS",
+    "studsPerTile": 22
+  },
+  "SR_HUB_Meadow": {
+    "base": "Grass",
+    "tex": "T3_ISLAND_GRASS",
+    "studsPerTile": 16
+  },
+  "SR_HUB_Sand": {
+    "base": "Sand",
+    "tex": "T4_BEACH_SAND",
+    "studsPerTile": 32
+  },
+  "SR_HUB_Dirt": {
+    "base": "Ground",
+    "tex": "T3_ISLAND_GRASS",
+    "studsPerTile": 30
+  },
+  "SR_HUB_PathEdge": {
+    "base": "Mud",
+    "tex": "T4_BEACH_SAND",
+    "studsPerTile": 24
+  },
+  "SR_HUB_Cliff": {
+    "base": "Limestone",
+    "tex": "T5_CLIFF_ROCK",
+    "studsPerTile": 44
+  },
+  "SR_HUB_Timber": {
+    "base": "WoodPlanks",
+    "tex": "T6_TIMBER_DOCK",
+    "studsPerTile": 10,
+    "neutral": true
+  },
+  "SR_HUB_Plaster": {
+    "base": "Plaster",
+    "tex": "T4_BEACH_SAND",
+    "studsPerTile": 18,
+    "neutral": true
+  }
+}

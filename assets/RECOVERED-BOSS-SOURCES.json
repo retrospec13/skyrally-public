@@ -1,0 +1,125 @@
+{
+  "scope": "Owned recovered source approved for CC BY 4.0 distribution, credited Waku Worldwide.",
+  "files": [
+    {
+      "path": "assets/models/bosses/dino_boss/anim/out/rigged.glb",
+      "sha256": "945f6bb5f001b27cc37c864a4dee3bfb82fe0c1406c26d924b934c62e20be47c",
+      "boss": "dino_boss",
+      "clip_module": "Cinderwing",
+      "clip_body_matches": true,
+      "binary_payload_preserved": true,
+      "rights_status": "owner-approved",
+      "rights_reason": "Explicit owned-model source distribution approval.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/models/bosses/dino_boss/anim/out/anim.glb",
+      "sha256": "4df26c12f2d57520bf68b4a6a4e00b0bc1f15e2ce4125885e358681c49cde5e3",
+      "boss": "dino_boss",
+      "clip_module": "Cinderwing",
+      "clip_body_matches": true,
+      "binary_payload_preserved": true,
+      "rights_status": "owner-approved",
+      "rights_reason": "Explicit owned-model source distribution approval.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/models/bosses/island_boss/anim/out/rigged.glb",
+      "sha256": "88b84bf8d85b34131add7972132d3c24817948feda65842b77a1fa85c98e0d14",
+      "boss": "island_boss",
+      "clip_module": "Clattershell",
+      "clip_body_matches": true,
+      "binary_payload_preserved": true,
+      "rights_status": "owner-approved",
+      "rights_reason": "Explicit owned-model source distribution approval.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/models/bosses/island_boss/anim/out/anim.glb",
+      "sha256": "bd841adfb9a285b66f84ad87a08d73a3445a557dac254304e1ff41e1897ba65e",
+      "boss": "island_boss",
+      "clip_module": "Clattershell",
+      "clip_body_matches": true,
+      "binary_payload_preserved": true,
+      "rights_status": "owner-approved",
+      "rights_reason": "Explicit owned-model source distribution approval.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/models/bosses/forest_boss/anim/out/rigged.glb",
+      "sha256": "6c235cc5510b5bf22247c6c7a7dbbcbde95af8333442e840999df74fa688c578",
+      "boss": "forest_boss",
+      "clip_module": "Emberbeetle",
+      "clip_body_matches": true,
+      "binary_payload_preserved": true,
+      "rights_status": "owner-approved",
+      "rights_reason": "Explicit owned-model source distribution approval.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/models/bosses/forest_boss/anim/out/anim.glb",
+      "sha256": "76edc838403deb03728c2a15cb8e39b2c4084ac36752c9c7ae2834f3a4ca5520",
+      "boss": "forest_boss",
+      "clip_module": "Emberbeetle",
+      "clip_body_matches": true,
+      "binary_payload_preserved": true,
+      "rights_status": "owner-approved",
+      "rights_reason": "Explicit owned-model source distribution approval.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/models/bosses/hub_boss/anim/out/rigged.glb",
+      "sha256": "b67d1f8b4c92086e2ed486147235f174c174244b22799843d2f5730553079367",
+      "boss": "hub_boss",
+      "clip_module": "Thunderwright",
+      "clip_body_matches": true,
+      "binary_payload_preserved": true,
+      "rights_status": "owner-approved",
+      "rights_reason": "Explicit owned-model source distribution approval.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/models/bosses/hub_boss/anim/out/anim.glb",
+      "sha256": "de1fb409c395d55ce6c44f90510c22ad493e4447cbe0a5a959414671ba2a41a4",
+      "boss": "hub_boss",
+      "clip_module": "Thunderwright",
+      "clip_body_matches": true,
+      "binary_payload_preserved": true,
+      "rights_status": "owner-approved",
+      "rights_reason": "Explicit owned-model source distribution approval.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    }
+  ],
+  "editable_animation_source": {
+    "boss": "snow_boss",
+    "path": "src/shared/bossclips/Frosthorn.luau",
+    "authority": "Shipped Luau frame data; editable release source",
+    "runtime_data_preserved": true,
+    "documentation": "docs/FROSTHORN-ANIMATION.md",
+    "historical_export_sha1_prefix": "95189f72abd3",
+    "matching_historical_glb_available": false
+  },
+  "frosthorn_added_sources": [
+    {
+      "path": "assets/models/bosses/snow_boss/anim/out/rigged.glb",
+      "original_sha256": "e941572d4f64925c272e37a98e24f537597676eb65e814196492a04df128370c",
+      "sha256": "835f460c74998ccbbfe284936b7bc960f71c48a1e9c0b31cd4bdb1a3886fc382",
+      "binary_payload_preserved": true
+    },
+    {
+      "path": "assets/models/bosses/snow_boss/anim/out/historical-anim.glb",
+      "original_sha256": "385d440df4e353fd435acfa063a9b84b2d22e64bb7236e99ec9e7852717295cb",
+      "sha256": "62bb2b72c3692fd412e5306e4312f3c949bfc0f49391213bf8f6cce7a2239eef",
+      "binary_payload_preserved": true
+    }
+  ],
+  "frosthorn_animation_warning": "historical-anim.glb differs on six attack wing channels; shipped Frosthorn.luau remains authoritative."
+}

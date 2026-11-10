@@ -1,0 +1,28 @@
+-- Lava heat rules (shared/StyleRules.lavaHeat / heatRates): DINO ember spray and haze beyond the skim band.
+return function(h)
+	local R = h.require("src/shared/StyleRules.luau")
+
+	h.test("heat: full in the skim band, fading to zero at HEAT_MAX, none without lava", function()
+		h.eq(R.lavaHeat(nil), 0)
+		h.eq(R.lavaHeat(R.SKIM_MIN), 1)
+		h.eq(R.lavaHeat(R.SKIM_MAX), 1)
+		h.eq(R.lavaHeat(R.HEAT_MAX), 0)
+		h.eq(R.lavaHeat(R.HEAT_MAX + 5), 0)
+		local mid = R.lavaHeat((R.SKIM_MAX + R.HEAT_MAX) / 2)
+		h.ok(math.abs(mid - 0.5) < 1e-9, "midpoint is 0.5")
+		h.ok(R.HEAT_MAX > R.SKIM_MAX)
+	end)
+
+	h.test("rates: scale with heat and particle scale, haze dropped on phone, zero when cold", function()
+		local e, z = R.heatRates(1, 1)
+		h.eq(e, R.HEAT_EMBER_RATE)
+		h.eq(z, R.HEAT_HAZE_RATE)
+		local e2, z2 = R.heatRates(1, 0.5)
+		h.eq(e2, R.HEAT_EMBER_RATE * 0.5)
+		h.eq(z2, 0)
+		local e3, z3 = R.heatRates(0, 1)
+		h.ok(e3 == 0 and z3 == 0)
+		local e4 = R.heatRates(0.5, 1)
+		h.eq(e4, R.HEAT_EMBER_RATE * 0.5)
+	end)
+end

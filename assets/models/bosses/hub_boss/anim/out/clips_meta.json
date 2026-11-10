@@ -1,0 +1,37 @@
+{
+  "fps": 30,
+  "boss": "hub_boss",
+  "module": "Thunderwright",
+  "clips": {
+    "drive": {
+      "frames": 48,
+      "loop": true,
+      "speedRef": null,
+      "mask": null
+    },
+    "idle": {
+      "frames": 90,
+      "loop": true,
+      "speedRef": null,
+      "mask": null
+    },
+    "hit": {
+      "frames": 24,
+      "loop": false,
+      "speedRef": null,
+      "mask": null
+    },
+    "roar": {
+      "frames": 60,
+      "loop": false,
+      "speedRef": null,
+      "mask": null
+    },
+    "attack": {
+      "frames": 23,
+      "loop": false,
+      "speedRef": null,
+      "mask": null
+    }
+  }
+}

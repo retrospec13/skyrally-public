@@ -1,0 +1,361 @@
+{
+  "conventions": "glTF space: +Y up, 1 unit = 1 stud, transforms applied, origin per file. Colour = embedded albedo texture (not vertex colour): keep MeshPart.Color white, TextureID from the upload. Single mesh, single material, single-sided. Sizes/bboxes below are glTF/Roblox axes (X, Y up, Z).",
+  "files": [
+    {
+      "name": "poplar",
+      "file": "poplar/poplar.glb",
+      "triangles": 2298,
+      "size_studs_xyz": [
+        9.23,
+        33.0,
+        10.4
+      ],
+      "bbox_min": [
+        -4.589,
+        -0.35,
+        -4.562
+      ],
+      "bbox_max": [
+        4.646,
+        32.65,
+        5.836
+      ],
+      "bbox_centre": [
+        0.0285,
+        16.15,
+        0.637
+      ],
+      "bury": 0.35,
+      "origin": "origin = trunk centre at ground (centroid of the lowest 3% of vertices); base buried 0.35 below y=0; crown from y~5; rotationally arbitrary",
+      "moving_parts": "none (static)",
+      "colour": "texture (do not tint: MeshPart.Color white); no vertex colours",
+      "artswap_asset": {
+        "size": [
+          9.23,
+          33.0,
+          10.4
+        ],
+        "centre": [
+          0.0285,
+          16.15,
+          0.637
+        ],
+        "bury": 0.35
+      },
+      "trunk_collider": {
+        "fractions_of_mesh_height": {
+          "w": 0.055,
+          "h": 0.48
+        },
+        "box_at_scale_1": {
+          "centre": [
+            0,
+            7.92,
+            0
+          ],
+          "size": [
+            1.81,
+            15.84,
+            1.81
+          ]
+        }
+      }
+    },
+    {
+      "name": "hedge",
+      "file": "hedge/hedge.glb",
+      "triangles": 1455,
+      "size_studs_xyz": [
+        32.0,
+        7.99,
+        7.25
+      ],
+      "bbox_min": [
+        -16.03,
+        -0.31,
+        -3.624
+      ],
+      "bbox_max": [
+        15.974,
+        7.684,
+        3.624
+      ],
+      "bbox_centre": [
+        -0.028,
+        3.687,
+        0.0
+      ],
+      "bury": 0.31,
+      "origin": "origin = centre of the footprint at ground; long axis = X (ends flat at x = +-16, rows butt seamlessly); base buried 0.3; front/back symmetric; native size, NO stretch",
+      "moving_parts": "none (static)",
+      "colour": "texture (do not tint: MeshPart.Color white); no vertex colours",
+      "artswap_asset": {
+        "size": [
+          32.0,
+          7.99,
+          7.25
+        ],
+        "centre": [
+          -0.028,
+          3.687,
+          0.0
+        ],
+        "bury": 0.31
+      },
+      "colliders": [
+        {
+          "centre": [
+            0,
+            3.6,
+            0
+          ],
+          "size": [
+            32.0,
+            7.6,
+            7.2
+          ]
+        }
+      ]
+    },
+    {
+      "name": "autumn_tree",
+      "file": "autumn_tree/autumn_tree.glb",
+      "triangles": 2909,
+      "size_studs_xyz": [
+        16.5,
+        22.0,
+        19.02
+      ],
+      "bbox_min": [
+        -8.284,
+        -0.351,
+        -9.567
+      ],
+      "bbox_max": [
+        8.219,
+        21.65,
+        9.448
+      ],
+      "bbox_centre": [
+        -0.0325,
+        10.6495,
+        -0.0595
+      ],
+      "bury": 0.351,
+      "origin": "origin = trunk axis at ground; base buried 0.35; rotationally arbitrary",
+      "moving_parts": "none (static)",
+      "colour": "texture (do not tint: MeshPart.Color white); no vertex colours",
+      "artswap_asset": {
+        "size": [
+          16.5,
+          22.0,
+          19.02
+        ],
+        "centre": [
+          -0.0325,
+          10.6495,
+          -0.0595
+        ],
+        "bury": 0.351
+      },
+      "trunk_collider": {
+        "fractions_of_mesh_height": {
+          "w": 0.2,
+          "h": 0.34
+        }
+      }
+    },
+    {
+      "name": "round_oak",
+      "file": "round_oak/round_oak.glb",
+      "triangles": 776,
+      "size_studs_xyz": [
+        13.86,
+        18.3,
+        12.79
+      ],
+      "bbox_min": [
+        -6.753,
+        -0.35,
+        -6.95
+      ],
+      "bbox_max": [
+        7.111,
+        17.95,
+        5.841
+      ],
+      "bbox_centre": [
+        0.179,
+        8.8,
+        -0.5545
+      ],
+      "bury": 0.35,
+      "origin": "origin = trunk centre at ground; base buried 0.35; rotationally arbitrary",
+      "moving_parts": "none (static)",
+      "colour": "texture (do not tint: MeshPart.Color white); no vertex colours",
+      "artswap_asset": {
+        "size": [
+          13.86,
+          18.3,
+          12.79
+        ],
+        "centre": [
+          0.179,
+          8.8,
+          -0.5545
+        ],
+        "bury": 0.35
+      },
+      "trunk_collider": {
+        "fractions_of_mesh_height": {
+          "w": 0.17,
+          "h": 0.4
+        },
+        "box_at_scale_1": {
+          "centre": [
+            0,
+            3.66,
+            0
+          ],
+          "size": [
+            3.11,
+            7.32,
+            3.11
+          ]
+        }
+      }
+    },
+    {
+      "name": "cypress",
+      "file": "cypress/cypress.glb",
+      "triangles": 2711,
+      "size_studs_xyz": [
+        9.16,
+        31.0,
+        9.77
+      ],
+      "bbox_min": [
+        -4.554,
+        -0.35,
+        -4.74
+      ],
+      "bbox_max": [
+        4.607,
+        30.65,
+        5.028
+      ],
+      "bbox_centre": [
+        0.0265,
+        15.15,
+        0.144
+      ],
+      "bury": 0.35,
+      "origin": "origin = trunk centre at ground; base buried 0.35; rotationally arbitrary (vary yaw/scale: fit scale 0.9-1.12 covers the 28 and 34.8 originals)",
+      "moving_parts": "none (static)",
+      "colour": "texture (MeshPart.Color white)",
+      "artswap_asset": {
+        "size": [
+          9.16,
+          31.0,
+          9.77
+        ],
+        "centre": [
+          0.0265,
+          15.15,
+          0.144
+        ],
+        "bury": 0.35
+      },
+      "trunk_collider": {
+        "fractions_of_mesh_height": {
+          "w": 0.065,
+          "h": 0.18
+        }
+      }
+    },
+    {
+      "name": "bush",
+      "file": "bush/bush.glb",
+      "triangles": 1401,
+      "size_studs_xyz": [
+        13.61,
+        5.8,
+        14.89
+      ],
+      "bbox_min": [
+        -6.806,
+        -0.3,
+        -7.447
+      ],
+      "bbox_max": [
+        6.806,
+        5.5,
+        7.447
+      ],
+      "bbox_centre": [
+        0.0,
+        2.6,
+        0.0
+      ],
+      "bury": 0.3,
+      "origin": "origin = footprint centre at ground; base buried 0.3; vary yaw/scale (fit scale 0.75-1.0 of the original footprint)",
+      "moving_parts": "none (static)",
+      "colour": "texture (MeshPart.Color white)",
+      "artswap_asset": {
+        "size": [
+          13.61,
+          5.8,
+          14.89
+        ],
+        "centre": [
+          0.0,
+          2.6,
+          0.0
+        ],
+        "bury": 0.3
+      }
+    },
+    {
+      "name": "ground_cover",
+      "file": "ground_cover/ground_cover.glb",
+      "triangles": 872,
+      "size_studs_xyz": [
+        3.83,
+        3.37,
+        5.01
+      ],
+      "bbox_min": [
+        -1.914,
+        -0.109,
+        -2.507
+      ],
+      "bbox_max": [
+        1.912,
+        3.261,
+        2.503
+      ],
+      "bbox_centre": [
+        -0.001,
+        1.576,
+        -0.002
+      ],
+      "bury": 0.109,
+      "origin": "origin = clump centre at ground; base buried 0.1; scatter with random yaw and scale 0.8-1.6",
+      "moving_parts": "none (static)",
+      "colour": "texture (MeshPart.Color white)",
+      "artswap_asset": {
+        "size": [
+          3.83,
+          3.37,
+          5.01
+        ],
+        "centre": [
+          -0.001,
+          1.576,
+          -0.002
+        ],
+        "bury": 0.109
+      }
+    }
+  ]
+}

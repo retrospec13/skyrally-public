@@ -1,0 +1,47 @@
+{
+  "SR_ISLAND_Sand": {
+    "base": "Sand",
+    "tex": "T1_BEACH_SAND",
+    "studsPerTile": 40
+  },
+  "SR_ISLAND_WaterBed": {
+    "base": "Limestone",
+    "tex": "T2_SHALLOW_WATER_BED",
+    "studsPerTile": 56
+  },
+  "SR_ISLAND_Rock": {
+    "base": "Rock",
+    "tex": "T7_COAST_ROCK",
+    "studsPerTile": 36
+  },
+  "SR_ISLAND_Grass": {
+    "base": "Grass",
+    "tex": "T8_SEA_GRASS",
+    "studsPerTile": 56
+  },
+  "SR_ISLAND_ShipDeck": {
+    "base": "WoodPlanks",
+    "tex": "T5_SHIP_DECK",
+    "studsPerTile": 12
+  },
+  "SR_ISLAND_Cobble": {
+    "base": "Cobblestone",
+    "tex": "T9_COVE_COBBLE",
+    "studsPerTile": 24
+  },
+  "SR_ISLAND_Masonry": {
+    "base": "Slate",
+    "tex": "T7_COAST_ROCK",
+    "studsPerTile": 20
+  },
+  "SR_ISLAND_Flagstone": {
+    "base": "Slate",
+    "tex": "T7_COAST_ROCK",
+    "studsPerTile": 40
+  },
+  "SR_ISLAND_PackedSand": {
+    "base": "Concrete",
+    "tex": "T1_BEACH_SAND",
+    "studsPerTile": 56
+  }
+}

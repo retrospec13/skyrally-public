@@ -1,0 +1,599 @@
+{
+  "conventions": "All numbers are in the ROBLOX PREFAB FRAME: +Y up, front = -Z (LookVector), 1 unit = 1 stud. Prop GLBs are written PRE-TURNED 180 degrees about Y exactly like props_v2 (file x,z = -x,-z; see file_bbox_*), because Roblox turns GLB imports 180 degrees; after import the MeshPart frame equals the prefab frame. Textured (one 1024 JPEG albedo per asset, embedded), metallic 0, roughness 1, no normal/PBR maps, no vertex colours: MeshPart.Color white, TextureID from the upload. Normals: smooth under 35 degrees, hard facets above (crisp blocks).",
+  "files": [
+    {
+      "name": "windmill_tower",
+      "glb": "assets/models/props_v3/windmill_tower/windmill_tower.glb",
+      "tris": 2570,
+      "size_studs_xyz": [
+        36.902,
+        78.471,
+        37.869
+      ],
+      "bbox_min": [
+        -18.451,
+        -4.0,
+        -18.727
+      ],
+      "bbox_max": [
+        18.451,
+        74.471,
+        19.142
+      ],
+      "bbox_centre": [
+        0.0,
+        35.236,
+        0.207
+      ],
+      "file_bbox_min": [
+        -18.451,
+        -4.0,
+        -19.142
+      ],
+      "file_bbox_max": [
+        18.451,
+        74.471,
+        18.727
+      ],
+      "origin": "Windmill prefab origin: tower axis at x = z = 0, base at y -4 (as the original y -4..74). Uniform Tripo scale chosen so the axle centre is exactly y 61 (the sails hub height); horizontal squeeze 0.9 to stay near the original footprint.",
+      "colliders": [
+        {
+          "centre": [
+            0,
+            3.847,
+            0
+          ],
+          "size": [
+            35.796,
+            15.694,
+            14.827
+          ],
+          "yaw": 0
+        },
+        {
+          "centre": [
+            0,
+            3.847,
+            0
+          ],
+          "size": [
+            35.796,
+            15.694,
+            14.827
+          ],
+          "yaw": 45
+        },
+        {
+          "centre": [
+            0,
+            3.847,
+            0
+          ],
+          "size": [
+            35.796,
+            15.694,
+            14.827
+          ],
+          "yaw": 90
+        },
+        {
+          "centre": [
+            0,
+            3.847,
+            0
+          ],
+          "size": [
+            35.796,
+            15.694,
+            14.827
+          ],
+          "yaw": 135
+        },
+        {
+          "centre": [
+            0,
+            19.541,
+            0
+          ],
+          "size": [
+            36.568,
+            15.694,
+            15.147
+          ],
+          "yaw": 0
+        },
+        {
+          "centre": [
+            0,
+            19.541,
+            0
+          ],
+          "size": [
+            36.568,
+            15.694,
+            15.147
+          ],
+          "yaw": 45
+        },
+        {
+          "centre": [
+            0,
+            19.541,
+            0
+          ],
+          "size": [
+            36.568,
+            15.694,
+            15.147
+          ],
+          "yaw": 90
+        },
+        {
+          "centre": [
+            0,
+            19.541,
+            0
+          ],
+          "size": [
+            36.568,
+            15.694,
+            15.147
+          ],
+          "yaw": 135
+        },
+        {
+          "centre": [
+            0,
+            35.236,
+            0
+          ],
+          "size": [
+            30.369,
+            15.694,
+            12.579
+          ],
+          "yaw": 0
+        },
+        {
+          "centre": [
+            0,
+            35.236,
+            0
+          ],
+          "size": [
+            30.369,
+            15.694,
+            12.579
+          ],
+          "yaw": 45
+        },
+        {
+          "centre": [
+            0,
+            35.236,
+            0
+          ],
+          "size": [
+            30.369,
+            15.694,
+            12.579
+          ],
+          "yaw": 90
+        },
+        {
+          "centre": [
+            0,
+            35.236,
+            0
+          ],
+          "size": [
+            30.369,
+            15.694,
+            12.579
+          ],
+          "yaw": 135
+        },
+        {
+          "centre": [
+            0,
+            50.93,
+            0
+          ],
+          "size": [
+            32.251,
+            15.694,
+            13.359
+          ],
+          "yaw": 0
+        },
+        {
+          "centre": [
+            0,
+            50.93,
+            0
+          ],
+          "size": [
+            32.251,
+            15.694,
+            13.359
+          ],
+          "yaw": 45
+        },
+        {
+          "centre": [
+            0,
+            50.93,
+            0
+          ],
+          "size": [
+            32.251,
+            15.694,
+            13.359
+          ],
+          "yaw": 90
+        },
+        {
+          "centre": [
+            0,
+            50.93,
+            0
+          ],
+          "size": [
+            32.251,
+            15.694,
+            13.359
+          ],
+          "yaw": 135
+        },
+        {
+          "centre": [
+            0,
+            66.624,
+            0
+          ],
+          "size": [
+            32.645,
+            15.694,
+            13.522
+          ],
+          "yaw": 0
+        },
+        {
+          "centre": [
+            0,
+            66.624,
+            0
+          ],
+          "size": [
+            32.645,
+            15.694,
+            13.522
+          ],
+          "yaw": 45
+        },
+        {
+          "centre": [
+            0,
+            66.624,
+            0
+          ],
+          "size": [
+            32.645,
+            15.694,
+            13.522
+          ],
+          "yaw": 90
+        },
+        {
+          "centre": [
+            0,
+            66.624,
+            0
+          ],
+          "size": [
+            32.645,
+            15.694,
+            13.522
+          ],
+          "yaw": 135
+        }
+      ],
+      "moving_parts": "none (the sails are windmill_sails)"
+    },
+    {
+      "name": "windmill_sails",
+      "glb": "assets/models/props_v3/windmill_sails/windmill_sails.glb",
+      "tris": 660,
+      "size_studs_xyz": [
+        77.023,
+        77.023,
+        7.1
+      ],
+      "bbox_min": [
+        -38.511,
+        -38.511,
+        -8.2
+      ],
+      "bbox_max": [
+        38.511,
+        38.511,
+        -1.1
+      ],
+      "bbox_centre": [
+        0.0,
+        0.0,
+        -4.65
+      ],
+      "file_bbox_min": [
+        -38.511,
+        -38.511,
+        1.1
+      ],
+      "file_bbox_max": [
+        38.511,
+        38.511,
+        8.2
+      ],
+      "origin": "pivot = hub centre on the spin axis = the WindmillSails prefab pivot (tower frame (0, 61, -15.6)). Geometry lies wholly in front of the pivot along the axis (local z -8.2..-1.1; back face at prefab z -16.7, tower axle ends at -17.2 inside the hub). Bbox centre (0,0,-4.65) is not the pivot: place the MeshPart at pivot * bbox_centre (ArtSwap partCentre).",
+      "colliders": [],
+      "moving_parts": "whole mesh spins about its origin, axis local Z (WorldAnim SpinRPM on the kept WindmillSails Model)"
+    },
+    {
+      "name": "sign_post",
+      "glb": "assets/models/props_v3/sign_post/sign_post.glb",
+      "tris": 1455,
+      "size_studs_xyz": [
+        8.17,
+        8.45,
+        1.78
+      ],
+      "bbox_min": [
+        -4.084,
+        -0.602,
+        -0.888
+      ],
+      "bbox_max": [
+        4.084,
+        7.85,
+        0.894
+      ],
+      "bbox_centre": [
+        0.0,
+        3.624,
+        0.003
+      ],
+      "origin": "Origin = footprint centre on the ground (centre of the two posts), posts sunk 0.6 below y 0 (bbox y -0.6..7.85 as v2). Front/back = +-Z, both faces plain.",
+      "colliders": [
+        {
+          "centre": [
+            -3.3,
+            3.7,
+            0
+          ],
+          "size": [
+            1.3,
+            8.0,
+            1.3
+          ]
+        },
+        {
+          "centre": [
+            3.3,
+            3.7,
+            0
+          ],
+          "size": [
+            1.3,
+            8.0,
+            1.3
+          ]
+        }
+      ]
+    },
+    {
+      "name": "chevron_sign",
+      "glb": "assets/models/props_v3/chevron_sign/chevron_sign.glb",
+      "tris": 1455,
+      "size_studs_xyz": [
+        11.0,
+        8.2,
+        2.21
+      ],
+      "bbox_min": [
+        -5.5,
+        -0.6,
+        -1.106
+      ],
+      "bbox_max": [
+        5.5,
+        7.6,
+        1.107
+      ],
+      "bbox_centre": [
+        0.0,
+        3.5,
+        0.0
+      ],
+      "origin": "Origin = footprint centre on the ground, posts sunk 0.6 (bbox y -0.6..7.6). Board faces +-Z; chevrons painted on both faces.",
+      "colliders": [
+        {
+          "centre": [
+            -3.6,
+            3.0,
+            0
+          ],
+          "size": [
+            1.1,
+            6.4,
+            1.1
+          ]
+        },
+        {
+          "centre": [
+            3.6,
+            3.0,
+            0
+          ],
+          "size": [
+            1.1,
+            6.4,
+            1.1
+          ]
+        }
+      ]
+    },
+    {
+      "name": "lamp_post",
+      "glb": "assets/models/props_v3/lamp_post/lamp_post.glb",
+      "tris": 1454,
+      "size_studs_xyz": [
+        4.06,
+        17.96,
+        4.08
+      ],
+      "bbox_min": [
+        -2.029,
+        -0.0,
+        -2.041
+      ],
+      "bbox_max": [
+        2.029,
+        17.96,
+        2.041
+      ],
+      "bbox_centre": [
+        0.0,
+        8.98,
+        0.0
+      ],
+      "origin": "Origin = footprint centre at y 0 (stone base bottom), 17.96 tall like the original (bbox 4.06 x 17.96 x 4.08).",
+      "colliders": [
+        {
+          "centre": [
+            0,
+            0.95,
+            0
+          ],
+          "size": [
+            3.6,
+            1.9,
+            3.6
+          ]
+        },
+        {
+          "centre": [
+            0,
+            7.3,
+            0
+          ],
+          "size": [
+            1.1,
+            10.8,
+            1.1
+          ]
+        },
+        {
+          "centre": [
+            0,
+            15.2,
+            0
+          ],
+          "size": [
+            3.4,
+            4.6,
+            3.4
+          ]
+        }
+      ]
+    },
+    {
+      "name": "tiki_torch",
+      "glb": "assets/models/props_v3/tiki_torch/tiki_torch.glb",
+      "tris": 1939,
+      "size_studs_xyz": [
+        3.49,
+        9.48,
+        3.54
+      ],
+      "bbox_min": [
+        -1.719,
+        -0.273,
+        -1.977
+      ],
+      "bbox_max": [
+        1.767,
+        9.207,
+        1.561
+      ],
+      "origin": "Origin = stone base footprint centre (trunk-base centroid) at the ground, base sunk 0.3. Bowl rim top y 9.207, bowl is open in the mesh (no dish option); spawn flame ParticleEmitter + PointLight at (0, 8.7, 0). The flame is not baked.",
+      "colliders": [
+        {
+          "centre": [
+            0,
+            4.7,
+            0
+          ],
+          "size": [
+            3.2,
+            9.4,
+            3.2
+          ]
+        }
+      ]
+    },
+    {
+      "name": "banner_pole",
+      "glb": "assets/models/props_v3/banner_pole/banner_pole.glb",
+      "tris": 1454,
+      "size_studs_xyz": [
+        8.81,
+        15.2,
+        4.56
+      ],
+      "bbox_min": [
+        -2.407,
+        -0.2,
+        -2.521
+      ],
+      "bbox_max": [
+        6.403,
+        15.0,
+        2.039
+      ],
+      "file_bbox_min": [
+        -6.403,
+        -0.2,
+        -2.039
+      ],
+      "file_bbox_max": [
+        2.407,
+        15.0,
+        2.521
+      ],
+      "origin": "Origin = pole centre at the ground, sunk 0.2 (bbox y -0.2..15.0). Crossbar runs to file -X (prefab +X), tip x -6.40 (2 studs longer than the old 4.41), crossbar centre y ~12.4. Three dark iron rings wrap the crossbar at file x about -3.8 / -4.8 / -5.65 (prefab +3.8/+4.8/+5.65, measured from the front view): the kept flag part (x 0.9..3.5) must be moved out to about x 3.6..5.8 and its top lowered to ~y 11.2 to hang from them. Octagonal 3-tier sandstone plinth radius ~2.5.",
+      "colliders": []
+    },
+    {
+      "name": "boost_pad",
+      "glb": "assets/models/props_v3/boost_pad/boost_pad.glb",
+      "tris": 1108,
+      "size_studs_xyz": [
+        16.1,
+        1.2,
+        24.2
+      ],
+      "bbox_min": [
+        -8.05,
+        -0.0,
+        -12.1
+      ],
+      "bbox_max": [
+        8.05,
+        1.2,
+        12.1
+      ],
+      "origin": "Origin = footprint centre at ground level (bbox y 0..1.2). Chevron apexes point file +Z (prefab -Z).",
+      "colliders": []
+    }
+  ]
+}

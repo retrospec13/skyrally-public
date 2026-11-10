@@ -1,0 +1,732 @@
+{
+  "name": "SkyRally",
+  "tree": {
+    "$className": "DataModel",
+    "Workspace": {
+      "$className": "Workspace",
+      "$properties": {
+        "Gravity": 196.2,
+        "StreamingEnabled": false
+      }
+    },
+    "Lighting": {
+      "$className": "Lighting",
+      "$properties": {
+        "Ambient": [
+          0.38,
+          0.3,
+          0.28
+        ],
+        "OutdoorAmbient": [
+          0.48,
+          0.38,
+          0.34
+        ],
+        "Brightness": 2.2,
+        "ClockTime": 14.5,
+        "Technology": "Future"
+      }
+    },
+    "Players": {
+      "$className": "Players",
+      "$properties": {
+        "CharacterAutoLoads": true,
+        "MaxPlayers": 8
+      }
+    },
+    "ReplicatedFirst": {
+      "$className": "ReplicatedFirst",
+      "LoadingScreen": {
+        "$path": "src/loading"
+      }
+    },
+    "ReplicatedStorage": {
+      "$className": "ReplicatedStorage",
+      "Shared": {
+        "$path": "src/shared"
+      }
+    },
+    "ServerScriptService": {
+      "$className": "ServerScriptService",
+      "ServerMain": {
+        "$path": "src/server"
+      },
+      "Maps": {
+        "$className": "Folder",
+        "dino4": {
+          "$path": "build/dino4/builder_module.luau"
+        },
+        "teststrip": {
+          "$path": "build/teststrip/builder_module.luau"
+        },
+        "hub0": {
+          "$path": "build/hub0/builder_module.luau"
+        },
+        "snow1": {
+          "$path": "build/snow1/builder_module.luau"
+        },
+        "island2": {
+          "$path": "build/island2/builder_module.luau"
+        },
+        "forest1": {
+          "$path": "build/forest1/builder_module.luau"
+        },
+        "space4": {
+          "$path": "build/space4/builder_module.luau"
+        }
+      }
+    },
+    "StarterGui": {
+      "$className": "StarterGui",
+      "$properties": {
+        "ScreenOrientation": "LandscapeSensor"
+      }
+    },
+    "StarterPlayer": {
+      "$className": "StarterPlayer",
+      "StarterPlayerScripts": {
+        "$className": "StarterPlayerScripts",
+        "ClientMain": {
+          "$path": "src/client"
+        }
+      }
+    },
+    "ServerStorage": {
+      "$className": "ServerStorage",
+      "TerrainBakes": {
+        "$className": "Folder",
+        "HUB-0": {
+          "$path": "build/hub0/terrain_bake.rbxm"
+        },
+        "SNOW-1": {
+          "$path": "build/snow1/terrain_bake.rbxm"
+        },
+        "ISLAND-2": {
+          "$path": "build/island2/terrain_bake.rbxm"
+        },
+        "FOREST-1": {
+          "$path": "build/forest1/terrain_bake.rbxm"
+        },
+        "SPACE-4": {
+          "$path": "build/space4/terrain_bake.rbxm"
+        }
+      },
+      "ModelBakes": {
+        "$className": "Folder",
+        "70418724316306": {
+          "$path": "build/model_bakes/70418724316306.rbxm"
+        },
+        "73367619545738": {
+          "$path": "build/model_bakes/73367619545738.rbxm"
+        },
+        "83360206067759": {
+          "$path": "build/model_bakes/83360206067759.rbxm"
+        },
+        "92804741385165": {
+          "$path": "build/model_bakes/92804741385165.rbxm"
+        },
+        "95757652390974": {
+          "$path": "build/model_bakes/95757652390974.rbxm"
+        },
+        "107580586112839": {
+          "$path": "build/model_bakes/107580586112839.rbxm"
+        },
+        "111843268690922": {
+          "$path": "build/model_bakes/111843268690922.rbxm"
+        },
+        "123393240062345": {
+          "$path": "build/model_bakes/123393240062345.rbxm"
+        },
+        "125020544671315": {
+          "$path": "build/model_bakes/125020544671315.rbxm"
+        },
+        "134652238361077": {
+          "$path": "build/model_bakes/134652238361077.rbxm"
+        },
+        "139069710013660": {
+          "$path": "build/model_bakes/139069710013660.rbxm"
+        },
+        "140501870412096": {
+          "$path": "build/model_bakes/140501870412096.rbxm"
+        }
+      },
+      "TrackData": {
+        "$className": "Folder",
+        "dino4": {
+          "$path": "build/dino4/TrackData.luau"
+        },
+        "teststrip": {
+          "$path": "build/teststrip/TrackData.luau"
+        },
+        "hub0": {
+          "$path": "build/hub0/TrackData.luau"
+        },
+        "snow1": {
+          "$path": "build/snow1/TrackData.luau"
+        },
+        "island2": {
+          "$path": "build/island2/TrackData.luau"
+        },
+        "forest1": {
+          "$path": "build/forest1/TrackData.luau"
+        },
+        "space4": {
+          "$path": "build/space4/TrackData.luau"
+        }
+      }
+    },
+    "MaterialService": {
+      "$className": "MaterialService",
+      "SR_DINO_Strata": {
+        "$className": "MaterialVariant",
+        "$properties": {
+          "BaseMaterial": "Sandstone",
+          "ColorMap": "rbxassetid://97741679928140",
+          "NormalMap": "rbxassetid://101501339310914",
+          "StudsPerTile": 40,
+          "TexturePack": "rbxassetid://134070543415508"
+        }
+      },
+      "SR_DINO_Rock": {
+        "$className": "MaterialVariant",
+        "$properties": {
+          "BaseMaterial": "Rock",
+          "ColorMap": "rbxassetid://136329068065466",
+          "NormalMap": "rbxassetid://119457576795428",
+          "StudsPerTile": 112,
+          "TexturePack": "rbxassetid://116303314788798"
+        }
+      },
+      "SR_DINO_CaveRock": {
+        "$className": "MaterialVariant",
+        "$properties": {
+          "BaseMaterial": "Sandstone",
+          "ColorMap": "rbxassetid://136329068065466",
+          "NormalMap": "rbxassetid://119457576795428",
+          "StudsPerTile": 84,
+          "TexturePack": "rbxassetid://116303314788798"
+        }
+      },
+      "SR_DINO_Basalt": {
+        "$className": "MaterialVariant",
+        "$properties": {
+          "BaseMaterial": "Basalt",
+          "ColorMap": "rbxassetid://103041330479376",
+          "NormalMap": "rbxassetid://105771751610168",
+          "StudsPerTile": 30,
+          "TexturePack": "rbxassetid://83160361611718"
+        }
+      },
+      "SR_DINO_Lava": {
+        "$className": "MaterialVariant",
+        "$properties": {
+          "BaseMaterial": "CrackedLava",
+          "ColorMap": "rbxassetid://111117358024630",
+          "NormalMap": "rbxassetid://104551113721245",
+          "StudsPerTile": 52,
+          "TexturePack": "rbxassetid://133266992359144"
+        }
+      },
+      "SR_DINO_Pavers": {
+        "$className": "MaterialVariant",
+        "$properties": {
+          "BaseMaterial": "Slate",
+          "ColorMap": "rbxassetid://77013232507923",
+          "NormalMap": "rbxassetid://127850928733442",
+          "StudsPerTile": 14,
+          "TexturePack": "rbxassetid://100507211526818"
+        }
+      },
+      "SR_DINO_Masonry": {
+        "$className": "MaterialVariant",
+        "$properties": {
+          "BaseMaterial": "Sandstone",
+          "ColorMap": "rbxassetid://98401768314439",
+          "NormalMap": "rbxassetid://77520277584223",
+          "StudsPerTile": 18,
+          "TexturePack": "rbxassetid://99557729765557"
+        }
+      },
+      "SR_FOREST_Meadow": {
+        "$className": "MaterialVariant",
+        "$properties": {
+          "BaseMaterial": "Grass",
+          "ColorMap": "rbxassetid://88060492275976",
+          "NormalMap": "rbxassetid://75936299657867",
+          "StudsPerTile": 56,
+          "TexturePack": "rbxassetid://78352628123858"
+        }
+      },
+      "SR_FOREST_MeadowDeep": {
+        "$className": "MaterialVariant",
+        "$properties": {
+          "BaseMaterial": "Mud",
+          "ColorMap": "rbxassetid://88060492275976",
+          "NormalMap": "rbxassetid://75936299657867",
+          "StudsPerTile": 68,
+          "TexturePack": "rbxassetid://78352628123858"
+        }
+      },
+      "SR_FOREST_Dirt": {
+        "$className": "MaterialVariant",
+        "$properties": {
+          "BaseMaterial": "Ground",
+          "ColorMap": "rbxassetid://125986857819715",
+          "NormalMap": "rbxassetid://87359707904251",
+          "StudsPerTile": 26,
+          "TexturePack": "rbxassetid://118034403075156"
+        }
+      },
+      "SR_FOREST_MossyStone": {
+        "$className": "MaterialVariant",
+        "$properties": {
+          "BaseMaterial": "Limestone",
+          "ColorMap": "rbxassetid://130987769672111",
+          "NormalMap": "rbxassetid://94050168568546",
+          "StudsPerTile": 84,
+          "TexturePack": "rbxassetid://87843161724659"
+        }
+      },
+      "SR_FOREST_Crops": {
+        "$className": "MaterialVariant",
+        "$properties": {
+          "BaseMaterial": "LeafyGrass",
+          "ColorMap": "rbxassetid://86601682873200",
+          "NormalMap": "rbxassetid://111204181899349",
+          "StudsPerTile": 36,
+          "TexturePack": "rbxassetid://132011020161095"
+        }
+      },
+      "SR_FOREST_Cobble": {
+        "$className": "MaterialVariant",
+        "$properties": {
+          "BaseMaterial": "Cobblestone",
+          "ColorMap": "rbxassetid://133802354565085",
+          "NormalMap": "rbxassetid://137959330266240",
+          "StudsPerTile": 9,
+          "TexturePack": "rbxassetid://99741231991015"
+        }
+      },
+      "SR_FOREST_MillWood": {
+        "$className": "MaterialVariant",
+        "$properties": {
+          "BaseMaterial": "WoodPlanks",
+          "ColorMap": "rbxassetid://74224781711953",
+          "NormalMap": "rbxassetid://97142394385927",
+          "StudsPerTile": 10,
+          "TexturePack": "rbxassetid://79707093679094"
+        }
+      },
+      "SR_FOREST_Masonry": {
+        "$className": "MaterialVariant",
+        "$properties": {
+          "BaseMaterial": "Slate",
+          "ColorMap": "rbxassetid://140320668229985",
+          "NormalMap": "rbxassetid://94050168568546",
+          "StudsPerTile": 14,
+          "TexturePack": "rbxassetid://130564715798705"
+        }
+      },
+      "SR_HUB_PlazaStone": {
+        "$className": "MaterialVariant",
+        "$properties": {
+          "BaseMaterial": "Pavement",
+          "ColorMap": "rbxassetid://104293833022233",
+          "NormalMap": "rbxassetid://133853907382531",
+          "StudsPerTile": 12,
+          "TexturePack": "rbxassetid://117827911400676"
+        }
+      },
+      "SR_HUB_Masonry": {
+        "$className": "MaterialVariant",
+        "$properties": {
+          "BaseMaterial": "Sandstone",
+          "ColorMap": "rbxassetid://104547464414350",
+          "NormalMap": "rbxassetid://133853907382531",
+          "StudsPerTile": 10,
+          "TexturePack": "rbxassetid://126804646684305"
+        }
+      },
+      "SR_HUB_Roof": {
+        "$className": "MaterialVariant",
+        "$properties": {
+          "BaseMaterial": "ClayRoofTiles",
+          "ColorMap": "rbxassetid://84058587028329",
+          "NormalMap": "rbxassetid://86429918512728",
+          "StudsPerTile": 10,
+          "TexturePack": "rbxassetid://123117893101217"
+        }
+      },
+      "SR_HUB_Grass": {
+        "$className": "MaterialVariant",
+        "$properties": {
+          "BaseMaterial": "LeafyGrass",
+          "ColorMap": "rbxassetid://103859579944823",
+          "NormalMap": "rbxassetid://97504079305580",
+          "StudsPerTile": 22,
+          "TexturePack": "rbxassetid://122887976787100"
+        }
+      },
+      "SR_HUB_Meadow": {
+        "$className": "MaterialVariant",
+        "$properties": {
+          "BaseMaterial": "Grass",
+          "ColorMap": "rbxassetid://103859579944823",
+          "NormalMap": "rbxassetid://97504079305580",
+          "StudsPerTile": 16,
+          "TexturePack": "rbxassetid://122887976787100"
+        }
+      },
+      "SR_HUB_Sand": {
+        "$className": "MaterialVariant",
+        "$properties": {
+          "BaseMaterial": "Sand",
+          "ColorMap": "rbxassetid://84529423304932",
+          "NormalMap": "rbxassetid://100689320746965",
+          "StudsPerTile": 32,
+          "TexturePack": "rbxassetid://79861817158412"
+        }
+      },
+      "SR_HUB_Dirt": {
+        "$className": "MaterialVariant",
+        "$properties": {
+          "BaseMaterial": "Ground",
+          "ColorMap": "rbxassetid://103859579944823",
+          "NormalMap": "rbxassetid://97504079305580",
+          "StudsPerTile": 30,
+          "TexturePack": "rbxassetid://122887976787100"
+        }
+      },
+      "SR_HUB_PathEdge": {
+        "$className": "MaterialVariant",
+        "$properties": {
+          "BaseMaterial": "Mud",
+          "ColorMap": "rbxassetid://84529423304932",
+          "NormalMap": "rbxassetid://100689320746965",
+          "StudsPerTile": 24,
+          "TexturePack": "rbxassetid://79861817158412"
+        }
+      },
+      "SR_HUB_Cliff": {
+        "$className": "MaterialVariant",
+        "$properties": {
+          "BaseMaterial": "Limestone",
+          "ColorMap": "rbxassetid://130075190431624",
+          "NormalMap": "rbxassetid://137627757505035",
+          "StudsPerTile": 44,
+          "TexturePack": "rbxassetid://98328222682666"
+        }
+      },
+      "SR_HUB_Timber": {
+        "$className": "MaterialVariant",
+        "$properties": {
+          "BaseMaterial": "WoodPlanks",
+          "ColorMap": "rbxassetid://102466632862212",
+          "NormalMap": "rbxassetid://75834681159109",
+          "StudsPerTile": 10,
+          "TexturePack": "rbxassetid://92901043359551"
+        }
+      },
+      "SR_HUB_Plaster": {
+        "$className": "MaterialVariant",
+        "$properties": {
+          "BaseMaterial": "Plaster",
+          "ColorMap": "rbxassetid://84529423304932",
+          "NormalMap": "rbxassetid://100689320746965",
+          "StudsPerTile": 18,
+          "TexturePack": "rbxassetid://79861817158412"
+        }
+      },
+      "SR_ISLAND_Sand": {
+        "$className": "MaterialVariant",
+        "$properties": {
+          "BaseMaterial": "Sand",
+          "ColorMap": "rbxassetid://101951013813069",
+          "NormalMap": "rbxassetid://102144804916695",
+          "StudsPerTile": 40,
+          "TexturePack": "rbxassetid://70393036723057"
+        }
+      },
+      "SR_ISLAND_WaterBed": {
+        "$className": "MaterialVariant",
+        "$properties": {
+          "BaseMaterial": "Limestone",
+          "ColorMap": "rbxassetid://76295319155139",
+          "NormalMap": "rbxassetid://115474542124048",
+          "StudsPerTile": 56,
+          "TexturePack": "rbxassetid://123173485125236"
+        }
+      },
+      "SR_ISLAND_Rock": {
+        "$className": "MaterialVariant",
+        "$properties": {
+          "BaseMaterial": "Rock",
+          "ColorMap": "rbxassetid://110835552854373",
+          "NormalMap": "rbxassetid://132712894341313",
+          "StudsPerTile": 36,
+          "TexturePack": "rbxassetid://130598301609070"
+        }
+      },
+      "SR_ISLAND_Grass": {
+        "$className": "MaterialVariant",
+        "$properties": {
+          "BaseMaterial": "Grass",
+          "ColorMap": "rbxassetid://75632910150075",
+          "NormalMap": "rbxassetid://94899580038843",
+          "StudsPerTile": 56,
+          "TexturePack": "rbxassetid://134050495934530"
+        }
+      },
+      "SR_ISLAND_ShipDeck": {
+        "$className": "MaterialVariant",
+        "$properties": {
+          "BaseMaterial": "WoodPlanks",
+          "ColorMap": "rbxassetid://104660745410446",
+          "NormalMap": "rbxassetid://114830472382596",
+          "StudsPerTile": 12,
+          "TexturePack": "rbxassetid://103086199550235"
+        }
+      },
+      "SR_ISLAND_Cobble": {
+        "$className": "MaterialVariant",
+        "$properties": {
+          "BaseMaterial": "Cobblestone",
+          "ColorMap": "rbxassetid://92352111838984",
+          "NormalMap": "rbxassetid://139082458216639",
+          "StudsPerTile": 40,
+          "TexturePack": "rbxassetid://122532655936315"
+        }
+      },
+      "SR_ISLAND_Masonry": {
+        "$className": "MaterialVariant",
+        "$properties": {
+          "BaseMaterial": "Slate",
+          "ColorMap": "rbxassetid://98174477441561",
+          "NormalMap": "rbxassetid://132712894341313",
+          "StudsPerTile": 20,
+          "TexturePack": "rbxassetid://82879135961746"
+        }
+      },
+      "SR_ISLAND_Flagstone": {
+        "$className": "MaterialVariant",
+        "$properties": {
+          "BaseMaterial": "Slate",
+          "ColorMap": "rbxassetid://98174477441561",
+          "NormalMap": "rbxassetid://132712894341313",
+          "StudsPerTile": 40,
+          "TexturePack": "rbxassetid://82879135961746"
+        }
+      },
+      "SR_ISLAND_PackedSand": {
+        "$className": "MaterialVariant",
+        "$properties": {
+          "BaseMaterial": "Concrete",
+          "ColorMap": "rbxassetid://109989986731172",
+          "NormalMap": "rbxassetid://102144804916695",
+          "StudsPerTile": 56,
+          "TexturePack": "rbxassetid://112510447932818"
+        }
+      },
+      "SR_SNOW_Drift": {
+        "$className": "MaterialVariant",
+        "$properties": {
+          "BaseMaterial": "Snow",
+          "ColorMap": "rbxassetid://84741736325698",
+          "NormalMap": "rbxassetid://108379837773725",
+          "StudsPerTile": 56,
+          "TexturePack": "rbxassetid://100697863750024"
+        }
+      },
+      "SR_SNOW_Glacier": {
+        "$className": "MaterialVariant",
+        "$properties": {
+          "BaseMaterial": "Glacier",
+          "ColorMap": "rbxassetid://101066730574676",
+          "NormalMap": "rbxassetid://103668638025791",
+          "StudsPerTile": 44,
+          "TexturePack": "rbxassetid://125281125774253"
+        }
+      },
+      "SR_SNOW_RiverIce": {
+        "$className": "MaterialVariant",
+        "$properties": {
+          "BaseMaterial": "Ice",
+          "ColorMap": "rbxassetid://117105779117576",
+          "NormalMap": "rbxassetid://88527849918733",
+          "StudsPerTile": 64,
+          "TexturePack": "rbxassetid://100099181666865"
+        }
+      },
+      "SR_SNOW_Rock": {
+        "$className": "MaterialVariant",
+        "$properties": {
+          "BaseMaterial": "Rock",
+          "ColorMap": "rbxassetid://107895201341574",
+          "NormalMap": "rbxassetid://109955615463826",
+          "StudsPerTile": 60,
+          "TexturePack": "rbxassetid://117230712414972"
+        }
+      },
+      "SR_SNOW_Wind": {
+        "$className": "MaterialVariant",
+        "$properties": {
+          "BaseMaterial": "Ground",
+          "ColorMap": "rbxassetid://84741736325698",
+          "NormalMap": "rbxassetid://108379837773725",
+          "StudsPerTile": 70,
+          "TexturePack": "rbxassetid://100697863750024"
+        }
+      },
+      "SR_SNOW_Hollow": {
+        "$className": "MaterialVariant",
+        "$properties": {
+          "BaseMaterial": "Mud",
+          "ColorMap": "rbxassetid://84741736325698",
+          "NormalMap": "rbxassetid://108379837773725",
+          "StudsPerTile": 90,
+          "TexturePack": "rbxassetid://100697863750024"
+        }
+      },
+      "SR_SNOW_Fieldstone": {
+        "$className": "MaterialVariant",
+        "$properties": {
+          "BaseMaterial": "Granite",
+          "ColorMap": "rbxassetid://140228426985754",
+          "NormalMap": "rbxassetid://109955615463826",
+          "StudsPerTile": 16,
+          "TexturePack": "rbxassetid://111096669320945"
+        }
+      },
+      "SR_SNOW_Ashlar": {
+        "$className": "MaterialVariant",
+        "$properties": {
+          "BaseMaterial": "Slate",
+          "ColorMap": "rbxassetid://126177497013710",
+          "NormalMap": "rbxassetid://124037996927165",
+          "StudsPerTile": 22,
+          "TexturePack": "rbxassetid://73191919951534"
+        }
+      },
+      "SR_SNOW_Pavers": {
+        "$className": "MaterialVariant",
+        "$properties": {
+          "BaseMaterial": "Pavement",
+          "ColorMap": "rbxassetid://126177497013710",
+          "NormalMap": "rbxassetid://124037996927165",
+          "StudsPerTile": 11,
+          "TexturePack": "rbxassetid://73191919951534"
+        }
+      },
+      "SR_SNOW_Timber": {
+        "$className": "MaterialVariant",
+        "$properties": {
+          "BaseMaterial": "WoodPlanks",
+          "ColorMap": "rbxassetid://80155520785020",
+          "NormalMap": "rbxassetid://117695240373504",
+          "StudsPerTile": 10,
+          "TexturePack": "rbxassetid://104611914056853"
+        }
+      },
+      "SR_SPACE_MetalPlates": {
+        "$className": "MaterialVariant",
+        "$properties": {
+          "BaseMaterial": "DiamondPlate",
+          "ColorMap": "rbxassetid://112002772706486",
+          "NormalMap": "rbxassetid://137142039545894",
+          "StudsPerTile": 12,
+          "TexturePack": "rbxassetid://95916146248316"
+        }
+      },
+      "SR_SPACE_RoadPlates": {
+        "$className": "MaterialVariant",
+        "$properties": {
+          "BaseMaterial": "Slate",
+          "ColorMap": "rbxassetid://132297428126819",
+          "NormalMap": "rbxassetid://100582848079547",
+          "StudsPerTile": 32,
+          "TexturePack": "rbxassetid://120560173272646"
+        }
+      },
+      "SR_SPACE_NeonRoad": {
+        "$className": "MaterialVariant",
+        "$properties": {
+          "BaseMaterial": "Slate",
+          "ColorMap": "rbxassetid://104254175444496",
+          "NormalMap": "rbxassetid://72509941916931",
+          "StudsPerTile": 28,
+          "TexturePack": "rbxassetid://98989309044649"
+        }
+      },
+      "SR_SPACE_MoonRock": {
+        "$className": "MaterialVariant",
+        "$properties": {
+          "BaseMaterial": "Limestone",
+          "ColorMap": "rbxassetid://108661785905369",
+          "NormalMap": "rbxassetid://87015800884173",
+          "StudsPerTile": 36,
+          "TexturePack": "rbxassetid://123768094342372"
+        }
+      },
+      "SR_SPACE_MoonDust": {
+        "$className": "MaterialVariant",
+        "$properties": {
+          "BaseMaterial": "Salt",
+          "ColorMap": "rbxassetid://108661785905369",
+          "NormalMap": "rbxassetid://87015800884173",
+          "StudsPerTile": 60,
+          "TexturePack": "rbxassetid://123768094342372"
+        }
+      },
+      "SR_SPACE_GlassPanels": {
+        "$className": "MaterialVariant",
+        "$properties": {
+          "BaseMaterial": "Plastic",
+          "ColorMap": "rbxassetid://116210354256147",
+          "NormalMap": "rbxassetid://137715219242169",
+          "StudsPerTile": 8,
+          "TexturePack": "rbxassetid://96316827610980"
+        }
+      },
+      "SR_SPACE_BrassMachine": {
+        "$className": "MaterialVariant",
+        "$properties": {
+          "BaseMaterial": "Metal",
+          "ColorMap": "rbxassetid://125525979750733",
+          "NormalMap": "rbxassetid://96780213808142",
+          "StudsPerTile": 10,
+          "TexturePack": "rbxassetid://137182342399990"
+        }
+      },
+      "SR_SPACE_StoneArch": {
+        "$className": "MaterialVariant",
+        "$properties": {
+          "BaseMaterial": "Brick",
+          "ColorMap": "rbxassetid://135794125054665",
+          "NormalMap": "rbxassetid://117410177104668",
+          "StudsPerTile": 12,
+          "TexturePack": "rbxassetid://120426485390648"
+        }
+      },
+      "SR_SPACE_StoneBlocks": {
+        "$className": "MaterialVariant",
+        "$properties": {
+          "BaseMaterial": "Concrete",
+          "ColorMap": "rbxassetid://135794125054665",
+          "NormalMap": "rbxassetid://117410177104668",
+          "StudsPerTile": 18,
+          "TexturePack": "rbxassetid://120426485390648"
+        }
+      },
+      "SR_SPACE_Plaza": {
+        "$className": "MaterialVariant",
+        "$properties": {
+          "BaseMaterial": "Pavement",
+          "ColorMap": "rbxassetid://91659868394715",
+          "NormalMap": "rbxassetid://117410177104668",
+          "StudsPerTile": 32,
+          "TexturePack": "rbxassetid://72309351631549"
+        }
+      }
+    }
+  }
+}

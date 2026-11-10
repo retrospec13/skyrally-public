@@ -1,0 +1,43 @@
+{
+  "SR_DINO_Strata": {
+    "base": "Sandstone",
+    "tex": "T1_SANDSTONE_STRATA",
+    "studsPerTile": 40,
+    "neutral": true
+  },
+  "SR_DINO_Rock": {
+    "base": "Rock",
+    "tex": "T2_DARK_ROCK",
+    "studsPerTile": 112,
+    "neutral": true
+  },
+  "SR_DINO_CaveRock": {
+    "base": "Sandstone",
+    "tex": "T2_DARK_ROCK",
+    "studsPerTile": 84,
+    "neutral": true
+  },
+  "SR_DINO_Basalt": {
+    "base": "Basalt",
+    "tex": "T3_BASALT_CRUST",
+    "studsPerTile": 30,
+    "neutral": true
+  },
+  "SR_DINO_Lava": {
+    "base": "CrackedLava",
+    "tex": "T4_LAVA_FLOW",
+    "studsPerTile": 52,
+    "neutral": true
+  },
+  "SR_DINO_Pavers": {
+    "base": "Slate",
+    "tex": "T5_SLATE_PAVERS",
+    "studsPerTile": 14,
+    "neutral": true
+  },
+  "SR_DINO_Masonry": {
+    "base": "Sandstone",
+    "tex": "T6_CREAM_MASONRY",
+    "studsPerTile": 18
+  }
+}

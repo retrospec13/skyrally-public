@@ -1,0 +1,4563 @@
+{
+  "scope": "Existing asset ID candidates retained pending coordinated group remap. Includes bare-number candidates and decoded content strings; not proof of permissions or complete numeric RBXM property interpretation.",
+  "required_followup": [
+    "Resolve nested MeshId, TextureID, SurfaceAppearance, TexturePack, animation, audio, sky and package dependencies in Studio",
+    "Coordinate plan/source/generated/bake mappings and group ownership",
+    "Verify loading from an account without original uploader privileges; no upload/grant is performed here"
+  ],
+  "references": [
+    {
+      "id": "123",
+      "paths": [
+        "tools/tests/portal_fill_spec.luau"
+      ]
+    },
+    {
+      "id": "12221990",
+      "paths": [
+        "src/shared/ToolboxAudio.luau"
+      ]
+    },
+    {
+      "id": "12222019",
+      "paths": [
+        "src/shared/ToolboxAudio.luau"
+      ]
+    },
+    {
+      "id": "12222030",
+      "paths": [
+        "src/shared/ToolboxAudio.luau"
+      ]
+    },
+    {
+      "id": "12222095",
+      "paths": [
+        "src/shared/ToolboxAudio.luau"
+      ]
+    },
+    {
+      "id": "100000000",
+      "paths": [
+        "src/shared/AdminRules.luau"
+      ]
+    },
+    {
+      "id": "123456789",
+      "paths": [
+        "tools/tests/error_reporter_spec.luau"
+      ]
+    },
+    {
+      "id": "144076358",
+      "paths": [
+        "src/server/kit/PilotSeat.luau",
+        "src/shared/BotLookRules.luau"
+      ]
+    },
+    {
+      "id": "144076436",
+      "paths": [
+        "src/server/kit/PilotSeat.luau",
+        "src/shared/BotLookRules.luau"
+      ]
+    },
+    {
+      "id": "144076760",
+      "paths": [
+        "src/server/kit/PilotSeat.luau",
+        "src/shared/BotLookRules.luau"
+      ]
+    },
+    {
+      "id": "162670150",
+      "paths": [
+        "src/shared/ToolboxAudio.luau"
+      ]
+    },
+    {
+      "id": "178130996",
+      "paths": [
+        "src/client/PilotPose.luau",
+        "src/server/kit/PilotSeat.luau"
+      ]
+    },
+    {
+      "id": "241615822",
+      "paths": [
+        "tools/tests/artswap_spec.luau"
+      ]
+    },
+    {
+      "id": "376548738",
+      "paths": [
+        "src/server/kit/PilotSeat.luau",
+        "src/shared/BotLookRules.luau"
+      ]
+    },
+    {
+      "id": "382537569",
+      "paths": [
+        "src/server/kit/PilotSeat.luau",
+        "src/shared/BotLookRules.luau",
+        "tools/tests/bot_looks_spec.luau",
+        "tools/tests/field_spec.luau"
+      ]
+    },
+    {
+      "id": "382538059",
+      "paths": [
+        "src/server/kit/PilotSeat.luau",
+        "src/shared/BotLookRules.luau"
+      ]
+    },
+    {
+      "id": "398633584",
+      "paths": [
+        "src/server/kit/PilotSeat.luau",
+        "src/shared/BotLookRules.luau"
+      ]
+    },
+    {
+      "id": "398635338",
+      "paths": [
+        "src/server/kit/PilotSeat.luau",
+        "src/shared/BotLookRules.luau"
+      ]
+    },
+    {
+      "id": "451221329",
+      "paths": [
+        "src/server/kit/PilotSeat.luau",
+        "src/shared/BotLookRules.luau"
+      ]
+    },
+    {
+      "id": "607702162",
+      "paths": [
+        "src/server/kit/PilotSeat.luau",
+        "src/shared/BotLookRules.luau"
+      ]
+    },
+    {
+      "id": "1013904223",
+      "paths": [
+        "src/shared/BotNames.luau"
+      ]
+    },
+    {
+      "id": "1103515245",
+      "paths": [
+        "tools/tests/field_spec.luau",
+        "tools/tests/light_lod_spec.luau",
+        "tools/tests/opponent_jitter_sim.luau",
+        "tools/tests/opponent_jitter_spec.luau",
+        "tools/tests/plane_stutter_spec.luau",
+        "tools/tests/racer_stream_spec.luau",
+        "tools/tests/racer_view_spec.luau",
+        "tools/tests/remote_stream_spec.luau",
+        "tools/tests/worldmoments_spec.luau"
+      ]
+    },
+    {
+      "id": "1709164800",
+      "paths": [
+        "tools/tests/login_rules_spec.luau"
+      ]
+    },
+    {
+      "id": "1760745600",
+      "paths": [
+        "tools/tests/save_spec.luau"
+      ]
+    },
+    {
+      "id": "1767225599",
+      "paths": [
+        "tools/tests/login_rules_spec.luau"
+      ]
+    },
+    {
+      "id": "1767225600",
+      "paths": [
+        "tools/tests/login_rules_spec.luau"
+      ]
+    },
+    {
+      "id": "1772336109",
+      "paths": [
+        "src/server/kit/PilotSeat.luau",
+        "src/shared/BotLookRules.luau"
+      ]
+    },
+    {
+      "id": "1790000000",
+      "paths": [
+        "tools/tests/qa_hooks_spec.luau"
+      ]
+    },
+    {
+      "id": "1792366199",
+      "paths": [
+        "tools/tests/stormcup_spec.luau"
+      ]
+    },
+    {
+      "id": "1792366200",
+      "paths": [
+        "tools/tests/stormcup_spec.luau"
+      ]
+    },
+    {
+      "id": "1793491200",
+      "paths": [
+        "tools/tests/login_rules_spec.luau"
+      ]
+    },
+    {
+      "id": "1794009600",
+      "paths": [
+        "src/shared/MonetizationConfig.luau",
+        "tools/tests/admin_spec.luau",
+        "tools/tests/avatar_spec.luau",
+        "tools/tests/economy_spec.luau",
+        "tools/tests/garage_spec.luau",
+        "tools/tests/storm_flow_spec.luau",
+        "tools/tests/storm_spec.luau",
+        "tools/tests/stormcup_spec.luau"
+      ]
+    },
+    {
+      "id": "1794011400",
+      "paths": [
+        "tools/tests/economy_spec.luau"
+      ]
+    },
+    {
+      "id": "1794013200",
+      "paths": [
+        "tools/tests/economy_spec.luau"
+      ]
+    },
+    {
+      "id": "1798761600",
+      "paths": [
+        "tools/tests/stormcup_spec.luau"
+      ]
+    },
+    {
+      "id": "1800000000",
+      "paths": [
+        "tools/tests/save_ops_spec.luau"
+      ]
+    },
+    {
+      "id": "2147483647",
+      "paths": [
+        "src/server/kit/BotDisguise.luau",
+        "src/shared/ArtSwapRules.luau",
+        "src/shared/EconomyRules.luau",
+        "src/shared/GridOrder.luau",
+        "src/shared/ItemRules.luau",
+        "src/shared/SaveAdminRules.luau",
+        "tools/tests/store_binding_spec.luau"
+      ]
+    },
+    {
+      "id": "2147483648",
+      "paths": [
+        "tools/tests/field_spec.luau",
+        "tools/tests/light_lod_spec.luau",
+        "tools/tests/opponent_jitter_sim.luau",
+        "tools/tests/opponent_jitter_spec.luau",
+        "tools/tests/plane_stutter_spec.luau",
+        "tools/tests/racer_stream_spec.luau",
+        "tools/tests/racer_view_spec.luau",
+        "tools/tests/remote_stream_spec.luau",
+        "tools/tests/worldmoments_spec.luau"
+      ]
+    },
+    {
+      "id": "2506281703",
+      "paths": [
+        "src/client/PilotPose.luau",
+        "src/server/kit/PilotSeat.luau"
+      ]
+    },
+    {
+      "id": "2956239660",
+      "paths": [
+        "src/server/kit/PilotSeat.luau",
+        "src/shared/BotLookRules.luau"
+      ]
+    },
+    {
+      "id": "3149249837",
+      "paths": [
+        "src/shared/ToolboxAudio.luau"
+      ]
+    },
+    {
+      "id": "4047884046",
+      "paths": [
+        "src/server/kit/PilotSeat.luau",
+        "src/shared/BotLookRules.luau",
+        "tools/tests/field_spec.luau"
+      ]
+    },
+    {
+      "id": "4294967296",
+      "paths": [
+        "src/shared/BotNames.luau",
+        "src/shared/ErrorReporterRules.luau"
+      ]
+    },
+    {
+      "id": "12182258755",
+      "paths": [
+        "tools/tests/artswap_spec.luau"
+      ]
+    },
+    {
+      "id": "15675043410",
+      "paths": [
+        "src/shared/ToolboxAudio.luau"
+      ]
+    },
+    {
+      "id": "15930283552",
+      "paths": [
+        "src/shared/ToolboxAudio.luau"
+      ]
+    },
+    {
+      "id": "16480570986",
+      "paths": [
+        "src/shared/ToolboxAudio.luau"
+      ]
+    },
+    {
+      "id": "17208361335",
+      "paths": [
+        "src/shared/ToolboxAudio.luau"
+      ]
+    },
+    {
+      "id": "70382049627447",
+      "paths": [
+        "assets/materials/island_v1/tiles/uploaded.json",
+        "src/shared/materials_island.luau"
+      ]
+    },
+    {
+      "id": "70393036723057",
+      "paths": [
+        "default.project.json"
+      ]
+    },
+    {
+      "id": "70418724316306",
+      "paths": [
+        "build/model_bakes/manifest.json",
+        "default.project.json",
+        "src/server/PlaneBuilder.luau"
+      ]
+    },
+    {
+      "id": "70435924032603",
+      "paths": [
+        "src/shared/PropLibrary.luau"
+      ]
+    },
+    {
+      "id": "70566229313049",
+      "paths": [
+        "src/shared/PropLibrary.luau"
+      ]
+    },
+    {
+      "id": "70621735252900",
+      "paths": [
+        "src/shared/PayoffAudio.luau"
+      ]
+    },
+    {
+      "id": "70943744855332",
+      "paths": [
+        "assets/materials/space_v1/tiles/uploaded.json",
+        "src/shared/materials_space.luau"
+      ]
+    },
+    {
+      "id": "70958339779351",
+      "paths": [
+        "src/shared/SfxV2Audio.luau"
+      ]
+    },
+    {
+      "id": "71056994283693",
+      "paths": [
+        "src/shared/PayoffImages.luau"
+      ]
+    },
+    {
+      "id": "71276265762073",
+      "paths": [
+        "src/shared/sky/forest1.luau"
+      ]
+    },
+    {
+      "id": "71280125137563",
+      "paths": [
+        "src/shared/SfxV2Audio.luau"
+      ]
+    },
+    {
+      "id": "71307292440010",
+      "paths": [
+        "src/shared/ArchV3Assets.luau"
+      ]
+    },
+    {
+      "id": "71532863760835",
+      "paths": [
+        "src/shared/VfxAssets.luau"
+      ]
+    },
+    {
+      "id": "71572402688178",
+      "paths": [
+        "src/shared/AudioAssets.luau"
+      ]
+    },
+    {
+      "id": "71627636422260",
+      "paths": [
+        "build/model_bakes/139069710013660.rbxm",
+        "build/model_bakes/manifest.json"
+      ]
+    },
+    {
+      "id": "71629976550132",
+      "paths": [
+        "src/shared/FxTexAssets.luau"
+      ]
+    },
+    {
+      "id": "71880984635717",
+      "paths": [
+        "src/shared/ArchV3Assets.luau"
+      ]
+    },
+    {
+      "id": "72309351631549",
+      "paths": [
+        "default.project.json"
+      ]
+    },
+    {
+      "id": "72321140696529",
+      "paths": [
+        "src/shared/PropLibrary.luau"
+      ]
+    },
+    {
+      "id": "72465438166470",
+      "paths": [
+        "src/shared/AudioAssets.luau"
+      ]
+    },
+    {
+      "id": "72509941916931",
+      "paths": [
+        "assets/materials/space_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_space.luau"
+      ]
+    },
+    {
+      "id": "72582452171129",
+      "paths": [
+        "build/model_bakes/92804741385165.rbxm"
+      ]
+    },
+    {
+      "id": "72647457681124",
+      "paths": [
+        "src/shared/PortalTexAssets.luau"
+      ]
+    },
+    {
+      "id": "72676883141945",
+      "paths": [
+        "src/shared/FoliageModelAssets.luau"
+      ]
+    },
+    {
+      "id": "72928167174420",
+      "paths": [
+        "src/shared/PayoffImages.luau"
+      ]
+    },
+    {
+      "id": "72976168481997",
+      "paths": [
+        "build/forest1/TrackData.luau",
+        "map/forest1/plan.json",
+        "src/shared/VfxAssets.luau"
+      ]
+    },
+    {
+      "id": "73158802886449",
+      "paths": [
+        "src/shared/SoundscapeAudio.luau"
+      ]
+    },
+    {
+      "id": "73171937453075",
+      "paths": [
+        "build/model_bakes/111843268690922.rbxm",
+        "build/model_bakes/140501870412096.rbxm",
+        "build/model_bakes/83360206067759.rbxm",
+        "build/model_bakes/95757652390974.rbxm"
+      ]
+    },
+    {
+      "id": "73180210314189",
+      "paths": [
+        "src/server/PlaneBuilder.luau"
+      ]
+    },
+    {
+      "id": "73191919951534",
+      "paths": [
+        "default.project.json"
+      ]
+    },
+    {
+      "id": "73367619545738",
+      "paths": [
+        "build/model_bakes/manifest.json",
+        "default.project.json",
+        "src/shared/BossConfig.luau"
+      ]
+    },
+    {
+      "id": "73533313025164",
+      "paths": [
+        "assets/materials/dino_v1/tiles/uploaded.json",
+        "build/dino4/TrackData.luau",
+        "map/dino4/plan.json",
+        "src/shared/MaterialAssets.luau"
+      ]
+    },
+    {
+      "id": "73628055814693",
+      "paths": [
+        "src/shared/VfxFlipAssets.luau"
+      ]
+    },
+    {
+      "id": "73796656553547",
+      "paths": [
+        "src/shared/ItemTexAssets.luau"
+      ]
+    },
+    {
+      "id": "73837829131528",
+      "paths": [
+        "assets/materials/forest_v1/tiles/uploaded.json",
+        "src/shared/materials_forest.luau"
+      ]
+    },
+    {
+      "id": "74224781711953",
+      "paths": [
+        "assets/materials/forest_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_forest.luau"
+      ]
+    },
+    {
+      "id": "74267164030215",
+      "paths": [
+        "build/model_bakes/125020544671315.rbxm"
+      ]
+    },
+    {
+      "id": "74377030748527",
+      "paths": [
+        "src/shared/VfxFlipAssets.luau"
+      ]
+    },
+    {
+      "id": "74563073807120",
+      "paths": [
+        "src/shared/FoliageV3Assets.luau"
+      ]
+    },
+    {
+      "id": "74584850808127",
+      "paths": [
+        "build/dino4/TrackData.luau",
+        "map/dino4/plan.json",
+        "src/shared/VfxFlipAssets.luau"
+      ]
+    },
+    {
+      "id": "74987632133538",
+      "paths": [
+        "src/shared/SoundscapeAudio.luau"
+      ]
+    },
+    {
+      "id": "75140373018607",
+      "paths": [
+        "src/shared/ItemAudio.luau"
+      ]
+    },
+    {
+      "id": "75632910150075",
+      "paths": [
+        "assets/materials/island_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_island.luau"
+      ]
+    },
+    {
+      "id": "75834681159109",
+      "paths": [
+        "assets/materials/hub_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_hub.luau"
+      ]
+    },
+    {
+      "id": "75894828673048",
+      "paths": [
+        "src/shared/PropModelAssets.luau"
+      ]
+    },
+    {
+      "id": "75936299657867",
+      "paths": [
+        "assets/materials/forest_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_forest.luau"
+      ]
+    },
+    {
+      "id": "76195178132146",
+      "paths": [
+        "build/model_bakes/134652238361077.rbxm"
+      ]
+    },
+    {
+      "id": "76236858455090",
+      "paths": [
+        "src/shared/FoliageModelAssets.luau"
+      ]
+    },
+    {
+      "id": "76295319155139",
+      "paths": [
+        "assets/materials/island_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_island.luau"
+      ]
+    },
+    {
+      "id": "76314275389004",
+      "paths": [
+        "src/shared/SfxV2Audio.luau"
+      ]
+    },
+    {
+      "id": "76400767422305",
+      "paths": [
+        "src/shared/PropLibrary.luau"
+      ]
+    },
+    {
+      "id": "76599044884567",
+      "paths": [
+        "src/shared/ArchModelAssets.luau"
+      ]
+    },
+    {
+      "id": "76808178557336",
+      "paths": [
+        "src/shared/VfxFlipAssets.luau"
+      ]
+    },
+    {
+      "id": "76834422381437",
+      "paths": [
+        "src/shared/PropV3Assets.luau"
+      ]
+    },
+    {
+      "id": "76909549355113",
+      "paths": [
+        "src/shared/FxTexAssets.luau"
+      ]
+    },
+    {
+      "id": "76972465266426",
+      "paths": [
+        "src/shared/PropLibrary.luau"
+      ]
+    },
+    {
+      "id": "76992537169008",
+      "paths": [
+        "src/shared/WorldModelAssets.luau"
+      ]
+    },
+    {
+      "id": "77013232507923",
+      "paths": [
+        "assets/materials/dino_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/MaterialAssets.luau"
+      ]
+    },
+    {
+      "id": "77128619412815",
+      "paths": [
+        "src/shared/PropModelAssets.luau"
+      ]
+    },
+    {
+      "id": "77265748196875",
+      "paths": [
+        "src/shared/ItemTexAssets.luau"
+      ]
+    },
+    {
+      "id": "77520277584223",
+      "paths": [
+        "assets/materials/dino_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/MaterialAssets.luau"
+      ]
+    },
+    {
+      "id": "77885347777310",
+      "paths": [
+        "src/shared/PropLibrary.luau"
+      ]
+    },
+    {
+      "id": "77932208519276",
+      "paths": [
+        "src/shared/SkyAssets.luau",
+        "src/shared/lighting/dino4.luau"
+      ]
+    },
+    {
+      "id": "78054799027403",
+      "paths": [
+        "src/shared/VfxAssets.luau"
+      ]
+    },
+    {
+      "id": "78243075518608",
+      "paths": [
+        "src/server/PlaneBuilder.luau"
+      ]
+    },
+    {
+      "id": "78297012596252",
+      "paths": [
+        "src/shared/PropLibrary.luau"
+      ]
+    },
+    {
+      "id": "78352628123858",
+      "paths": [
+        "default.project.json"
+      ]
+    },
+    {
+      "id": "78372896079998",
+      "paths": [
+        "src/shared/PropLibrary.luau"
+      ]
+    },
+    {
+      "id": "78436339263398",
+      "paths": [
+        "src/shared/PropLibrary.luau"
+      ]
+    },
+    {
+      "id": "79572729185505",
+      "paths": [
+        "assets/materials/forest_v1/tiles/uploaded.json",
+        "src/shared/materials_forest.luau"
+      ]
+    },
+    {
+      "id": "79681532950690",
+      "paths": [
+        "src/shared/PayoffAudio.luau"
+      ]
+    },
+    {
+      "id": "79707093679094",
+      "paths": [
+        "default.project.json"
+      ]
+    },
+    {
+      "id": "79794607148263",
+      "paths": [
+        "src/shared/sky/dino4.luau"
+      ]
+    },
+    {
+      "id": "79861817158412",
+      "paths": [
+        "default.project.json"
+      ]
+    },
+    {
+      "id": "79864900508533",
+      "paths": [
+        "assets/materials/island_v1/tiles/uploaded.json",
+        "src/shared/materials_island.luau"
+      ]
+    },
+    {
+      "id": "79953489182385",
+      "paths": [
+        "src/shared/VfxAssets.luau"
+      ]
+    },
+    {
+      "id": "80155520785020",
+      "paths": [
+        "assets/materials/snow_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_snow.luau"
+      ]
+    },
+    {
+      "id": "80227363125641",
+      "paths": [
+        "assets/materials/island_v1/tiles/uploaded.json",
+        "src/shared/materials_island.luau"
+      ]
+    },
+    {
+      "id": "80507215285034",
+      "paths": [
+        "src/shared/sky/island2.luau"
+      ]
+    },
+    {
+      "id": "80544534079897",
+      "paths": [
+        "src/shared/FoliageModelAssets.luau"
+      ]
+    },
+    {
+      "id": "80563464543045",
+      "paths": [
+        "build/model_bakes/73367619545738.rbxm"
+      ]
+    },
+    {
+      "id": "80739879479310",
+      "paths": [
+        "assets/materials/forest_v1/tiles/uploaded.json",
+        "src/shared/materials_forest.luau"
+      ]
+    },
+    {
+      "id": "80767409571961",
+      "paths": [
+        "src/shared/WorldModelAssets.luau"
+      ]
+    },
+    {
+      "id": "80842438749461",
+      "paths": [
+        "src/shared/sky/forest1.luau"
+      ]
+    },
+    {
+      "id": "80914002390978",
+      "paths": [
+        "src/shared/AudioAssets.luau"
+      ]
+    },
+    {
+      "id": "81033188803649",
+      "paths": [
+        "src/shared/sky/hub0_storm.luau"
+      ]
+    },
+    {
+      "id": "81151017227150",
+      "paths": [
+        "assets/materials/space_v1/tiles/uploaded.json",
+        "src/shared/materials_space.luau"
+      ]
+    },
+    {
+      "id": "81185727218192",
+      "paths": [
+        "src/shared/AtmosTexAssets.luau"
+      ]
+    },
+    {
+      "id": "81353099826851",
+      "paths": [
+        "src/shared/TrickAudio.luau"
+      ]
+    },
+    {
+      "id": "81390173598399",
+      "paths": [
+        "src/shared/sky/snow1.luau"
+      ]
+    },
+    {
+      "id": "81592286519238",
+      "paths": [
+        "build/model_bakes/107580586112839.rbxm",
+        "build/model_bakes/123393240062345.rbxm",
+        "build/model_bakes/70418724316306.rbxm"
+      ]
+    },
+    {
+      "id": "81727889411312",
+      "paths": [
+        "src/shared/SoundscapeAudio.luau"
+      ]
+    },
+    {
+      "id": "82220071472126",
+      "paths": [
+        "assets/materials/island_v1/tiles/uploaded.json",
+        "src/shared/materials_island.luau"
+      ]
+    },
+    {
+      "id": "82231941809710",
+      "paths": [
+        "src/shared/StyleAudio.luau"
+      ]
+    },
+    {
+      "id": "82668356148547",
+      "paths": [
+        "src/shared/ItemModelAssets.luau"
+      ]
+    },
+    {
+      "id": "82817579670043",
+      "paths": [
+        "src/shared/PayoffAudio.luau"
+      ]
+    },
+    {
+      "id": "82846223504509",
+      "paths": [
+        "src/shared/VfxAssets.luau"
+      ]
+    },
+    {
+      "id": "82864735941825",
+      "paths": [
+        "src/shared/PropModelAssets.luau"
+      ]
+    },
+    {
+      "id": "82879135961746",
+      "paths": [
+        "default.project.json"
+      ]
+    },
+    {
+      "id": "82925223923767",
+      "paths": [
+        "src/shared/ItemTexAssets.luau"
+      ]
+    },
+    {
+      "id": "83085090013907",
+      "paths": [
+        "src/shared/CurtainAudio.luau"
+      ]
+    },
+    {
+      "id": "83150174838344",
+      "paths": [
+        "src/shared/PayoffImages.luau"
+      ]
+    },
+    {
+      "id": "83160361611718",
+      "paths": [
+        "default.project.json"
+      ]
+    },
+    {
+      "id": "83360206067759",
+      "paths": [
+        "build/model_bakes/manifest.json",
+        "default.project.json",
+        "src/server/kit/CarBuilder.luau"
+      ]
+    },
+    {
+      "id": "83538733660335",
+      "paths": [
+        "assets/materials/forest_v1/tiles/uploaded.json",
+        "src/shared/materials_forest.luau"
+      ]
+    },
+    {
+      "id": "83620595005880",
+      "paths": [
+        "assets/materials/island_v1/tiles/uploaded.json",
+        "src/shared/materials_island.luau"
+      ]
+    },
+    {
+      "id": "83720776064533",
+      "paths": [
+        "src/shared/ArchV3Assets.luau"
+      ]
+    },
+    {
+      "id": "83726303147858",
+      "paths": [
+        "src/shared/VehicleV4Assets.luau"
+      ]
+    },
+    {
+      "id": "83801118494718",
+      "paths": [
+        "build/model_bakes/92804741385165.rbxm"
+      ]
+    },
+    {
+      "id": "83826773260326",
+      "paths": [
+        "src/shared/SoundscapeAudio.luau"
+      ]
+    },
+    {
+      "id": "83846587925117",
+      "paths": [
+        "src/shared/FxModelAssets.luau"
+      ]
+    },
+    {
+      "id": "83950247030867",
+      "paths": [
+        "src/shared/AudioAssets.luau"
+      ]
+    },
+    {
+      "id": "83992638415811",
+      "paths": [
+        "src/shared/sky/hub0.luau"
+      ]
+    },
+    {
+      "id": "84058587028329",
+      "paths": [
+        "assets/materials/hub_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_hub.luau"
+      ]
+    },
+    {
+      "id": "84242972820026",
+      "paths": [
+        "build/dino4/TrackData.luau",
+        "map/dino4/plan.json",
+        "src/shared/VfxFlipAssets.luau"
+      ]
+    },
+    {
+      "id": "84409920387912",
+      "paths": [
+        "src/shared/PropModelAssets.luau"
+      ]
+    },
+    {
+      "id": "84528411342408",
+      "paths": [
+        "src/shared/PropLibrary.luau"
+      ]
+    },
+    {
+      "id": "84529423304932",
+      "paths": [
+        "assets/materials/hub_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_hub.luau"
+      ]
+    },
+    {
+      "id": "84568223214002",
+      "paths": [
+        "src/shared/ArchModelAssets.luau"
+      ]
+    },
+    {
+      "id": "84741736325698",
+      "paths": [
+        "assets/materials/snow_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_snow.luau"
+      ]
+    },
+    {
+      "id": "84779122734216",
+      "paths": [
+        "assets/sky/space4/uploaded.json",
+        "src/shared/sky/space4.luau"
+      ]
+    },
+    {
+      "id": "85213802420342",
+      "paths": [
+        "src/shared/VfxAssets.luau"
+      ]
+    },
+    {
+      "id": "85458945784248",
+      "paths": [
+        "src/shared/WorldModelAssets.luau"
+      ]
+    },
+    {
+      "id": "85676032324385",
+      "paths": [
+        "src/shared/sky/island2.luau"
+      ]
+    },
+    {
+      "id": "85686218201116",
+      "paths": [
+        "build/model_bakes/125020544671315.rbxm"
+      ]
+    },
+    {
+      "id": "85851839192561",
+      "paths": [
+        "src/client/FlightController.luau"
+      ]
+    },
+    {
+      "id": "86041054915101",
+      "paths": [
+        "assets/materials/hub_v1/tiles/uploaded.json",
+        "src/shared/materials_hub.luau"
+      ]
+    },
+    {
+      "id": "86100550199015",
+      "paths": [
+        "build/model_bakes/107580586112839.rbxm",
+        "build/model_bakes/123393240062345.rbxm",
+        "build/model_bakes/70418724316306.rbxm"
+      ]
+    },
+    {
+      "id": "86347507888878",
+      "paths": [
+        "assets/materials/island_v1/tiles/uploaded.json",
+        "src/shared/materials_island.luau"
+      ]
+    },
+    {
+      "id": "86367042177551",
+      "paths": [
+        "src/client/FlightController.luau"
+      ]
+    },
+    {
+      "id": "86384710503631",
+      "paths": [
+        "src/shared/PayoffAudio.luau"
+      ]
+    },
+    {
+      "id": "86428047666812",
+      "paths": [
+        "src/shared/SfxV2Audio.luau"
+      ]
+    },
+    {
+      "id": "86429918512728",
+      "paths": [
+        "assets/materials/hub_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_hub.luau"
+      ]
+    },
+    {
+      "id": "86590150768312",
+      "paths": [
+        "src/shared/FoliageModelAssets.luau"
+      ]
+    },
+    {
+      "id": "86601682873200",
+      "paths": [
+        "assets/materials/forest_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_forest.luau"
+      ]
+    },
+    {
+      "id": "86698368331273",
+      "paths": [
+        "build/model_bakes/134652238361077.rbxm"
+      ]
+    },
+    {
+      "id": "86740089672746",
+      "paths": [
+        "src/shared/SfxV2Audio.luau"
+      ]
+    },
+    {
+      "id": "86857312371990",
+      "paths": [
+        "src/shared/AudioAssets.luau"
+      ]
+    },
+    {
+      "id": "86894923336107",
+      "paths": [
+        "src/shared/AudioAssets.luau"
+      ]
+    },
+    {
+      "id": "86952549780370",
+      "paths": [
+        "src/shared/PropV3Assets.luau"
+      ]
+    },
+    {
+      "id": "87015800884173",
+      "paths": [
+        "assets/materials/space_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_space.luau"
+      ]
+    },
+    {
+      "id": "87060016087625",
+      "paths": [
+        "src/shared/CurtainAudio.luau"
+      ]
+    },
+    {
+      "id": "87255391563849",
+      "paths": [
+        "src/shared/SoundscapeAudio.luau"
+      ]
+    },
+    {
+      "id": "87341533909029",
+      "paths": [
+        "src/shared/CurtainAudio.luau"
+      ]
+    },
+    {
+      "id": "87342029998931",
+      "paths": [
+        "src/shared/ArchModelAssets.luau"
+      ]
+    },
+    {
+      "id": "87359707904251",
+      "paths": [
+        "assets/materials/forest_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_forest.luau"
+      ]
+    },
+    {
+      "id": "87391788168516",
+      "paths": [
+        "build/model_bakes/140501870412096.rbxm"
+      ]
+    },
+    {
+      "id": "87396280189210",
+      "paths": [
+        "src/shared/ArchV3Assets.luau"
+      ]
+    },
+    {
+      "id": "87450056837975",
+      "paths": [
+        "src/shared/ArchModelAssets.luau"
+      ]
+    },
+    {
+      "id": "87682802926192",
+      "paths": [
+        "src/shared/SoundscapeAudio.luau"
+      ]
+    },
+    {
+      "id": "87703636628661",
+      "paths": [
+        "builder_dino4.luau",
+        "map/dino4/extracted/art.json",
+        "tools/map/tests/fixtures.py"
+      ]
+    },
+    {
+      "id": "87705151440247",
+      "paths": [
+        "src/shared/WorldMomentsAudio.luau"
+      ]
+    },
+    {
+      "id": "87829139691907",
+      "paths": [
+        "src/shared/PropModelAssets.luau"
+      ]
+    },
+    {
+      "id": "87833126633236",
+      "paths": [
+        "src/shared/PropV3Assets.luau"
+      ]
+    },
+    {
+      "id": "87843161724659",
+      "paths": [
+        "default.project.json"
+      ]
+    },
+    {
+      "id": "87931746178836",
+      "paths": [
+        "src/shared/SetPiecesAudio.luau"
+      ]
+    },
+    {
+      "id": "87982775404120",
+      "paths": [
+        "build/model_bakes/83360206067759.rbxm"
+      ]
+    },
+    {
+      "id": "88060492275976",
+      "paths": [
+        "assets/materials/forest_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_forest.luau"
+      ]
+    },
+    {
+      "id": "88118316319879",
+      "paths": [
+        "build/model_bakes/92804741385165.rbxm"
+      ]
+    },
+    {
+      "id": "88248374325910",
+      "paths": [
+        "src/client/FlightController.luau"
+      ]
+    },
+    {
+      "id": "88305928054620",
+      "paths": [
+        "src/shared/SetPiecesAudio.luau"
+      ]
+    },
+    {
+      "id": "88527849918733",
+      "paths": [
+        "assets/materials/snow_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_snow.luau"
+      ]
+    },
+    {
+      "id": "88529716023999",
+      "paths": [
+        "src/shared/StyleAudio.luau"
+      ]
+    },
+    {
+      "id": "88832612858767",
+      "paths": [
+        "build/dino4/TrackData.luau",
+        "map/dino4/plan.json",
+        "tools/map/author_dino4.py"
+      ]
+    },
+    {
+      "id": "88935847446619",
+      "paths": [
+        "src/shared/PropLibrary.luau"
+      ]
+    },
+    {
+      "id": "88955511468395",
+      "paths": [
+        "src/shared/SetPiecesAudio.luau"
+      ]
+    },
+    {
+      "id": "89065686239601",
+      "paths": [
+        "src/shared/TrickAudio.luau"
+      ]
+    },
+    {
+      "id": "89153630152699",
+      "paths": [
+        "src/shared/TrickAudio.luau"
+      ]
+    },
+    {
+      "id": "89371712748862",
+      "paths": [
+        "src/shared/sky/hub0.luau"
+      ]
+    },
+    {
+      "id": "89541470780035",
+      "paths": [
+        "build/forest1/TrackData.luau",
+        "build/hub0/TrackData.luau",
+        "build/island2/TrackData.luau",
+        "map/forest1/plan.json",
+        "map/hub0/plan.json",
+        "map/island2/plan.json",
+        "src/shared/VfxAssets.luau"
+      ]
+    },
+    {
+      "id": "90103369662651",
+      "paths": [
+        "src/shared/sky/dino4.luau"
+      ]
+    },
+    {
+      "id": "90151922700164",
+      "paths": [
+        "src/shared/lighting/snow1.luau"
+      ]
+    },
+    {
+      "id": "90258243204507",
+      "paths": [
+        "src/shared/PropLibrary.luau"
+      ]
+    },
+    {
+      "id": "90427471898608",
+      "paths": [
+        "src/shared/ArchModelAssets.luau"
+      ]
+    },
+    {
+      "id": "90513556774320",
+      "paths": [
+        "src/shared/VfxAssets.luau"
+      ]
+    },
+    {
+      "id": "90540952590885",
+      "paths": [
+        "src/shared/SetPiecesAudio.luau"
+      ]
+    },
+    {
+      "id": "90646937868215",
+      "paths": [
+        "src/shared/PropLibrary.luau"
+      ]
+    },
+    {
+      "id": "90649096547873",
+      "paths": [
+        "src/shared/VfxFlipAssets.luau"
+      ]
+    },
+    {
+      "id": "90805080890326",
+      "paths": [
+        "src/shared/SkyAssets.luau",
+        "src/shared/lighting/dino4.luau"
+      ]
+    },
+    {
+      "id": "90814707383992",
+      "paths": [
+        "src/shared/PropLibrary.luau"
+      ]
+    },
+    {
+      "id": "90876259128349",
+      "paths": [
+        "src/shared/FoliageModelAssets.luau"
+      ]
+    },
+    {
+      "id": "90893538240280",
+      "paths": [
+        "src/shared/PropModelAssets.luau"
+      ]
+    },
+    {
+      "id": "90902472482999",
+      "paths": [
+        "src/shared/StyleAudio.luau"
+      ]
+    },
+    {
+      "id": "90915439865992",
+      "paths": [
+        "src/shared/WorldModelAssets.luau"
+      ]
+    },
+    {
+      "id": "91002480387088",
+      "paths": [
+        "src/shared/AudioAssets.luau"
+      ]
+    },
+    {
+      "id": "91370570146441",
+      "paths": [
+        "src/shared/FoliageModelAssets.luau"
+      ]
+    },
+    {
+      "id": "91558602538098",
+      "paths": [
+        "src/shared/PayoffAudio.luau"
+      ]
+    },
+    {
+      "id": "91659868394715",
+      "paths": [
+        "assets/materials/space_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_space.luau"
+      ]
+    },
+    {
+      "id": "91766690011310",
+      "paths": [
+        "src/shared/VfxAssets.luau"
+      ]
+    },
+    {
+      "id": "91840597129266",
+      "paths": [
+        "src/client/FlightController.luau",
+        "src/client/SoundJuice.luau",
+        "src/loading/LoadingRules.luau"
+      ]
+    },
+    {
+      "id": "91913689526846",
+      "paths": [
+        "src/shared/ArchV3Assets.luau"
+      ]
+    },
+    {
+      "id": "91970748557330",
+      "paths": [
+        "src/shared/FoliageModelAssets.luau"
+      ]
+    },
+    {
+      "id": "91979706613453",
+      "paths": [
+        "src/shared/WorldModelAssets.luau"
+      ]
+    },
+    {
+      "id": "92050151129479",
+      "paths": [
+        "src/client/RaceUI.luau",
+        "src/loading/LoadingRules.luau"
+      ]
+    },
+    {
+      "id": "92051109477553",
+      "paths": [
+        "src/shared/SoundscapeAudio.luau"
+      ]
+    },
+    {
+      "id": "92200603596874",
+      "paths": [
+        "src/shared/WorldMomentsAudio.luau"
+      ]
+    },
+    {
+      "id": "92314041778961",
+      "paths": [
+        "src/shared/SetPiecesAudio.luau"
+      ]
+    },
+    {
+      "id": "92337965161579",
+      "paths": [
+        "src/shared/AudioAssets.luau"
+      ]
+    },
+    {
+      "id": "92352111838984",
+      "paths": [
+        "assets/materials/island_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_island.luau"
+      ]
+    },
+    {
+      "id": "92645791747968",
+      "paths": [
+        "src/shared/UiAudioAssets.luau"
+      ]
+    },
+    {
+      "id": "92804741385165",
+      "paths": [
+        "build/model_bakes/manifest.json",
+        "default.project.json",
+        "src/shared/BossConfig.luau"
+      ]
+    },
+    {
+      "id": "92901043359551",
+      "paths": [
+        "default.project.json"
+      ]
+    },
+    {
+      "id": "92970461985890",
+      "paths": [
+        "src/shared/TrickAudio.luau"
+      ]
+    },
+    {
+      "id": "93015928674784",
+      "paths": [
+        "src/shared/PropLibrary.luau"
+      ]
+    },
+    {
+      "id": "93137695197348",
+      "paths": [
+        "src/shared/SetPiecesAudio.luau"
+      ]
+    },
+    {
+      "id": "93197496566771",
+      "paths": [
+        "src/shared/SetPiecesAudio.luau"
+      ]
+    },
+    {
+      "id": "93243389292697",
+      "paths": [
+        "src/shared/PayoffAudio.luau"
+      ]
+    },
+    {
+      "id": "93345663784486",
+      "paths": [
+        "src/shared/SetPiecesAudio.luau"
+      ]
+    },
+    {
+      "id": "93369481926810",
+      "paths": [
+        "assets/vfx/hub_v1/uploaded.json",
+        "build/hub0/TrackData.luau",
+        "map/hub0/plan.json",
+        "src/shared/HubFxAssets.luau"
+      ]
+    },
+    {
+      "id": "93581609449410",
+      "paths": [
+        "src/shared/ItemAudio.luau"
+      ]
+    },
+    {
+      "id": "93637397505300",
+      "paths": [
+        "src/shared/UiAudioAssets.luau"
+      ]
+    },
+    {
+      "id": "93784605586399",
+      "paths": [
+        "src/server/PlaneBuilder.luau"
+      ]
+    },
+    {
+      "id": "93889236821264",
+      "paths": [
+        "src/shared/sky/snow1.luau"
+      ]
+    },
+    {
+      "id": "93963996364273",
+      "paths": [
+        "src/shared/SoundscapeAudio.luau"
+      ]
+    },
+    {
+      "id": "94050168568546",
+      "paths": [
+        "assets/materials/forest_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_forest.luau"
+      ]
+    },
+    {
+      "id": "94051928943941",
+      "paths": [
+        "src/shared/FoliageV3Assets.luau"
+      ]
+    },
+    {
+      "id": "94425062893363",
+      "paths": [
+        "build/model_bakes/73367619545738.rbxm"
+      ]
+    },
+    {
+      "id": "94435585805009",
+      "paths": [
+        "build/model_bakes/139069710013660.rbxm"
+      ]
+    },
+    {
+      "id": "94637674413831",
+      "paths": [
+        "src/shared/PropLibrary.luau"
+      ]
+    },
+    {
+      "id": "94651080655566",
+      "paths": [
+        "build/model_bakes/139069710013660.rbxm"
+      ]
+    },
+    {
+      "id": "94682670446277",
+      "paths": [
+        "src/shared/AudioAssets.luau"
+      ]
+    },
+    {
+      "id": "94899580038843",
+      "paths": [
+        "assets/materials/island_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_island.luau"
+      ]
+    },
+    {
+      "id": "95017123297209",
+      "paths": [
+        "src/shared/PayoffAudio.luau"
+      ]
+    },
+    {
+      "id": "95054786304501",
+      "paths": [
+        "build/model_bakes/134652238361077.rbxm"
+      ]
+    },
+    {
+      "id": "95302879649125",
+      "paths": [
+        "src/shared/BarrierAudio.luau"
+      ]
+    },
+    {
+      "id": "95318684909905",
+      "paths": [
+        "src/shared/AudioAssets.luau"
+      ]
+    },
+    {
+      "id": "95757652390974",
+      "paths": [
+        "build/model_bakes/manifest.json",
+        "default.project.json",
+        "src/server/kit/CarBuilder.luau",
+        "tools/tests/model_bakes_spec.luau"
+      ]
+    },
+    {
+      "id": "95916146248316",
+      "paths": [
+        "default.project.json"
+      ]
+    },
+    {
+      "id": "96003451268712",
+      "paths": [
+        "src/shared/SfxV2Audio.luau"
+      ]
+    },
+    {
+      "id": "96034319027524",
+      "paths": [
+        "src/shared/AudioAssets.luau"
+      ]
+    },
+    {
+      "id": "96316827610980",
+      "paths": [
+        "default.project.json"
+      ]
+    },
+    {
+      "id": "96337670852286",
+      "paths": [
+        "build/dino4/TrackData.luau",
+        "map/dino4/plan.json",
+        "src/shared/VfxAssets.luau"
+      ]
+    },
+    {
+      "id": "96645779324441",
+      "paths": [
+        "src/shared/GroundTexAssets.luau"
+      ]
+    },
+    {
+      "id": "96696699374497",
+      "paths": [
+        "src/client/RaceUI.luau",
+        "src/loading/LoadingRules.luau",
+        "tools/tests/loading_spec.luau"
+      ]
+    },
+    {
+      "id": "96703151675408",
+      "paths": [
+        "src/shared/WorldModelAssets.luau"
+      ]
+    },
+    {
+      "id": "96780213808142",
+      "paths": [
+        "assets/materials/space_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_space.luau"
+      ]
+    },
+    {
+      "id": "96904464203641",
+      "paths": [
+        "assets/materials/snow_v1/tiles/uploaded.json",
+        "src/shared/materials_snow.luau"
+      ]
+    },
+    {
+      "id": "96955416919064",
+      "paths": [
+        "src/shared/UiAudioAssets.luau"
+      ]
+    },
+    {
+      "id": "97142394385927",
+      "paths": [
+        "assets/materials/forest_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_forest.luau"
+      ]
+    },
+    {
+      "id": "97174792056778",
+      "paths": [
+        "src/shared/PropV3Assets.luau"
+      ]
+    },
+    {
+      "id": "97366941122881",
+      "paths": [
+        "src/shared/CurtainAudio.luau"
+      ]
+    },
+    {
+      "id": "97446753326609",
+      "paths": [
+        "src/shared/VfxAssets.luau"
+      ]
+    },
+    {
+      "id": "97504079305580",
+      "paths": [
+        "assets/materials/hub_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_hub.luau"
+      ]
+    },
+    {
+      "id": "97633880923375",
+      "paths": [
+        "build/model_bakes/107580586112839.rbxm"
+      ]
+    },
+    {
+      "id": "97741679928140",
+      "paths": [
+        "assets/materials/dino_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/MaterialAssets.luau"
+      ]
+    },
+    {
+      "id": "97791527270549",
+      "paths": [
+        "src/shared/CurtainAudio.luau"
+      ]
+    },
+    {
+      "id": "97947427814575",
+      "paths": [
+        "src/shared/FoliageModelAssets.luau"
+      ]
+    },
+    {
+      "id": "98086222919300",
+      "paths": [
+        "builder_dino4.luau"
+      ]
+    },
+    {
+      "id": "98107569436732",
+      "paths": [
+        "src/shared/SetPiecesAudio.luau"
+      ]
+    },
+    {
+      "id": "98161646047653",
+      "paths": [
+        "src/shared/PropLibrary.luau"
+      ]
+    },
+    {
+      "id": "98174477441561",
+      "paths": [
+        "assets/materials/island_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_island.luau"
+      ]
+    },
+    {
+      "id": "98194334280996",
+      "paths": [
+        "src/shared/ArchModelAssets.luau"
+      ]
+    },
+    {
+      "id": "98257030917803",
+      "paths": [
+        "src/shared/PayoffAudio.luau"
+      ]
+    },
+    {
+      "id": "98328222682666",
+      "paths": [
+        "default.project.json"
+      ]
+    },
+    {
+      "id": "98401768314439",
+      "paths": [
+        "assets/materials/dino_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/MaterialAssets.luau"
+      ]
+    },
+    {
+      "id": "98417132310512",
+      "paths": [
+        "src/shared/SetPiecesAudio.luau"
+      ]
+    },
+    {
+      "id": "98423453621544",
+      "paths": [
+        "src/shared/PropLibrary.luau"
+      ]
+    },
+    {
+      "id": "98496623517616",
+      "paths": [
+        "assets/materials/forest_v1/tiles/uploaded.json",
+        "src/shared/materials_forest.luau"
+      ]
+    },
+    {
+      "id": "98519764152112",
+      "paths": [
+        "src/shared/AudioAssets.luau"
+      ]
+    },
+    {
+      "id": "98524705414193",
+      "paths": [
+        "src/server/PlaneBuilder.luau"
+      ]
+    },
+    {
+      "id": "98905005803347",
+      "paths": [
+        "src/shared/ItemModelAssets.luau"
+      ]
+    },
+    {
+      "id": "98962859726916",
+      "paths": [
+        "src/shared/FxModelAssets.luau"
+      ]
+    },
+    {
+      "id": "98984274876322",
+      "paths": [
+        "assets/materials/dino_v1/tiles/uploaded.json",
+        "src/shared/MaterialAssets.luau"
+      ]
+    },
+    {
+      "id": "98989309044649",
+      "paths": [
+        "default.project.json"
+      ]
+    },
+    {
+      "id": "99019776832762",
+      "paths": [
+        "src/shared/SfxV2Audio.luau"
+      ]
+    },
+    {
+      "id": "99077326544330",
+      "paths": [
+        "src/shared/AtmosTexAssets.luau"
+      ]
+    },
+    {
+      "id": "99079986778813",
+      "paths": [
+        "src/shared/PropModelAssets.luau"
+      ]
+    },
+    {
+      "id": "99302008682798",
+      "paths": [
+        "build/model_bakes/125020544671315.rbxm",
+        "build/model_bakes/manifest.json"
+      ]
+    },
+    {
+      "id": "99309915803990",
+      "paths": [
+        "src/shared/SfxV2Audio.luau"
+      ]
+    },
+    {
+      "id": "99460291278265",
+      "paths": [
+        "src/shared/FoliageModelAssets.luau"
+      ]
+    },
+    {
+      "id": "99549816637224",
+      "paths": [
+        "build/model_bakes/111843268690922.rbxm",
+        "build/model_bakes/140501870412096.rbxm",
+        "build/model_bakes/83360206067759.rbxm",
+        "build/model_bakes/95757652390974.rbxm"
+      ]
+    },
+    {
+      "id": "99557729765557",
+      "paths": [
+        "default.project.json"
+      ]
+    },
+    {
+      "id": "99672597106819",
+      "paths": [
+        "src/shared/WorldMomentsAudio.luau"
+      ]
+    },
+    {
+      "id": "99741231991015",
+      "paths": [
+        "default.project.json"
+      ]
+    },
+    {
+      "id": "99894643450277",
+      "paths": [
+        "src/shared/PropLibrary.luau"
+      ]
+    },
+    {
+      "id": "99957520747399",
+      "paths": [
+        "src/shared/PropLibrary.luau"
+      ]
+    },
+    {
+      "id": "100041299752024",
+      "paths": [
+        "src/shared/ItemTexAssets.luau"
+      ]
+    },
+    {
+      "id": "100099181666865",
+      "paths": [
+        "default.project.json"
+      ]
+    },
+    {
+      "id": "100258497589232",
+      "paths": [
+        "src/shared/PayoffAudio.luau"
+      ]
+    },
+    {
+      "id": "100264446302042",
+      "paths": [
+        "src/shared/SfxV2Audio.luau"
+      ]
+    },
+    {
+      "id": "100314121077713",
+      "paths": [
+        "src/shared/ItemTexAssets.luau"
+      ]
+    },
+    {
+      "id": "100384818862543",
+      "paths": [
+        "src/shared/SetPiecesAudio.luau"
+      ]
+    },
+    {
+      "id": "100500331486856",
+      "paths": [
+        "assets/materials/island_v1/tiles/uploaded.json",
+        "src/shared/materials_island.luau"
+      ]
+    },
+    {
+      "id": "100507211526818",
+      "paths": [
+        "default.project.json"
+      ]
+    },
+    {
+      "id": "100582848079547",
+      "paths": [
+        "assets/materials/space_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_space.luau"
+      ]
+    },
+    {
+      "id": "100689320746965",
+      "paths": [
+        "assets/materials/hub_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_hub.luau"
+      ]
+    },
+    {
+      "id": "100697863750024",
+      "paths": [
+        "default.project.json"
+      ]
+    },
+    {
+      "id": "100905895890634",
+      "paths": [
+        "src/shared/PropV3Assets.luau"
+      ]
+    },
+    {
+      "id": "101066730574676",
+      "paths": [
+        "assets/materials/snow_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_snow.luau"
+      ]
+    },
+    {
+      "id": "101204000012177",
+      "paths": [
+        "build/model_bakes/139069710013660.rbxm"
+      ]
+    },
+    {
+      "id": "101318709650114",
+      "paths": [
+        "assets/materials/island_v1/tiles/uploaded.json",
+        "src/shared/materials_island.luau"
+      ]
+    },
+    {
+      "id": "101377272729573",
+      "paths": [
+        "src/shared/UiAudioAssets.luau"
+      ]
+    },
+    {
+      "id": "101501339310914",
+      "paths": [
+        "assets/materials/dino_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/MaterialAssets.luau"
+      ]
+    },
+    {
+      "id": "101522711748058",
+      "paths": [
+        "src/shared/PayoffImages.luau"
+      ]
+    },
+    {
+      "id": "101704876442894",
+      "paths": [
+        "src/shared/PropLibrary.luau"
+      ]
+    },
+    {
+      "id": "101935694059275",
+      "paths": [
+        "build/model_bakes/111843268690922.rbxm",
+        "build/model_bakes/140501870412096.rbxm",
+        "build/model_bakes/83360206067759.rbxm",
+        "build/model_bakes/95757652390974.rbxm"
+      ]
+    },
+    {
+      "id": "101951013813069",
+      "paths": [
+        "assets/materials/island_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_island.luau"
+      ]
+    },
+    {
+      "id": "102144804916695",
+      "paths": [
+        "assets/materials/island_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_island.luau"
+      ]
+    },
+    {
+      "id": "102372815506912",
+      "paths": [
+        "src/shared/PayoffImages.luau"
+      ]
+    },
+    {
+      "id": "102466632862212",
+      "paths": [
+        "assets/materials/hub_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_hub.luau"
+      ]
+    },
+    {
+      "id": "102485337005951",
+      "paths": [
+        "src/shared/FoliageV3Assets.luau"
+      ]
+    },
+    {
+      "id": "102575371971790",
+      "paths": [
+        "src/shared/SoundscapeAudio.luau"
+      ]
+    },
+    {
+      "id": "102717888778910",
+      "paths": [
+        "src/shared/ItemModelAssets.luau"
+      ]
+    },
+    {
+      "id": "102774858608721",
+      "paths": [
+        "src/shared/sky/hub0_storm.luau"
+      ]
+    },
+    {
+      "id": "102784980127748",
+      "paths": [
+        "src/shared/PropV3Assets.luau"
+      ]
+    },
+    {
+      "id": "103041330479376",
+      "paths": [
+        "assets/materials/dino_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/MaterialAssets.luau"
+      ]
+    },
+    {
+      "id": "103086199550235",
+      "paths": [
+        "default.project.json"
+      ]
+    },
+    {
+      "id": "103544530874151",
+      "paths": [
+        "build/model_bakes/125020544671315.rbxm"
+      ]
+    },
+    {
+      "id": "103668638025791",
+      "paths": [
+        "assets/materials/snow_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_snow.luau"
+      ]
+    },
+    {
+      "id": "103808477106961",
+      "paths": [
+        "src/shared/PropLibrary.luau"
+      ]
+    },
+    {
+      "id": "103859579944823",
+      "paths": [
+        "assets/materials/hub_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_hub.luau"
+      ]
+    },
+    {
+      "id": "103997353330561",
+      "paths": [
+        "assets/materials/forest_v1/tiles/uploaded.json",
+        "src/shared/materials_forest.luau"
+      ]
+    },
+    {
+      "id": "104077554321209",
+      "paths": [
+        "src/shared/AtmosTexAssets.luau"
+      ]
+    },
+    {
+      "id": "104254175444496",
+      "paths": [
+        "assets/materials/space_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_space.luau"
+      ]
+    },
+    {
+      "id": "104293833022233",
+      "paths": [
+        "assets/materials/hub_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_hub.luau"
+      ]
+    },
+    {
+      "id": "104348717340525",
+      "paths": [
+        "src/shared/PayoffAudio.luau"
+      ]
+    },
+    {
+      "id": "104428079649632",
+      "paths": [
+        "src/shared/VfxFlipAssets.luau"
+      ]
+    },
+    {
+      "id": "104547464414350",
+      "paths": [
+        "assets/materials/hub_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_hub.luau"
+      ]
+    },
+    {
+      "id": "104551113721245",
+      "paths": [
+        "assets/materials/dino_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/MaterialAssets.luau"
+      ]
+    },
+    {
+      "id": "104585751883218",
+      "paths": [
+        "src/shared/PropLibrary.luau"
+      ]
+    },
+    {
+      "id": "104611914056853",
+      "paths": [
+        "default.project.json"
+      ]
+    },
+    {
+      "id": "104660745410446",
+      "paths": [
+        "assets/materials/island_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_island.luau"
+      ]
+    },
+    {
+      "id": "104782170740493",
+      "paths": [
+        "src/shared/PropLibrary.luau"
+      ]
+    },
+    {
+      "id": "104866711976681",
+      "paths": [
+        "src/shared/AudioAssets.luau"
+      ]
+    },
+    {
+      "id": "105097928875724",
+      "paths": [
+        "assets/sky/space4/uploaded.json",
+        "src/shared/sky/space4.luau"
+      ]
+    },
+    {
+      "id": "105228088587890",
+      "paths": [
+        "src/shared/StyleAudio.luau"
+      ]
+    },
+    {
+      "id": "105243820098553",
+      "paths": [
+        "src/shared/AudioAssets.luau"
+      ]
+    },
+    {
+      "id": "105378380340595",
+      "paths": [
+        "build/model_bakes/73367619545738.rbxm",
+        "build/model_bakes/manifest.json"
+      ]
+    },
+    {
+      "id": "105428220874786",
+      "paths": [
+        "src/shared/FxModelAssets.luau"
+      ]
+    },
+    {
+      "id": "105461070565837",
+      "paths": [
+        "assets/materials/island_v1/tiles/uploaded.json",
+        "src/shared/materials_island.luau"
+      ]
+    },
+    {
+      "id": "105483802483745",
+      "paths": [
+        "src/shared/SfxV2Audio.luau"
+      ]
+    },
+    {
+      "id": "105527719723211",
+      "paths": [
+        "src/shared/PropLibrary.luau"
+      ]
+    },
+    {
+      "id": "105667771363155",
+      "paths": [
+        "assets/materials/dino_v1/tiles/uploaded.json",
+        "src/shared/MaterialAssets.luau"
+      ]
+    },
+    {
+      "id": "105771751610168",
+      "paths": [
+        "assets/materials/dino_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/MaterialAssets.luau"
+      ]
+    },
+    {
+      "id": "105904555778325",
+      "paths": [
+        "src/shared/SfxV2Audio.luau"
+      ]
+    },
+    {
+      "id": "106090404268668",
+      "paths": [
+        "src/shared/SfxV2Audio.luau"
+      ]
+    },
+    {
+      "id": "106228678610130",
+      "paths": [
+        "src/shared/AudioAssets.luau"
+      ]
+    },
+    {
+      "id": "106464426922453",
+      "paths": [
+        "src/shared/PropLibrary.luau"
+      ]
+    },
+    {
+      "id": "106573507866537",
+      "paths": [
+        "build/model_bakes/73367619545738.rbxm"
+      ]
+    },
+    {
+      "id": "106621334478228",
+      "paths": [
+        "build/model_bakes/70418724316306.rbxm"
+      ]
+    },
+    {
+      "id": "106730813458692",
+      "paths": [
+        "src/shared/PayoffAudio.luau"
+      ]
+    },
+    {
+      "id": "106762211100863",
+      "paths": [
+        "build/model_bakes/139069710013660.rbxm"
+      ]
+    },
+    {
+      "id": "107001705221126",
+      "paths": [
+        "src/shared/SetPiecesAudio.luau"
+      ]
+    },
+    {
+      "id": "107103600602610",
+      "paths": [
+        "src/shared/ItemTexAssets.luau"
+      ]
+    },
+    {
+      "id": "107159917401727",
+      "paths": [
+        "src/shared/FxTexAssets.luau"
+      ]
+    },
+    {
+      "id": "107215748957523",
+      "paths": [
+        "src/shared/ItemAudio.luau"
+      ]
+    },
+    {
+      "id": "107568897125251",
+      "paths": [
+        "src/shared/ArchModelAssets.luau"
+      ]
+    },
+    {
+      "id": "107580586112839",
+      "paths": [
+        "build/hub0/TrackData.luau",
+        "build/model_bakes/manifest.json",
+        "default.project.json",
+        "map/hub0/plan.json",
+        "src/server/PlaneBuilder.luau"
+      ]
+    },
+    {
+      "id": "107727431331999",
+      "paths": [
+        "src/shared/UiAudioAssets.luau"
+      ]
+    },
+    {
+      "id": "107895201341574",
+      "paths": [
+        "assets/materials/snow_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_snow.luau"
+      ]
+    },
+    {
+      "id": "107905600152917",
+      "paths": [
+        "src/shared/AudioAssets.luau"
+      ]
+    },
+    {
+      "id": "108199447975963",
+      "paths": [
+        "src/shared/SetPiecesAudio.luau"
+      ]
+    },
+    {
+      "id": "108302726602476",
+      "paths": [
+        "src/shared/WorldModelAssets.luau"
+      ]
+    },
+    {
+      "id": "108379837773725",
+      "paths": [
+        "assets/materials/snow_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_snow.luau"
+      ]
+    },
+    {
+      "id": "108661785905369",
+      "paths": [
+        "assets/materials/space_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_space.luau"
+      ]
+    },
+    {
+      "id": "109102943023500",
+      "paths": [
+        "build/model_bakes/125020544671315.rbxm"
+      ]
+    },
+    {
+      "id": "109161416978604",
+      "paths": [
+        "src/shared/PropLibrary.luau"
+      ]
+    },
+    {
+      "id": "109442931011906",
+      "paths": [
+        "src/shared/SoundscapeAudio.luau"
+      ]
+    },
+    {
+      "id": "109472149744069",
+      "paths": [
+        "build/model_bakes/107580586112839.rbxm",
+        "build/model_bakes/123393240062345.rbxm",
+        "build/model_bakes/70418724316306.rbxm"
+      ]
+    },
+    {
+      "id": "109571445980996",
+      "paths": [
+        "src/shared/FxModelAssets.luau"
+      ]
+    },
+    {
+      "id": "109719955673796",
+      "paths": [
+        "src/shared/FoliageV3Assets.luau"
+      ]
+    },
+    {
+      "id": "109756077171596",
+      "paths": [
+        "src/shared/PropModelAssets.luau"
+      ]
+    },
+    {
+      "id": "109890903693119",
+      "paths": [
+        "src/shared/SfxV2Audio.luau"
+      ]
+    },
+    {
+      "id": "109955615463826",
+      "paths": [
+        "assets/materials/snow_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_snow.luau"
+      ]
+    },
+    {
+      "id": "109989986731172",
+      "paths": [
+        "assets/materials/island_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_island.luau"
+      ]
+    },
+    {
+      "id": "110317017632426",
+      "paths": [
+        "src/shared/VfxFlipAssets.luau"
+      ]
+    },
+    {
+      "id": "110374535397761",
+      "paths": [
+        "src/shared/SfxV2Audio.luau"
+      ]
+    },
+    {
+      "id": "110536125503897",
+      "paths": [
+        "build/dino4/TrackData.luau",
+        "map/dino4/plan.json"
+      ]
+    },
+    {
+      "id": "110674906823575",
+      "paths": [
+        "src/shared/PropLibrary.luau"
+      ]
+    },
+    {
+      "id": "110835552854373",
+      "paths": [
+        "assets/materials/island_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_island.luau"
+      ]
+    },
+    {
+      "id": "111096669320945",
+      "paths": [
+        "default.project.json"
+      ]
+    },
+    {
+      "id": "111117358024630",
+      "paths": [
+        "assets/materials/dino_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/MaterialAssets.luau"
+      ]
+    },
+    {
+      "id": "111153013597142",
+      "paths": [
+        "src/shared/ArchV3Assets.luau"
+      ]
+    },
+    {
+      "id": "111204181899349",
+      "paths": [
+        "assets/materials/forest_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_forest.luau"
+      ]
+    },
+    {
+      "id": "111298839345574",
+      "paths": [
+        "src/shared/WorldMomentsAudio.luau"
+      ]
+    },
+    {
+      "id": "111416857814804",
+      "paths": [
+        "src/shared/SfxV2Audio.luau"
+      ]
+    },
+    {
+      "id": "111843268690922",
+      "paths": [
+        "build/model_bakes/manifest.json",
+        "default.project.json",
+        "src/server/PlaneBuilder.luau",
+        "tools/tests/model_bakes_spec.luau"
+      ]
+    },
+    {
+      "id": "111924507130107",
+      "paths": [
+        "assets/vfx/hub_v1/uploaded.json",
+        "build/hub0/TrackData.luau",
+        "map/hub0/plan.json",
+        "src/shared/HubFxAssets.luau"
+      ]
+    },
+    {
+      "id": "112002772706486",
+      "paths": [
+        "assets/materials/space_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_space.luau"
+      ]
+    },
+    {
+      "id": "112087716336058",
+      "paths": [
+        "src/shared/SfxV2Audio.luau"
+      ]
+    },
+    {
+      "id": "112175049824455",
+      "paths": [
+        "build/model_bakes/134652238361077.rbxm"
+      ]
+    },
+    {
+      "id": "112279238186491",
+      "paths": [
+        "src/shared/PropLibrary.luau"
+      ]
+    },
+    {
+      "id": "112500858560594",
+      "paths": [
+        "src/shared/PropV3Assets.luau"
+      ]
+    },
+    {
+      "id": "112510447932818",
+      "paths": [
+        "default.project.json"
+      ]
+    },
+    {
+      "id": "112776500906682",
+      "paths": [
+        "src/shared/SoundscapeAudio.luau"
+      ]
+    },
+    {
+      "id": "112912456855981",
+      "paths": [
+        "src/shared/SfxV2Audio.luau"
+      ]
+    },
+    {
+      "id": "113215113678679",
+      "paths": [
+        "assets/materials/forest_v1/tiles/uploaded.json",
+        "src/shared/materials_forest.luau"
+      ]
+    },
+    {
+      "id": "113254343349157",
+      "paths": [
+        "src/shared/FxTexAssets.luau"
+      ]
+    },
+    {
+      "id": "113408161505652",
+      "paths": [
+        "src/shared/SfxV2Audio.luau"
+      ]
+    },
+    {
+      "id": "113647494206948",
+      "paths": [
+        "assets/materials/snow_v1/tiles/uploaded.json",
+        "src/shared/materials_snow.luau"
+      ]
+    },
+    {
+      "id": "113729616009980",
+      "paths": [
+        "src/shared/GroundTexAssets.luau"
+      ]
+    },
+    {
+      "id": "113843670092284",
+      "paths": [
+        "src/shared/PropLibrary.luau"
+      ]
+    },
+    {
+      "id": "113894952094043",
+      "paths": [
+        "src/shared/FoliageModelAssets.luau"
+      ]
+    },
+    {
+      "id": "113983312659320",
+      "paths": [
+        "src/shared/SfxV2Audio.luau"
+      ]
+    },
+    {
+      "id": "114222507302130",
+      "paths": [
+        "src/shared/SoundscapeAudio.luau"
+      ]
+    },
+    {
+      "id": "114266228831377",
+      "paths": [
+        "src/shared/SoundscapeAudio.luau"
+      ]
+    },
+    {
+      "id": "114341734023987",
+      "paths": [
+        "build/model_bakes/95757652390974.rbxm"
+      ]
+    },
+    {
+      "id": "114697756698292",
+      "paths": [
+        "build/model_bakes/125020544671315.rbxm"
+      ]
+    },
+    {
+      "id": "114830472382596",
+      "paths": [
+        "assets/materials/island_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_island.luau"
+      ]
+    },
+    {
+      "id": "115020931202008",
+      "paths": [
+        "build/model_bakes/134652238361077.rbxm",
+        "build/model_bakes/manifest.json"
+      ]
+    },
+    {
+      "id": "115164874386622",
+      "paths": [
+        "src/shared/PayoffImages.luau"
+      ]
+    },
+    {
+      "id": "115215306385599",
+      "paths": [
+        "src/shared/SfxV2Audio.luau"
+      ]
+    },
+    {
+      "id": "115418124543095",
+      "paths": [
+        "assets/materials/island_v1/tiles/uploaded.json",
+        "src/shared/materials_island.luau"
+      ]
+    },
+    {
+      "id": "115474542124048",
+      "paths": [
+        "assets/materials/island_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_island.luau"
+      ]
+    },
+    {
+      "id": "115513663776992",
+      "paths": [
+        "build/hub0/TrackData.luau",
+        "map/hub0/plan.json",
+        "src/server/PlaneBuilder.luau",
+        "tools/map/author_hub0.py"
+      ]
+    },
+    {
+      "id": "115726552981676",
+      "paths": [
+        "assets/sky/space4/uploaded.json",
+        "src/shared/sky/space4.luau"
+      ]
+    },
+    {
+      "id": "115753626600367",
+      "paths": [
+        "src/shared/AudioAssets.luau"
+      ]
+    },
+    {
+      "id": "115805113822355",
+      "paths": [
+        "src/shared/PropLibrary.luau"
+      ]
+    },
+    {
+      "id": "116087040744556",
+      "paths": [
+        "src/shared/PropLibrary.luau"
+      ]
+    },
+    {
+      "id": "116106586386868",
+      "paths": [
+        "src/shared/WorldMomentsAudio.luau"
+      ]
+    },
+    {
+      "id": "116125446025672",
+      "paths": [
+        "src/shared/ArchModelAssets.luau"
+      ]
+    },
+    {
+      "id": "116205765408584",
+      "paths": [
+        "src/shared/SoundscapeAudio.luau"
+      ]
+    },
+    {
+      "id": "116210354256147",
+      "paths": [
+        "assets/materials/space_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_space.luau"
+      ]
+    },
+    {
+      "id": "116250495102687",
+      "paths": [
+        "src/shared/PropLibrary.luau"
+      ]
+    },
+    {
+      "id": "116303314788798",
+      "paths": [
+        "default.project.json"
+      ]
+    },
+    {
+      "id": "116385382861265",
+      "paths": [
+        "src/shared/SetPiecesAudio.luau"
+      ]
+    },
+    {
+      "id": "116654109502455",
+      "paths": [
+        "src/shared/AudioAssets.luau"
+      ]
+    },
+    {
+      "id": "116676194995993",
+      "paths": [
+        "src/shared/PropLibrary.luau"
+      ]
+    },
+    {
+      "id": "116826011462087",
+      "paths": [
+        "src/shared/PropV3Assets.luau"
+      ]
+    },
+    {
+      "id": "116881607147488",
+      "paths": [
+        "src/shared/StyleAudio.luau"
+      ]
+    },
+    {
+      "id": "117105779117576",
+      "paths": [
+        "assets/materials/snow_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_snow.luau"
+      ]
+    },
+    {
+      "id": "117230712414972",
+      "paths": [
+        "default.project.json"
+      ]
+    },
+    {
+      "id": "117284135940989",
+      "paths": [
+        "src/shared/PropLibrary.luau"
+      ]
+    },
+    {
+      "id": "117410177104668",
+      "paths": [
+        "assets/materials/space_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_space.luau"
+      ]
+    },
+    {
+      "id": "117570558409464",
+      "paths": [
+        "src/shared/TrickAudio.luau"
+      ]
+    },
+    {
+      "id": "117695240373504",
+      "paths": [
+        "assets/materials/snow_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_snow.luau"
+      ]
+    },
+    {
+      "id": "117819392274785",
+      "paths": [
+        "build/model_bakes/92804741385165.rbxm"
+      ]
+    },
+    {
+      "id": "117827911400676",
+      "paths": [
+        "default.project.json"
+      ]
+    },
+    {
+      "id": "118034403075156",
+      "paths": [
+        "default.project.json"
+      ]
+    },
+    {
+      "id": "118390072974450",
+      "paths": [
+        "src/shared/PortalTexAssets.luau"
+      ]
+    },
+    {
+      "id": "118535207107670",
+      "paths": [
+        "assets/materials/hub_v1/tiles/uploaded.json",
+        "src/shared/materials_hub.luau"
+      ]
+    },
+    {
+      "id": "118575425896602",
+      "paths": [
+        "builder_dino4.luau",
+        "map/dino4/extracted/art.json"
+      ]
+    },
+    {
+      "id": "118618583581899",
+      "paths": [
+        "src/shared/UiAudioAssets.luau"
+      ]
+    },
+    {
+      "id": "118684964130932",
+      "paths": [
+        "src/shared/TrickAudio.luau"
+      ]
+    },
+    {
+      "id": "118771337769461",
+      "paths": [
+        "build/model_bakes/111843268690922.rbxm"
+      ]
+    },
+    {
+      "id": "118797211608985",
+      "paths": [
+        "src/shared/ArchModelAssets.luau"
+      ]
+    },
+    {
+      "id": "118832818492471",
+      "paths": [
+        "src/shared/SfxV2Audio.luau"
+      ]
+    },
+    {
+      "id": "118871156482188",
+      "paths": [
+        "src/shared/lighting/dino4.luau"
+      ]
+    },
+    {
+      "id": "118916892686809",
+      "paths": [
+        "src/shared/AudioAssets.luau"
+      ]
+    },
+    {
+      "id": "119071659457640",
+      "paths": [
+        "src/shared/SoundscapeAudio.luau"
+      ]
+    },
+    {
+      "id": "119198491050859",
+      "paths": [
+        "src/shared/FoliageV3Assets.luau"
+      ]
+    },
+    {
+      "id": "119320578645739",
+      "paths": [
+        "src/server/PlaneBuilder.luau"
+      ]
+    },
+    {
+      "id": "119400100013321",
+      "paths": [
+        "src/shared/VfxAssets.luau"
+      ]
+    },
+    {
+      "id": "119457576795428",
+      "paths": [
+        "assets/materials/dino_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/MaterialAssets.luau"
+      ]
+    },
+    {
+      "id": "119553142425296",
+      "paths": [
+        "assets/sky/space4/uploaded.json",
+        "src/shared/sky/space4.luau"
+      ]
+    },
+    {
+      "id": "119608922340863",
+      "paths": [
+        "src/shared/WorldMomentsAudio.luau"
+      ]
+    },
+    {
+      "id": "119650400727289",
+      "paths": [
+        "src/shared/sky/forest1.luau"
+      ]
+    },
+    {
+      "id": "120016681866350",
+      "paths": [
+        "src/shared/SoundscapeAudio.luau"
+      ]
+    },
+    {
+      "id": "120174985930490",
+      "paths": [
+        "src/shared/UiAudioAssets.luau"
+      ]
+    },
+    {
+      "id": "120217435354482",
+      "paths": [
+        "src/shared/ItemModelAssets.luau"
+      ]
+    },
+    {
+      "id": "120261094879320",
+      "paths": [
+        "src/shared/SfxV2Audio.luau"
+      ]
+    },
+    {
+      "id": "120284844268617",
+      "paths": [
+        "src/shared/ItemAudio.luau"
+      ]
+    },
+    {
+      "id": "120320429326476",
+      "paths": [
+        "src/shared/PropLibrary.luau"
+      ]
+    },
+    {
+      "id": "120426485390648",
+      "paths": [
+        "default.project.json"
+      ]
+    },
+    {
+      "id": "120560173272646",
+      "paths": [
+        "default.project.json"
+      ]
+    },
+    {
+      "id": "120626758127697",
+      "paths": [
+        "src/shared/lighting/forest1.luau"
+      ]
+    },
+    {
+      "id": "120688848599160",
+      "paths": [
+        "src/shared/SoundscapeAudio.luau"
+      ]
+    },
+    {
+      "id": "120703278998536",
+      "paths": [
+        "src/shared/sky/hub0_storm.luau"
+      ]
+    },
+    {
+      "id": "120859295576259",
+      "paths": [
+        "src/shared/SfxV2Audio.luau"
+      ]
+    },
+    {
+      "id": "121016399778194",
+      "paths": [
+        "src/shared/SfxV2Audio.luau"
+      ]
+    },
+    {
+      "id": "121145196788012",
+      "paths": [
+        "build/model_bakes/123393240062345.rbxm"
+      ]
+    },
+    {
+      "id": "121534182955980",
+      "paths": [
+        "src/shared/ItemModelAssets.luau"
+      ]
+    },
+    {
+      "id": "122035391664297",
+      "paths": [
+        "src/shared/AudioAssets.luau"
+      ]
+    },
+    {
+      "id": "122105412695984",
+      "paths": [
+        "src/shared/SoundscapeAudio.luau"
+      ]
+    },
+    {
+      "id": "122109252213420",
+      "paths": [
+        "src/shared/CelebrationTexAssets.luau"
+      ]
+    },
+    {
+      "id": "122214313310260",
+      "paths": [
+        "src/shared/StyleAudio.luau"
+      ]
+    },
+    {
+      "id": "122423506582464",
+      "paths": [
+        "build/dino4/TrackData.luau",
+        "build/forest1/TrackData.luau",
+        "build/hub0/TrackData.luau",
+        "build/island2/TrackData.luau",
+        "map/dino4/plan.json",
+        "map/forest1/plan.json",
+        "map/hub0/plan.json",
+        "map/island2/plan.json",
+        "src/shared/VfxAssets.luau"
+      ]
+    },
+    {
+      "id": "122532655936315",
+      "paths": [
+        "default.project.json"
+      ]
+    },
+    {
+      "id": "122536889901424",
+      "paths": [
+        "build/hub0/TrackData.luau",
+        "map/hub0/plan.json",
+        "src/server/PlaneBuilder.luau"
+      ]
+    },
+    {
+      "id": "122747552050148",
+      "paths": [
+        "src/shared/PropLibrary.luau"
+      ]
+    },
+    {
+      "id": "122852691976999",
+      "paths": [
+        "src/shared/ArchModelAssets.luau"
+      ]
+    },
+    {
+      "id": "122859295382323",
+      "paths": [
+        "src/shared/UiAudioAssets.luau"
+      ]
+    },
+    {
+      "id": "122887976787100",
+      "paths": [
+        "default.project.json"
+      ]
+    },
+    {
+      "id": "122932642481770",
+      "paths": [
+        "src/shared/AudioAssets.luau"
+      ]
+    },
+    {
+      "id": "123000476300114",
+      "paths": [
+        "assets/materials/snow_v1/tiles/uploaded.json",
+        "src/shared/materials_snow.luau"
+      ]
+    },
+    {
+      "id": "123117893101217",
+      "paths": [
+        "default.project.json"
+      ]
+    },
+    {
+      "id": "123120737808459",
+      "paths": [
+        "src/shared/SoundscapeAudio.luau"
+      ]
+    },
+    {
+      "id": "123173485125236",
+      "paths": [
+        "default.project.json"
+      ]
+    },
+    {
+      "id": "123187364708213",
+      "paths": [
+        "src/shared/PayoffAudio.luau"
+      ]
+    },
+    {
+      "id": "123229875233245",
+      "paths": [
+        "src/shared/ArchModelAssets.luau"
+      ]
+    },
+    {
+      "id": "123372081868498",
+      "paths": [
+        "src/shared/ArchV3Assets.luau"
+      ]
+    },
+    {
+      "id": "123393240062345",
+      "paths": [
+        "build/model_bakes/manifest.json",
+        "default.project.json",
+        "src/server/PlaneBuilder.luau"
+      ]
+    },
+    {
+      "id": "123418904123182",
+      "paths": [
+        "src/shared/SkyAssets.luau"
+      ]
+    },
+    {
+      "id": "123468126055404",
+      "paths": [
+        "src/shared/SfxV2Audio.luau"
+      ]
+    },
+    {
+      "id": "123520324246620",
+      "paths": [
+        "src/shared/SfxV2Audio.luau"
+      ]
+    },
+    {
+      "id": "123649166831120",
+      "paths": [
+        "build/model_bakes/134652238361077.rbxm"
+      ]
+    },
+    {
+      "id": "123706853048203",
+      "paths": [
+        "src/shared/sky/hub0.luau"
+      ]
+    },
+    {
+      "id": "123743529928687",
+      "paths": [
+        "build/model_bakes/92804741385165.rbxm",
+        "build/model_bakes/manifest.json"
+      ]
+    },
+    {
+      "id": "123768094342372",
+      "paths": [
+        "default.project.json"
+      ]
+    },
+    {
+      "id": "123863226233274",
+      "paths": [
+        "src/shared/PayoffAudio.luau"
+      ]
+    },
+    {
+      "id": "123903792869573",
+      "paths": [
+        "src/shared/ArchModelAssets.luau"
+      ]
+    },
+    {
+      "id": "124009005275129",
+      "paths": [
+        "src/shared/PropLibrary.luau"
+      ]
+    },
+    {
+      "id": "124015049418905",
+      "paths": [
+        "src/server/PlaneBuilder.luau"
+      ]
+    },
+    {
+      "id": "124017064014859",
+      "paths": [
+        "assets/materials/hub_v1/tiles/uploaded.json",
+        "src/shared/materials_hub.luau"
+      ]
+    },
+    {
+      "id": "124037996927165",
+      "paths": [
+        "assets/materials/snow_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_snow.luau"
+      ]
+    },
+    {
+      "id": "124094534725801",
+      "paths": [
+        "assets/materials/dino_v1/tiles/uploaded.json",
+        "src/shared/MaterialAssets.luau"
+      ]
+    },
+    {
+      "id": "124142257739469",
+      "paths": [
+        "src/shared/AudioAssets.luau"
+      ]
+    },
+    {
+      "id": "124281285004322",
+      "paths": [
+        "src/shared/SetPiecesAudio.luau"
+      ]
+    },
+    {
+      "id": "124354792473554",
+      "paths": [
+        "src/shared/StyleAudio.luau"
+      ]
+    },
+    {
+      "id": "124456368626148",
+      "paths": [
+        "src/shared/VfxFlipAssets.luau"
+      ]
+    },
+    {
+      "id": "124706465132674",
+      "paths": [
+        "src/shared/FxModelAssets.luau"
+      ]
+    },
+    {
+      "id": "124729475495588",
+      "paths": [
+        "src/shared/PayoffImages.luau"
+      ]
+    },
+    {
+      "id": "124861719399692",
+      "paths": [
+        "src/shared/PropLibrary.luau"
+      ]
+    },
+    {
+      "id": "124932748189938",
+      "paths": [
+        "src/shared/WorldModelAssets.luau"
+      ]
+    },
+    {
+      "id": "125020544671315",
+      "paths": [
+        "build/model_bakes/manifest.json",
+        "default.project.json",
+        "src/shared/BossConfig.luau"
+      ]
+    },
+    {
+      "id": "125111793581139",
+      "paths": [
+        "src/shared/WorldMomentsAudio.luau"
+      ]
+    },
+    {
+      "id": "125281125774253",
+      "paths": [
+        "default.project.json"
+      ]
+    },
+    {
+      "id": "125283976776085",
+      "paths": [
+        "src/shared/sky/island2.luau"
+      ]
+    },
+    {
+      "id": "125372754946919",
+      "paths": [
+        "build/forest1/TrackData.luau",
+        "build/hub0/TrackData.luau",
+        "build/island2/TrackData.luau",
+        "build/snow1/TrackData.luau",
+        "build/space4/TrackData.luau",
+        "map/forest1/plan.json",
+        "map/hub0/plan.json",
+        "map/island2/plan.json",
+        "map/snow1/plan.json",
+        "map/space4/plan.json",
+        "src/shared/VfxFlipAssets.luau"
+      ]
+    },
+    {
+      "id": "125391017957144",
+      "paths": [
+        "src/shared/SfxV2Audio.luau"
+      ]
+    },
+    {
+      "id": "125525979750733",
+      "paths": [
+        "assets/materials/space_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_space.luau"
+      ]
+    },
+    {
+      "id": "125539132674575",
+      "paths": [
+        "build/model_bakes/107580586112839.rbxm",
+        "build/model_bakes/123393240062345.rbxm",
+        "build/model_bakes/70418724316306.rbxm",
+        "build/model_bakes/manifest.json"
+      ]
+    },
+    {
+      "id": "125986857819715",
+      "paths": [
+        "assets/materials/forest_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_forest.luau"
+      ]
+    },
+    {
+      "id": "126017947829372",
+      "paths": [
+        "src/shared/VfxAssets.luau"
+      ]
+    },
+    {
+      "id": "126037379097896",
+      "paths": [
+        "src/shared/sky/dino4.luau"
+      ]
+    },
+    {
+      "id": "126072811573881",
+      "paths": [
+        "src/shared/PropModelAssets.luau"
+      ]
+    },
+    {
+      "id": "126177497013710",
+      "paths": [
+        "assets/materials/snow_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_snow.luau"
+      ]
+    },
+    {
+      "id": "126180458210825",
+      "paths": [
+        "assets/materials/hub_v1/tiles/uploaded.json",
+        "src/shared/materials_hub.luau"
+      ]
+    },
+    {
+      "id": "126548204237692",
+      "paths": [
+        "src/shared/ArchModelAssets.luau"
+      ]
+    },
+    {
+      "id": "126588288020831",
+      "paths": [
+        "src/shared/SetPiecesAudio.luau"
+      ]
+    },
+    {
+      "id": "126804646684305",
+      "paths": [
+        "default.project.json"
+      ]
+    },
+    {
+      "id": "126956937294792",
+      "paths": [
+        "src/shared/VfxAssets.luau"
+      ]
+    },
+    {
+      "id": "127520569199248",
+      "paths": [
+        "src/shared/SfxV2Audio.luau"
+      ]
+    },
+    {
+      "id": "127535461631319",
+      "paths": [
+        "src/shared/SoundscapeAudio.luau"
+      ]
+    },
+    {
+      "id": "127562850654025",
+      "paths": [
+        "src/shared/PayoffImages.luau"
+      ]
+    },
+    {
+      "id": "127801710897560",
+      "paths": [
+        "src/shared/PayoffAudio.luau"
+      ]
+    },
+    {
+      "id": "127817035280983",
+      "paths": [
+        "src/shared/PayoffAudio.luau"
+      ]
+    },
+    {
+      "id": "127850928733442",
+      "paths": [
+        "assets/materials/dino_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/MaterialAssets.luau"
+      ]
+    },
+    {
+      "id": "128075399295659",
+      "paths": [
+        "build/model_bakes/92804741385165.rbxm"
+      ]
+    },
+    {
+      "id": "128161839703154",
+      "paths": [
+        "src/shared/StyleAudio.luau"
+      ]
+    },
+    {
+      "id": "128175855802965",
+      "paths": [
+        "src/shared/VfxAssets.luau"
+      ]
+    },
+    {
+      "id": "128278153317949",
+      "paths": [
+        "src/shared/VfxAssets.luau"
+      ]
+    },
+    {
+      "id": "128309649877928",
+      "paths": [
+        "src/shared/SfxV2Audio.luau"
+      ]
+    },
+    {
+      "id": "128378584206547",
+      "paths": [
+        "src/shared/VfxFlipAssets.luau"
+      ]
+    },
+    {
+      "id": "128434517333136",
+      "paths": [
+        "src/shared/TrickAudio.luau"
+      ]
+    },
+    {
+      "id": "128554326404927",
+      "paths": [
+        "src/shared/FoliageModelAssets.luau"
+      ]
+    },
+    {
+      "id": "128603866196253",
+      "paths": [
+        "src/shared/SfxV2Audio.luau"
+      ]
+    },
+    {
+      "id": "128771700305896",
+      "paths": [
+        "src/shared/VfxFlipAssets.luau"
+      ]
+    },
+    {
+      "id": "129086497166378",
+      "paths": [
+        "src/client/RaceUI.luau",
+        "src/loading/LoadingRules.luau"
+      ]
+    },
+    {
+      "id": "129101540405357",
+      "paths": [
+        "src/shared/VfxFlipAssets.luau"
+      ]
+    },
+    {
+      "id": "129195035819439",
+      "paths": [
+        "assets/materials/space_v1/tiles/uploaded.json",
+        "src/shared/materials_space.luau"
+      ]
+    },
+    {
+      "id": "129467780013253",
+      "paths": [
+        "src/shared/PropModelAssets.luau"
+      ]
+    },
+    {
+      "id": "129648490484262",
+      "paths": [
+        "src/shared/FxModelAssets.luau"
+      ]
+    },
+    {
+      "id": "129721143183618",
+      "paths": [
+        "src/shared/ItemAudio.luau"
+      ]
+    },
+    {
+      "id": "129731223995772",
+      "paths": [
+        "build/model_bakes/111843268690922.rbxm",
+        "build/model_bakes/140501870412096.rbxm",
+        "build/model_bakes/83360206067759.rbxm",
+        "build/model_bakes/95757652390974.rbxm"
+      ]
+    },
+    {
+      "id": "129797542019204",
+      "paths": [
+        "src/shared/TrickAudio.luau"
+      ]
+    },
+    {
+      "id": "129814809454701",
+      "paths": [
+        "src/shared/ItemTexAssets.luau"
+      ]
+    },
+    {
+      "id": "129843924038498",
+      "paths": [
+        "assets/sky/space4/uploaded.json",
+        "src/shared/sky/space4.luau"
+      ]
+    },
+    {
+      "id": "129906866012439",
+      "paths": [
+        "assets/materials/snow_v1/tiles/uploaded.json",
+        "src/shared/materials_snow.luau"
+      ]
+    },
+    {
+      "id": "129998719250733",
+      "paths": [
+        "assets/materials/hub_v1/tiles/uploaded.json",
+        "src/shared/materials_hub.luau"
+      ]
+    },
+    {
+      "id": "130075190431624",
+      "paths": [
+        "assets/materials/hub_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_hub.luau"
+      ]
+    },
+    {
+      "id": "130505451362542",
+      "paths": [
+        "src/shared/SoundscapeAudio.luau"
+      ]
+    },
+    {
+      "id": "130530466294935",
+      "paths": [
+        "src/shared/StyleAudio.luau"
+      ]
+    },
+    {
+      "id": "130564565590011",
+      "paths": [
+        "assets/sky/space4/uploaded.json",
+        "src/shared/sky/space4.luau"
+      ]
+    },
+    {
+      "id": "130564629162531",
+      "paths": [
+        "src/shared/SfxV2Audio.luau"
+      ]
+    },
+    {
+      "id": "130564715798705",
+      "paths": [
+        "default.project.json"
+      ]
+    },
+    {
+      "id": "130598301609070",
+      "paths": [
+        "default.project.json"
+      ]
+    },
+    {
+      "id": "130987769672111",
+      "paths": [
+        "assets/materials/forest_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_forest.luau"
+      ]
+    },
+    {
+      "id": "131375983952763",
+      "paths": [
+        "assets/materials/forest_v1/tiles/uploaded.json",
+        "src/shared/materials_forest.luau"
+      ]
+    },
+    {
+      "id": "131459559263489",
+      "paths": [
+        "src/shared/SfxV2Audio.luau"
+      ]
+    },
+    {
+      "id": "131547814616853",
+      "paths": [
+        "src/shared/PortalTexAssets.luau"
+      ]
+    },
+    {
+      "id": "131740440629642",
+      "paths": [
+        "src/shared/PayoffImages.luau"
+      ]
+    },
+    {
+      "id": "131765917745930",
+      "paths": [
+        "src/shared/FoliageModelAssets.luau"
+      ]
+    },
+    {
+      "id": "131916693556853",
+      "paths": [
+        "src/shared/SoundscapeAudio.luau"
+      ]
+    },
+    {
+      "id": "132011020161095",
+      "paths": [
+        "default.project.json"
+      ]
+    },
+    {
+      "id": "132049912770058",
+      "paths": [
+        "src/shared/PropLibrary.luau"
+      ]
+    },
+    {
+      "id": "132058638383949",
+      "paths": [
+        "assets/materials/snow_v1/tiles/uploaded.json",
+        "src/shared/materials_snow.luau"
+      ]
+    },
+    {
+      "id": "132087481719929",
+      "paths": [
+        "src/shared/SfxV2Audio.luau"
+      ]
+    },
+    {
+      "id": "132158030068936",
+      "paths": [
+        "src/shared/SfxV2Audio.luau"
+      ]
+    },
+    {
+      "id": "132205913020286",
+      "paths": [
+        "src/shared/PayoffImages.luau"
+      ]
+    },
+    {
+      "id": "132206076636089",
+      "paths": [
+        "assets/materials/island_v1/tiles/uploaded.json",
+        "src/shared/materials_island.luau"
+      ]
+    },
+    {
+      "id": "132294266724262",
+      "paths": [
+        "src/shared/CurtainAudio.luau"
+      ]
+    },
+    {
+      "id": "132297428126819",
+      "paths": [
+        "assets/materials/space_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_space.luau"
+      ]
+    },
+    {
+      "id": "132712894341313",
+      "paths": [
+        "assets/materials/island_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_island.luau"
+      ]
+    },
+    {
+      "id": "132879865961340",
+      "paths": [
+        "src/shared/SoundscapeAudio.luau"
+      ]
+    },
+    {
+      "id": "132911832432450",
+      "paths": [
+        "assets/materials/island_v1/tiles/uploaded.json",
+        "src/shared/materials_island.luau"
+      ]
+    },
+    {
+      "id": "132951830105208",
+      "paths": [
+        "src/shared/PropLibrary.luau"
+      ]
+    },
+    {
+      "id": "133027409202345",
+      "paths": [
+        "assets/materials/hub_v1/tiles/uploaded.json",
+        "src/shared/materials_hub.luau"
+      ]
+    },
+    {
+      "id": "133155387810062",
+      "paths": [
+        "src/shared/PropModelAssets.luau"
+      ]
+    },
+    {
+      "id": "133266992359144",
+      "paths": [
+        "default.project.json"
+      ]
+    },
+    {
+      "id": "133428689898991",
+      "paths": [
+        "src/shared/BoostTexAssets.luau"
+      ]
+    },
+    {
+      "id": "133802354565085",
+      "paths": [
+        "assets/materials/forest_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_forest.luau"
+      ]
+    },
+    {
+      "id": "133853907382531",
+      "paths": [
+        "assets/materials/hub_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_hub.luau"
+      ]
+    },
+    {
+      "id": "134021654687046",
+      "paths": [
+        "src/shared/PayoffAudio.luau"
+      ]
+    },
+    {
+      "id": "134035179206444",
+      "paths": [
+        "build/model_bakes/139069710013660.rbxm"
+      ]
+    },
+    {
+      "id": "134050495934530",
+      "paths": [
+        "default.project.json"
+      ]
+    },
+    {
+      "id": "134070543415508",
+      "paths": [
+        "default.project.json"
+      ]
+    },
+    {
+      "id": "134311756655813",
+      "paths": [
+        "src/shared/ItemAudio.luau"
+      ]
+    },
+    {
+      "id": "134379641186864",
+      "paths": [
+        "src/shared/SfxV2Audio.luau"
+      ]
+    },
+    {
+      "id": "134495905260791",
+      "paths": [
+        "build/model_bakes/73367619545738.rbxm"
+      ]
+    },
+    {
+      "id": "134652238361077",
+      "paths": [
+        "build/model_bakes/manifest.json",
+        "default.project.json",
+        "src/shared/BossConfig.luau"
+      ]
+    },
+    {
+      "id": "134659040514759",
+      "paths": [
+        "src/shared/PayoffAudio.luau"
+      ]
+    },
+    {
+      "id": "134745525062859",
+      "paths": [
+        "src/shared/PropModelAssets.luau"
+      ]
+    },
+    {
+      "id": "134906323776644",
+      "paths": [
+        "build/model_bakes/73367619545738.rbxm"
+      ]
+    },
+    {
+      "id": "134968545463121",
+      "paths": [
+        "src/shared/ArchV3Assets.luau"
+      ]
+    },
+    {
+      "id": "135111632840959",
+      "paths": [
+        "src/server/PlaneBuilder.luau"
+      ]
+    },
+    {
+      "id": "135165017054527",
+      "paths": [
+        "src/shared/PortalTexAssets.luau"
+      ]
+    },
+    {
+      "id": "135331118303440",
+      "paths": [
+        "src/shared/ItemModelAssets.luau"
+      ]
+    },
+    {
+      "id": "135623806787252",
+      "paths": [
+        "src/shared/SoundscapeAudio.luau"
+      ]
+    },
+    {
+      "id": "135633432256241",
+      "paths": [
+        "src/shared/WorldMomentsAudio.luau"
+      ]
+    },
+    {
+      "id": "135794125054665",
+      "paths": [
+        "assets/materials/space_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_space.luau"
+      ]
+    },
+    {
+      "id": "136300612922977",
+      "paths": [
+        "src/shared/WorldModelAssets.luau"
+      ]
+    },
+    {
+      "id": "136329068065466",
+      "paths": [
+        "assets/materials/dino_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/MaterialAssets.luau"
+      ]
+    },
+    {
+      "id": "136389077311805",
+      "paths": [
+        "src/shared/VfxAssets.luau"
+      ]
+    },
+    {
+      "id": "136398759503994",
+      "paths": [
+        "src/shared/SoundscapeAudio.luau"
+      ]
+    },
+    {
+      "id": "136558534084136",
+      "paths": [
+        "src/shared/PayoffImages.luau"
+      ]
+    },
+    {
+      "id": "136725929534012",
+      "paths": [
+        "src/shared/SoundscapeAudio.luau"
+      ]
+    },
+    {
+      "id": "136823212827137",
+      "paths": [
+        "src/shared/PropLibrary.luau"
+      ]
+    },
+    {
+      "id": "136958153236931",
+      "paths": [
+        "assets/materials/space_v1/tiles/uploaded.json",
+        "src/shared/materials_space.luau"
+      ]
+    },
+    {
+      "id": "137142039545894",
+      "paths": [
+        "assets/materials/space_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_space.luau"
+      ]
+    },
+    {
+      "id": "137182342399990",
+      "paths": [
+        "default.project.json"
+      ]
+    },
+    {
+      "id": "137207067314858",
+      "paths": [
+        "src/shared/sky/snow1.luau"
+      ]
+    },
+    {
+      "id": "137395623991049",
+      "paths": [
+        "src/shared/PropModelAssets.luau"
+      ]
+    },
+    {
+      "id": "137398131709282",
+      "paths": [
+        "src/shared/AudioAssets.luau"
+      ]
+    },
+    {
+      "id": "137627757505035",
+      "paths": [
+        "assets/materials/hub_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_hub.luau"
+      ]
+    },
+    {
+      "id": "137715219242169",
+      "paths": [
+        "assets/materials/space_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_space.luau"
+      ]
+    },
+    {
+      "id": "137959330266240",
+      "paths": [
+        "assets/materials/forest_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_forest.luau"
+      ]
+    },
+    {
+      "id": "137974691165420",
+      "paths": [
+        "src/shared/SfxV2Audio.luau"
+      ]
+    },
+    {
+      "id": "138084246687929",
+      "paths": [
+        "assets/materials/space_v1/tiles/uploaded.json",
+        "src/shared/materials_space.luau"
+      ]
+    },
+    {
+      "id": "138237230831653",
+      "paths": [
+        "src/shared/SoundscapeAudio.luau"
+      ]
+    },
+    {
+      "id": "138259851238356",
+      "paths": [
+        "src/shared/ArchModelAssets.luau"
+      ]
+    },
+    {
+      "id": "138265514501195",
+      "paths": [
+        "src/shared/PropLibrary.luau"
+      ]
+    },
+    {
+      "id": "138339220285284",
+      "paths": [
+        "src/shared/FxTexAssets.luau"
+      ]
+    },
+    {
+      "id": "138703431739769",
+      "paths": [
+        "assets/materials/island_v1/tiles/uploaded.json",
+        "src/shared/materials_island.luau"
+      ]
+    },
+    {
+      "id": "138710664488212",
+      "paths": [
+        "src/shared/ItemAudio.luau"
+      ]
+    },
+    {
+      "id": "138741075687525",
+      "paths": [
+        "assets/materials/dino_v1/tiles/uploaded.json",
+        "src/shared/MaterialAssets.luau"
+      ]
+    },
+    {
+      "id": "138842690938629",
+      "paths": [
+        "src/shared/PayoffImages.luau"
+      ]
+    },
+    {
+      "id": "138929672104902",
+      "paths": [
+        "src/shared/PayoffAudio.luau"
+      ]
+    },
+    {
+      "id": "138972298427097",
+      "paths": [
+        "src/shared/PropLibrary.luau"
+      ]
+    },
+    {
+      "id": "139048542099891",
+      "paths": [
+        "src/shared/SfxV2Audio.luau"
+      ]
+    },
+    {
+      "id": "139069710013660",
+      "paths": [
+        "build/model_bakes/manifest.json",
+        "default.project.json",
+        "src/shared/BossConfig.luau"
+      ]
+    },
+    {
+      "id": "139082458216639",
+      "paths": [
+        "assets/materials/island_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_island.luau"
+      ]
+    },
+    {
+      "id": "139135044918152",
+      "paths": [
+        "src/shared/SfxV2Audio.luau"
+      ]
+    },
+    {
+      "id": "139150304322368",
+      "paths": [
+        "src/shared/PayoffAudio.luau"
+      ]
+    },
+    {
+      "id": "139378797729874",
+      "paths": [
+        "src/shared/AudioAssets.luau"
+      ]
+    },
+    {
+      "id": "139505061161214",
+      "paths": [
+        "assets/materials/dino_v1/tiles/uploaded.json",
+        "src/shared/MaterialAssets.luau"
+      ]
+    },
+    {
+      "id": "139554292833022",
+      "paths": [
+        "src/shared/PropLibrary.luau"
+      ]
+    },
+    {
+      "id": "139752288758350",
+      "paths": [
+        "src/shared/PayoffAudio.luau"
+      ]
+    },
+    {
+      "id": "139949342834518",
+      "paths": [
+        "build/model_bakes/111843268690922.rbxm",
+        "build/model_bakes/140501870412096.rbxm",
+        "build/model_bakes/83360206067759.rbxm",
+        "build/model_bakes/95757652390974.rbxm",
+        "build/model_bakes/manifest.json"
+      ]
+    },
+    {
+      "id": "140027346299718",
+      "paths": [
+        "src/shared/FxTexAssets.luau"
+      ]
+    },
+    {
+      "id": "140120222691020",
+      "paths": [
+        "src/client/RaceUI.luau",
+        "src/loading/LoadingRules.luau"
+      ]
+    },
+    {
+      "id": "140148772194720",
+      "paths": [
+        "src/shared/PortalTexAssets.luau"
+      ]
+    },
+    {
+      "id": "140228426985754",
+      "paths": [
+        "assets/materials/snow_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_snow.luau"
+      ]
+    },
+    {
+      "id": "140272320207305",
+      "paths": [
+        "build/model_bakes/107580586112839.rbxm",
+        "build/model_bakes/123393240062345.rbxm",
+        "build/model_bakes/70418724316306.rbxm"
+      ]
+    },
+    {
+      "id": "140320668229985",
+      "paths": [
+        "assets/materials/forest_v1/tiles/uploaded.json",
+        "default.project.json",
+        "src/shared/materials_forest.luau"
+      ]
+    },
+    {
+      "id": "140501870412096",
+      "paths": [
+        "build/model_bakes/manifest.json",
+        "default.project.json",
+        "src/server/kit/CarBuilder.luau"
+      ]
+    },
+    {
+      "id": "140702914973295",
+      "paths": [
+        "src/shared/FoliageV3Assets.luau"
+      ]
+    },
+    {
+      "id": "140727381347758",
+      "paths": [
+        "src/shared/AudioAssets.luau"
+      ]
+    }
+  ]
+}

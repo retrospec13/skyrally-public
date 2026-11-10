@@ -1,0 +1,5311 @@
+{
+  "scope": "All local GLB sources with parsed image dependencies; geometry/rig import remains a separate check.",
+  "files": [
+    {
+      "path": "assets/models/arches_v2/cavern_mouth.glb",
+      "sha256": "a26ac4e4ae3a1093c74b7f9f1a96505891e2c8050d6f52e41d1cf5e9049b5243",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/arches_v2/cavern_rib.glb",
+      "sha256": "a295ee55ffd2f2544e596e892ec01f30797a674c63cae6c241ff6d7da8d0d531",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/arches_v2/cliff_tunnel_arch.glb",
+      "sha256": "0659c5b941326622d4f100e9518e607c37f59f492e87fc5084ffe5b96075f1df",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/arches_v2/forest_tunnel_portal.glb",
+      "sha256": "0c62a540edda6ec3d3e0633f00da4f43bcddefc625e83862466b6f8e24270f54",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/arches_v2/hub_start_gantry.glb",
+      "sha256": "fb1a9c91e4b3b95db763fc2da87ab8a2bbb17e989d332e1d67f65b7fcfb4b70e",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/arches_v2/island_start_gantry.glb",
+      "sha256": "9f8d8790c5f7be23df30381e37f091f9836091ef343af19aa527fa2ac6509dd7",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/arches_v2/mesa_portal.glb",
+      "sha256": "f679372cfa898852ac96d6b0e0b2204c046509575932ae151cbcf9e5c7f2dfaa",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/arches_v2/mine_portal.glb",
+      "sha256": "ad9f6aa3d99941d48eba08a1de123392b32b5a0b97deb0f29ad41c622ae83646",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/arches_v2/sign_gantry.glb",
+      "sha256": "13f4877b7e2a6d03547eb045684e6f6bbfb59b74519fedd9a433631c37adbac2",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/arches_v2/skyway_arch.glb",
+      "sha256": "5530a0628ccbb96bec729c938b40ec5c339365722c41eef9e9edd8eab31f37ee",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/arches_v2/snow_finish_gantry.glb",
+      "sha256": "7ba324de1a8032a78871de37b82c82f2764a7bce944cbd6a28b25287b4a81813",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/arches_v2/space_start_gantry.glb",
+      "sha256": "4b8a1ef45a129b924c72377a5f595a76ff38f63d85dbb0d843d620542b72d8b0",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/arches_v2/vault_portal.glb",
+      "sha256": "c61df6dcbf415faebcd67eaad503e8a041d727d91f7fba1726ea1a7b6ed23eef",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/arches_v2/vault_rib.glb",
+      "sha256": "a52c9811899a29515d310b9b2acbe991dacae55f00a707469d753042a83bd354",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/arches_v3/cavern_arch/cavern_arch.glb",
+      "sha256": "664ce824306caa7897848540752deda040cc7d683e2b7c43ab3da67064cfdf55",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "bfc8dd1e30ecfed89732e5b6f77696d3655d96a5d1c1b6d1d2f01caa707683db"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/arches_v3/cavern_arch/fit/asset.glb",
+      "sha256": "664ce824306caa7897848540752deda040cc7d683e2b7c43ab3da67064cfdf55",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "bfc8dd1e30ecfed89732e5b6f77696d3655d96a5d1c1b6d1d2f01caa707683db"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/arches_v3/mesa_portal/_rejected_r1/fit/asset.glb",
+      "sha256": "b1c8b9b7007f30f9af251e484d2fb5b696b80d22beef43f03d4c1c96000c49c8",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "00f797b340bc593ae4b3331bb104fc417415989268634a5133ee06cbe9739605"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/arches_v3/mesa_portal/_rejected_r1/mesa_portal.glb",
+      "sha256": "994d46a3549ede3abf300513d5da7aa60e37d220fb09632864798d584cbe4398",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "d50c9312dd290b6781341207ddb6ad3db95b0912973458faeff48fe779ecaaf3"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/arches_v3/mesa_portal/_rejected_r1/rejected_r2_tripo/mesa_portal.glb",
+      "sha256": "b1c8b9b7007f30f9af251e484d2fb5b696b80d22beef43f03d4c1c96000c49c8",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "00f797b340bc593ae4b3331bb104fc417415989268634a5133ee06cbe9739605"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/arches_v3/mesa_portal/fit/asset.glb",
+      "sha256": "660f4ec947fba14e651ea373cd4477502e5b81e0bc2fe08bcd2a00b9f2cdbe65",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "8825558b47c9fcb04d378dbeeead425d1ea524a66d0c1e8a1affe30b733736f3"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/arches_v3/mesa_portal/mesa_portal.glb",
+      "sha256": "660f4ec947fba14e651ea373cd4477502e5b81e0bc2fe08bcd2a00b9f2cdbe65",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "8825558b47c9fcb04d378dbeeead425d1ea524a66d0c1e8a1affe30b733736f3"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/arches_v3/mesa_portal/tripo_raw.glb",
+      "sha256": "82b8a7e13c5e93966c0345f9148c0a981b156378fa405c30f562456f94591ff6",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "ba9aeb268da3981ed8020edd7854361510132b9a4d32a3c09a072312015c6b33"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/arches_v3/mine_portal/fit/asset.glb",
+      "sha256": "0dcdb761802fd72c66308487eab3c9d99d9389da798dae8d32522813c37c9b32",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "211f9cb6d2c02a80237e3d3e6e2785a81abc9af2ab7fdd56c8097ab15efc5c5d"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/arches_v3/mine_portal/mine_portal.glb",
+      "sha256": "0dcdb761802fd72c66308487eab3c9d99d9389da798dae8d32522813c37c9b32",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "211f9cb6d2c02a80237e3d3e6e2785a81abc9af2ab7fdd56c8097ab15efc5c5d"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/arches_v3/portal_gate/fit/asset.glb",
+      "sha256": "c433f801060ce69a3211fc7cc158403010ee91f51c4c81600de23e713341d032",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "3f62329f992c0eb8c81b66a0630dbccc36fc897bc4099cbfd198cf8a52ae95ca"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/arches_v3/portal_gate/portal_gate.glb",
+      "sha256": "c433f801060ce69a3211fc7cc158403010ee91f51c4c81600de23e713341d032",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "3f62329f992c0eb8c81b66a0630dbccc36fc897bc4099cbfd198cf8a52ae95ca"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/arches_v3/snow_finish_gantry/fit/asset.glb",
+      "sha256": "5d76b10c3aa767e638a6cb291c840925e35ad28ec6d406472f3655d522745590",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "d4751d9031f8897494819f1b4f5346c7a8323e428e1aad20b73d5ca27038f24f"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/arches_v3/snow_finish_gantry/snow_finish_gantry.glb",
+      "sha256": "5d76b10c3aa767e638a6cb291c840925e35ad28ec6d406472f3655d522745590",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "d4751d9031f8897494819f1b4f5346c7a8323e428e1aad20b73d5ca27038f24f"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/arches_v3/space_arch/_rejected_r1/fit/asset.glb",
+      "sha256": "24a99c496f2f5bfb900216334cc7b45d6aaff5913fb7f6e657597e2eed0a8a55",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "4e5907d4677cb18ad992f0291a6d2795e3880e56a270e25107f5d340a9e44b77"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/arches_v3/space_arch/_rejected_r1/rejected_r1/space_arch.glb",
+      "sha256": "c0b6895d7ac073ed2353f5a2bc3aacee248410d9fe588c2876c425adbd3b9d68",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "5455407d054299cce982083c04c1e6ee02b568982378eb5665f5676c764a9a5c"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/arches_v3/space_arch/_rejected_r1/rejected_r2_tripo/space_arch.glb",
+      "sha256": "24a99c496f2f5bfb900216334cc7b45d6aaff5913fb7f6e657597e2eed0a8a55",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "4e5907d4677cb18ad992f0291a6d2795e3880e56a270e25107f5d340a9e44b77"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/arches_v3/space_arch/_rejected_r1/space_arch.glb",
+      "sha256": "fe13c47bdf13ec81b4454e34fe5fa82b051205a3ce6dd67944787899db8acb06",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "d50c9312dd290b6781341207ddb6ad3db95b0912973458faeff48fe779ecaaf3"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/arches_v3/space_arch/fit/asset.glb",
+      "sha256": "7a9b2d6f74daac7560643548f85b53c949c6c6c1b3c06b3d126811c4543fd60d",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "cff2364ebbd84df449e658dc4045e14958565d2832c436c82653d9eb1332edc1"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/arches_v3/space_arch/space_arch.glb",
+      "sha256": "7a9b2d6f74daac7560643548f85b53c949c6c6c1b3c06b3d126811c4543fd60d",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "cff2364ebbd84df449e658dc4045e14958565d2832c436c82653d9eb1332edc1"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/arches_v3/space_arch/tripo_raw.glb",
+      "sha256": "10207827e8e49a4076622a825b8393946a4bf7c602e23e496061ea6c1e8d30bd",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "caba51479027667dff13d25774c4815193cc0ec8ef731b014c7065728c71ae15"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/arches_v3/start_gantry/_rejected_r1/fit/asset.glb",
+      "sha256": "920d2ce9dda49614ce15f3d661f39168e7e99a8d814acd8796995b1f52346a97",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "0138e96f059f2dd975fd6c6cd2dbbd9773e6c4c0293814ddd37008594f6feb4f"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/arches_v3/start_gantry/_rejected_r1/rejected_r2_tripo/start_gantry.glb",
+      "sha256": "920d2ce9dda49614ce15f3d661f39168e7e99a8d814acd8796995b1f52346a97",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "0138e96f059f2dd975fd6c6cd2dbbd9773e6c4c0293814ddd37008594f6feb4f"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/arches_v3/start_gantry/_rejected_r1/start_gantry.glb",
+      "sha256": "6f71f1361b166f7aacee718c6ed8dcd40b7edd22ddcd7b1b67973d98c6a62f98",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "027ebbc671605aaf3b310253e2d549966bd86179a5520c4a35b049d19290befb"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/arches_v3/start_gantry/_rejected_r3/start_gantry.glb",
+      "sha256": "171016f7f77a8d99453a8abaf4423f123660f7c0ec3e1efc92b8c975f1b51d29",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "b2a197db9f2f559a96f78da1e679c1f0f1854797c9d37b56fa1ec204117f8d12"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/arches_v3/start_gantry/_rejected_r3/tripo_raw.glb",
+      "sha256": "468e11c8be41e55514c250ad993f86a25d8225db86c76649613ab193f637ea91",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "ce25e49591a7300f4915c0c6d8a13cae704a585d0264f9c663f10b424951b34b"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/arches_v3/start_gantry/_rejected_r4/fit/asset.glb",
+      "sha256": "91383b9fa3fd410c60d4ec5baa273c002e2604d3a6e298f44b37c044a473a7d6",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "b2a197db9f2f559a96f78da1e679c1f0f1854797c9d37b56fa1ec204117f8d12"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/arches_v3/start_gantry/_rejected_r4/start_gantry.glb",
+      "sha256": "91383b9fa3fd410c60d4ec5baa273c002e2604d3a6e298f44b37c044a473a7d6",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "b2a197db9f2f559a96f78da1e679c1f0f1854797c9d37b56fa1ec204117f8d12"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/arches_v3/start_gantry/_rejected_r6/fit/asset.glb",
+      "sha256": "b50be3f6fabca86afb91b45cd15265eed48db39c6bc40fe19b3fc74fd13e7de6",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "0e7359104d6125e5a46abdce521c54eba431874ff8d5033711ca317a1eb7bb5c"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/arches_v3/start_gantry/_rejected_r6/start_gantry.glb",
+      "sha256": "b50be3f6fabca86afb91b45cd15265eed48db39c6bc40fe19b3fc74fd13e7de6",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "0e7359104d6125e5a46abdce521c54eba431874ff8d5033711ca317a1eb7bb5c"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/arches_v3/start_gantry/_rejected_r6/tripo_raw.glb",
+      "sha256": "76eef253d01020d6c10a301d6d46543facd5e2e3280d47ff526319e5e6aa3eeb",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "5911175c4df9e532ae7704194bddcfca0858d1721538d15ee4b3ec82b29c94a2"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/arches_v3/start_gantry/fit/asset.glb",
+      "sha256": "f9837dfba36d619042ea8b3c4c79f27ca05bc2ea10d4ee457414253db9c92622",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "73d859fba42bd525c2d7fa20c722bcca87813ecbd3440f3f71e3f220a65a51c2"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/arches_v3/start_gantry/r7_hunyuan_lp/fit/asset.glb",
+      "sha256": "8a1ca93d4380dea5b8cf3a68f2bf020fed3e3813a2e52818ce5ae3e187395874",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "73d859fba42bd525c2d7fa20c722bcca87813ecbd3440f3f71e3f220a65a51c2"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/arches_v3/start_gantry/r7_hunyuan_lp/fit_pk08/asset.glb",
+      "sha256": "7aecd56d4f56cb2c4d3c62d06c5aa9cb12a827211b0ddd7d7365edc191054517",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "73d859fba42bd525c2d7fa20c722bcca87813ecbd3440f3f71e3f220a65a51c2"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/arches_v3/start_gantry/r7_hunyuan_lp/fit_pk10/asset.glb",
+      "sha256": "c56a0db885ccef70ddf5dc1f58b2ba20d42efaa062595e28a2adfb699814aaf7",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "73d859fba42bd525c2d7fa20c722bcca87813ecbd3440f3f71e3f220a65a51c2"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/arches_v3/start_gantry/r7_hunyuan_lp/fit_pk12/asset.glb",
+      "sha256": "f9837dfba36d619042ea8b3c4c79f27ca05bc2ea10d4ee457414253db9c92622",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "73d859fba42bd525c2d7fa20c722bcca87813ecbd3440f3f71e3f220a65a51c2"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/arches_v3/start_gantry/r7_hunyuan_lp/raw.glb",
+      "sha256": "45d13d2284d494922a52eebace271a5ee2a2ee0419bf4836b4532d72f02d868b",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "81c3afe1710ee0d4f7cf078a7a4e78a49253fe030dff3c14466c4c6f17525893"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/arches_v3/start_gantry/r7_tripo_p2/fit/asset.glb",
+      "sha256": "a0fa4317f836756df3ab1aafcd842698e57551b5ca38a29c05baa56f95825d4b",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "a395514dc13426f12addfadfd0105425bd717eed21302953b8c3a2517771e114"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/arches_v3/start_gantry/r7_tripo_p2/raw.glb",
+      "sha256": "894c29951314f0289b84cd9d584ef28d1a47d076e9f5e81c7df62fd3a5f5b23b",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "91b9de900c0582d1981f54e25d0c9ee61b2618e489c07d2d787b456f3eea74cb"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/arches_v3/start_gantry/start_gantry.glb",
+      "sha256": "f9837dfba36d619042ea8b3c4c79f27ca05bc2ea10d4ee457414253db9c92622",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "73d859fba42bd525c2d7fa20c722bcca87813ecbd3440f3f71e3f220a65a51c2"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/arches_v3/stone_arch_v3/stone_arch_v3.glb",
+      "sha256": "983d7151aab7b87a2c1f77b805ffe1f7ee7373686e610bf88306fccd6dcb766c",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "a792a5d900dc9fd292b2e4ad3fb72fc8f46acf247a0ae10e4cf06088c7328de0"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/bosses/dino_boss/anim/out/anim.glb",
+      "sha256": "4df26c12f2d57520bf68b4a6a4e00b0bc1f15e2ce4125885e358681c49cde5e3",
+      "meshes": 1,
+      "skins": 1,
+      "joints": [
+        16
+      ],
+      "animations": 5,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "9b80a43d77a4c0cc79bf43926962a0ff46713910bf5d8f83938409f229124682"
+        },
+        {
+          "image": 1,
+          "storage": "embedded",
+          "sha256": "6aac7f6dfe70919057f14fb8092c3c058679e607efd25ae3c6339474a234bc57"
+        },
+        {
+          "image": 2,
+          "storage": "embedded",
+          "sha256": "1fa9e67d890b68c7a68e4db7bca952789470918e141d51a325767aa9831be922"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/bosses/dino_boss/anim/out/rigged.glb",
+      "sha256": "945f6bb5f001b27cc37c864a4dee3bfb82fe0c1406c26d924b934c62e20be47c",
+      "meshes": 1,
+      "skins": 1,
+      "joints": [
+        16
+      ],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "9b80a43d77a4c0cc79bf43926962a0ff46713910bf5d8f83938409f229124682"
+        },
+        {
+          "image": 1,
+          "storage": "embedded",
+          "sha256": "6aac7f6dfe70919057f14fb8092c3c058679e607efd25ae3c6339474a234bc57"
+        },
+        {
+          "image": 2,
+          "storage": "embedded",
+          "sha256": "1fa9e67d890b68c7a68e4db7bca952789470918e141d51a325767aa9831be922"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/bosses/dino_boss/tripo/model_url.glb",
+      "sha256": "ea11de30dabce0339b16781918e46380aff6a672a66e8579fdf8be80d2096a11",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "6aac7f6dfe70919057f14fb8092c3c058679e607efd25ae3c6339474a234bc57"
+        },
+        {
+          "image": 1,
+          "storage": "embedded",
+          "sha256": "1fa9e67d890b68c7a68e4db7bca952789470918e141d51a325767aa9831be922"
+        },
+        {
+          "image": 2,
+          "storage": "embedded",
+          "sha256": "9b80a43d77a4c0cc79bf43926962a0ff46713910bf5d8f83938409f229124682"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/bosses/forest_boss/anim/out/anim.glb",
+      "sha256": "76edc838403deb03728c2a15cb8e39b2c4084ac36752c9c7ae2834f3a4ca5520",
+      "meshes": 1,
+      "skins": 1,
+      "joints": [
+        24
+      ],
+      "animations": 5,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "de64e011b4b1d667e292f219fbd3d3e84b5c8942ba00d3de33e6ece7cd66acd0"
+        },
+        {
+          "image": 1,
+          "storage": "embedded",
+          "sha256": "28fdc844ea0b29129744ffc476378a86ab7223f626f688fcdf3b13ed8090ff97"
+        },
+        {
+          "image": 2,
+          "storage": "embedded",
+          "sha256": "46255aef7b8dcb8428f851ba137252efe7e5669fe02d5da91efe29ff592361cd"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/bosses/forest_boss/anim/out/rigged.glb",
+      "sha256": "6c235cc5510b5bf22247c6c7a7dbbcbde95af8333442e840999df74fa688c578",
+      "meshes": 1,
+      "skins": 1,
+      "joints": [
+        24
+      ],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "de64e011b4b1d667e292f219fbd3d3e84b5c8942ba00d3de33e6ece7cd66acd0"
+        },
+        {
+          "image": 1,
+          "storage": "embedded",
+          "sha256": "28fdc844ea0b29129744ffc476378a86ab7223f626f688fcdf3b13ed8090ff97"
+        },
+        {
+          "image": 2,
+          "storage": "embedded",
+          "sha256": "46255aef7b8dcb8428f851ba137252efe7e5669fe02d5da91efe29ff592361cd"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/bosses/forest_boss/tripo/model_url.glb",
+      "sha256": "8bb17c9b2fc05cd5d44e4456b3a5d31ea77150f5538c616a2d21105093a12e2c",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "28fdc844ea0b29129744ffc476378a86ab7223f626f688fcdf3b13ed8090ff97"
+        },
+        {
+          "image": 1,
+          "storage": "embedded",
+          "sha256": "46255aef7b8dcb8428f851ba137252efe7e5669fe02d5da91efe29ff592361cd"
+        },
+        {
+          "image": 2,
+          "storage": "embedded",
+          "sha256": "de64e011b4b1d667e292f219fbd3d3e84b5c8942ba00d3de33e6ece7cd66acd0"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/bosses/hub_boss/anim/out/anim.glb",
+      "sha256": "de1fb409c395d55ce6c44f90510c22ad493e4447cbe0a5a959414671ba2a41a4",
+      "meshes": 1,
+      "skins": 1,
+      "joints": [
+        23
+      ],
+      "animations": 5,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "2b2ede25d38eba1d529d28a824d7d1dad5923cb8a2baa8200ed41f52fa79cd16"
+        },
+        {
+          "image": 1,
+          "storage": "embedded",
+          "sha256": "18910c093d2424022ac1f1717e2442c56216336efcf5698639de3437b78fd808"
+        },
+        {
+          "image": 2,
+          "storage": "embedded",
+          "sha256": "ab1f91f0754a3f4486a070f8d4085fd5bafe173cd88eef93a8c9061489fc1902"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/bosses/hub_boss/anim/out/rigged.glb",
+      "sha256": "b67d1f8b4c92086e2ed486147235f174c174244b22799843d2f5730553079367",
+      "meshes": 1,
+      "skins": 1,
+      "joints": [
+        23
+      ],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "2b2ede25d38eba1d529d28a824d7d1dad5923cb8a2baa8200ed41f52fa79cd16"
+        },
+        {
+          "image": 1,
+          "storage": "embedded",
+          "sha256": "18910c093d2424022ac1f1717e2442c56216336efcf5698639de3437b78fd808"
+        },
+        {
+          "image": 2,
+          "storage": "embedded",
+          "sha256": "ab1f91f0754a3f4486a070f8d4085fd5bafe173cd88eef93a8c9061489fc1902"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/bosses/hub_boss/tripo/model_url.glb",
+      "sha256": "731394a1ad7d4b7b843ac06aee136be43c9f9570d3c78b6ec8d16f6a8b7e14f3",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "18910c093d2424022ac1f1717e2442c56216336efcf5698639de3437b78fd808"
+        },
+        {
+          "image": 1,
+          "storage": "embedded",
+          "sha256": "ab1f91f0754a3f4486a070f8d4085fd5bafe173cd88eef93a8c9061489fc1902"
+        },
+        {
+          "image": 2,
+          "storage": "embedded",
+          "sha256": "2b2ede25d38eba1d529d28a824d7d1dad5923cb8a2baa8200ed41f52fa79cd16"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/bosses/island_boss/anim/out/anim.glb",
+      "sha256": "bd841adfb9a285b66f84ad87a08d73a3445a557dac254304e1ff41e1897ba65e",
+      "meshes": 1,
+      "skins": 1,
+      "joints": [
+        22
+      ],
+      "animations": 5,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "0243f4cc5730b68585b79b33899a68fa5c953af67f97d6cff7ff7d40b99b5af9"
+        },
+        {
+          "image": 1,
+          "storage": "embedded",
+          "sha256": "df194ddbbe8b77a8a38d59d90d95c0226400b876625758a1cecde08995b96e1b"
+        },
+        {
+          "image": 2,
+          "storage": "embedded",
+          "sha256": "6b96fcb38a69803a419e5f72788936c862b2dad019bb0f6c9978306847d43e97"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/bosses/island_boss/anim/out/rigged.glb",
+      "sha256": "88b84bf8d85b34131add7972132d3c24817948feda65842b77a1fa85c98e0d14",
+      "meshes": 1,
+      "skins": 1,
+      "joints": [
+        22
+      ],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "0243f4cc5730b68585b79b33899a68fa5c953af67f97d6cff7ff7d40b99b5af9"
+        },
+        {
+          "image": 1,
+          "storage": "embedded",
+          "sha256": "df194ddbbe8b77a8a38d59d90d95c0226400b876625758a1cecde08995b96e1b"
+        },
+        {
+          "image": 2,
+          "storage": "embedded",
+          "sha256": "6b96fcb38a69803a419e5f72788936c862b2dad019bb0f6c9978306847d43e97"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/bosses/island_boss/tripo/model_url.glb",
+      "sha256": "f1c24c873342b27df937259813413ca321172ee05581aa09eff4a0791aa9af80",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "df194ddbbe8b77a8a38d59d90d95c0226400b876625758a1cecde08995b96e1b"
+        },
+        {
+          "image": 1,
+          "storage": "embedded",
+          "sha256": "6b96fcb38a69803a419e5f72788936c862b2dad019bb0f6c9978306847d43e97"
+        },
+        {
+          "image": 2,
+          "storage": "embedded",
+          "sha256": "0243f4cc5730b68585b79b33899a68fa5c953af67f97d6cff7ff7d40b99b5af9"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/bosses/snow_boss/anim/out/historical-anim.glb",
+      "sha256": "62bb2b72c3692fd412e5306e4312f3c949bfc0f49391213bf8f6cce7a2239eef",
+      "meshes": 1,
+      "skins": 1,
+      "joints": [
+        14
+      ],
+      "animations": 5,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "288f8b52f198917c42e558b82455cec9f337289afd5195e9db0c02075cda7ac1"
+        },
+        {
+          "image": 1,
+          "storage": "embedded",
+          "sha256": "f689a864aac07a1dab1c08721b53787a4bacf6e4de169537d036aeb7ff1401db"
+        },
+        {
+          "image": 2,
+          "storage": "embedded",
+          "sha256": "508a80f30f207f03986d39869ce7481431d4610fb44aae84113a21cf6fe3e90f"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/bosses/snow_boss/anim/out/rigged.glb",
+      "sha256": "835f460c74998ccbbfe284936b7bc960f71c48a1e9c0b31cd4bdb1a3886fc382",
+      "meshes": 1,
+      "skins": 1,
+      "joints": [
+        14
+      ],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "288f8b52f198917c42e558b82455cec9f337289afd5195e9db0c02075cda7ac1"
+        },
+        {
+          "image": 1,
+          "storage": "embedded",
+          "sha256": "f689a864aac07a1dab1c08721b53787a4bacf6e4de169537d036aeb7ff1401db"
+        },
+        {
+          "image": 2,
+          "storage": "embedded",
+          "sha256": "508a80f30f207f03986d39869ce7481431d4610fb44aae84113a21cf6fe3e90f"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/bosses/snow_boss/tripo/model_url.glb",
+      "sha256": "b207069e8e1ecd78c8b8199fb6d85d48c918faddc83747a05c9520e7803ff168",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "724a23ad8320f3d1b118632c66998625ce2db908efa576572f5ebaeec5dff95b"
+        },
+        {
+          "image": 1,
+          "storage": "embedded",
+          "sha256": "b648a9889a1aabeb70edb7c8488947f72198a1e7909be2dcca0f1ced95af3540"
+        },
+        {
+          "image": 2,
+          "storage": "embedded",
+          "sha256": "c9b2405ccd96ef72eaffb6a364533f0bf9fd339de6d86bc06ce582369f8bcdb6"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/bosses/snow_boss/tripo_flight/model_url.glb",
+      "sha256": "c065168c8bd737d76562d6040d33cb58bff4c63607dee2d62efd7ea9cec2e987",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "f689a864aac07a1dab1c08721b53787a4bacf6e4de169537d036aeb7ff1401db"
+        },
+        {
+          "image": 1,
+          "storage": "embedded",
+          "sha256": "508a80f30f207f03986d39869ce7481431d4610fb44aae84113a21cf6fe3e90f"
+        },
+        {
+          "image": 2,
+          "storage": "embedded",
+          "sha256": "288f8b52f198917c42e558b82455cec9f337289afd5195e9db0c02075cda7ac1"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v2/autumn_a.glb",
+      "sha256": "1ae14ca32eb15b0c149379405242510cd2ad3fc65ddcb5b209367714d0c2a8e2",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v2/autumn_b.glb",
+      "sha256": "e0f7601fb3bf9a3607acd1bc2f970f84a9480e522bdadf2a2091649ea8ece971",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v2/autumn_c.glb",
+      "sha256": "14292b89d63957295888a0e7fcbb855cde07ea604318bdc7027dfbcd0e6aaba1",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v2/cliff_fern.glb",
+      "sha256": "4e52a64dc1902cd0c6f167b51da34d33476421610475c4468d2071865e6151e8",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v2/cypress_a.glb",
+      "sha256": "6b82f73e9a336ab982273b577251c1d6b26c0d9437448f6286d023997d6c58bd",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v2/cypress_b.glb",
+      "sha256": "ec7d0dde538504ef3e2a3df7f68c34d842261d447b3ab2b4b91480e7727fd6e9",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v2/flower_clump.glb",
+      "sha256": "6d160f9da225e4c77852bbe6a85d093fc86de0e7b2aa276f23b67d1ce3823bf5",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v2/grass_tuft.glb",
+      "sha256": "e27d07752f83d2b47b32ddd0d0fc06c9ffa8cb1378803c7ca21a0a8dd52fcba6",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v2/hedge_1x.glb",
+      "sha256": "bbdab95c59de1fd5dca8893d6f76d9ad150b2e173934f29397213d9fe07eea0c",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v2/hedge_2x.glb",
+      "sha256": "0a75f84a34137fa9ec2bddae999761c08e299b88e3e22b677b5bf5981a5aba1f",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v2/poplar_a.glb",
+      "sha256": "0d152cccc66d88abc4460cb16d1abee546f8e1b225b351f22fe5b514a3793ee9",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v2/poplar_b.glb",
+      "sha256": "167fa03ef1de82ae28bac22fab30b72140482923462c453a3bcea8d6c2270d7b",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/_build/autumn_tree_in.glb",
+      "sha256": "472dd77a8ca3d7ac7ac5bf34c3baee23a76b51155e35bbae353ca6a7f9cfc95f",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "5758c07615d231b71ff1eab804867da38e9c6b58e97ccfe6d873e9588d002d40"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/_build/bush_in.glb",
+      "sha256": "6b7cf33953b6ee005c42b32a119cd965b17e4e3f53d7c387929b9a4dc4571fc9",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "45c38bbef52e07d2fde5a7bd2a2d4f794a9c4cbdffbb374d8cb4a3352345ea94"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/_build/cypress_in.glb",
+      "sha256": "78a9fc569dcb5046d3e2536f134dea4f691b621eda34ee54e622b3ca7ed245f8",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "1fdfef907a6d9f2d515b749bd22e0f906e9d1c1f40791f0911d950677631dcac"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/_build/ground_cover_in.glb",
+      "sha256": "689b9b1a288a1d59e42de7b6fce49102118252155883b285c6554f65ef344580",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "318ada133ddb32dae1f486594bcbf900a53899ba16d0f930f311a7b678d35a3c"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/_build/hedge_in.glb",
+      "sha256": "67910af7ca5b1a97a0b3afbe48a41ff218bdb50a5b8f1b7e337c3ed7807e69ae",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "5ac097fb6197cb0e33f0734dd0fb309fbce4a69e011284f6e4968f3c62d12d99"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/_build/poplar_in.glb",
+      "sha256": "4b9373e7206ad87381e0397a4f2d7478af826abb92aabfea63e2ad402618e422",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "d79292b9886c412dfb8b8fe3b3118006544f07a8b38fe795c4a4fcbeb08368a2"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/_build/round_oak_in.glb",
+      "sha256": "3c248d9480f95948d51172ca28b9b031046aba8e899ed3c26c1face253d6a449",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "7d656ed66a3e8a0f4dcad9aae6f4d14b26b341079e02a3983fb9d63ce7ae7651"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/autumn_tree/_rejected_r1/autumn_tree.glb",
+      "sha256": "6c8145fd392cc22cf82a0ca82670b6f3be8d9a2aad96f99d978f58d31a104a75",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "5758c07615d231b71ff1eab804867da38e9c6b58e97ccfe6d873e9588d002d40"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/autumn_tree/_rejected_r1/qc/prop.glb",
+      "sha256": "6c8145fd392cc22cf82a0ca82670b6f3be8d9a2aad96f99d978f58d31a104a75",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "5758c07615d231b71ff1eab804867da38e9c6b58e97ccfe6d873e9588d002d40"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/autumn_tree/_rejected_r1/tripo_raw.glb",
+      "sha256": "eb58643aaa91619ab9968c20118ffaadc8851a860be0efa525ee85a6bad720b3",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "2ca2f0b92191c0e234b5d2d9b962305af81ee8dd2c0040b4ce85d6121c043534"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/autumn_tree/_rejected_r2/autumn_tree.glb",
+      "sha256": "d8173829a4e364caaeb67928b87e31a4a66ac64c03f9f25cb98da0ac22a78a1a",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "684fea12a13ba4258aae1e69cf33114027eff63bb879991168636fceebcfefac"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/autumn_tree/_rejected_r2/tripo_raw.glb",
+      "sha256": "0f22a929b2c33369394858359340590313198fe7a76dadba1977e639bd895ad1",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "c9c87345d4f9c9d1bd8b4166f4a96b416ae8d800512023faa458b7c69719052d"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/autumn_tree/_rejected_r3/autumn_tree.glb",
+      "sha256": "21923b82b2e90f0abeb0333f42da2bdd9eef9e122437713619ab2f033f784f78",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "06f4156554f64a30c113c9f725a580bcbb4bd0fcfce077bf01d21e75986ff7c2"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/autumn_tree/_rejected_r3/tripo_raw.glb",
+      "sha256": "6331397e4f2ca0c03a60160ada7e6c581420ac19629560d85f19ea9226890ee4",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "6c32c9234e91dc6e1dfd5527a0309bdfdedf427477298fd9503df207f18369ec"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/autumn_tree/_rejected_r6/autumn_tree.glb",
+      "sha256": "e3a1a93cfffb070c73f0233347c34346514cda700f0ef4f7ce738d51bef88bfa",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "a6858f2bfa69913693a52d7c1df30d7d963f3b4426f9f88316e80117f4b74e8b"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/autumn_tree/_rejected_r6/graded.glb",
+      "sha256": "afa81f12ca52075f30509d47c28a76cd407dedbbe5db82ebd99a9119b04aa3e1",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "362fed04711a85ed37bf9d7dbfc6a2abc8cda11fefe79154ff8c5b74705a2261"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/autumn_tree/_rejected_r6/qc/prop.glb",
+      "sha256": "e3a1a93cfffb070c73f0233347c34346514cda700f0ef4f7ce738d51bef88bfa",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "a6858f2bfa69913693a52d7c1df30d7d963f3b4426f9f88316e80117f4b74e8b"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/autumn_tree/_rejected_r6/tripo_raw.glb",
+      "sha256": "01e27635b63b1cf3bc3c4b822943483965e8b24a47bed9048fc20b8f1eded82b",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "899a2d13a143408e251ef08639bbf6f3f47725a271d0a9e39ed33997be3111b2"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/autumn_tree/autumn_tree.glb",
+      "sha256": "f2d0ccb77ed664e824655ac25334716a568d39d0aeaf4a3239fc6b5111e2202d",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "8617941e340922a850c7fc39b3a00d74904c83e4a7df55d70aaf1cb6f1079c61"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/autumn_tree/qc/prop.glb",
+      "sha256": "f2d0ccb77ed664e824655ac25334716a568d39d0aeaf4a3239fc6b5111e2202d",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "8617941e340922a850c7fc39b3a00d74904c83e4a7df55d70aaf1cb6f1079c61"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/autumn_tree/r7_hunyuan_lp/autumn_tree.glb",
+      "sha256": "b9c87780d60f4c08f186b9faf1fa6d82858df3538141f92abc756759d7d14d19",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "d1819e02262a59b839bf25e3a2d7a08fa1d2d484ac8b1335e7b48ee34ceee4bf"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/autumn_tree/r7_hunyuan_lp/qc/prop.glb",
+      "sha256": "b9c87780d60f4c08f186b9faf1fa6d82858df3538141f92abc756759d7d14d19",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "d1819e02262a59b839bf25e3a2d7a08fa1d2d484ac8b1335e7b48ee34ceee4bf"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/autumn_tree/r7_hunyuan_lp/r7b_raw.glb",
+      "sha256": "e29d0a2c2b653cb55b3a4fb85f850c65d2e3c320462c6847670a6480aa59d2f3",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "8617941e340922a850c7fc39b3a00d74904c83e4a7df55d70aaf1cb6f1079c61"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/autumn_tree/r7_hunyuan_lp/raw.glb",
+      "sha256": "88ae1b2fe7aa0d7d5f4d504563b3b616d770b3da6e165e820648d5ed200e11cf",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "403aa17399348fba91249e835e810f956e15c3f8c0ac1e6ad00d3367d96b45bd"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/bush/_rejected_r1/bush.glb",
+      "sha256": "138a1771a810220ee34da024da9bcca493229de97920bc3306c8b4ed02361543",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "face7873e04de754b865cd504269b078fcb1bf1c3c2ab58992f3a1f36143fff4"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/bush/_rejected_r1/qc/prop.glb",
+      "sha256": "138a1771a810220ee34da024da9bcca493229de97920bc3306c8b4ed02361543",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "face7873e04de754b865cd504269b078fcb1bf1c3c2ab58992f3a1f36143fff4"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/bush/_rejected_r1/rejected_procedural/bush.glb",
+      "sha256": "126dbcbdd4da4b5beb50a67a9e597d06371a8d0fb70801c9d72789895b9c14ee",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "45c38bbef52e07d2fde5a7bd2a2d4f794a9c4cbdffbb374d8cb4a3352345ea94"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/bush/_rejected_r1/tripo_raw.glb",
+      "sha256": "28e6ece8d04f4849d8c50e45e3eb697d4343a3eb3f6610d93fe035402907d191",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "739d38749dfc05eaca67afcc36abd141cb4ccada6286fe29a52a0bb2b6cca122"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/bush/bush.glb",
+      "sha256": "7b39ea7c33fde692a93e98f3dfe588ba914ce7792668219dbb8b299c716d8e81",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "b4cd7e291014517d9ba7238eeff55d313339ce9a24a47c54f8d2932415e50e45"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/bush/qc/prop.glb",
+      "sha256": "7b39ea7c33fde692a93e98f3dfe588ba914ce7792668219dbb8b299c716d8e81",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "b4cd7e291014517d9ba7238eeff55d313339ce9a24a47c54f8d2932415e50e45"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/bush/tripo_raw.glb",
+      "sha256": "cd0f6f5fe91d2b0e4f96b22e74f85e6d4b111228cd7945da179f8d71fb729f82",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "c4b5d7de3dd7e04a7098ffd4fef680f61fbac1fa6e4496e343ac2cca93acd484"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/cypress/_rejected_r1/cypress.glb",
+      "sha256": "2d774cf4b9af1f4f72f6d568d7526f7864fd6c9c46ea209cc0e82eeb11fea87b",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "f1b3811f5cc3b48581cfacde1897c2018e590f0bd44c164c680b1230fda79efc"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/cypress/_rejected_r1/qc/prop.glb",
+      "sha256": "2d774cf4b9af1f4f72f6d568d7526f7864fd6c9c46ea209cc0e82eeb11fea87b",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "f1b3811f5cc3b48581cfacde1897c2018e590f0bd44c164c680b1230fda79efc"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/cypress/_rejected_r1/rejected_procedural/cypress.glb",
+      "sha256": "76579fca8bfaced79e140c6852eebfd3e546161eb82255485749bc37995866b4",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "1fdfef907a6d9f2d515b749bd22e0f906e9d1c1f40791f0911d950677631dcac"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/cypress/_rejected_r1/tripo_raw.glb",
+      "sha256": "2c2ec528d0ef9161df2b71dfab7d7d738370d0a64119a2c47dd22c0e2eaf6e84",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "096c693e7fce1accc12472467661219316aa0db594d4c2e6b64ae588aaf7f97d"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/cypress/_rejected_r2/cypress.glb",
+      "sha256": "b520db8288365f53de74f553719a49fa32e300c15613c73b7db573df493df35c",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "fa002dbf30a7bc20bb09b26ce7467c9e91a8035e8b9dd31f29963273050284ff"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/cypress/_rejected_r2/tripo_raw.glb",
+      "sha256": "d1cb0ec402b705a49fb19ed82f84416e7c6a9ca87a08075c78f3c94d3aec957e",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "10fc5a5a6516b7c55e966ae886100818f4544f916d01b38f62c305cb82cee1fa"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/cypress/cypress.glb",
+      "sha256": "8c2f9fe64e04e9602405cbfd60300d6679c64760cfca14a433b4f0157436ac0d",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "0beaa757cb402589a1ee64abaf37e80e0deba6194527e7db6791d889eeeeae2d"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/cypress/graded.glb",
+      "sha256": "88c001b9394a609902ca0abab66b1d1c2ef1b3efd7287aad787eccf3d582955a",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "1ebc47bea30a4ce8ec366ddf18f1d568f87abda0dc13ef4539950df0e31cc024"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/cypress/qc/prop.glb",
+      "sha256": "8c2f9fe64e04e9602405cbfd60300d6679c64760cfca14a433b4f0157436ac0d",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "0beaa757cb402589a1ee64abaf37e80e0deba6194527e7db6791d889eeeeae2d"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/cypress/tripo_raw.glb",
+      "sha256": "d1cb0ec402b705a49fb19ed82f84416e7c6a9ca87a08075c78f3c94d3aec957e",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "10fc5a5a6516b7c55e966ae886100818f4544f916d01b38f62c305cb82cee1fa"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/ground_cover/ground_cover.glb",
+      "sha256": "4e831bcfb79f9a3115ce9659eaf84d9d89b59deedb57064892b6c5b68f96fabe",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "4179191fd80c9d1912c25e64a5b0785aff9f0064a879f6c42649399012412d24"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/ground_cover/qc/prop.glb",
+      "sha256": "4e831bcfb79f9a3115ce9659eaf84d9d89b59deedb57064892b6c5b68f96fabe",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "4179191fd80c9d1912c25e64a5b0785aff9f0064a879f6c42649399012412d24"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/ground_cover/rejected_procedural/ground_cover.glb",
+      "sha256": "13def4a4239f62cb497c5b501970fd5835d361879c039dc34a1dd2264ac161da",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "318ada133ddb32dae1f486594bcbf900a53899ba16d0f930f311a7b678d35a3c"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/ground_cover/tripo_raw.glb",
+      "sha256": "8d58a0f904c46e26eadcdb0ccb584821a9c925d20c884af0f66977140b8a083c",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "5f43d6e70a44086064dff241b219b8ba7ddeb7f87e0401f4b22cfda508fff4b4"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/ground_cover/tripo_raw_smart_failed.glb",
+      "sha256": "a3351ba48b219591d57a34abd0178f485c08ef25a15bee5bf41f7d85fba53bfa",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "272b280fbbbf9b7c770f093ab979adb4c50e73e41e14dc122bbff640b8ee2145"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/hedge/_rejected_r1/hedge.glb",
+      "sha256": "49fcef4654127a26aa794022292f3ccdd96890419d7c86d6a5bf6c32c75d3bab",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "5ac097fb6197cb0e33f0734dd0fb309fbce4a69e011284f6e4968f3c62d12d99"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/hedge/_rejected_r1/qc/prop.glb",
+      "sha256": "49fcef4654127a26aa794022292f3ccdd96890419d7c86d6a5bf6c32c75d3bab",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "5ac097fb6197cb0e33f0734dd0fb309fbce4a69e011284f6e4968f3c62d12d99"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/hedge/_rejected_r1/tripo_raw.glb",
+      "sha256": "b9d770a10376f02dd92ad4582157774c04c16e7de2062d070d11f67118ecbead",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "aef5433302b865ad34db5978f0daea11695d26a52d03667165e77cc26af25664"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/hedge/_rejected_r2/hedge.glb",
+      "sha256": "cffdc7c9293ca1b4f12fed162e6898b12a37f1e05db9875bce75011c220dd5de",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "b5ece80d13610a445eead4912fbb594c57c82e2577472403602050325d7fffe5"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/hedge/_rejected_r2/tripo_raw.glb",
+      "sha256": "37fe86d0b89266647fe4af7d0e36d823d0b84b851c18caa05458de08f68a394d",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "886990a1c6da7f039fee0f182795f44b4835e3c06f0727c6b51687d249c074b7"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/hedge/_rejected_r3/graded.glb",
+      "sha256": "b4f427383247549508f0228abaa707fcaa25dc7351ef4a5f94c52c9727946a52",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "a623cf4ef2f6fbc36923a9f16fa2cb95e250ffa1873304cf243ab81bc96103e3"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/hedge/_rejected_r3/hedge.glb",
+      "sha256": "bf09a6b63793802f66a0189c859f36686236bb48e6bab3532f9033291b34e9aa",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "4c2b617ad0a98da5d2c988ba576dc7cf2bb5b3a71c9e75749739e186d135b9b4"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/hedge/_rejected_r6/graded.glb",
+      "sha256": "7e84288510afaf9c10fe5a0870b949ce01cd1a0ce3e383132a67f46738650b44",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "bf64f178fd5b2f97c2be26ea2ec02c691503295a4f0f76f1b1ce45b023a80b28"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/hedge/_rejected_r6/hedge.glb",
+      "sha256": "421f571df95aff3510d30db57074a6e8bae5948095300a343e6d7224d7cd85c4",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "138815e4d7b12f90b837b34dbb154da32df2357aa6874bc5cf520831c92215e2"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/hedge/_rejected_r6/qc/prop.glb",
+      "sha256": "421f571df95aff3510d30db57074a6e8bae5948095300a343e6d7224d7cd85c4",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "138815e4d7b12f90b837b34dbb154da32df2357aa6874bc5cf520831c92215e2"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/hedge/_rejected_r6/tripo_raw.glb",
+      "sha256": "ac303443def5b7cfde563aa63e97418a58248909f402647b29129be7e9bd3d39",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "8da4ba4ca1bf8ad2748b6254ae8414a3ddbffd7b134221561f1e0318089e71da"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/hedge/hedge.glb",
+      "sha256": "bb96381f060500a2de1925649c7e9c04e6ebb6bfb45406f61bb26daa33ce0140",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "a46f53e96aca8d09c74238173f9312e6786df62cd211fae62065a6b274afd03e"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/hedge/qc/prop.glb",
+      "sha256": "bb96381f060500a2de1925649c7e9c04e6ebb6bfb45406f61bb26daa33ce0140",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "a46f53e96aca8d09c74238173f9312e6786df62cd211fae62065a6b274afd03e"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/hedge/r7_hunyuan_lp/hedge.glb",
+      "sha256": "9ecc237d29988b94781c7c30b1c5ae77f26144d733d3f65939d11dd90e2221cc",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "d8db9fd1e3b070a90571800e9811cdf8904258469bbecf47f53b55fd03414953"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/hedge/r7_hunyuan_lp/qc/prop.glb",
+      "sha256": "9ecc237d29988b94781c7c30b1c5ae77f26144d733d3f65939d11dd90e2221cc",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "d8db9fd1e3b070a90571800e9811cdf8904258469bbecf47f53b55fd03414953"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/hedge/r7_hunyuan_lp/r7c_graded.glb",
+      "sha256": "b98461f14d2b012971c55f131a8a230d3990100a1fa804c91f5a58d444d69678",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "a46f53e96aca8d09c74238173f9312e6786df62cd211fae62065a6b274afd03e"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/hedge/r7_hunyuan_lp/raw.glb",
+      "sha256": "d564e622ef96c3af017362732870e2da81276d6f9ab79538656547fb6a4e9bc8",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "18a71a5a7e704975ae030cb194eb793b2fa72968d0c603fccbfd4301553f7029"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/poplar/poplar.glb",
+      "sha256": "d7f928bfdbf0be51be15ecb6e8bdda31f84e27d0cd28e1cc44ada93b02df921e",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "d79292b9886c412dfb8b8fe3b3118006544f07a8b38fe795c4a4fcbeb08368a2"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/poplar/poplar_tripo_qc.glb",
+      "sha256": "96cd0bbc6a48eb7b1119bd6e81fec233419856210a1240e7a97fb8ad0e0408ed",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "f04228fe689d2f351f76f0cc607fbe1a4a59ba98c81c77b432f93cd8cc43644e"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/poplar/qc/prop.glb",
+      "sha256": "d7f928bfdbf0be51be15ecb6e8bdda31f84e27d0cd28e1cc44ada93b02df921e",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "d79292b9886c412dfb8b8fe3b3118006544f07a8b38fe795c4a4fcbeb08368a2"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/poplar/tripo_raw.glb",
+      "sha256": "df53718b83241f000a8b72d3c7c535600b7109bd178aa18d1018c45b339c1441",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "093a2c57c94de9f3ae6d51d5964452a02ae26a3a2a035adf7ce61bb053498f85"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/round_oak/qc/prop.glb",
+      "sha256": "18391d428ed826a6861b2ef8756b9c510fc41f78ebe68cfd97e746f03a298ee2",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "7d656ed66a3e8a0f4dcad9aae6f4d14b26b341079e02a3983fb9d63ce7ae7651"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/round_oak/round_oak.glb",
+      "sha256": "18391d428ed826a6861b2ef8756b9c510fc41f78ebe68cfd97e746f03a298ee2",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "7d656ed66a3e8a0f4dcad9aae6f4d14b26b341079e02a3983fb9d63ce7ae7651"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/foliage_v3/round_oak/tripo_raw.glb",
+      "sha256": "34693bdfd8e82f20157b661aec4b4f8e6a1216875bfb038c2c26e9fd4efabd5c",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "30f6f0a3ead4e6b230457e8458554aaceaab35d878c5a6d1eeb3ea6222b61658"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/fx_v1/flame_core.glb",
+      "sha256": "074bf22b4b4a9fa296f8763217886a07d04a430d791698bbe26e21cf9a7b0b4b",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "23bc0ceb54d8668a021b0d65f0d1a54a17c8d1b846396a8a4d96112e78218d40"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/fx_v1/flame_outer.glb",
+      "sha256": "4ef9aca781964d18d98ef9b58fdf4e6d73577f0289ad8b62386634d127523bd8",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "d7e0bf682dc2d7a661744e2138487a333a5e3f0e5b99f36daa80cdc61cafb0a7"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/fx_v1/gull_body.glb",
+      "sha256": "9fcef7f02e15a987ee5f555fe422f4a1bc3f6ee85f644189d672f5a0d7b95dc5",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/fx_v1/gull_wing_L.glb",
+      "sha256": "04c80a67c60dc2acf310c6459183719e823d4d8d8220e2859adfb96f6edea334",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/fx_v1/gull_wing_R.glb",
+      "sha256": "bd892070df68964cc5a53765e919fd59574078c38f9f577c918501174887a55b",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/fx_v1/shock_ring.glb",
+      "sha256": "f254e60347f1038490c71c6ec6d07cf17cfedb25e029833461b88043c1aa434c",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "c3d73ab45205e02b0cd23f41a345e3b13635da49e8a2b41201b62e6f523632dd"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/hero_car/model_url.glb",
+      "sha256": "e60ed5ae58a664c2cd95e6e8d53b4d0160ea8a596fd48aa4a1e56f272835eeec",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "b8c88b80df86425813a64f7ccf8ef1c96f6923edd7be2b35799ecce22ac16b1e"
+        },
+        {
+          "image": 1,
+          "storage": "embedded",
+          "sha256": "1a64e824412cc7210b81593b14826e7f57e686b2124044bdded280c265dd8ac5"
+        },
+        {
+          "image": 2,
+          "storage": "embedded",
+          "sha256": "be3139f956338b7ef9936b271490f406b59a6bc056e8d7140e014c92fd81c790"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/hero_car_v2/tripo/car_v2.glb",
+      "sha256": "302d8cf12630a1d887d335e6e10fa82c1a3ba29f035cce10a90321e7b2c13d71",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "2ca14f4af98b7b334d00eb81a522cdfae18f3fec0aa76afed84edb3b5294c673"
+        },
+        {
+          "image": 1,
+          "storage": "embedded",
+          "sha256": "71a175a81492a28445267f6761b05801f4037702192c5576827f527e36b564dd"
+        },
+        {
+          "image": 2,
+          "storage": "embedded",
+          "sha256": "1e99583c7d530ea3e420baa06c1a78c898ea817663d2c8f00bd857c3a355699a"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/hero_car_v3/car_body.glb",
+      "sha256": "55d7f07eef29842547fe82f2536152c346306ffe4af70cc08eb67ef360816a40",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "1e99583c7d530ea3e420baa06c1a78c898ea817663d2c8f00bd857c3a355699a"
+        },
+        {
+          "image": 1,
+          "storage": "embedded",
+          "sha256": "2ca14f4af98b7b334d00eb81a522cdfae18f3fec0aa76afed84edb3b5294c673"
+        },
+        {
+          "image": 2,
+          "storage": "embedded",
+          "sha256": "71a175a81492a28445267f6761b05801f4037702192c5576827f527e36b564dd"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/hero_car_v3/wheel_front.glb",
+      "sha256": "d4ca4407dcc2417a19f27febf4ea9e76f67f23f95074a0d11dde9c014579382e",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "1e99583c7d530ea3e420baa06c1a78c898ea817663d2c8f00bd857c3a355699a"
+        },
+        {
+          "image": 1,
+          "storage": "embedded",
+          "sha256": "2ca14f4af98b7b334d00eb81a522cdfae18f3fec0aa76afed84edb3b5294c673"
+        },
+        {
+          "image": 2,
+          "storage": "embedded",
+          "sha256": "71a175a81492a28445267f6761b05801f4037702192c5576827f527e36b564dd"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/hero_car_v3/wheel_rear.glb",
+      "sha256": "c947fc6ecb1c360b3e1ec6c180f592b05447cce859b880e41dcd2433969a44e5",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "1e99583c7d530ea3e420baa06c1a78c898ea817663d2c8f00bd857c3a355699a"
+        },
+        {
+          "image": 1,
+          "storage": "embedded",
+          "sha256": "2ca14f4af98b7b334d00eb81a522cdfae18f3fec0aa76afed84edb3b5294c673"
+        },
+        {
+          "image": 2,
+          "storage": "embedded",
+          "sha256": "71a175a81492a28445267f6761b05801f4037702192c5576827f527e36b564dd"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/hero_hovercraft/model_url.glb",
+      "sha256": "6c060c4709c6ff8b1bd78ff23efa2ea55fcb0159eeb67b0b24d03be95a602d6b",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "746c6e37a510b9e516949fb13c4c7609fd098bb1693837c2e1fd71d330abfa14"
+        },
+        {
+          "image": 1,
+          "storage": "embedded",
+          "sha256": "3aa2a1834382bd211e50720046e74fcf5ebc25af43bfdbfa1dda762d642720a7"
+        },
+        {
+          "image": 2,
+          "storage": "embedded",
+          "sha256": "6035d3b1672c11f32c68bc9f8d6745b625acbaf780358e4d83eec509ad0baa75"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/hero_plane/model_url.glb",
+      "sha256": "9336f319ff55c0676697ec5a6e6af312c0c037a53d1dad542cba56a3c3e11415",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "29dabe78fa46f2db459295cdc111a4cd486e423fad478ab21af5bbc0f62efe63"
+        },
+        {
+          "image": 1,
+          "storage": "embedded",
+          "sha256": "5b29676a3f13d4f508865a60b68309b706bff240eaaa105a607f90c32904e79b"
+        },
+        {
+          "image": 2,
+          "storage": "embedded",
+          "sha256": "6518fcf576ce920d78ac43ad78e942904db9056a47454e480a8b2cb6ae7c1ef9"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/hero_plane_v2/tripo/plane_v2_badge.glb",
+      "sha256": "94fbe7caaaefede35a346e4e4e2cf0ff37fcdace111320a22f8f7dd733850ff4",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "0328b71505788f551a721812ba1ec9aa0c6e5fb4587943d582acd0d86c67a594"
+        },
+        {
+          "image": 1,
+          "storage": "embedded",
+          "sha256": "97db6a7a35f8e9dbf030647e3b5c920dc0a0857ae172679946cb10c6f9ef520e"
+        },
+        {
+          "image": 2,
+          "storage": "embedded",
+          "sha256": "e757e8c2fc71fdcb465de4ed81889ef12c0d3e982e1ae0398df5b068be12479e"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/hero_plane_v3/plane_body.glb",
+      "sha256": "8cc70c2e8e110893b925375b54cda5dabceda07edc73224588118ae084b4abe8",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "e757e8c2fc71fdcb465de4ed81889ef12c0d3e982e1ae0398df5b068be12479e"
+        },
+        {
+          "image": 1,
+          "storage": "embedded",
+          "sha256": "0328b71505788f551a721812ba1ec9aa0c6e5fb4587943d582acd0d86c67a594"
+        },
+        {
+          "image": 2,
+          "storage": "embedded",
+          "sha256": "97db6a7a35f8e9dbf030647e3b5c920dc0a0857ae172679946cb10c6f9ef520e"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/hero_plane_v3/plane_prop.glb",
+      "sha256": "a34e69f444dac65c3651c07eb2f64e695893e88997a046aff2d3946bc1b86154",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "e757e8c2fc71fdcb465de4ed81889ef12c0d3e982e1ae0398df5b068be12479e"
+        },
+        {
+          "image": 1,
+          "storage": "embedded",
+          "sha256": "0328b71505788f551a721812ba1ec9aa0c6e5fb4587943d582acd0d86c67a594"
+        },
+        {
+          "image": 2,
+          "storage": "embedded",
+          "sha256": "97db6a7a35f8e9dbf030647e3b5c920dc0a0857ae172679946cb10c6f9ef520e"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/hero_plane_v3/prop_blur_disc.glb",
+      "sha256": "e4228598b59efb567e08b3ac05614b0eaf8a5bcae23313eb2ca54909745a5580",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "22faa58c75ba705cf593193d281f2ef16fd3cda0aaac24d081d5960cc198031e"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/items_v1/item_balloon.glb",
+      "sha256": "c9711ec03f7ae98aa17d3cb993ee76a80dfc29ce67a3f2e6980eaa17d87a66a8",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "29de9c67bee37e730e4a60beaeb466583c9fe6dd2f32f603fce29a870d61458d"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/items_v1/item_balloon_rainbow.glb",
+      "sha256": "b9f3700835f019ca2077633cfe78a84c55abfac9579787ee6591749bab859420",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "85928042bc9e999f97f3153ae0a6d440dcaa650b5b2f04b699e081e748b5cc49"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/items_v1/mine.glb",
+      "sha256": "1d9cde958cb3aa976f016e1dc2ff3acf253a8dfe492e87a5e168940c6d4b0e54",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "358393a685dc60d2b04d9f57a442c88560fcfa559199e636b8b9d14ec696ded6"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/items_v1/missile.glb",
+      "sha256": "0530f19b89ad91a414a515703a8a5d9bf1bd65e65e6b5bf6ca41b0b7d5b3cc96",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "6750d6c1fe93e97758bc94ea084af60ed75d8912d124c76624cb261785c4b633"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/items_v1/pickup_air.glb",
+      "sha256": "ab34d517fadce4fc4137415d9c68ab097c90a4dc3802b8987bc5e6948b6feac4",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "446f6575b034020e30e2f3264b1508ce0ce9effde7faea80a8c86123da3e5987"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/items_v1/pickup_speed.glb",
+      "sha256": "52933d36247e6101ec665114290be169a6ecb6de4a9e4d8304533216b1fb25de",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "8a3dd8d15642ad5853b5f68f0be18b8f7df0f2a3f2897baea48259afc6e88aab"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/landmarks_v3/dino_fossil_skull/r1_tripo_p2/fit/asset.glb",
+      "sha256": "419af64a346bb767a44058f4cc9eadaa210a4cff27d33188fc1b35f4d8449cd7",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "dea86de07d252686407a97fa84d08cf5a21bc58208b61aca31df804cc9d71efd"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/landmarks_v3/dino_fossil_skull/r1_tripo_p2/raw.glb",
+      "sha256": "a409c636166ec56e0f3a35891cc95e61e2f7981d5cb92272bac443b52138d369",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "dfdd8d7a18774f61ecc84c6019555f8ba7f09ef4c02fa791f1cfb1608badd15d"
+        },
+        {
+          "image": 1,
+          "storage": "embedded",
+          "sha256": "6173b1dccd81a5a8064e2ef805754938fe583b530b9b20f73047ccedfb07ad59"
+        },
+        {
+          "image": 2,
+          "storage": "embedded",
+          "sha256": "b6418cb6063e8d25e36d940c95a377901c10bdf1018dd5acded47d652ab2ecb9"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/landmarks_v3/hub_lighthouse/r1_tripo_p2/fit/asset.glb",
+      "sha256": "a237c4563573b65f2cb53755721c4f6965d6febdbe01ff8b73c13bbc372a503d",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "97272f0d0eb7f2de35a832696607e98c222cc883cb8c9b227796e008ea02b9ad"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/landmarks_v3/hub_lighthouse/r1_tripo_p2/raw.glb",
+      "sha256": "637bbaa6316c68f62deacf5ded1f1ead4cafe21cd26abc0e4b3ba66daaecc77d",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "41327b92ee43f40c000e7cab01dab47e072471cc4c88bd216a4bab439269e28f"
+        },
+        {
+          "image": 1,
+          "storage": "embedded",
+          "sha256": "0e56e0560cc3068036e37c6ef1e49f9366ef2f222f2883f20b21f588c8f96b35"
+        },
+        {
+          "image": 2,
+          "storage": "embedded",
+          "sha256": "a81cbe8dea81212bbdcbe973e3b039091dfe9310b290d49877fd3e30f961a569"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/landmarks_v3/island_lighthouse/r1_hunyuan_lp/fit/asset.glb",
+      "sha256": "bae9715dee369d2fdde9608c6aad6b9149d76603673034a2986ef441ef1d8b49",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "fea63a3152e0bde6280ffb19b900d5a2931206c597b080216333963e6bac350d"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/landmarks_v3/island_lighthouse/r1_hunyuan_lp/raw.glb",
+      "sha256": "7f3c67ce6a422b63f7d9e1f0fa9debf22b12c9a015125a620574873c298f8c1b",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "474d5f9b2fbc004ac79a61140ac2025a02eabfcce109c89e9ba54c01514382b4"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/landmarks_v3/snow_fishing_hut/r1_tripo_p2/fit/asset.glb",
+      "sha256": "1f300940871e882590d138f1304c97bc94cf91a77e8d7426918cdda63c49dec9",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "892563dc66a95e495e301dd2a49353702cf9fc8c6ad6244fa20f57f9d5208cbe"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/landmarks_v3/snow_fishing_hut/r1_tripo_p2/raw.glb",
+      "sha256": "8863e2cf4b6fd8c9269d585f7d23149f756a6d44bb27834ba11bae71f48db323",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "f9033571145bdfe6ef8a90f2d47b4026daee407213abaa4118eff2ed00313c6c"
+        },
+        {
+          "image": 1,
+          "storage": "embedded",
+          "sha256": "0eebe4efa4e8a03cf2aaa4078f44289a67990d7cbdfd63b83810c51b3e292d67"
+        },
+        {
+          "image": 2,
+          "storage": "embedded",
+          "sha256": "8988824500ea976fb75d177f057c86d44d9d65c419cf63af9ab13996b17ffe60"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/landmarks_v3/space_monorail/r1_tripo_p2/fit/asset.glb",
+      "sha256": "4454b8e16a5195592d6d246994fb8cdee457aa39b6877ee3801ed83370d8b8e4",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "a564f3eabea72d9d3e3aeb650fc1e9161dcdbc1d5e26bb0f3e41e86d95ae8c58"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/landmarks_v3/space_monorail/r1_tripo_p2/raw.glb",
+      "sha256": "65798903623b08ea0f4fd13a4a218f91321c276fc9dc959ebacb6d25d96d6b9c",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "46acdb497a42cc0d74b1a08faf581968623cdf4c090c5bf9e6a120c2991331ab"
+        },
+        {
+          "image": 1,
+          "storage": "embedded",
+          "sha256": "0f41f350028145426cf6c3337d51283c8e369fca218771caf9e21136cb571fbb"
+        },
+        {
+          "image": 2,
+          "storage": "embedded",
+          "sha256": "272a3160299e18095609325e379b859a1ca0a55d914f6cf3669b1ecb231843b9"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/landmarks_v3/space_portal_ring/r1_hunyuan_lp/fit/asset.glb",
+      "sha256": "285130317db1dfb7df93a31d870024378e906082ae389d38f1c65f8ebe8ba2d0",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "9c05da83f245dc95ff3231d910278db071eea34e60762412d94216a5cba1967c"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/landmarks_v3/space_portal_ring/r1_hunyuan_lp/fit/asset_open_l.glb",
+      "sha256": "a07ff43d6a79cd74e6fe50f5ba9c7b66e98838a1699c01e9253806d8c733df49",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "9c05da83f245dc95ff3231d910278db071eea34e60762412d94216a5cba1967c"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/landmarks_v3/space_portal_ring/r1_hunyuan_lp/fit/asset_open_r.glb",
+      "sha256": "a37bbc62df2b9aff15095d03f04cde9f3a12c68811483c61f7cb522279546570",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "9c05da83f245dc95ff3231d910278db071eea34e60762412d94216a5cba1967c"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/landmarks_v3/space_portal_ring/r1_hunyuan_lp/raw.glb",
+      "sha256": "b7108777c841d0f503842d76077c5a7d2c99b1b95aef8b35aba3aeeb055f88d0",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "f86b8d649ebf12a664ba06f5a8d03f0a84aa617010a2aef47aa33304dc201384"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/dino/basalt_magma_rocks/basalt_magma_rocks.glb",
+      "sha256": "d09a51e5509f93e95b9cf9070038bf1bff9cd6c81b40629bb22b487aad3ed33c",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "69267710bb2e74b1bd3f80646538648f138b501c18dd5f1530ab8cec30857136"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/dino/broken_column/broken_column.glb",
+      "sha256": "430a5cb91dca4a4a53ea999fadf3dedc4410216a28f07d68674c7dfeee560843",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "593245cbe05da6853cd00366533915f279aa8d1f9383a8431a87d602505073ff"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/dino/egg_nest/egg_nest.glb",
+      "sha256": "28d497e9682c62a96ff7a16a7352a22bad82e56539d967770fb3ca6334adddec",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "c34e26c2fa3d4bbf25ec18e0c0830d48b35c2e2f6604d4f9383d4d1c4e1d2e06"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/dino/giant_fern/giant_fern.glb",
+      "sha256": "4dedec184371cee6724c6cc4cf99b5ada0694611267e248c3c612a4e5a02dcd2",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "cb2e0cd2ef76abdeb0457fd47b29e9532280342923f51c8761ea3a997f5e98d2"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/dino/lava_vent/lava_vent.glb",
+      "sha256": "fff504481602e87d116fec566e161b252feb1d311e3e944969fe506e98629ab0",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "b97449424d278d84cf7df9c6c5d9cc3709d39bb0d9396cd1a67c52deb6fba694"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/dino/ribcage_bones/ribcage_bones.glb",
+      "sha256": "618a879535e226f0e8cc19b560036fca88c8147f9c21e0876c35c7f4ba96e993",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "8ac9ad78bea33da545cc18661fcdea8c8e8d0de6652421e766d709417d7a3deb"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/dino/ruined_arch/ruined_arch.glb",
+      "sha256": "99959f53cfa1b2661c38acd5820ec5effc0407a33216fbc394018145ac2ccbab",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "18a7f188aa4269f594251eb3647ad6c64c3d38c7c1ffe6083f262d95a57d619a"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/dino/stone_totem/stone_totem.glb",
+      "sha256": "a456818699d4d098611f86c3a48bca447efb622831e4630f4e97cc97ad1d7fa2",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "45127319d297fb75a7df56db706193d8e04d5a2b1733883624288d59ceb1e0c7"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/forest/beehive_box/beehive_box.glb",
+      "sha256": "2eb088bc0223a17dd90f55425c923cab76f7c34f99a6ab7b207ffd2e1d4d53c7",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "6bed5393cf40ba7c171131f62c9535a991bbdddffd9306223497b2eca1bcede2"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/forest/beehive_box/tripo_raw.glb",
+      "sha256": "cb17679e6ff2989b1aa1152c29d7b17ab528c853f1c05f72131dee57290d3980",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "29b8cf48b176020d438e0d68b04e9b3a98c7a2d0cb49e385506de2d61cc9102e"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/forest/fence_flowers/fence_flowers.glb",
+      "sha256": "68dfd0f4cad678b466fce015da75486c80251f463764ac838f23b700e212b433",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "fffeef537e177544419cf3555f07190f7912abc9f7cd0868ff0762cb87a62390"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/forest/fence_flowers/tripo_raw.glb",
+      "sha256": "40003cfc8d5419749842a2f3500e1910a753e4ba794b3f8c53d42e1cfda67fe3",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "e45b052a36a1dd4a357f501edf0a0d8b92c6c8583de363fb15b99cb7d6170642"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/forest/flowering_bush/flowering_bush.glb",
+      "sha256": "eebccee35cb8418c9015cb0af9c36b81e1be44c500780f5040f96d59868564a7",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "5fe99caef0313a8fbd6efc10db088a690cae21efd3d5cbed4375082931c6c792"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/forest/flowering_bush/tripo_raw.glb",
+      "sha256": "b31221033ddfe854037679695b67da76abf1f0b80ef2dc5a6274c0d417640b88",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "93b4976664a4b3f4b7d112a81131602b09cb6f83ee16268c3e23247b8b336d66"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/forest/hay_bale_stack/hay_bale_stack.glb",
+      "sha256": "f8b83c1b449c8d29f8e8ca9ad6455fa332fc381fad612eba03af4dca0c1b5cb1",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "fa24b9e6804166e726dc066bba2b93c9824e74166d435169b53e8cfd25bf2f71"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/forest/hay_bale_stack/tripo_raw.glb",
+      "sha256": "05212e5101df409d19f2e606bea576ca202790383cedee287b1f2afd67a6a655",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "2675aba09b93d727006b671300738595f8b18ecb16def13cee3a2c66725bf812"
+        },
+        {
+          "image": 1,
+          "storage": "embedded",
+          "sha256": "5d6fb887e5f9e939d348d980663c78f065f275e2b8cbea56787ee2aec3b587b4"
+        },
+        {
+          "image": 2,
+          "storage": "embedded",
+          "sha256": "e31622c237818b1e6cf12fe011177d96cf30e507a14c54d3ade7d94590d6e830"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/forest/mushroom_ring/mushroom_ring.glb",
+      "sha256": "d0afb3c763f7d9c4b6ade5337f6b8504954d5f9c13bfe606e29b5de7ecfa474d",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "a7a6f29dd4ac6f1c3dcae10a9885c6be87d8b129dba92c63327d6e39f096c0c2"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/forest/mushroom_ring/tripo_raw.glb",
+      "sha256": "561e041dc23257cd19c15b1f3e5687b559847669af5abe1a553b4361e38683e2",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "47b8dad3980d4bc381142f480950e12aa096c11426a6aabbf0ec3107d61987c8"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/forest/produce_cart/produce_cart.glb",
+      "sha256": "9c01df79942c8c6cd7ee28100fb703035d5075084d310d09b498b61c5f2a1d9d",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "b0951542ee3e6335232cea559097f528ce3c93ec735cd978227244b26b9fa5da"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/forest/produce_cart/tripo_raw.glb",
+      "sha256": "044cf137c89a1ab6cbc160342d16b6be6e68045c6768f8612e1238ef4e8ad57a",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "35d4937a56352d4bc12f9cf5233311ced888934beb2a70936f47f688ec1900ad"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/forest/scarecrow/scarecrow.glb",
+      "sha256": "7b39a9cafbc2e1eff62c6fce43173433edf47cd47d8866d25612150f6c213258",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "2e98d6caa5843f3987ecbaacb1b296a96176e73252ee5359ac5df2af86db5763"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/forest/scarecrow/tripo_raw.glb",
+      "sha256": "5b3f783727710e8ef519f5caccacdee846bc283ccd8a7b5c47d502b0b18c41e1",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "941b71a949f1fddcc0c4e059d6a520b874a2fc13217f469a9835c600ea748bbb"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/forest/stone_well/stone_well.glb",
+      "sha256": "dbd04a8fb919cf38983733e2f461bd422e27fe52857619bac55cd578f9a7c683",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "a06ce0745392b78b44ed60ced955e9f4ecf45fc335046b43f8f78e1e10dadb53"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/forest/stone_well/tripo_raw.glb",
+      "sha256": "d45c834e3a8f645c3f399793ae096623499fa174a8a648dce7fbc9825d1e36e4",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "9edcc8eedd885e07b8402c6bc04bebd3b559f647bb4a41d1b4c4fd427cc4d069"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/hub/bollard_rope/bollard_rope.glb",
+      "sha256": "03ee20a2c180cd125aca3f9abeaf938596a8014e256b5e43c9769646ab278d7b",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "1e413a6d35cbfbdfd43af38dfa297df35556174b71fd88fabd7edf51b5e15108"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/hub/bollard_rope/tripo/model_url.glb",
+      "sha256": "b9774b84405d67fa246fff1a7f1ab104d7c25fc7f987367cd4bea5f36f4a9517",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "22130305cacf2bd3aa453dc72d17c95720ad36feddd0fb09d9c1dfa5b9e0c718"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/hub/crate_barrel_cluster/crate_barrel_cluster.glb",
+      "sha256": "343beae99549e51a4f1a71fa1d5ef97c5826c6eb665de0cab9e76960d7ffd731",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "6e9df1fef3b55f641ccc66bd2e1203cfe7269fcda0509ba3ecef0c3110903131"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/hub/crate_barrel_cluster/tripo/model_url.glb",
+      "sha256": "6573b09324e3be14717c8806082dc5906b1751d2d9d0d3c0325b3951acf1c522",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "11b958fee8b3028f5a9448cb70c0877463ea4fd009f133b7f2cbabd6f063bb4d"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/hub/lamp_banner/lamp_banner.glb",
+      "sha256": "ddc2405494c57bad4fbb3dca1cded26b365d50a91ecdaa1cbf5bafd68eefbad6",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "107eabf85e3d51e6bd1aab0f0c0b0637d33435d0eb7fb2dada1a7a485bbdc379"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/hub/lamp_banner/tripo/model_url.glb",
+      "sha256": "84f5048a15ad4adc3f91426268f2612ab9434c9eef9d7a566bcb52288f988a40",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "aa1dda5be69cbf12dfb51ea4308f44f63dfc714b48d89bbae1e2f60bfc306721"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/hub/market_stall/market_stall.glb",
+      "sha256": "b5244f6da747b750d943e64b40fc787f383666ce03c3569f3b5f8ca47a52a77c",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "6f1fb501c7c788fa8d33cf64810e1919b212b27f8055bb0aaa83de777f54f71b"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/hub/market_stall/tripo/model_url.glb",
+      "sha256": "2a21822c254d6c4ad5a7e55a0586c2b5b9c1d6580a92ee3d1819077d0c1bddf3",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "0cedff6b568bb7124275c722593501035c61b023c473c4564817447eaf39cb88"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/hub/palm_cluster/palm_cluster.glb",
+      "sha256": "dfe46b4d2ec539aace9b773e402cbb6ac9f1757dd352133360fd95ce943de9ac",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "5cd6305652dd536995d1b7fd1e64896d4e35487ae175485dc6bd271f5fe68b4e"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/hub/palm_cluster/tripo/model_url.glb",
+      "sha256": "e25f183aac62cab45589da7e642b6ae44bbb710ae18703272402efcdbc4bd14a",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "0da0fab810ff1cd3065f9ea67db356fc451d65a719058a7a69dd4f1fd1a3af7d"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/hub/planter_box/planter_box.glb",
+      "sha256": "499edb8cad5cbd8ca3503ce5050f2e8f4d077a015ed7b6fed0e5b33b535a3c48",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "4404643a8264403cbf579479df71c2d777b3bed3eba3266d804795c8089e098c"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/hub/planter_box/tripo/model_url.glb",
+      "sha256": "415c2c22c98fc7a96cf912c30afb536c1cff3f3179a48ffa81a2dedf5187d4fa",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "735ede88c5e42292f34c72743314c4a8e9fbc9ee43d6ef4b3c19c931344d3d6c"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/hub/rowboat/rowboat.glb",
+      "sha256": "b43e029bee1bea476b5da6ff05483181854c8128ded9af9a091edb9369785030",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "d352a333eada74cb3572720234280a9ecf46015bea57077f0fc0af5f4682170b"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/hub/rowboat/tripo/model_url.glb",
+      "sha256": "f66b6f8265e55f668188e454632027174c35db10748158ce54538b5a39ef1411",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "5932cefb1981473481e65cb1aa7fee8da191f3c11771223c790404d2c56f842a"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/hub/stone_bench/stone_bench.glb",
+      "sha256": "6d6ea390a7f0dbe5a68ce6f2a63dbb5c8a256f93a558fc84a11745150c45f7cf",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "bf281315cb67983f610c9492491a1ae123effdecfc7b064de8487bb706379850"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/hub/stone_bench/tripo/model_url.glb",
+      "sha256": "e355d33e7458c1a4134dedf342090dbaf4d7cb6e523a8cae94a4f0bbb95912d5",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "bcd9dec2b90e7c6b46aacbdf8adc516deeef242f9ba7e3e72c5c64c642aac1d7"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/island/cargo_pile/cargo_pile.glb",
+      "sha256": "ca470dca1be1a65c81d7959b16dd71709ec8a588a4d7a75eeca996769183557a",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "883812730ce16ae1561652d006439ddbe2f2544ada5ffc2cf6bc0174b952a654"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/island/palm_cluster/palm_cluster.glb",
+      "sha256": "c664f38e1072c75ee8915a375448eb1d3007865b793fce1d56e3f59c68660be9",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "5a3c84dfacb246bd1ecb6bea1dbde336b73289745faafb3aac946347c8b6a797"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/island/rope_anchor/rope_anchor.glb",
+      "sha256": "650a62722b3c79c6bc207971d1b2a4f71085dcd0047e72e801e3910e8720ae94",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "85b59c15bbec66b824b205f89154c61168e7454d109f1a889f793ca744281ac4"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/island/tiki_torch_pair/tiki_torch_pair.glb",
+      "sha256": "2046e589e6648edfbab496aa5fa7c5dbd63decfddd68a8ef70ca7e8183383f91",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "fc7613b16c276e2bd48701cd7f45f3d468f3c218975804004a38f14cbb8d6bd1"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/island/treasure_chest/treasure_chest.glb",
+      "sha256": "75db9e94ac5056d8a3eb3798b2a46d9327fe275c779b5b1970525da7064dbee4",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "648c1610a97e5560bea8c7de9630e8a84e9b41844ec75bc6ff3d26a10426d496"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/snow/fishing_hut/fishing_hut.glb",
+      "sha256": "d94b99226af2c4d11721d4c6f7927bdeb998690341970422c8bf33f19b7b4db1",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "2bb61c7ea66135870ce158da0692eca008476098a9bed9732a198e39eccb46a3"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/snow/fishing_hut/tripo/model_url.glb",
+      "sha256": "a95fda261b1968aee574f893e8f5f3ad02c3c5cefc5c13e7a198805fab8d27cd",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "0b89a611cb5bef80bffe806e10926721d800a902d03c287fbcdb48d4deab4f56"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/snow/frozen_rocks/frozen_rocks.glb",
+      "sha256": "bd35a091284994158a4642febd05114a627cbb1caa4ef865a45a51cf02b0cfb3",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "02ccf1926f0fdba23fc0d24d76c7db636aa589a40729a3cdcbfe3af2b34161ac"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/snow/frozen_rocks/tripo/model_url.glb",
+      "sha256": "b26dbbf50cc020af6c4f213fc906db35942516e192bb5effffed91f8481748b7",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "3bb19463ac8bf7ce2080eb1696645bbd1b49356bf2d035e970e789ec7479f589"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/snow/ice_crystals/ice_crystals.glb",
+      "sha256": "e638753e1cd4d289bf89c539d2fff5c83cf5f5f357b17094804d91abdbe64b9f",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "b8b1d54aa130913d824249d20b183d9f93e86640702e05bc551917fd60d6f837"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/snow/ice_crystals/tripo/model_url.glb",
+      "sha256": "cbe9798193f85469337e843a1760df4c0952c6d6ab7ba638670e954e5a3f5c69",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "430ecbd315dbea114ab99c54ff8d211092bfd4a780c5596f1bc66f0efa83b1fb"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/snow/lantern_post/lantern_post.glb",
+      "sha256": "4df3547791b09dbd4f17573bc8ed1d3ca170b88df62dc4af72c9047c16412f0e",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "6a705ed5f5ae1a2f90b90358dace2312c55367a555168be5ca271d5c73e3c53e"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/snow/lantern_post/tripo/model_url.glb",
+      "sha256": "5218ebcfd265f0469f56f5e28a4a32e5ae62e1b3ccd06851d689d7a89257d184",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "b72df235cebccf132c152d5828fdac14327978382a976fbccf0dbf32995b19dc"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/snow/pine_cluster/pine_cluster.glb",
+      "sha256": "f0f15dd122964cbd3727afb9971520edc0be3049709a18bc635f6e4f1ff4b478",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "2bfc05504fbe35a81a19bee1ff269b3e65013787481180eb2d731b417ba45302"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/snow/pine_cluster/tripo/model_url.glb",
+      "sha256": "c741631f2f5a998d6534fd07621e02b8b86fc86b4b37e680da7bf1c45628e1b8",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "c536f3a67601372be72904491afb443ba3d58073e5568592627408b294fe651d"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/snow/sled_presents/sled_presents.glb",
+      "sha256": "cbedb93bf829d4fe09ef95f8fc729dfb0a828980eaa574563480bf34d3da4af5",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "7f8a2ff8442510d2cd89b936d263acbc1986bc36e43b74e7afa2e73a89e2a436"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/snow/sled_presents/tripo/model_url.glb",
+      "sha256": "a7d0ca9583c973c85f19214a1f49e551bde7c9c2f4edc2aac180dcb972dd4f34",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "34ace4382d213b9db769e03ed9068415ba7946acee0fdc8a8933c7410414b078"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/snow/snowman/snowman.glb",
+      "sha256": "43255df9e45021a73a6dc02a1fa65a584332fe82ef6e9a6bb775ac50d70760dc",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "9bcdb2a97466744a0952fd997658c76506ec456768dbc6df76bbd734945b87d8"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/snow/snowman/tripo/model_url.glb",
+      "sha256": "be37fa8e14f681713fc8d72728c3a687634a7065c8b7f07345893d3c6ec12c0e",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "f85b50cf42a22fece026e13d226a65849f0ac168b46bbb90885cefbf2e9b7379"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/snow/timber_fence/timber_fence.glb",
+      "sha256": "38a6eec0c26c393b8edec1cf73989ff5c974df1a28b2c2d96eb769377dfcc63f",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "bbf4a5dc36bdaa05af5e62fe2ce708cfbc9a8756fe4c054b9bd79f0ab8c99e4c"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/snow/timber_fence/tripo/model_url.glb",
+      "sha256": "2474048734476529e2954c083a68adfa2e03ef75d0ddd4c9ad4c671692d29a6a",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "f92936c8f65533d75e8b5f559aae05e8d0eee17e3634efc208236ffaae3f5c2f"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/space/antenna_dish/antenna_dish.glb",
+      "sha256": "ecd33d552a7b39e7d8ff88060d88c7a887f65c791b694ee7881b67c266da7993",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "8159109828b4e18f1832ab9104ba721e0afbd33e0b7b2ff2612e74d2e8e69837"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/space/cargo_container/cargo_container.glb",
+      "sha256": "45a95ae6647e055625d97f49f71ad3f4a505b5fe0a3c999f3da151b6ff98f9f6",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "7174bfe033a1a95ac916ccd1516a399f3dd5e72a4bfcd40e106bbe35d11485ee"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/space/crystal_formation/crystal_formation.glb",
+      "sha256": "6d87da04690b224d00c195533f38b329246450e2075c598329fe090d9cdfd777",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "00756cba2d5ed98df418bd2ce6cae309e3beb0addd66dfd4a3674949f3c00041"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/space/fuel_tanks/fuel_tanks.glb",
+      "sha256": "8437d117b3e4bc349a58781bdcffc0aa36c14d40b822aeaada3fc89834b0e861",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "34377c654287e863bc8e8980b6d72b1ac2e0ed8bc1943f51bea2f9f3d18129cc"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/space/hover_pad/hover_pad.glb",
+      "sha256": "1b97642fb65e8926a757162cc6bc4e316a5232b1d487c6d48929aaf3b4a4762c",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "395aa089ed62aaa3e12efad85924acb5ffb3096983e0a4f4c30fcf24430e0890"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/space/moon_rock_cluster/moon_rock_cluster.glb",
+      "sha256": "242afdbf15daf7b353b58c4e88d58d17698f14a0a9cef5c9739c376a1a74985f",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "ebc3de6509372793f615b864d1086375350a10130edee89121e98b940e9477b0"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/space/neon_sign_frame/neon_sign_frame.glb",
+      "sha256": "cbb530ec4d4f6c29d90d1bc69c71cb38ea16ae10d27bf4b8958dcd85646f46d6",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "88d874061a52e02185bc61c502a49db469d7ae1bc303e224b143424b410a2204"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props/space/rover/rover.glb",
+      "sha256": "68c715e55ff045881112ee7e95b8fa402ea67a961339bbd0bdff88b45da9091b",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "c3140ed59738b072868821d3fc971f4b76e448f815663845c01d3cd82b3f7737"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props_v2/banner_pole.glb",
+      "sha256": "0e2de13547f812263ab3b99167ca37c2fedb1cd521952bd5347c909fe2f8be21",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props_v2/boost_pad.glb",
+      "sha256": "3d8cd4c3d281b2cc43652bf71a81ebddd2f5651919439ba3ca706dcee39f39d2",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props_v2/boost_pad_glow.glb",
+      "sha256": "2f872afae9ae6227132b127dbb46d73748e0cef908dddb84d0c34416d4c2ce2b",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props_v2/chevron_sign.glb",
+      "sha256": "681426d101904274ebc32b60637769a6de4e326190496bee1a0d6b3d4fc76e52",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props_v2/lamp_hook.glb",
+      "sha256": "90f4e537517259505d130e5e8d32a6cb887f6c17b6322d247f18ea3b732638b3",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props_v2/lamp_hook_glow.glb",
+      "sha256": "7b85f6d7069d1f4a605f3b8b3cfeee3bd00d43611e2c236366729c4bd5e43ee7",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props_v2/lamp_post.glb",
+      "sha256": "d833ef9283ec49ac2cf6fdc5a28779e326670b391294e07d3fb5a8fb2d570421",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props_v2/lamp_post_glow.glb",
+      "sha256": "3a62561571c4c9a6432e9be6c1d17d0b60b27697b993688aee12db58b0919935",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props_v2/sign_post.glb",
+      "sha256": "1e0b7636483f25865dd5ba9040b49790ea065e71d21e201481fb36476058b668",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props_v2/tiki_flame.glb",
+      "sha256": "727579efab88b68152a4dbab1793de1cff4967857fca4d5294386359a22938d9",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props_v2/tiki_torch.glb",
+      "sha256": "a67b9aaecd51e9bfb32cb538c9dabb716da649a62f0f7546d6ff9ffeb66855fb",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props_v2/windmill_sails.glb",
+      "sha256": "3d4478333aafcfe5c413550730b9e281fe56958385d403e0ef252adb4f03ae2f",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props_v2/windmill_tower.glb",
+      "sha256": "81a9a7c3448bd68e162e7ca744b784694700edb6747dc1d85b3da17ab1a0f9e3",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props_v3/_rebuild/banner_pole_in.glb",
+      "sha256": "57d7fb6c30cb2da2eb2a5b113b7a2b871463959d4fa50ab7f264ac30a619bb5a",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "aee63bf33d61c23ba2fc3ee92d25ce06eb09869e793ce95d840865d6148075f0"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props_v3/_rebuild/boost_pad_in.glb",
+      "sha256": "fa58f9f5da528a4ad0f00dcc6d84b8b8004f6b8bfdd476007e34ae9ba4b22068",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "66414477cc492e5950d44cecf6b77eae7797e4956677652a99c7c2ca34dfe94f"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props_v3/_rebuild/tiki_torch_in.glb",
+      "sha256": "4eacf2edbcafb7284e6231ea58960978fc8b87b0255f4e12c5ea653fec7342d7",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "918fb2fe6f1ed4b5cb50b046efec3c35297de2da7b7ea70907cc9c452448d127"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props_v3/banner_pole/_rejected_r1/banner_pole.glb",
+      "sha256": "52ebf6bcf409218962d3bbf3cf2aaa5649f199aa8aa1104351e4affad8345ea9",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "aee63bf33d61c23ba2fc3ee92d25ce06eb09869e793ce95d840865d6148075f0"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props_v3/banner_pole/_rejected_r1/qc/prop.glb",
+      "sha256": "52ebf6bcf409218962d3bbf3cf2aaa5649f199aa8aa1104351e4affad8345ea9",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "aee63bf33d61c23ba2fc3ee92d25ce06eb09869e793ce95d840865d6148075f0"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props_v3/banner_pole/_rejected_r1/rejected_tripo/tripo_raw.glb",
+      "sha256": "b2ac74b162cf8d686e8f02012182e4de507d9f1105c1fbb8ddbf3d16af3281e2",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "bb510c56836a9014fc85cbd6d68810105e5f2e6d906ca08d0d89623a548ab912"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props_v3/banner_pole/banner_pole.glb",
+      "sha256": "50cf70f58e2c6ca573446387dd0e1deea690d4f8c524376d4704aa51b0cc322c",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "a87af2542e2fda571469eb6a2d070834da4fa5b16039810101cd196405437e26"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props_v3/banner_pole/qc/prop.glb",
+      "sha256": "50cf70f58e2c6ca573446387dd0e1deea690d4f8c524376d4704aa51b0cc322c",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "a87af2542e2fda571469eb6a2d070834da4fa5b16039810101cd196405437e26"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props_v3/banner_pole/tripo_raw.glb",
+      "sha256": "6943a2c7d3027d8da61fbdb973e202073c1260db3395a55f063dff1d103759db",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "6a0eaec611c945bde1d6a729141cf4208ef872703d3717a9778b96982d803ccb"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props_v3/boost_pad/_rejected_r1/boost_pad.glb",
+      "sha256": "0282c8b896ee6e5c66615e3562b5e72e204257a50b14f8b3ab58c397526fabda",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "66414477cc492e5950d44cecf6b77eae7797e4956677652a99c7c2ca34dfe94f"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props_v3/boost_pad/_rejected_r1/qc/prop.glb",
+      "sha256": "0282c8b896ee6e5c66615e3562b5e72e204257a50b14f8b3ab58c397526fabda",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "66414477cc492e5950d44cecf6b77eae7797e4956677652a99c7c2ca34dfe94f"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props_v3/boost_pad/_rejected_r1/rejected_tripo/tripo_raw.glb",
+      "sha256": "2d3ff0ee30a3fb35748f6f201bb1873fc598fa5e6e2ef16a4f43f1d20caf7ab6",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "61a1074bcb12ba6bb37b1bd119ad8116c6f6fbaf82ee0a88fe7f4f04df7d20ca"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props_v3/boost_pad/boost_pad.glb",
+      "sha256": "96e442efc24500970342eb409f4f9296d3dcb2bb1086f80d9617a1aa54f3e490",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "743351b48f4356c2e64e6ea03b2bb59d21838d531d99e8138c0a4a540234e1c7"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props_v3/boost_pad/qc/prop.glb",
+      "sha256": "96e442efc24500970342eb409f4f9296d3dcb2bb1086f80d9617a1aa54f3e490",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "743351b48f4356c2e64e6ea03b2bb59d21838d531d99e8138c0a4a540234e1c7"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props_v3/boost_pad/tripo_raw.glb",
+      "sha256": "2a822ab7904f3ba98aa4a2734e052e6ee9883d7dde774c5cea3d79f5dbe5c4c1",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "53215077fb6836605d679972e78e5bf955a6ff24ad7147af047e237d3f149e58"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props_v3/chevron_sign/chevron_sign.glb",
+      "sha256": "e41f8da1fc28551253bff3ba5bdee661369536e19200d81d30cb63e35904cabe",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "317ebf5e39ad42abdddd3474a8a8c6f5d0580baf7b7e8d94535b587ad3815d89"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props_v3/chevron_sign/qc/prop.glb",
+      "sha256": "e41f8da1fc28551253bff3ba5bdee661369536e19200d81d30cb63e35904cabe",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "317ebf5e39ad42abdddd3474a8a8c6f5d0580baf7b7e8d94535b587ad3815d89"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props_v3/chevron_sign/tripo_raw.glb",
+      "sha256": "778b611a2dd1e12b8516939e0d82f9b67fe24d64a0e70407d15ccd228ebb6195",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "cb37bd66e6ed71738e6db8d498ba44c94668b633f5ac32a3a1a8001646802343"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props_v3/lamp_post/lamp_post.glb",
+      "sha256": "b7595878f0aba948d319431cd219f1df80ce8cef60e2af06c9d3720740a82a1d",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "fe9c3c214694af8be7c060117411e460edc581ac120383b11320449c39f22d22"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props_v3/lamp_post/qc/prop.glb",
+      "sha256": "b7595878f0aba948d319431cd219f1df80ce8cef60e2af06c9d3720740a82a1d",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "fe9c3c214694af8be7c060117411e460edc581ac120383b11320449c39f22d22"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props_v3/lamp_post/tripo_raw.glb",
+      "sha256": "12c3447289fa20a253b562d0b001443f6442244b7a9cd41377cb59becbd2313e",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "0cb5d4153cbe090d8a18b5ad52649dc087bcbd2698ca8f96cfd000730bd3f34c"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props_v3/sign_post/qc/prop.glb",
+      "sha256": "c4b3b90a1775c80b5d2147e64c14a800f4921847abce6d5e90e7d01106c44d64",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "d265f818229bd8b6a297e7b20330a41a5ba46b284767f2c54fc81029ddb848e1"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props_v3/sign_post/sign_post.glb",
+      "sha256": "c4b3b90a1775c80b5d2147e64c14a800f4921847abce6d5e90e7d01106c44d64",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "d265f818229bd8b6a297e7b20330a41a5ba46b284767f2c54fc81029ddb848e1"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props_v3/sign_post/tripo_raw.glb",
+      "sha256": "61afaf52c8a4ab0282be8fe1ac5129152a8923795e7f5854637dd487e232e4f0",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "31e1f9101b01c1e2488b91014be3995f3357a65c6b634eec1da82614a29487d0"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props_v3/tiki_torch/_rejected_r1/qc/prop.glb",
+      "sha256": "bbac9d30eb862136c8ff6525b6f1bb3df10a664d87d58ff2fd5ab7aa44cd0e47",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "918fb2fe6f1ed4b5cb50b046efec3c35297de2da7b7ea70907cc9c452448d127"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props_v3/tiki_torch/_rejected_r1/rejected_tripo/tripo_raw.glb",
+      "sha256": "be8925b1ef0138d1bd2db003157f293164f01d0b7b77ab2f5ce9a801c9f4a694",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "88b5e7434e2364483f780f44f6225f4395507f078ac8eb85def58456536af379"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props_v3/tiki_torch/_rejected_r1/tiki_torch.glb",
+      "sha256": "bbac9d30eb862136c8ff6525b6f1bb3df10a664d87d58ff2fd5ab7aa44cd0e47",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "918fb2fe6f1ed4b5cb50b046efec3c35297de2da7b7ea70907cc9c452448d127"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props_v3/tiki_torch/_rejected_r3/tiki_torch.glb",
+      "sha256": "6a9feb4d8dd5371ead32ce76aa57918665ef5f4e0405074057d53352d8456add",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "ee562557343de511418dc17b7dba1f6a8577c85433323d3e0c425c01459b0388"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props_v3/tiki_torch/_rejected_r3/tripo_raw.glb",
+      "sha256": "3b003b55ac903edc193f817ee4967cf1402e74a0d43e3a2a1bdb14e6301e2fd5",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "edcff9bfa543f15b119df71259ef997c627a5d7157d57f3697578a4eccb51136"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props_v3/tiki_torch/_rejected_r3b/tiki_torch.glb",
+      "sha256": "886f83208dbe47b00afe61b4a78348e78d18c00baa61245f24931104c04586a9",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "a99b06f350de6085e4fcc72308fa0d9490d8c54b4130efecd20b67184fdd5711"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props_v3/tiki_torch/_rejected_r6/tiki_torch.glb",
+      "sha256": "9203c687dcecf12326e98e081987138ad5c593fa0754683de98733d4d525eb71",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "a99b06f350de6085e4fcc72308fa0d9490d8c54b4130efecd20b67184fdd5711"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props_v3/tiki_torch/qc/prop.glb",
+      "sha256": "95938453eb4ac5967fc31af5a366b50d7f7b236a3e9e00937eff7ceaba85acc5",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "4aeb8b40b0394ccc8511e58b966f9323cf8042abe0ee8bd52a79ba4894008a68"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props_v3/tiki_torch/r7_hunyuan_lp/raw.glb",
+      "sha256": "55ce4dbfab51503b7e1bb8f1f953f5b9b4b54cbe846aa34e54666e85ec5c9b50",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "66ffe9f8d7667b4caef6c5d92ce75162cd8329da1d13b598fc03051045bc1277"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props_v3/tiki_torch/tiki_torch.glb",
+      "sha256": "95938453eb4ac5967fc31af5a366b50d7f7b236a3e9e00937eff7ceaba85acc5",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "4aeb8b40b0394ccc8511e58b966f9323cf8042abe0ee8bd52a79ba4894008a68"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props_v3/tiki_torch/tripo_raw.glb",
+      "sha256": "51eaf289c2a697ab308307d8c372f0e8a4c31c290723a4efc4732212969105a0",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "2dad205478104c7cdbf7985e4e2ad4c7565b376305300ff26b7938bf826ba35f"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props_v3/windmill_sails/rejected_tripo/windmill_sails_tripo.glb",
+      "sha256": "9bf89f8fd82b9231836da189dee11b8741ea31ce762d26933433242141bf09aa",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "788a8344d92ed8768069c73a0f06b31bd2fd3917825a3bed26fcba95b22b5695"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props_v3/windmill_sails/windmill_sails.glb",
+      "sha256": "819557f4b085f769e23f9621a583accd36466ec8336255218c91a772458ee660",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "39934168dae9dc043ab04e53b7a6a6120b08cc23430f011dbd215bbd9806fae3"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/props_v3/windmill_tower/windmill_tower.glb",
+      "sha256": "eb07e9373899cec85c2e148b58b8a7623383cce371366b606eb397f919dee2c1",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "aaff0ed19e5a1ec2ab96acd370406d7f5434effcc0eba4e74c5fc6e391cdef02"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/stone_sauropod/model_url.glb",
+      "sha256": "0bad92bc724737da42f83508dceda3e659113c89fd25a69c7cf8184a67cbb405",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "9410220dd4ed7bf25e8bb20aad6499731d7482618e6a4289cfdc72e3810531bc"
+        },
+        {
+          "image": 1,
+          "storage": "embedded",
+          "sha256": "22295e8b3e9ebe98b9ed2164346d9ff92b744af44ec7bdf21df1804cca7d5b03"
+        },
+        {
+          "image": 2,
+          "storage": "embedded",
+          "sha256": "c0875e2064d900ed6a75601cc72fd93476ae6de84ecae78d320b9a228ad68196"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/vehicles_v4/void_dragon/anim/export/anim.glb",
+      "sha256": "a1b3a2ae880d5b124359bcfecbd03863c4e10590a1610311259aa302e03e110d",
+      "meshes": 1,
+      "skins": 1,
+      "joints": [
+        34
+      ],
+      "animations": 7,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "372431cf2ba7043c36aaebff61aa6608607db6736b8bc9a389a601f11459792f"
+        },
+        {
+          "image": 1,
+          "storage": "embedded",
+          "sha256": "8719f205739f8eff59085073114b31e7018489b747e9ecb088d6f2e6c9b98ff4"
+        },
+        {
+          "image": 2,
+          "storage": "embedded",
+          "sha256": "0f4e8331e305200ac1ccea9625c72d5c04db3fc8220c270e572ee6be96c6b9b7"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/vehicles_v4/void_dragon/anim/export/rigged.glb",
+      "sha256": "51e8f7b0348369d417ec7b784f75c2fc24fd82b51fb7fc426e27072647fc3c80",
+      "meshes": 1,
+      "skins": 1,
+      "joints": [
+        34
+      ],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "372431cf2ba7043c36aaebff61aa6608607db6736b8bc9a389a601f11459792f"
+        },
+        {
+          "image": 1,
+          "storage": "embedded",
+          "sha256": "8719f205739f8eff59085073114b31e7018489b747e9ecb088d6f2e6c9b98ff4"
+        },
+        {
+          "image": 2,
+          "storage": "embedded",
+          "sha256": "0f4e8331e305200ac1ccea9625c72d5c04db3fc8220c270e572ee6be96c6b9b7"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/vehicles_v4/void_dragon/r1_hunyuan_lp/raw.glb",
+      "sha256": "79fbfe4ba5a999dda8bc7f62f327f2ff6fbdf4fa96bc96029953346d169db0b1",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "b79f95518dff87a092c5767599eed44284c367c213d92962f1266747539c0db2"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/vehicles_v4/void_dragon/r1_tripo_p2/raw.glb",
+      "sha256": "f4f4354e92c087964e87a0faef76e934d56c701b8d31034778b84a1bd1036d30",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "b7ee42ad0e0c7f7ea4f8d90f598b92a7bdfa8941b876e269cd4dd0f0d521ea30"
+        },
+        {
+          "image": 1,
+          "storage": "embedded",
+          "sha256": "28a06cd9150098f4fa53264a2aa1330c4c2c41e1dded80f86f12c03de4e04ad4"
+        },
+        {
+          "image": 2,
+          "storage": "embedded",
+          "sha256": "95f90a69f9114989a05496dfe12e702bc0c2e695fef1a28c9304c56376464333"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/vehicles_v4/void_dragon/rig/prep/prepped.glb",
+      "sha256": "457235314085a6f74ac749ced1fde5cc01469d26ef0fac194a9ec5db6a2b9379",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "372431cf2ba7043c36aaebff61aa6608607db6736b8bc9a389a601f11459792f"
+        },
+        {
+          "image": 1,
+          "storage": "embedded",
+          "sha256": "8719f205739f8eff59085073114b31e7018489b747e9ecb088d6f2e6c9b98ff4"
+        },
+        {
+          "image": 2,
+          "storage": "embedded",
+          "sha256": "0f4e8331e305200ac1ccea9625c72d5c04db3fc8220c270e572ee6be96c6b9b7"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/vehicles_v4/void_dragon/void_dragon.glb",
+      "sha256": "51e8f7b0348369d417ec7b784f75c2fc24fd82b51fb7fc426e27072647fc3c80",
+      "meshes": 1,
+      "skins": 1,
+      "joints": [
+        34
+      ],
+      "animations": 0,
+      "images": [
+        {
+          "image": 0,
+          "storage": "embedded",
+          "sha256": "372431cf2ba7043c36aaebff61aa6608607db6736b8bc9a389a601f11459792f"
+        },
+        {
+          "image": 1,
+          "storage": "embedded",
+          "sha256": "8719f205739f8eff59085073114b31e7018489b747e9ecb088d6f2e6c9b98ff4"
+        },
+        {
+          "image": 2,
+          "storage": "embedded",
+          "sha256": "0f4e8331e305200ac1ccea9625c72d5c04db3fc8220c270e572ee6be96c6b9b7"
+        }
+      ],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/world_v1/bush.glb",
+      "sha256": "2b24047f53cf326157c93809b1a5fc9ed0bf92db448dc1a7acd56c4085679d7c",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/world_v1/oak_a.glb",
+      "sha256": "54e34a94499964355ca5442b6c270749de735a7a209729bb5b22193c8abc4569",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/world_v1/oak_b.glb",
+      "sha256": "b20ca551d0d5136d28d75b0d4dbcfef158ff35df71517094150e256e07528673",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/world_v1/oak_c.glb",
+      "sha256": "cf1defe28e2c82e25f14c8351322e6acdd5e6b220c544523647b9a3a5b5aa2be",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/world_v1/portal_arch.glb",
+      "sha256": "d82add450051d78ecf68c2518e4c42c93429edcbdee8e2560122d5fd624e1b56",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/world_v1/portal_arch_trim.glb",
+      "sha256": "f086194da69541e4c82936bf62707b0b12da553e73b71d9016a756b2650e1030",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/world_v1/ring_frame.glb",
+      "sha256": "35273f455126ed37f6e50595e3b061bfadcae9cd5856af84821060e4b4599946",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/world_v1/ring_glow.glb",
+      "sha256": "3d6e43319aa5fa886eb0bd54ecc186bc9bff583a8c8ad9dfad72ffcad7c70d42",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [],
+      "external_missing": false
+    },
+    {
+      "path": "assets/models/world_v1/stone_arch.glb",
+      "sha256": "46b84e110afe125d24b5d05120c42af05666081ddf2cf5dc1bac523c5edafcfb",
+      "meshes": 1,
+      "skins": 0,
+      "joints": [],
+      "animations": 0,
+      "images": [],
+      "external_missing": false
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "fps": 30,
+  "boss": "forest_boss",
+  "module": "Emberbeetle",
+  "clips": {
+    "fly": {
+      "frames": 30,
+      "loop": true,
+      "speedRef": null,
+      "mask": null
+    },
+    "hover": {
+      "frames": 60,
+      "loop": true,
+      "speedRef": null,
+      "mask": null
+    },
+    "hit": {
+      "frames": 24,
+      "loop": false,
+      "speedRef": null,
+      "mask": null
+    },
+    "roar": {
+      "frames": 60,
+      "loop": false,
+      "speedRef": null,
+      "mask": null
+    },
+    "attack": {
+      "frames": 21,
+      "loop": false,
+      "speedRef": null,
+      "mask": [
+        "Root",
+        "Body",
+        "LegL3",
+        "ShinL3",
+        "LegR3",
+        "ShinR3",
+        "Head",
+        "MandL",
+        "MandR",
+        "ElytraL",
+        "ElytraR",
+        "LegL1",
+        "ShinL1",
+        "LegR1",
+        "ShinR1",
+        "LegL2",
+        "ShinL2",
+        "LegR2",
+        "ShinR2"
+      ]
+    }
+  }
+}
