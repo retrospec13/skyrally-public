@@ -13,3 +13,7 @@ assets/concepts/*/logs/
 config.local.json
 .env
 .pytest_cache/
+
+# Rejected model revisions excluded from the source kit; final anim/out stays tracked.
+/assets/models/**/_rejected*/
+/assets/models/**/rejected*/

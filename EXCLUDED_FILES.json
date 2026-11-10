@@ -1363,5 +1363,530 @@
     "path": "assets/audio/soundscape_v1/raw/music_battle_survival.m4a",
     "sha256": "9d031620d11169067d4bebdd7a994ba9d916ea58cd88d9d593f6a60fc70e6a92",
     "reason": "Separate composition/recording distribution grant not supplied; runtime IDs and notices retained."
+  },
+  {
+    "path": "assets/models/arches_v3/mesa_portal/_rejected_r1/albedo.png",
+    "sha256": "a2b1dd015b94e4b6882690dc8d1030481dad93fe9c672733b482f7757c6b4fe3",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/arches_v3/mesa_portal/_rejected_r1/fit/asset.glb",
+    "sha256": "b1c8b9b7007f30f9af251e484d2fb5b696b80d22beef43f03d4c1c96000c49c8",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/arches_v3/mesa_portal/_rejected_r1/mesa_portal.glb",
+    "sha256": "994d46a3549ede3abf300513d5da7aa60e37d220fb09632864798d584cbe4398",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/arches_v3/mesa_portal/_rejected_r1/proportion_guide.png",
+    "sha256": "8aa5251748df6c70840875a90a6d8be792301532dd4a0e7e778a0694297cd9c4",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/arches_v3/mesa_portal/_rejected_r1/rejected_r2_tripo/mesa_portal.glb",
+    "sha256": "b1c8b9b7007f30f9af251e484d2fb5b696b80d22beef43f03d4c1c96000c49c8",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/arches_v3/space_arch/_rejected_r1/albedo.png",
+    "sha256": "a2b1dd015b94e4b6882690dc8d1030481dad93fe9c672733b482f7757c6b4fe3",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/arches_v3/space_arch/_rejected_r1/fit/asset.glb",
+    "sha256": "24a99c496f2f5bfb900216334cc7b45d6aaff5913fb7f6e657597e2eed0a8a55",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/arches_v3/space_arch/_rejected_r1/proportion_guide.png",
+    "sha256": "b378bc989080d33e12871b7e855b2383968c7b377e126eaca44f0b373e08ada3",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/arches_v3/space_arch/_rejected_r1/rejected_r1/proportion_guide.png",
+    "sha256": "671ac84fb9c42ed5fb9fa622d11bd527a875055bcc0f2562ba5c9cfbfcf14fb2",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/arches_v3/space_arch/_rejected_r1/rejected_r1/space_arch.glb",
+    "sha256": "c0b6895d7ac073ed2353f5a2bc3aacee248410d9fe588c2876c425adbd3b9d68",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/arches_v3/space_arch/_rejected_r1/rejected_r2_tripo/space_arch.glb",
+    "sha256": "24a99c496f2f5bfb900216334cc7b45d6aaff5913fb7f6e657597e2eed0a8a55",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/arches_v3/space_arch/_rejected_r1/space_arch.glb",
+    "sha256": "fe13c47bdf13ec81b4454e34fe5fa82b051205a3ce6dd67944787899db8acb06",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/arches_v3/start_gantry/_rejected_r1/albedo.png",
+    "sha256": "56cda6f0ffaa6310577196de35a783747d15585536bdf9c41e80a0ca684d4c2b",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/arches_v3/start_gantry/_rejected_r1/fit/asset.glb",
+    "sha256": "920d2ce9dda49614ce15f3d661f39168e7e99a8d814acd8796995b1f52346a97",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/arches_v3/start_gantry/_rejected_r1/proportion_guide.png",
+    "sha256": "ec35f79aa9e3d7b67a8fafde78dd0927fb6290a45c8b209f53784a73a461a6c8",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/arches_v3/start_gantry/_rejected_r1/rejected_r2_tripo/start_gantry.glb",
+    "sha256": "920d2ce9dda49614ce15f3d661f39168e7e99a8d814acd8796995b1f52346a97",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/arches_v3/start_gantry/_rejected_r1/start_gantry.glb",
+    "sha256": "6f71f1361b166f7aacee718c6ed8dcd40b7edd22ddcd7b1b67973d98c6a62f98",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/arches_v3/start_gantry/_rejected_r3/start_gantry.glb",
+    "sha256": "171016f7f77a8d99453a8abaf4423f123660f7c0ec3e1efc92b8c975f1b51d29",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/arches_v3/start_gantry/_rejected_r3/tripo_raw.glb",
+    "sha256": "468e11c8be41e55514c250ad993f86a25d8225db86c76649613ab193f637ea91",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/arches_v3/start_gantry/_rejected_r4/fit/asset.glb",
+    "sha256": "91383b9fa3fd410c60d4ec5baa273c002e2604d3a6e298f44b37c044a473a7d6",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/arches_v3/start_gantry/_rejected_r4/start_gantry.glb",
+    "sha256": "91383b9fa3fd410c60d4ec5baa273c002e2604d3a6e298f44b37c044a473a7d6",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/arches_v3/start_gantry/_rejected_r6/fit/asset.glb",
+    "sha256": "b50be3f6fabca86afb91b45cd15265eed48db39c6bc40fe19b3fc74fd13e7de6",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/arches_v3/start_gantry/_rejected_r6/rendered_image_url.webp",
+    "sha256": "f8dc7fb583d78fbffde23dbc0ff1693a4cf630644c85d7f8948743bc7e693e5e",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/arches_v3/start_gantry/_rejected_r6/start_gantry.glb",
+    "sha256": "b50be3f6fabca86afb91b45cd15265eed48db39c6bc40fe19b3fc74fd13e7de6",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/arches_v3/start_gantry/_rejected_r6/tripo_raw.glb",
+    "sha256": "76eef253d01020d6c10a301d6d46543facd5e2e3280d47ff526319e5e6aa3eeb",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/foliage_v3/autumn_tree/_rejected_r1/albedo.png",
+    "sha256": "01c5db0f99dc7a4de9a8205fabea79f9b11bb79821200c760995e17d6c480b4a",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/foliage_v3/autumn_tree/_rejected_r1/autumn_tree.glb",
+    "sha256": "6c8145fd392cc22cf82a0ca82670b6f3be8d9a2aad96f99d978f58d31a104a75",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/foliage_v3/autumn_tree/_rejected_r1/qc/prop.glb",
+    "sha256": "6c8145fd392cc22cf82a0ca82670b6f3be8d9a2aad96f99d978f58d31a104a75",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/foliage_v3/autumn_tree/_rejected_r1/tripo_raw.glb",
+    "sha256": "eb58643aaa91619ab9968c20118ffaadc8851a860be0efa525ee85a6bad720b3",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/foliage_v3/autumn_tree/_rejected_r1/tripo_render.webp",
+    "sha256": "f53013170a26a29d15e709c98cc0ec2bb3636061403d1cde8fa8ba62fec07a59",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/foliage_v3/autumn_tree/_rejected_r2/albedo.png",
+    "sha256": "684fea12a13ba4258aae1e69cf33114027eff63bb879991168636fceebcfefac",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/foliage_v3/autumn_tree/_rejected_r2/autumn_tree.glb",
+    "sha256": "d8173829a4e364caaeb67928b87e31a4a66ac64c03f9f25cb98da0ac22a78a1a",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/foliage_v3/autumn_tree/_rejected_r2/tripo_raw.glb",
+    "sha256": "0f22a929b2c33369394858359340590313198fe7a76dadba1977e639bd895ad1",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/foliage_v3/autumn_tree/_rejected_r3/autumn_tree.glb",
+    "sha256": "21923b82b2e90f0abeb0333f42da2bdd9eef9e122437713619ab2f033f784f78",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/foliage_v3/autumn_tree/_rejected_r3/tripo_raw.glb",
+    "sha256": "6331397e4f2ca0c03a60160ada7e6c581420ac19629560d85f19ea9226890ee4",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/foliage_v3/autumn_tree/_rejected_r6/albedo.png",
+    "sha256": "e9736e5635a8454a4550d747f45ae414ab90cd4c856ec821ac4f4b3fe97eea12",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/foliage_v3/autumn_tree/_rejected_r6/autumn_tree.glb",
+    "sha256": "e3a1a93cfffb070c73f0233347c34346514cda700f0ef4f7ce738d51bef88bfa",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/foliage_v3/autumn_tree/_rejected_r6/graded.glb",
+    "sha256": "afa81f12ca52075f30509d47c28a76cd407dedbbe5db82ebd99a9119b04aa3e1",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/foliage_v3/autumn_tree/_rejected_r6/graded_tex.png",
+    "sha256": "362fed04711a85ed37bf9d7dbfc6a2abc8cda11fefe79154ff8c5b74705a2261",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/foliage_v3/autumn_tree/_rejected_r6/qc/prop.glb",
+    "sha256": "e3a1a93cfffb070c73f0233347c34346514cda700f0ef4f7ce738d51bef88bfa",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/foliage_v3/autumn_tree/_rejected_r6/raw_tex.png",
+    "sha256": "6c32c9234e91dc6e1dfd5527a0309bdfdedf427477298fd9503df207f18369ec",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/foliage_v3/autumn_tree/_rejected_r6/tripo_raw.glb",
+    "sha256": "01e27635b63b1cf3bc3c4b822943483965e8b24a47bed9048fc20b8f1eded82b",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/foliage_v3/bush/_rejected_r1/albedo.png",
+    "sha256": "ac5d143f13b2d3198e9e37e5259bc907b50f8100802a2e956146e533fa6315de",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/foliage_v3/bush/_rejected_r1/bush.glb",
+    "sha256": "138a1771a810220ee34da024da9bcca493229de97920bc3306c8b4ed02361543",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/foliage_v3/bush/_rejected_r1/qc/prop.glb",
+    "sha256": "138a1771a810220ee34da024da9bcca493229de97920bc3306c8b4ed02361543",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/foliage_v3/bush/_rejected_r1/rejected_procedural/albedo.png",
+    "sha256": "62f16c4e446fcb0c072bbb0421c2730b865f5b822b5d44d2b6ceca8454395ab2",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/foliage_v3/bush/_rejected_r1/rejected_procedural/bush.glb",
+    "sha256": "126dbcbdd4da4b5beb50a67a9e597d06371a8d0fb70801c9d72789895b9c14ee",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/foliage_v3/bush/_rejected_r1/rendered_image_url.webp",
+    "sha256": "ea04e8134c1ccf232b75d4bb2324607d9c58a3f47cf36d30f051e115eebcca63",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/foliage_v3/bush/_rejected_r1/tripo_raw.glb",
+    "sha256": "28e6ece8d04f4849d8c50e45e3eb697d4343a3eb3f6610d93fe035402907d191",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/foliage_v3/cypress/_rejected_r1/albedo.png",
+    "sha256": "ef302f48c7e6877c75e97f35fd1d0e355dcfcb0cd3e869084792221b6f58f9c5",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/foliage_v3/cypress/_rejected_r1/cypress.glb",
+    "sha256": "2d774cf4b9af1f4f72f6d568d7526f7864fd6c9c46ea209cc0e82eeb11fea87b",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/foliage_v3/cypress/_rejected_r1/qc/prop.glb",
+    "sha256": "2d774cf4b9af1f4f72f6d568d7526f7864fd6c9c46ea209cc0e82eeb11fea87b",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/foliage_v3/cypress/_rejected_r1/rejected_procedural/albedo.png",
+    "sha256": "1a0d776268f422c401ced71879af5d72704dc85b38b0a31385a326fb17b3ec0d",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/foliage_v3/cypress/_rejected_r1/rejected_procedural/cypress.glb",
+    "sha256": "76579fca8bfaced79e140c6852eebfd3e546161eb82255485749bc37995866b4",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/foliage_v3/cypress/_rejected_r1/rendered_image_url.webp",
+    "sha256": "98b00e012637beeb7b0a107979decb17f1df271d895b048ebd3adefa173eee46",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/foliage_v3/cypress/_rejected_r1/tripo_raw.glb",
+    "sha256": "2c2ec528d0ef9161df2b71dfab7d7d738370d0a64119a2c47dd22c0e2eaf6e84",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/foliage_v3/cypress/_rejected_r2/albedo.png",
+    "sha256": "fa002dbf30a7bc20bb09b26ce7467c9e91a8035e8b9dd31f29963273050284ff",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/foliage_v3/cypress/_rejected_r2/cypress.glb",
+    "sha256": "b520db8288365f53de74f553719a49fa32e300c15613c73b7db573df493df35c",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/foliage_v3/cypress/_rejected_r2/tripo_raw.glb",
+    "sha256": "d1cb0ec402b705a49fb19ed82f84416e7c6a9ca87a08075c78f3c94d3aec957e",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/foliage_v3/ground_cover/rejected_procedural/albedo.png",
+    "sha256": "d8be55fd30c8530efdb90f704c4acaab3410b32c07131617b11f2d97ab75f588",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/foliage_v3/ground_cover/rejected_procedural/ground_cover.glb",
+    "sha256": "13def4a4239f62cb497c5b501970fd5835d361879c039dc34a1dd2264ac161da",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/foliage_v3/hedge/_rejected_r1/albedo.png",
+    "sha256": "46ece1f4954a7bd99d4db7d2060f625d9b66eb31eca5541f456bc9e4783c6821",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/foliage_v3/hedge/_rejected_r1/hedge.glb",
+    "sha256": "49fcef4654127a26aa794022292f3ccdd96890419d7c86d6a5bf6c32c75d3bab",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/foliage_v3/hedge/_rejected_r1/qc/prop.glb",
+    "sha256": "49fcef4654127a26aa794022292f3ccdd96890419d7c86d6a5bf6c32c75d3bab",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/foliage_v3/hedge/_rejected_r1/qc/row_close.png",
+    "sha256": "76032505291842ca8df1c7944bac503156645d897b7b9dac20b940f3ba5ef7ac",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/foliage_v3/hedge/_rejected_r1/qc/row_low.png",
+    "sha256": "cb6f702560dc99fde87cca11adf062f1960a46a40c61a1fc3ae375a22f4e3f01",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/foliage_v3/hedge/_rejected_r1/qc/row_race.png",
+    "sha256": "d549ebe1098e2e227349b0830afb61d0edfb364a92efeec1b2aa3de330776d63",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/foliage_v3/hedge/_rejected_r1/qc/row_threeq.png",
+    "sha256": "76e11fee78fd7fb47900f32795137676a5429a7aa4558c853e2037726b333370",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/foliage_v3/hedge/_rejected_r1/tripo_raw.glb",
+    "sha256": "b9d770a10376f02dd92ad4582157774c04c16e7de2062d070d11f67118ecbead",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/foliage_v3/hedge/_rejected_r1/tripo_render.webp",
+    "sha256": "00e74b2b43f3674702a4e2e1798586e42801243a95a62c39167860b4e20b72b6",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/foliage_v3/hedge/_rejected_r2/albedo.png",
+    "sha256": "b5ece80d13610a445eead4912fbb594c57c82e2577472403602050325d7fffe5",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/foliage_v3/hedge/_rejected_r2/hedge.glb",
+    "sha256": "cffdc7c9293ca1b4f12fed162e6898b12a37f1e05db9875bce75011c220dd5de",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/foliage_v3/hedge/_rejected_r2/rendered_image_url.webp",
+    "sha256": "08e76c7417f15d308cad2ef67ead0a51c06d398ea70d6cca977a3d467a69115a",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/foliage_v3/hedge/_rejected_r2/tripo_raw.glb",
+    "sha256": "37fe86d0b89266647fe4af7d0e36d823d0b84b851c18caa05458de08f68a394d",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/foliage_v3/hedge/_rejected_r3/graded.glb",
+    "sha256": "b4f427383247549508f0228abaa707fcaa25dc7351ef4a5f94c52c9727946a52",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/foliage_v3/hedge/_rejected_r3/hedge.glb",
+    "sha256": "bf09a6b63793802f66a0189c859f36686236bb48e6bab3532f9033291b34e9aa",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/foliage_v3/hedge/_rejected_r6/albedo.png",
+    "sha256": "da0e11b682f93498d4e7d19e6e612eaae5071695ebd86e5904729220e8565ce8",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/foliage_v3/hedge/_rejected_r6/graded.glb",
+    "sha256": "7e84288510afaf9c10fe5a0870b949ce01cd1a0ce3e383132a67f46738650b44",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/foliage_v3/hedge/_rejected_r6/graded_tex.png",
+    "sha256": "bf64f178fd5b2f97c2be26ea2ec02c691503295a4f0f76f1b1ce45b023a80b28",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/foliage_v3/hedge/_rejected_r6/hedge.glb",
+    "sha256": "421f571df95aff3510d30db57074a6e8bae5948095300a343e6d7224d7cd85c4",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/foliage_v3/hedge/_rejected_r6/qc/prop.glb",
+    "sha256": "421f571df95aff3510d30db57074a6e8bae5948095300a343e6d7224d7cd85c4",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/foliage_v3/hedge/_rejected_r6/raw_tex.png",
+    "sha256": "8da4ba4ca1bf8ad2748b6254ae8414a3ddbffd7b134221561f1e0318089e71da",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/foliage_v3/hedge/_rejected_r6/tripo_raw.glb",
+    "sha256": "ac303443def5b7cfde563aa63e97418a58248909f402647b29129be7e9bd3d39",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/props/hub/stone_bench/rejected_r0/solid_holes_r0.png",
+    "sha256": "a4a3f978db9dce4aaf0e6e7c688cac0c4d3518add16bd4b563af378f1b966818",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/props/hub/stone_bench/rejected_r0/tripo_render_r0.webp",
+    "sha256": "010cce94d12d925947b80059a54dddb8a07dbd417c8a43b9325d9d7c2ed65065",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/props_v3/banner_pole/_rejected_r1/albedo.png",
+    "sha256": "aa20917381edf302c96c2d0cfa555b8effc61962150284c1041e3e8807e3a51b",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/props_v3/banner_pole/_rejected_r1/banner_pole.glb",
+    "sha256": "52ebf6bcf409218962d3bbf3cf2aaa5649f199aa8aa1104351e4affad8345ea9",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/props_v3/banner_pole/_rejected_r1/qc/prop.glb",
+    "sha256": "52ebf6bcf409218962d3bbf3cf2aaa5649f199aa8aa1104351e4affad8345ea9",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/props_v3/banner_pole/_rejected_r1/rejected_tripo/rendered_image_url.webp",
+    "sha256": "acd2d116534f370da1bcfb7fd52fcc0559f4068778239c455dd780f76692333d",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/props_v3/banner_pole/_rejected_r1/rejected_tripo/tripo_raw.glb",
+    "sha256": "b2ac74b162cf8d686e8f02012182e4de507d9f1105c1fbb8ddbf3d16af3281e2",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/props_v3/boost_pad/_rejected_r1/albedo.png",
+    "sha256": "472bc8d2fb43e423acbb4513d212d58ed01ef0c438669488ce95df73774dc429",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/props_v3/boost_pad/_rejected_r1/boost_pad.glb",
+    "sha256": "0282c8b896ee6e5c66615e3562b5e72e204257a50b14f8b3ab58c397526fabda",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/props_v3/boost_pad/_rejected_r1/qc/prop.glb",
+    "sha256": "0282c8b896ee6e5c66615e3562b5e72e204257a50b14f8b3ab58c397526fabda",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/props_v3/boost_pad/_rejected_r1/rejected_tripo/rendered_image_url.webp",
+    "sha256": "a347207df53594fefbc130e7b83fc63ee476b5aaa49c18fcc1d42620816d51da",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/props_v3/boost_pad/_rejected_r1/rejected_tripo/tripo_raw.glb",
+    "sha256": "2d3ff0ee30a3fb35748f6f201bb1873fc598fa5e6e2ef16a4f43f1d20caf7ab6",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/props_v3/tiki_torch/_rejected_r1/albedo.png",
+    "sha256": "f126072cdd62cf964095daaefc9079fd56296f913172ab8dba9d967e10bad02d",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/props_v3/tiki_torch/_rejected_r1/qc/prop.glb",
+    "sha256": "bbac9d30eb862136c8ff6525b6f1bb3df10a664d87d58ff2fd5ab7aa44cd0e47",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/props_v3/tiki_torch/_rejected_r1/rejected_tripo/rendered_image_url.webp",
+    "sha256": "2e87029de9d7bed9e5f97f94559a25cb624c6b4e47e56ad047a3c646883b9ddb",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/props_v3/tiki_torch/_rejected_r1/rejected_tripo/tripo_raw.glb",
+    "sha256": "be8925b1ef0138d1bd2db003157f293164f01d0b7b77ab2f5ce9a801c9f4a694",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/props_v3/tiki_torch/_rejected_r1/tiki_torch.glb",
+    "sha256": "bbac9d30eb862136c8ff6525b6f1bb3df10a664d87d58ff2fd5ab7aa44cd0e47",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/props_v3/tiki_torch/_rejected_r3/tiki_torch.glb",
+    "sha256": "6a9feb4d8dd5371ead32ce76aa57918665ef5f4e0405074057d53352d8456add",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/props_v3/tiki_torch/_rejected_r3/tripo_raw.glb",
+    "sha256": "3b003b55ac903edc193f817ee4967cf1402e74a0d43e3a2a1bdb14e6301e2fd5",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/props_v3/tiki_torch/_rejected_r3b/tiki_torch.glb",
+    "sha256": "886f83208dbe47b00afe61b4a78348e78d18c00baa61245f24931104c04586a9",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/props_v3/tiki_torch/_rejected_r6/tiki_torch.glb",
+    "sha256": "9203c687dcecf12326e98e081987138ad5c593fa0754683de98733d4d525eb71",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
+  },
+  {
+    "path": "assets/models/props_v3/windmill_sails/rejected_tripo/windmill_sails_tripo.glb",
+    "sha256": "9bf89f8fd82b9231836da189dee11b8741ea31ce762d26933433242141bf09aa",
+    "reason": "Presentation cleanup: explicitly rejected intermediate; no source/config/test consumer, no external GLB dependency. Retained non-rejected model sources in the same asset family."
   }
 ]

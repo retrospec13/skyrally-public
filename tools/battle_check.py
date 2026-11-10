@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Battle-mode QA in the own Studio window (L71-L74): start the track's battle through the Adventure-board remote
-(UnlockAll in Edit), play it with real keyboard input (win/key_pilot.js goal=qa steers to the mode's bot-brain goal
+(UnlockAll in Edit), play it with real keyboard input (tools/windows/key_pilot.js goal=qa steers to the mode's bot-brain goal
 that BattleCore publishes under workspace.QAPilotGoals, and taps F to fire), capture every 15 s, read the board/HUD,
 then end it with TriggerBattleEnd and capture the results.
 Usage: battle_check.py <TRACK-ID> [seconds] [--no-end] [--clip]   -> out/battle_<track>.jpg (+ out/clips/battle_<track>.mp4)
@@ -58,7 +58,7 @@ def main():
         caps.append(grab("start"))
         pc_out = f"{lane.PCWIN}\\out\\pilot_{tag}.jsonl"
         proc = subprocess.Popen(["ssh", "-o", "BatchMode=yes", "-i", lane.KEY, lane.HOST,
-                                 f"node {lane.PCWIN}\\win\\key_pilot.js {pc_out} {secs} assist=off skill=1 goal=qa"],
+                                 f"node {lane.PCWIN}\\tools\\windows\\key_pilot.js {pc_out} {secs} assist=off skill=1 goal=qa"],
                                 stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
         rec = clip.start(tag, secs) if want_clip else None
         t1 = time.time()

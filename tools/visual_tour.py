@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Visual tour for critique (L8 critic input): per track, start a race through the Adventure-board remote (UnlockAll in
-Edit), fly it with the real-key pilot (win/key_pilot.js, assist on so the line is clean), capture gameplay frames every
+Edit), fly it with the real-key pilot (tools/windows/key_pilot.js, assist on so the line is clean), capture gameplay frames every
 few seconds, then three free-camera beauty shots looking back along the course from high, low and wide.
 Usage: visual_tour.py <TRACK-ID|hub> [seconds] -> out/tour/<track>/*.png + out/tour/<track>.jpg contact sheet"""
 import subprocess
@@ -65,7 +65,7 @@ def main():
             time.sleep(1.5)
         caps.append(grab("00_grid"))
         proc = subprocess.Popen(["ssh", "-o", "BatchMode=yes", "-i", lane.KEY, lane.HOST,
-                                 f"node {lane.PCWIN}\\win\\key_pilot.js {lane.PCWIN}\\out\\pilot_tour_{key}.jsonl {secs} assist=on skill=1"],
+                                 f"node {lane.PCWIN}\\tools\\windows\\key_pilot.js {lane.PCWIN}\\out\\pilot_tour_{key}.jsonl {secs} assist=on skill=1"],
                                 stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
         t1 = time.time()
         i = 1

@@ -25,8 +25,8 @@ PLACE = "skyrally_1.rbxlx"
 TASK = "skyrally_1"
 
 # Paths deployed to the PC deploy target (never its Git; it is a stale tree used as a target).
-SYNC_PATHS = ["default.project.json", "src", "win", "map", "build", "assets/kits",
-              "builder_dino4.luau", "builder_snow1.luau", "builder_forest1.luau"]
+SYNC_PATHS = ["default.project.json", "src", "tools/windows", "map", "build", "assets/kits",
+              "builder_dino4.luau", "tools/legacy-builders/builder_snow1.luau", "tools/legacy-builders/builder_forest1.luau"]
 
 
 def utc():

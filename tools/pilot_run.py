@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Real-input race run (L02, T01-T03): Play in the own window, fly with win/key_pilot.js (keyboard events only,
+"""Real-input race run (L02, T01-T03): Play in the own window, fly with tools/windows/key_pilot.js (keyboard events only,
 assist off by default), stamped captures every 20 s, then summary from the pilot's per-tick log.
 Usage: pilot_run.py <tag> [seconds] [assist=on|off] [skill=0..1] [goal=verify] [boost=1]
 goal=verify (S1): coin-chasing, item-firing pilot for coin 8/8 and race/boss win attempts without seeding (docs/STUDIO_ROUND_V22.md)."""
@@ -25,7 +25,7 @@ def main():
     time.sleep(18)
     pc_out = f"{lane.PCWIN}\\out\\pilot_{tag}.jsonl"
     proc = subprocess.Popen(["ssh", "-o", "BatchMode=yes", "-i", lane.KEY, lane.HOST,
-                             f"node {lane.PCWIN}\\win\\key_pilot.js {pc_out} {secs} {assist} {skill}{(' ' + extra) if extra else ''}"],
+                             f"node {lane.PCWIN}\\tools\\windows\\key_pilot.js {pc_out} {secs} {assist} {skill}{(' ' + extra) if extra else ''}"],
                             stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
     caps, t0 = [], time.time()
     while proc.poll() is None and time.time() - t0 < secs + 60:

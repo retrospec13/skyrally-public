@@ -1,6 +1,10 @@
 # SkyRally by Waku Worldwide
 
-A Roblox racing-game source release candidate with editable owned models, including all five bosses. Local preparation only; public publication awaits owner approval.
+**A Rojo SOURCE project and editable asset kit, not a one-click full game.** This private release copy includes seven map definitions (DINO-4, TESTSTRIP, HUB-0, SNOW-1, ISLAND-2, FOREST-1 and SPACE-4) and five bosses: Cinderwing, Frosthorn, Clattershell, Emberbeetle and Thunderwright. TESTSTRIP is a development track; this is not a promise of seven finished racing courses.
+
+**Before playing:** import/upload the supplied sources under your own Roblox account or group, replace the corresponding asset IDs, then build/sync with Rojo. No packaged `.rbxl` or `.rbxlx` place is included. Existing hosted IDs are references, not a grant of access. Production admin and new payments are disabled by default.
+
+**Large download:** the initial tracked payload was 1,286,274,073 bytes (about 1.29 GB). This cleanup removes 90,376,523 bytes of explicitly rejected intermediates, leaving about 1.20 GB of source and assets. Four retained GLBs are 62.8–65.0 MB each. They exceed GitHub's 50 MiB advisory but stay below its 100 MiB hard file limit; they are actual binaries, not LFS pointers. Deleting files from the current tree does **not** shrink existing Git history or the normal clone download. See [layout and payload notes](docs/SOURCE-KIT-LAYOUT.md).
 
 Start with [model source/import instructions](docs/MODEL-SOURCE-IMPORT.md) and the exact [boss roster](models/BOSS-SOURCES.json). Actual GLB geometry, rigs and embedded textures are included locally. Creator Store listings are not needed to share these sources. The optional RBXM/RBXMX and complete game still reference online Roblox assets; a Rojo build is not standalone gameplay acceptance.
 
@@ -11,6 +15,7 @@ Start with [model source/import instructions](docs/MODEL-SOURCE-IMPORT.md) and t
 - `build/`: generated maps, TrackData and model/terrain bakes.
 - `assets/`: retained owned models, textures and VFX; audio catalogs/tooling and notices remain, but the raw recordings listed in `EXCLUDED_FILES.json` are omitted. `assets/DEPENDENCIES.json` inventories existing ID candidates; `assets/RIGHTS-INVENTORY.json` lists owned visual files under the approved art grant.
 - `tools/map/` and `tools/map30/`: map authoring, validation and compiler, with provenance in `tools/map30/SOURCE.txt`.
+- `tools/legacy-builders/`: retained legacy forest/snow builders. `tools/windows/`: optional keyboard-pilot helper. The root DINO-4 builder remains an authoring fixture; see the layout notes.
 - `tools/tests/`: offline Luau/Python tests. Optional Studio bridge helpers have no personal targets and are disabled until explicitly configured.
 
 ## Configure locally
@@ -34,7 +39,7 @@ Configuration is a build-time source change. Keep real identifiers/configuration
 
 ## Local validation
 
-Install Python with pytest, pytest-subtests, NumPy and Pillow, plus Lune and Rojo on PATH:
+Install Python with pytest, pytest-subtests, NumPy and Pillow, plus Lune and Rojo on PATH. See the [validation compatibility note](docs/SOURCE-KIT-LAYOUT.md#validation-compatibility) for the known Lune 0.10.5 baseline failure:
 
 ```sh
 python3 -m pytest -q -p no:cacheprovider tools
@@ -56,6 +61,6 @@ Recovered boss animation sources for Cinderwing, Clattershell, Emberbeetle and T
 
 Owned project code is MIT. Owned art/models are CC BY 4.0, credited **Waku Worldwide**. Read `LICENSING.md` for exact scope, attribution and named third-party exclusions. Existing font, compiler and SoundFont notices remain separate. A model being present here or available from Roblox does not establish standalone redistribution rights.
 
-GLBs remain in their existing folders to preserve references and avoid duplicating the asset tree. They are ordinary tracked binary files, not LFS pointers. No individual payload file exceeds GitHub's 100 MiB limit. Use the hydrated source ZIP for a large download, or the future approved history-free repository. The exact external manifest is the explicit staging allowlist; nested boss `anim/out/` sources are not ignored. See `docs/MODEL-SOURCE-IMPORT.md` for import, preview and remapping instructions.
+GLBs remain in their existing folders to preserve references and avoid duplicating the asset tree. They are ordinary tracked binary files, not LFS pointers. No individual payload file exceeds GitHub's 100 MiB limit. The repository contains browsable source and assets; no separately hosted ZIP is promised here. Nested boss `anim/out/` sources are not ignored. Removed rejected revisions are enumerated in `EXCLUDED_FILES.json`; retained model and rights manifests describe only present files. See `docs/MODEL-SOURCE-IMPORT.md` for import, preview and remapping instructions.
 
 Public Waku Worldwide association and existing asset identity are intentional. IDs are retained as online dependency references; recipients may import local sources under their own creator and remap across plans, generated builders, serialized bakes, materials, animation, UI, sky and audio. No uploads, permission grants or publication were performed. Runtime permissions must be checked in a separate Studio experience and from an account without the original uploader's privileges.

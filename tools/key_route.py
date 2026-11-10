@@ -1,4 +1,4 @@
-"""S2b: per-key approach lines for win/key_pilot.js (goal=qa route=...). Data in tools/key_approach.json."""
+"""S2b: per-key approach lines for tools/windows/key_pilot.js (goal=qa route=...). Data in tools/key_approach.json."""
 import json
 from pathlib import Path
 

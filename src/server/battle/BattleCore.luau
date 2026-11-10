@@ -1102,7 +1102,7 @@ local function botWorld(a: Active): BattleBots.World
 end
 
 -- Studio QA (workspace.QAPilotGoals): publish where the mode's bot brain would send each player, so the real-key
--- pilot (win/key_pilot.js goal=qa) plays the mode with keyboard input. Player attributes QAGoal (Vector3) and QAFire
+-- pilot (tools/windows/key_pilot.js goal=qa) plays the mode with keyboard input. Player attributes QAGoal (Vector3) and QAFire
 -- (holding an item with an opponent in front within 140 studs).
 local function qaGoals(a: Active)
 	for _, e in a.entrants do

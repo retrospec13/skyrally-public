@@ -69,14 +69,14 @@ class McpCallFiles(unittest.TestCase):
 
 @unittest.skipUnless(shutil.which("node"), "node not installed")
 class PilotDecider(unittest.TestCase):
-    """win/key_pilot.js builds the client decision function from its arguments; check the S1/S2b parts it injects."""
+    """tools/windows/key_pilot.js builds the client decision function from its arguments; check the S1/S2b parts it injects."""
 
     def decide(self, *args):
         js = """const fs=require('fs');const cp=require('child_process');cp.spawn=()=>({stdout:{on(){}}});
 process.argv=['node','k','/dev/null','1',...JSON.parse(process.env.A)];
 const src=fs.readFileSync(process.env.F,'utf8').replace(/\\(async \\(\\) => \\{[\\s\\S]*$/,'console.log(DECIDE_DEF);');eval(src);"""
         import os
-        env = dict(os.environ, A=json.dumps(list(args)), F=str(ROOT / "win" / "key_pilot.js"))
+        env = dict(os.environ, A=json.dumps(list(args)), F=str(ROOT / "tools" / "windows" / "key_pilot.js"))
         return subprocess.run(["node", "-e", js], capture_output=True, text=True, env=env, check=True).stdout
 
     def test_route_and_verify_are_injected(self):

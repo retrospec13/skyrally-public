@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Hidden-key QA in the own Studio window (L70): start a race on the key track through the Adventure-board remote,
-point the real-key pilot (win/key_pilot.js goal=qa) at the track's HiddenKey model, and check the pickup log, the
+point the real-key pilot (tools/windows/key_pilot.js goal=qa) at the track's HiddenKey model, and check the pickup log, the
 player's KeysHeld/BattleBoard state and the race attributes before and after; captures around the pickup.
 Usage: key_check.py <TRACK-ID> [seconds] [--unlock-all]   -> out/keycheck_<track>.jpg
 S2b: a track listed in tools/key_approach.json (SNOW-1) is flown along its approach line (route=), not straight at the key."""
@@ -55,7 +55,7 @@ def main():
         caps.append(grab("start"))
         pc_out = f"{lane.PCWIN}\\out\\pilot_{tag}.jsonl"
         proc = subprocess.Popen(["ssh", "-o", "BatchMode=yes", "-i", lane.KEY, lane.HOST,
-                                 f"node {lane.PCWIN}\\win\\key_pilot.js {pc_out} {secs} assist=off skill=1 goal=qa{route_arg(track)}"],
+                                 f"node {lane.PCWIN}\\tools\\windows\\key_pilot.js {pc_out} {secs} assist=off skill=1 goal=qa{route_arg(track)}"],
                                 stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
         t1 = time.time()
         found = False

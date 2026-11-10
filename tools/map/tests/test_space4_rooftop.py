@@ -207,6 +207,10 @@ class Space4Rooftop(unittest.TestCase):
         if log.returncode != 0 or not log.stdout.strip():
             self.skipTest("no git history for the rooftop geometry")
         for sha in log.stdout.split():
+            parents = subprocess.run(["git", "rev-list", "--parents", "-n", "1", sha],
+                                     cwd=ROOT, capture_output=True, text=True, check=True).stdout.split()
+            if len(parents) == 1:
+                continue  # history-free source import has no parent delta to audit
             files = subprocess.run(["git", "show", "--name-only", "--format=", sha], cwd=ROOT, capture_output=True,
                                    text=True).stdout.split()
             self.assertEqual(physics & set(files), set(), sha)
