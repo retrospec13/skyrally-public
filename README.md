@@ -1,5 +1,11 @@
 # SkyRally by Waku Worldwide
 
+## Trailer preview
+
+![SkyRally v4 trailer: racing and flight across the game's worlds](media/skyrally-trailer-v4.gif)
+
+Full 45-second v4 trailer preview. The GIF loops without audio. The source kit below still requires Roblox setup and asset remapping.
+
 **A Rojo SOURCE project and editable asset kit, not a one-click full game.** This private release copy includes seven map definitions (DINO-4, TESTSTRIP, HUB-0, SNOW-1, ISLAND-2, FOREST-1 and SPACE-4) and five bosses: Cinderwing, Frosthorn, Clattershell, Emberbeetle and Thunderwright. TESTSTRIP is a development track; this is not a promise of seven finished racing courses.
 
 **Before playing:** import/upload the supplied sources under your own Roblox account or group, replace the corresponding asset IDs, then build/sync with Rojo. No packaged `.rbxl` or `.rbxlx` place is included. Existing hosted IDs are references, not a grant of access. Production admin and new payments are disabled by default.
