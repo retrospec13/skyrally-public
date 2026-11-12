@@ -16,10 +16,10 @@ SkyRally is a Roblox kart and plane racing game with 7 map definitions, 5 bosses
 - 19 sound effects.
 
 <p>
-<a href="media/skyrally-crab-boss.jpg"><img src="media/skyrally-crab-boss.jpg" alt="Crab boss" width="24%"></a>
-<a href="media/skyrally-snow-dogfight.jpg"><img src="media/skyrally-snow-dogfight.jpg" alt="Snow plane dogfight" width="24%"></a>
-<a href="media/skyrally-neon-track.jpg"><img src="media/skyrally-neon-track.jpg" alt="Neon racing track" width="24%"></a>
-<a href="media/skyrally-forest-loop-rings.jpg"><img src="media/skyrally-forest-loop-rings.jpg" alt="Forest flight rings" width="24%"></a>
+<a href="media/skyrally-crab-boss.jpg"><img src="media/skyrally-crab-boss.jpg" alt="Crab boss" width="23%"></a>
+<a href="media/skyrally-snow-dogfight.jpg"><img src="media/skyrally-snow-dogfight.jpg" alt="Snow plane dogfight" width="23%"></a>
+<a href="media/skyrally-neon-track.jpg"><img src="media/skyrally-neon-track.jpg" alt="Neon racing track" width="23%"></a>
+<a href="media/skyrally-forest-loop-rings.jpg"><img src="media/skyrally-forest-loop-rings.jpg" alt="Forest flight rings" width="23%"></a>
 </p>
 
 ## V2 source update
