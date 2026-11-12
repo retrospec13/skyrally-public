@@ -239,5 +239,37 @@ class BattleReach(unittest.TestCase):
                         self.assertGreaterEqual(p[1] - g[0], 4.0, (key, kind, i + 1, "too close to the ground"))
 
 
+class WaterKeepOut(unittest.TestCase):
+    """V4-3: car bots plan nothing inside a battle barrier's footprint grown by WaterRules.KEEP_OUT_PAD (the cavern-mouth
+    pocket where the ISLAND water battle logged 24 'water unstick' events). Pads, pods and the player's seat stay outside."""
+
+    # (x, z) of the repeating wedge spots from docs/VERIFY_RESULTS_V33.md (V4-3 row, build 887f53d) and the player's Stuck respawn
+    STUCK = [(-5149.0, 4142.0), (-5193.0, 4150.0)]
+
+    @staticmethod
+    def pad():
+        src = (ROOT / "src" / "shared" / "battle" / "WaterRules.luau").read_text()
+        return float(re.search(r"^WaterRules\.KEEP_OUT_PAD\s*=\s*([0-9.]+)", src, re.M).group(1))
+
+    @staticmethod
+    def inside(bar: dict, pad: float, x: float, z: float) -> bool:
+        c = bar["cf"]  # x y z r00 r01 r02 r10 r11 r12 r20 r21 r22 (row major)
+        right, look = (c[3], c[9]), (c[5], c[11])
+        sx, _, sz = bar["collider"]["size"]
+        dx, dz = x - c[0], z - c[2]
+        return abs(dx * right[0] + dz * right[1]) <= sx / 2 + pad and abs(dx * look[0] + dz * look[1]) <= sz / 2 + pad
+
+    def test_island2_pocket(self):
+        plan = json.loads((ROOT / "map" / "island2" / "plan.json").read_text())
+        b = plan["skyrally"]["gameplay"]["modes"]["battle"]
+        pad, bars = self.pad(), b["barriers"]
+        hit = lambda x, z: any(self.inside(bar, pad, x, z) for bar in bars)  # noqa: E731
+        self.assertTrue(hit(*self.STUCK[0]), "the repeating wedge spot is in the keep-out")
+        for i, s in enumerate(b["spawns"], 1):
+            self.assertFalse(hit(s[0], s[2]), f"pad {i} must stay outside")
+        for i, p in enumerate(pickups_of(b), 1):
+            self.assertFalse(hit(p[0], p[2]), f"pod {i} must stay outside")
+
+
 if __name__ == "__main__":
     unittest.main()

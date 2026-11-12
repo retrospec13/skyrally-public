@@ -72,6 +72,8 @@ export type AwardSummary = {
 	bestTimeResult: string,
 	tokens: number?, -- SkyTokens after the award (HUD)
 	unlocked: { string },
+	-- v38: the one next goal after this award (Progression.nextUnlock) for the results card's progress bar; nil = all done
+	nextUnlock: any?,
 }
 
 -- What awardFinish needs from SaveService; the Lune spec injects a SaveService.new() over a memory store here.
@@ -383,6 +385,13 @@ function RaceManager.racerOrder(): { string }
 	return out
 end
 
+-- The full field in race order, server view (isPlayer true for every human, racerId kept): finished racers by time,
+-- the rest by progress. Grand Prix (server/GrandPrix) scores a race's end from it.
+function RaceManager.standings(): { StandingEntry }
+	local _, totalLen = SplineUtils.loadWaypoints()
+	return buildStandingsPayload(totalLen)
+end
+
 function RaceManager.getMode(): string
 	-- Mode layer (PLAN L2) not in the registry yet: the mode is a workspace attribute, standard race by default.
 	local mode = RaceAttr.here("RaceMode")
@@ -540,6 +549,7 @@ function RaceManager.completePlayerLap(rec: FlightServer.PlayerFlightRecord, now
 				totalLaps = PlaneConfig.TOTAL_LAPS,
 				lapTime = lapDuration,
 				bestLap = S().bestLapTimes[player] or lapDuration,
+				prevBest = prevBest, -- v38: the best lap before this one (nil on lap 1): the HUD's green/red split
 			})
 		end
 	elseif not rec.finished and not rec.dnf then
@@ -592,6 +602,15 @@ function RaceManager.completePlayerLap(rec: FlightServer.PlayerFlightRecord, now
 		}
 		local okAward, awardOrErr = pcall(RaceManager.awardFinish, player, finishInfo)
 		local award: AwardSummary? = if okAward then awardOrErr else nil
+		if award then
+			-- v38: what is next to unlock, read from the profile after the award (never yields; any failure = no bar).
+			local okNext, nextOrErr = pcall(function(): any
+				local getter = (RaceManager.saver :: any) and (RaceManager.saver :: any).get or (SaveService :: any).get
+				local profile = if type(getter) == "function" then getter(player) else nil
+				return if profile then Progression.nextUnlock(profile) else nil
+			end)
+			award.nextUnlock = if okNext then nextOrErr else nil
+		end
 		if not okAward then
 			print(string.format("[SkyRally][AWARD] error user=%d: %s", player.UserId, tostring(awardOrErr)))
 		end
@@ -1148,11 +1167,19 @@ local function stepRace(dt: number)
 				end
 			end
 		end
+		-- v38: course studs behind the leader still racing (ItemRules.CATCHUP; the cube ghosts read it to stay honest).
+		local leadProgress = -math.huge
+		for _, entry in ipairs(standings) do
+			if not entry.finished and entry.progress > leadProgress then
+				leadProgress = entry.progress
+			end
+		end
 		for _, entry in ipairs(standings) do
 			if entry.isPlayer then
 				local p = Players:FindFirstChild(entry.name)
 				if p and p:IsA("Player") then
 					p:SetAttribute("Rank", entry.rank)
+					p:SetAttribute("LeaderGap", if entry.finished then 0 else math.floor(math.max(0, leadProgress - entry.progress) / 10) * 10)
 					p:SetAttribute("RivalAhead", if rivalRank then rivalRank < entry.rank else nil)
 					p:SetAttribute("RaceElapsed", math.floor(raceElapsed * 10) / 10)
 					local ls = S().lapStartClocks[p] or RaceManager.raceStartClock

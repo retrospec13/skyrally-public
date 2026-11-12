@@ -535,7 +535,7 @@ function StyleChain.decorateResults(modal: GuiObject)
 		f.AnchorPoint = Vector2.new(1, 0.5)
 		f.Position = UDim2.new(1, 22, 0, -6)
 		f.Size = UDim2.fromOffset(100, 36)
-		f.BackgroundColor3 = WOOD
+		f.BackgroundColor3 = Color3.fromRGB(26, 45, 107) -- UI v2 navy sticker (the rim takes the tier colour)
 		f.ZIndex = 6
 		local cr = Instance.new("UICorner")
 		cr.CornerRadius = UDim.new(0, 8)

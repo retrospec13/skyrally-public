@@ -92,6 +92,9 @@ export type Deps = {
 	funnel: ((event: string, player: Player?, data: any) -> ())?,
 	log: (line: string) -> (),
 	hubTrackId: string,
+	-- v37 client-ready handshake (server/MapReadyGate): yields until these players' clients hold td's map, or its
+	-- timeout. nil (the Lune specs) forms the grid at once, as before.
+	awaitClients: ((players: { Player }, td: any, label: string) -> ())?,
 }
 
 type Group = {
@@ -335,6 +338,13 @@ local function load(g: Group)
 		g.inst:setAttr("BotPace", g.td.botPace)
 		h.onTrackChanged()
 		h.spawnBots(true)
+		local awaitClients = d.awaitClients
+		if awaitClients then
+			awaitClients(humansOf(g), g.td, string.format("group %d %s mode=%s", id, tostring(g.td.id), g.mode))
+			if groups[id] ~= g then
+				return -- everyone left while the clients loaded: the clean-up below takes the map back
+			end
+		end
 		local goTime = d.serverNow() + holdFor(g.mode)
 		g.goTime = goTime
 		g.inst:transition("grid")

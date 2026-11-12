@@ -1,6 +1,6 @@
 # SkyRally content guide
 
-Waku Worldwide learning candidate. Map plans are the editable source; build/ contains derived runtime modules. Existing Roblox content IDs are retained pending a coordinated group remap, not proof of redistribution permission.
+Waku Worldwide source release. Map plans are the editable source; build/ contains derived runtime modules. Existing Roblox content IDs are retained pending a coordinated group remap, not proof of redistribution permission.
 
 | Boss | Hazard |
 |---|---|

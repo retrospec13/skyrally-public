@@ -16,11 +16,11 @@ Each folder contains `rigged.glb` with geometry, joints/skin and embedded images
 
 ## Inspect/edit locally
 
-1. Download the hydrated source archive, or clone the approved repository. These GLBs are ordinary tracked files, not LFS pointers. Check the external SHA256 manifest before editing.
+1. Clone this repository. These GLBs are ordinary tracked files, not LFS pointers. The model and rights inventories record the supplied sources.
 2. In Blender use File > Import > glTF 2.0 and select the desired `rigged.glb`. Preserve node/bone names, parent hierarchy, bind/rest transforms, skin weights and material images. The GLBs embed their images; they do not require a private workstation texture directory.
 3. For four bosses, the matching `anim.glb` is an animation reference. For Frosthorn, edit the Luau tables directly or deliberately author a replacement as your own changed version. Do not rebake the historical GLB over its authoritative source. The protected baker refuses that overwrite.
 4. For Roblox, import the rig through Studio's 3D Importer into an isolated, unpublished working place. Use the GLB if supported by your Studio version; otherwise import it in Blender and export an FBX with armature/mesh and embedded or adjacent copied images. Verify exported bone names and rest pose before adopting it. Do not merge bones or bake a different rest pose silently.
-5. Review scale/orientation and all PBR channels in the importer. Import only to a creator you control and only when you explicitly intend the associated Roblox asset creation. This release preparation did not perform that action.
+5. Review scale/orientation and all PBR channels in the importer. Import only to a creator you control and only when you intend the associated Roblox asset creation. This repository does not perform that action.
 
 ## Preview authoritative Luau motion
 
@@ -45,4 +45,4 @@ Call `require(folder.ClipPlayer).Apply(model, "idle", elapsedSeconds)` on a loca
 
 ## Payload policy
 
-All source files in the external exact manifest belong in the future repository, including `assets/` and nested `anim/out/`. The root-only `/out/` ignore rule must not hide boss sources. No file currently needs GitHub's 100 MiB exception; larger ordinary files can trigger the 50 MiB warning. The hydrated ZIP is the large-download alternative, not a substitute for silently omitting model sources from the repository. No Git history, logs, personal configuration, secrets or remote repository metadata is included.
+Model sources are tracked in this repository, including `assets/` and nested `anim/out/`. The root-only `/out/` ignore rule does not hide boss sources. No payload file exceeds GitHub's 100 MiB limit; larger ordinary files can trigger the 50 MiB warning. This update preserves the existing public Git history. Private development history, account logs, personal configuration and credentials are not imported.

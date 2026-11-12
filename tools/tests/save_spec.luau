@@ -357,6 +357,34 @@ return function(h: Harness)
 		h.eq(p2:GetAttribute("SkyTokens"), 1)
 	end)
 
+	h.test("save: Grand Prix trophies survive a rejoin; a record from before v37 loads with none (additive field)", function()
+		local sched = h.newScheduler()
+		local backing: any = {}
+		local env = newEnv({ sched = sched, backing = backing })
+		local p = h.fakePlayer(105)
+		load(env, p)
+		h.eq(p:GetAttribute("GPTrophies"), "0,0,0;0,0,0")
+		h.ok(env.svc.edit(p, "grandprix:rookie", function(draft: any)
+			draft.grandPrix.best.rookie = 3
+			draft.grandPrix.points.rookie = 61
+			draft.grandPrix.cups = 1
+		end))
+		h.eq(p:GetAttribute("GPTrophies"), "3,0,0;61,0,0")
+		p:leave()
+		h.ok(release(env, p), "release saved")
+		local other = newEnv({ sched = sched, backing = backing, sessionId = "server-B" })
+		local p2 = h.fakePlayer(105)
+		local snap = load(other, p2)
+		h.eq(snap.grandPrix.best.rookie, 3)
+		h.eq(p2:GetAttribute("GPTrophies"), "3,0,0;61,0,0")
+		-- an old v2 record without the field
+		local old = SaveService.newProfile() :: any
+		old.grandPrix = nil
+		local migrated = SaveService.migrate(old)
+		h.eq(migrated.grandPrix.best.pro, 0)
+		h.eq(migrated.version, SaveService.CURRENT_VERSION, "no version bump")
+	end)
+
 	h.test("save: a rejoin on the same server waits for the previous session's unlock", function()
 		local env = newEnv({ config = { writeCooldown = 6 } })
 		local p = h.fakePlayer(105)

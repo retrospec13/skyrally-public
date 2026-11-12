@@ -97,7 +97,7 @@ export type World = {
 	-- Items 14 and 18: an extra client event for a player racer ("IncomingItem", "ItemGrudge"); bots ignore it.
 	notify: ((racerId: RacerId, event: string, payload: { [string]: any }) -> ())?,
 	-- Mystery cubes: the racer's place and the field size (1 = leading); nil -> treated as a field of one.
-	standing: ((racerId: RacerId) -> (number, number))?,
+	standing: ((racerId: RacerId) -> (number, number, number?))?,
 	-- Mystery cubes: a number in [0, 1); nil -> math.random. The specs pass a fixed sequence.
 	random: (() -> number)?,
 	-- Items v4 (Storm Bolt rarity): true while the racer is on the race's final lap; nil -> never.
@@ -151,6 +151,10 @@ export type Service = {
 	getPool: () -> { string }?,
 	absorbHit: (racerId: RacerId) -> boolean,
 	guard: (racerId: RacerId, seconds: number) -> (),
+	-- v38 Item Steal: moves victim's held item (revealed, not mid-roulette) to thief; returns the label taken or nil.
+	steal: (thief: RacerId, victim: RacerId) -> string?,
+	-- v38: whether racerId holds a revealed item another racer could steal.
+	holdsStealable: (racerId: RacerId) -> boolean,
 }
 
 -- OURS: the client trigger radius (PlaneConfig.PICKUP_TRIGGER_RADIUS 14) plus about 0.2 s of travel at overcharge speed
@@ -384,6 +388,32 @@ function ItemService.qaGive(player: Player, color: string, level: number): (bool
 	return result[1] :: boolean, result[2] :: string
 end
 
+-- v38 Studio QA (server/QATools "botuse"): a bot of the player's instance holds `color` at `level`, then uses it. So
+-- every item can be tested by BEING hit by it, not only by firing it.
+function ItemService.qaBotUse(player: Player, racerId: RacerId, color: string, level: number): (boolean, string)
+	if not ItemService.isStudio() then
+		return false, "not_studio"
+	end
+	local result: { boolean | string } = { false, "not_started" }
+	local function run(svc: Service)
+		local ok, why = svc.qaGive(racerId, color, level)
+		if ok then
+			ok, why = svc.requestUse(racerId)
+		end
+		result = { ok, why }
+	end
+	local route = ItemService.routeRun
+	if route then
+		route(player, run)
+	else
+		local svc = ItemService.active
+		if svc then
+			run(svc)
+		end
+	end
+	return result[1] :: boolean, result[2] :: string
+end
+
 function ItemService.getState(racerId: RacerId): ItemRules.ItemState
 	local svc = ItemService.active
 	return if svc then svc.getState(racerId) else ItemRules.newState()
@@ -425,6 +455,16 @@ end
 function ItemService.absorbHit(racerId: RacerId): boolean
 	local svc = ItemService.active
 	return svc ~= nil and svc.absorbHit(racerId)
+end
+
+function ItemService.steal(thief: RacerId, victim: RacerId): string?
+	local svc = ItemService.active
+	return if svc then svc.steal(thief, victim) else nil
+end
+
+function ItemService.holdsStealable(racerId: RacerId): boolean
+	local svc = ItemService.active
+	return svc ~= nil and svc.holdsStealable(racerId)
 end
 
 function ItemService.guard(racerId: RacerId, seconds: number)
@@ -739,7 +779,7 @@ function ItemService.new(world: World, hooks: Hooks, options: Options?): Service
 		end
 		local before = stateOf(racerId)
 		if pod.mystery == true then
-			local rank, field = 1, 1
+			local rank, field, gap = 1, 1, 0
 			local held = before.color
 			local rolled: ItemRules.Color
 			if held ~= nil and before.level > 0 then
@@ -747,13 +787,14 @@ function ItemService.new(world: World, hooks: Hooks, options: Options?): Service
 			else
 				local standing = world.standing
 				if standing then
-					local okRank, r, n = pcall(standing, racerId)
+					local okRank, r, n, g = pcall(standing, racerId)
 					if okRank and type(r) == "number" and type(n) == "number" then
 						rank, field = r, n
+						gap = if type(g) == "number" then g else 0
 					end
 				end
 				local rand = world.random
-				rolled = ItemRules.rollMystery(rank, field, if rand then rand() else math.random(), pool, rollBlocked(racerId, now))
+				rolled = ItemRules.rollMystery(rank, field, if rand then rand() else math.random(), pool, rollBlocked(racerId, now), gap)
 			end
 			-- A second cube while the first one's roulette still spins queues its level-up for the reveal
 			-- (ItemRules.cubeTake): the HUD keeps spinning for what is left; the use gate stays at the same reveal.
@@ -765,11 +806,13 @@ function ItemService.new(world: World, hooks: Hooks, options: Options?): Service
 			setState(racerId, after, roulette)
 			tell(racerId, "ItemPickup", { outcome = outcome, color = after.color, level = after.level })
 			world.log(string.format(
-				"[SkyRally][ITEM] pickup racer=%s pod=%s mystery place=%d/%d %s->%s outcome=%s dist=%.1f%s",
+				"[SkyRally][ITEM] pickup racer=%s pod=%s mystery place=%d/%d band=%s gap=%.0f %s->%s outcome=%s dist=%.1f%s",
 				racerId,
 				podName,
 				rank,
 				field,
+				ItemRules.rollBand(rank, field, gap),
+				math.min(gap, 99999),
 				ItemRules.label(before),
 				ItemRules.label(after),
 				outcome,
@@ -962,6 +1005,28 @@ function ItemService.new(world: World, hooks: Hooks, options: Options?): Service
 			world.log(string.format("[SkyRally][ITEM] orbit absorb racer=%s left=%s", racerId, tostring(after.charges or 0)))
 		end
 		return absorbed
+	end
+
+	function service.holdsStealable(racerId: RacerId): boolean
+		local held = stateOf(racerId)
+		local rolling = rollingUntil[racerId]
+		return ItemRules.isHolding(held) and not (rolling and world.now() < rolling)
+	end
+
+	-- v38 Item Steal (ItemEffects hooks.special "item_steal"): the victim's whole held item (level and charges) goes to
+	-- the thief, replacing whatever the thief holds; the victim is told who took it.
+	function service.steal(thief: RacerId, victim: RacerId): string?
+		if thief == victim or not service.holdsStealable(victim) then
+			return nil
+		end
+		local held = stateOf(victim)
+		local taken: ItemRules.ItemState = { color = held.color, level = held.level, charges = held.charges }
+		setState(victim, ItemRules.newState())
+		setState(thief, taken)
+		tell(victim, "ItemGrudge", { role = "robbed", kind = "steal", chain = 0, name = nameOf(thief), other = thief, item = taken.color })
+		tell(thief, "ItemGrudge", { role = "thief", kind = "steal", chain = 0, name = nameOf(victim), other = victim, item = taken.color })
+		world.log(string.format("[SkyRally][ITEM] steal thief=%s victim=%s item=%s", thief, victim, ItemRules.label(taken)))
+		return ItemRules.label(taken)
 	end
 
 	-- Invulnerability from a special (Rocket Rush, Golden Wings, Bubble Guard): isShielded for `seconds` from now
@@ -1188,7 +1253,8 @@ function ItemService.robloxWorld(remote: RemoteEvent): World
 		-- Mystery cubes: place by lap and station over every live player and bot, read once per pickup. Finished racers
 		-- count as ahead of everyone still racing; a lap-1 racer still behind the start line counts as negative progress
 		-- (RaceManager's standings use the same rule for bots on the grid).
-		standing = function(racerId: RacerId): (number, number)
+		-- v38: a third result, the course gap in studs to the leader still racing (ItemRules.leaderGap; CATCHUP bands).
+		standing = function(racerId: RacerId): (number, number, number)
 			local _, totalLen = SplineUtils.loadWaypoints()
 			local len = if type(totalLen) == "number" and totalLen > 0 then totalLen else 1
 			local function progress(lap: number, station: number, finished: boolean): number
@@ -1223,9 +1289,10 @@ function ItemService.robloxWorld(remote: RemoteEvent): World
 				end
 			end
 			if mine == nil then
-				return 1, 1
+				return 1, 1, 0
 			end
-			return ItemRules.rankIn(mine, all)
+			local rank, field = ItemRules.rankIn(mine, all)
+			return rank, field, ItemRules.leaderGap(mine, all)
 		end,
 		-- Items v4 (Storm Bolt rarity): the racer is on the race's last lap (RaceAttr TotalLaps of the stepping scope).
 		finalLap = function(racerId: RacerId): boolean

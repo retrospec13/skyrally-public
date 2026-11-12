@@ -103,6 +103,7 @@ export type BotRacer = {
 	isBoss: boolean,
 	rosterSpeed: number, -- baseSpeed before this race's skill roll
 	startDelay: number, -- s after GO before the bot leaves the grid (BotPaceRules)
+	startRocket: number?, -- v37: ring-boost seconds owed when it leaves the grid (a rocket start), 0/nil = none
 	slipLeft: number,
 	slipFactor: number,
 	nextSlipAt: number,
@@ -201,6 +202,12 @@ export type FieldInfo = {
 }
 
 AIRacers.bots = {} :: { BotRacer }
+
+-- Grand Prix (v37, server/GrandPrix): the cup class's bot tuning (shared/GrandPrixRules.TUNE) while a cup runs, nil
+-- otherwise (every race exactly as before). namePins keeps one bot roster across the cup's races: roster index -> the
+-- name and look it was dealt in race 1 (nil = deal fresh names, as before).
+AIRacers.classTune = nil :: { pace: number, rubber: number, delay: number, delayScale: number, itemHold: number }?
+AIRacers.namePins = nil :: { [number]: { name: string, look: any } }?
 
 ------------------------------------------------------------------------------------------------------------------------
 -- Pure helpers (no Roblox instances; tools/tests/field_spec.luau)
@@ -368,6 +375,23 @@ function AIRacers.decideItemUse(kind: string, level: number, ctx: ItemContext): 
 		if ctx.threatBehind then
 			return true, "missile_threat"
 		end
+	elseif kind == "horn" then
+		-- v38 HORN: blast a shot about to land, or spin a rival alongside.
+		if ctx.threatBehind then
+			return true, "missile_threat"
+		elseif (ahead and ahead <= ITEMS.hornReach) or (behind and behind <= ITEMS.hornReach) then
+			return true, "rival_close"
+		end
+	elseif kind == "ink_splat" then
+		if not ctx.leading then
+			return true, "ink_ahead"
+		end
+	elseif kind == "item_steal" then
+		if not ctx.leading and ctx.heldFor >= ITEMS.stealDelay then
+			return true, "steal"
+		end
+	elseif kind == "coin_pouch" then
+		return true, "coins"
 	elseif kind == "magnet" then
 		-- Magnet v2: ItemEffects locks the CLOSEST racer (ItemRules.magnetPick: one in front wins a near-tie by
 		-- magnetAheadTie) and a bot's pull is only added speed, so fire when that closest racer is the one ahead.
@@ -1277,9 +1301,26 @@ local function resetRaceState(bot: BotRacer)
 		bot.startDelay = 0
 		bot.nextSlipAt = math.huge
 	else
-		bot.baseSpeed = bot.rosterSpeed * BotPaceRules.skill(math.random)
+		local skill = BotPaceRules.skill(math.random)
+		bot.baseSpeed = bot.rosterSpeed * skill
 		bot.startDelay = BotPaceRules.startDelay(math.random)
 		bot.nextSlipAt = BotPaceRules.nextSlipAt(math.random, 0)
+		-- v37 rocket start: a skill-weighted grade per race (BotPaceRules.startGrade). A rocket leaves the line (after
+		-- its dealt reaction delay, so the front-first launch order holds) on the ring boost the bots already take; a
+		-- burnt start sits on the line a moment longer (orderStartDelays hands the longest wait to the rearmost bot).
+		local grade = BotPaceRules.startGrade(math.random, BotPaceRules.skillFrac(skill))
+		bot.startRocket = 0
+		if grade == "rocket" then
+			bot.startRocket = BotPaceRules.ROCKET_BOOST_SECONDS
+		elseif grade == "burnt" then
+			bot.startDelay += BotPaceRules.BURNT_DELAY
+		end
+		print(string.format("[SkyRally][AI] start bot=%s grade=%s skill=%.3f", bot.name, grade, skill))
+	end
+	local tune = AIRacers.classTune
+	if tune and not bot.isBoss then
+		bot.baseSpeed *= tune.pace
+		bot.startDelay = bot.startDelay * tune.delayScale + tune.delay
 	end
 	bot.slipLeft = 0
 	bot.slipFactor = 1
@@ -1405,7 +1446,16 @@ local function createBot(rosterIndex: number, startCF: CFrame): BotRacer?
 	local look: BotDisguise.Look? = nil
 	local nameChecked = true
 	if disguise then
-		displayName, look, nameChecked = BotDisguise.deal(AIRacers.bots)
+		local pins = AIRacers.namePins
+		local pin = if pins then pins[rosterIndex] else nil
+		if pin then
+			displayName, look, nameChecked = pin.name, pin.look, true -- Grand Prix: the same rival as last race
+		else
+			displayName, look, nameChecked = BotDisguise.deal(AIRacers.bots)
+			if pins then
+				pins[rosterIndex] = { name = displayName, look = look }
+			end
+		end
 	end
 	if boss and rosterIndex == 1 then
 		-- Same roster slot and lanes as the fastest bot, the boss's own pace, name and model.
@@ -1513,6 +1563,11 @@ local function createBot(rosterIndex: number, startCF: CFrame): BotRacer?
 		-- somebody's account (standings read bot.name each tick; clients read the BotName attribute).
 		BotDisguise.recheck(displayName, function(fresh: string)
 			bot.name = fresh
+			local pinsNow = AIRacers.namePins
+			local pinNow = if pinsNow then pinsNow[rosterIndex] else nil
+			if pinNow then
+				pinNow.name = fresh
+			end
 			if bot.plane and bot.plane.Parent then
 				bot.plane:SetAttribute("BotName", fresh)
 			end
@@ -1946,11 +2001,22 @@ local function stepMotion(
 		bot.currentSpeed = 0
 		return
 	end
+	local rocket = bot.startRocket
+	if rocket and rocket > 0 then
+		bot.startRocket = 0
+		if raceElapsed < 2 then -- only off the line (a late join or a reset mid-race never owes one)
+			bot.boostTimer = math.max(bot.boostTimer, rocket)
+		end
+	end
 	local botTotalDist = (bot.lap - 1) * totalLen + bot.station
 	local distBehindPlayer = leadPlayerDist - botTotalDist
 
 	-- Light rubber-banding around bot.baseSpeed (the rival's band is tighter, same ceilings: item 19)
 	local rubberFactor = AIRacers.rubberFactor(distBehindPlayer, F().rivalId ~= nil and bot.id == F().rivalId)
+	local tune = AIRacers.classTune
+	if tune and rubberFactor > 1 and not bot.isBoss then
+		rubberFactor = 1 + (rubberFactor - 1) * tune.rubber -- Grand Prix class: how hard the field catches up
+	end
 
 	bot.boostTimer = math.max(0, bot.boostTimer - dt)
 	bot.itemBoostTimer = math.max(0, bot.itemBoostTimer - dt)
@@ -2280,6 +2346,10 @@ local function thinkItems(bot: BotRacer, now: number, totalLen: number)
 	if os.clock() < bot.itemRetryAt then
 		return
 	end
+	local tune = AIRacers.classTune
+	if tune and now - bot.heldSince < tune.itemHold then
+		return -- Grand Prix class: a ROOKIE bot sits on its item a while before it fires
+	end
 	local selfIndex = table.find(racerIds, bot.racerId)
 	local ahead, behind = AIRacers.nearestGaps(bot.station, racerStations, totalLen, selfIndex)
 	local ctx: ItemContext = {
@@ -2291,7 +2361,7 @@ local function thinkItems(bot: BotRacer, now: number, totalLen: number)
 		heldFor = now - bot.heldSince,
 		magnetRange = nil,
 	}
-	if kind == "shield" or kind == "bubble_guard" then
+	if kind == "shield" or kind == "bubble_guard" or kind == "horn" then
 		-- ItemEffects aims a homing missile at the racer directly ahead, so an armed rival close behind is the threat
 		-- (items v4: any shooter: Orbit Missiles, Frost Shot, Coin Burst too).
 		for i, st in racerStations do
@@ -2304,7 +2374,7 @@ local function thinkItems(bot: BotRacer, now: number, totalLen: number)
 				end
 			end
 		end
-	elseif kind == "storm_bolt" then
+	elseif kind == "storm_bolt" or kind == "ink_splat" or kind == "item_steal" then
 		ctx.leading = ahead == nil
 	elseif kind == "boost" or kind == "golden_wings" or kind == "gift_box" then
 		local _, t0 = SplineUtils.sampleAtStation(bot.station)

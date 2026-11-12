@@ -16,6 +16,8 @@ local Progression = require(Shared:WaitForChild("Progression"))
 local MonetizationConfig = require(Shared:WaitForChild("MonetizationConfig"))
 local ChatCompatClient = require(script.Parent:WaitForChild("ChatCompatClient"))
 local Settings = require(script.Parent:WaitForChild("Settings"))
+local UiSound = require(script.Parent:WaitForChild("UiSound"))
+local UiSkin = require(script.Parent:WaitForChild("UiSkin")) -- UI v2 theme keys (admin buttons tap like the rest)
 
 local AdminPanel = {}
 
@@ -98,18 +100,11 @@ end
 ------------------------------------------------------------------------------------------------ page
 
 local function button(parent: Instance, text: string, onClick: () -> ()): TextButton
-	local b = Instance.new("TextButton")
-	b.Size = UDim2.new(0, 0, 0, 32)
+	-- UI v2: a sky theme key; the TextButton's own (hidden) text keeps sizing it (AutomaticSize X).
+	local b = (UiSkin.button(parent, "sky", "  " .. text .. "  ", { size = UDim2.new(0, 0, 0, 34), maxText = 16, sound = "tap", S = 1 }) :: any) :: TextButton
 	b.AutomaticSize = Enum.AutomaticSize.X
-	b.BackgroundColor3 = WOOD_DARK
-	b.TextColor3 = CREAM
-	b.Font = Enum.Font.GothamBold
-	b.TextSize = 14
-	b.Text = "  " .. text .. "  "
-	b.AutoButtonColor = true
-	b.Parent = parent
-	corner(b, 8)
-	stroke(b, RIM, 1.5)
+	b.Font = Enum.Font.GothamBlack
+	b.TextSize = 15
 	b.Activated:Connect(onClick)
 	return b
 end
@@ -118,8 +113,7 @@ end
 local function cycler(parent: Instance, list: { string }): () -> string
 	local i = 1
 	local b = button(parent, list[1], function() end)
-	b.BackgroundColor3 = WOOD_ROW
-	b.TextColor3 = GOLD
+	UiSkin.setVariant(b, "orange")
 	b.Activated:Connect(function()
 		i = (i % #list) + 1
 		b.Text = "  " .. list[i] .. "  "
@@ -148,11 +142,15 @@ local function row(parent: Instance, title: string): Frame
 	local l = Instance.new("TextLabel")
 	l.BackgroundTransparency = 1
 	l.Size = UDim2.fromOffset(96, 32)
-	l.Font = Enum.Font.GothamBlack
-	l.TextSize = 14
+	l.FontFace = UiSkin.font("button")
+	l.TextSize = 15
 	l.TextColor3 = GOLD
 	l.TextXAlignment = Enum.TextXAlignment.Left
 	l.Text = string.upper(title)
+	local ls = Instance.new("UIStroke")
+	ls.Color = Color3.fromRGB(11, 21, 51)
+	ls.Thickness = 1.5
+	ls.Parent = l
 	l.Parent = f
 	return f
 end

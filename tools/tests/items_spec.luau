@@ -77,7 +77,7 @@ local ItemService = loadItemService()
 
 do -- colours, kinds and pod mapping
 	eq(#ItemRules.COLORS, 5, "five colours")
-	local kinds = { red = "missile", blue = "boost", yellow = "shield", green = "trap", rainbow = "magnet" }
+	local kinds = { red = "missile", blue = "boost", yellow = "horn", green = "trap", rainbow = "magnet" } -- v38: yellow is the horn
 	for color, kind in pairs(kinds) do
 		eq(ItemRules.KIND_OF[color :: any], kind, "kind of " .. color)
 		check(ItemRules.isColor(color), color .. " is a colour")
@@ -161,10 +161,11 @@ do -- effect data per colour per level
 			eq(e.kind, kind, color .. " effect kind")
 			eq(e.level, level, color .. " effect level")
 			local set = 0
-			for _, field in { "missile", "boost", "shield", "trap", "magnet" } do
+			for _, field in { "missile", "boost", "shield", "trap", "magnet", "special" } do
 				if (e :: any)[field] ~= nil then
 					set += 1
-					eq(field, kind, color .. " L" .. level .. " param table matches kind")
+					-- v38: the horn (yellow) rides the special table
+					eq(if field == "special" then "horn" else field, kind, color .. " L" .. level .. " param table matches kind")
 				end
 			end
 			eq(set, 1, color .. " L" .. level .. " has exactly one param table")
@@ -177,10 +178,13 @@ do -- effect data per colour per level
 	check(m3.count == 10 and m3.homing and m3.burstInterval > 0, "missile L3 ten-shot burst, each shot locks (v3)")
 	eq(ItemRules.PARAMS.trap[1].form, "slick", "trap L1 form (S5)")
 	eq(ItemRules.PARAMS.trap[2].form, "mine", "trap L2 form (S5)")
-	eq(ItemRules.PARAMS.trap[3].form, "bubble", "trap L3 form (S5)")
+	eq(ItemRules.PARAMS.trap[3].form, "crate", "trap L3 form: the spiked crate, no bubble (v39)")
+	check(ItemRules.trapKnockVy("crate") > 0 and ItemRules.trapKnockVy("mine") == 0 and ItemRules.trapKnockVy(nil) == 0, "only the crate kicks its victim up (v39)")
 	for lv = 2, 3 do
 		local b, pb = ItemRules.PARAMS.boost[lv], ItemRules.PARAMS.boost[lv - 1]
-		check(b.seconds > pb.seconds and b.speed > pb.speed, "boost grows with level " .. lv)
+		-- v38: the boost is charged (one more charge per level, each a little hotter), not one longer boost
+		check(b.charges == pb.charges + 1 and b.speed > pb.speed, "boost grows with level " .. lv)
+		check(ItemRules.PARAMS.horn[lv].radius > ItemRules.PARAMS.horn[lv - 1].radius, "horn wider at level " .. lv)
 		check(ItemRules.PARAMS.shield[lv].seconds > ItemRules.PARAMS.shield[lv - 1].seconds, "shield longer at level " .. lv)
 		local g, pg = ItemRules.PARAMS.magnet[lv], ItemRules.PARAMS.magnet[lv - 1]
 		check(g.seconds > pg.seconds and g.pull > pg.pull, "magnet stronger at level " .. lv)
@@ -266,6 +270,29 @@ do -- mystery cubes: position bands and weighted rolls
 	eq(ItemRules.rollBand(1, 1), "middle", "a field of one rolls from the middle")
 	eq(ItemRules.rollBand(0, 0), "middle", "nonsense inputs clamp to a field of one")
 	eq(ItemRules.rollBand(99, 8), "back", "rank past the field clamps to last")
+	-- v38 catch-up by gap: the gap only pushes back, never forward; the leader stays lead.
+	local cr = ItemRules.CATCHUP.cruise
+	eq(ItemRules.rollBand(2, 8, 0.5 * cr), "front", "P2 on the leader's bumper rolls front")
+	eq(ItemRules.rollBand(2, 8, 2.5 * cr), "middle", "P2 2.5 s back rolls middle")
+	eq(ItemRules.rollBand(2, 8, 5 * cr), "back", "P2 5 s back rolls back")
+	eq(ItemRules.rollBand(2, 8, 8 * cr), "far", "P2 8 s back rolls far")
+	eq(ItemRules.rollBand(8, 8, 1 * cr), "back", "a close last place keeps the back band")
+	eq(ItemRules.rollBand(1, 8, 20 * cr), "lead", "the leader is lead whatever is passed")
+	eq(ItemRules.rollBand(1, 1, 20 * cr), "middle", "a field of one stays middle")
+	eq(ItemRules.leaderGap(100, { 100, 400, math.huge, 50 }), 300, "gap to the furthest racer still racing")
+	eq(ItemRules.leaderGap(math.huge, { 100, math.huge }), 0, "a finished racer has no gap")
+	do
+		local farBlue, backBlue = 0, 0
+		for i = 0, 999 do
+			if ItemRules.rollMystery(8, 8, (i + 0.5) / 1000, nil, nil, 9 * cr) == "blue" then
+				farBlue += 1
+			end
+			if ItemRules.rollMystery(8, 8, (i + 0.5) / 1000) == "blue" then
+				backBlue += 1
+			end
+		end
+		check(farBlue > backBlue, "far behind rolls more boosts than a close last place")
+	end
 
 	-- Every band can roll something, weights are never negative, and every colour appears in some band.
 	local seen: { [string]: boolean } = {}
@@ -505,6 +532,10 @@ local function harness(options: any?, hookOverrides: { [string]: any }?): Harnes
 		spawnTrap = hook("spawnTrap"),
 		setShield = hook("setShield"),
 		magnetPull = hook("magnetPull"),
+		-- v38: the horn (yellow) and the specials arrive here as (racer, kind, params, level)
+		special = function(racer: string, kind: string, params: any, level: number)
+			table.insert(h.calls, { hook = "special:" .. kind, racer = racer, params = params, level = level })
+		end,
 	}
 	local overrides: { [string]: any } = hookOverrides or {}
 	for k, v in pairs(overrides) do
@@ -688,7 +719,7 @@ do -- use: unheld rejected, held consumed, each kind dispatched to its hook
 
 	local expect = {
 		{ pod = "PodBlue", hook = "applyBoost" },
-		{ pod = "PodYellow", hook = "setShield" },
+		{ pod = "PodYellow", hook = "special:horn" }, -- v38: the horn replaced the shield
 		{ pod = "PodGreen", hook = "spawnTrap" },
 		{ pod = "PodRainbow", hook = "magnetPull" },
 	}
@@ -703,10 +734,8 @@ do -- use: unheld rejected, held consumed, each kind dispatched to its hook
 		local last = h.calls[#h.calls]
 		eq(last.hook, row.hook, row.pod .. " dispatches")
 		eq(last.level, 1, row.pod .. " level one")
-		if row.hook == "setShield" then
-			check(s.isShielded(P2), "shield active after yellow use")
-			h.clock.t += last.params.seconds + 0.01
-			check(not s.isShielded(P2), "shield expires after its seconds")
+		if row.hook == "special:horn" then
+			check(not s.isShielded(P2), "v38: the horn grants no shield")
 		end
 	end
 	ItemRules.MAGNET_ENABLED = false
@@ -856,7 +885,7 @@ do -- mystery cubes through the service: rolls, upgrades, roulette hold, bots al
 	local expect = ItemRules.rollMystery(1, 8, 0.1)
 	eq(s.getState(P1).color, expect, "the leader's roll uses the lead band and the injected random")
 	eq(h.published[#h.published].roulette, ItemRules.MYSTERY.rouletteSeconds, "a fresh roll is published with the roulette")
-	check(countLogs(h, "pod=Cube1 mystery place=1/8 none->" .. expect .. ":1 outcome=new") == 1, "mystery pickup log line")
+	check(countLogs(h, "pod=Cube1 mystery place=1/8 band=lead gap=0 none->" .. expect .. ":1 outcome=new") == 1, "mystery pickup log line")
 	eq(s.getState(P1).roulette, nil, "the roulette is never part of the held state")
 
 	h.clock.t += 0.5

@@ -581,7 +581,7 @@ return function(h: Harness)
 		h.ok(VehiclePickRules.shouldCollapse(0, VehiclePickRules.COLLAPSE_SECONDS, false), "folds after the timeout")
 		h.ok(not VehiclePickRules.shouldCollapse(0, 1, false), "stays open meanwhile")
 		local client = h.readFile("src/client/VehiclePick.luau")
-		h.contains(client, "VEHICLE: %s", "collapsed chip reads VEHICLE: <name>")
+		h.contains(client, 'ArcadeUi.setText(chip, string.format("%s  >"', "collapsed chip reads the class icon + <name> > (UI v2)")
 	end)
 
 	---------------------------------------------------------------------------------------------- owner art: Void Dragon

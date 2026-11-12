@@ -816,4 +816,28 @@ return function(h: Harness)
 		local flee = WaterRules.botGoal(bare, view(Vector3.new(cx - 40, 20.9, cz), 19, 45, false))
 		h.ok(flee.reason == "flee deck" or flee.reason == "stranded", "no grid: up a gangway or nowhere")
 	end)
+	h.test("V4-3: ground beside a battle barrier is never a bot goal, hunt target or path", function()
+		-- A barrier across Z at the crest (70 wide x 3 deep collider), facing +Z like the cavern-mouth one.
+		local bar = { cf = CFrame.new(cx + 20, 26, cz + 70), collider = { center = Vector3.new(0, 16, 0), size = Vector3.new(70, 36, 3) } }
+		local ko = WaterRules.keepOuts({ barriers = { bar, { cf = "bad" } } })
+		h.eq(#ko, 1, "malformed entries skipped")
+		h.ok(WaterRules.inKeepOut(ko, cx + 20 + 35 + 17, cz + 70), "17 studs past the jamb is inside the pad")
+		h.ok(not WaterRules.inKeepOut(ko, cx + 20 + 35 + 19, cz + 70), "19 is outside")
+		h.ok(WaterRules.inKeepOut(ko, cx + 20, cz + 70 + 18), "18 in front of the plane")
+		h.ok(not WaterRules.inKeepOut(ko, cx + 20, cz + 70 + 21), "21 is outside")
+		h.eq(#WaterRules.keepOuts({}), 0)
+		h.eq(WaterRules.inKeepOut(nil, 0, 0), false)
+		local kc = table.clone(bcourse)
+		kc.keepOut = ko
+		local pos = Vector3.new(cx + 30, 26.9, cz)
+		local near_pod = { pos = Vector3.new(cx + 20, 27, cz + 60), ground = 26.5 }
+		local far_pod = { pos = Vector3.new(cx + 40, 27, cz - 60), ground = 26.5 }
+		local open = WaterRules.botGoal(bcourse, view(pos, 26.9 - 1.9, 10, false, { near_pod }, {}))
+		h.eq(open.reason, "pod", "without the keep-out the pod beside the barrier is the goal")
+		local kept = WaterRules.botGoal(kc, view(pos, 26.9 - 1.9, 10, false, { near_pod, far_pod }, {}))
+		h.ok(kept.reason ~= "pod" or not WaterRules.inKeepOut(ko, kept.pos.X, kept.pos.Z), "no waypoint inside the keep-out")
+		local rival = { id = "r", pos = Vector3.new(cx + 20, 27, cz + 60), ground = 26.5 }
+		local hunt = WaterRules.botGoal(kc, view(pos, 26.9 - 1.9, 10, true, {}, { rival }))
+		h.ok(hunt.reason ~= "hunt", "a rival parked in the keep-out is not hunted into it")
+	end)
 end

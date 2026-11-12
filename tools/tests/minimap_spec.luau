@@ -271,7 +271,7 @@ return function(h)
 							h.ok(rects.autoPill.x >= mm.x + mm.w + 8 - 1e-6 and rects.token.y == mm.y, "touch: token chip right of the minimap, AUTO pill under it")
 							h.ok(rects.help.w >= 44 and rects.gear.w >= 44, "44 px system buttons")
 						else
-							h.ok(mm.x == rects.hintChip.x and mm.y == math.max(nav.h + 8, rects.position.y), "desktop: left edge directly under the nav")
+							h.ok(mm.x == rects.hintChip.x and mm.y == math.max(nav.h + 8, rects.lapChip.y), "desktop: left edge directly under the nav")
 							h.ok(not R.overlap(mm, rects.hintChip), "desktop: clear of the controls hint")
 						end
 						-- lanes keep room for the hero text / toast
@@ -286,12 +286,28 @@ return function(h)
 						if kind == "desktop" then
 							h.ok(rects.token.y >= mm.y + mm.h and rects.token.x == mm.x, "token chip under the minimap")
 						end
-						local rightMin = math.min(rects.position.x, rects.lapChip.x, rects.combo.x)
-						for _, n in { "item", "gear", "help" } do
-							h.ok(rects[n].x + rects[n].w <= rightMin - 8 + 1e-6 and rects[n].y >= rects.position.y, n .. " column beside the right column")
+						-- UI v2: gear / "?" in one column left of the right column (lap chip, combo); the item box either top-left
+						-- (right of the nav, the minimap and the token chip, left of the lanes) or at the top of that column.
+						local rightMin = math.min(rects.lapChip.x, rects.combo.x)
+						if kind == "touch" then
+							rightMin = math.min(rightMin, rects.position.x)
+						end
+						for _, n in { "gear", "help" } do
+							h.ok(rects[n].x + rects[n].w <= rightMin - 8 + 1e-6, n .. " column beside the right column")
 							h.ok(rects[n].x > rects.laneA.x + rects.laneA.w - 1e-6, n .. " right of the lanes")
 						end
-						h.ok(rects.item.y < rects.gear.y and rects.gear.y <= rects.help.y, "item over gear, help under or (short screens) left of the gear")
+						local it = rects.item
+						if it.x < vp[1] / 2 then
+							h.ok(it.x + it.w <= rects.laneA.x + 1e-6 and it.x + it.w <= rects.laneB.x + 1e-6, "item box left of the lanes")
+							h.ok(it.x >= nav.x + nav.w, "item box right of the nav")
+						else
+							h.ok(it.x + it.w <= rightMin - 8 + 1e-6 and it.x > rects.laneA.x + rects.laneA.w - 1e-6, "item at the top of the column")
+							h.ok(rects.item.y < rects.gear.y, "item over gear")
+						end
+						if kind == "desktop" and vp[2] >= 600 then
+							h.ok(rects.position.y > vp[2] / 2 and rects.position.x >= 0.70 * vp[1], "desktop: hero position bottom-right, right of the road band")
+						end
+						h.ok(rects.gear.y <= rects.help.y, "help under or (short screens) left of the gear")
 						local col = rects.leftColumn
 						h.ok(R.contains({ x = col.x, y = col.y, w = col.w, h = col.h }, mm) or mm.y < col.y, "left column covers the minimap")
 						-- the speech-bubble guard reserves it

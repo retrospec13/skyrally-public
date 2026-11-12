@@ -17,4 +17,17 @@ return {
 	eruption_rumble = "rbxassetid://3149249837", -- Cannon_Explode, pitched down (same file as storm_thunder_3)
 	geyser_whoosh = "rbxassetid://12222095", -- Rocket whoosh 01.wav
 	sail_gate_chime = "rbxassetid://16480570986", -- Roblox_Pinball_Bumper_Low_Bells_02
+	-- UI overhaul (2026-10-29): panel-motion and event cues for client/UiSound (kinds in shared/UiSoundRules); the reward
+	-- notice reuses badge_chime above (Roblox GUI - Notification High).
+	rbx_ui_whoosh_1 = "rbxassetid://15675024286", -- Roblox_UI_Whoosh_01
+	rbx_ui_whoosh_2 = "rbxassetid://15675028888", -- Roblox_UI_Whoosh_02
+	rbx_ui_swipe = "rbxassetid://10128766965", -- RBLX UI Swipe (SFX)
+	rbx_ui_cute_pop = "rbxassetid://15675055424", -- Roblox_UI_Cute_Pop
+	rbx_ui_select = "rbxassetid://10128760939", -- RBLX UI Select 01 (SFX)
+	rbx_ui_bright_click = "rbxassetid://15675059323", -- Roblox_UI_Bright_Click
+	rbx_ui_notify_low = "rbxassetid://17208372272", -- Roblox GUI - Notification Low
+	rbx_ui_back = "rbxassetid://17208186900", -- Roblox GUI - Back
+	rbx_ui_negative = "rbxassetid://17208353912", -- Roblox GUI - Negative
+	rbx_ui_purchase = "rbxassetid://17208380755", -- Roblox GUI - Purchase
+	rbx_ui_hover = "rbxassetid://17208339919", -- Roblox GUI - Hover 01
 }

@@ -4,7 +4,7 @@
 --
 -- N64 FACT S5 (CONTENT "Racers and items"): five colours with fixed roles; picking up the colour already held
 -- upgrades it up to level three; a different colour replaces the held item. The per-level FORMS below that cite S5
--- (single/homing/ten-shot missile, slick/mine/bubble trap) come from that row. Every other NUMBER is OURS: N64 durations,
+-- (single/homing/ten-shot missile, slick/mine/third-form trap) come from that row. Every other NUMBER is OURS: N64 durations,
 -- speeds and damage are unmeasured (CONTENT), so these are launch defaults tuned in play under TEST_LIST_LAUNCH L07.
 --
 -- PodType mapping (attribute written by builder_dino4.luau and kit/Gameplay.buildItemPodSpawn):
@@ -30,13 +30,13 @@ local ItemRules = {}
 -- Items v4 (docs/design/ITEMS_V4.md): an item id is either a classic colour or one of the nine SPECIALS below. The field
 -- is still called `color` everywhere (ItemState, the ItemColor attribute, the remotes) so every reader keeps working;
 -- for a special the id doubles as its kind.
-export type Special = "rocket_rush" | "golden_wings" | "orbit_missiles" | "storm_bolt" | "boom_bomb" | "gift_box" | "frost_shot" | "coin_burst" | "bubble_guard"
+export type Special = "rocket_rush" | "golden_wings" | "orbit_missiles" | "storm_bolt" | "boom_bomb" | "gift_box" | "frost_shot" | "coin_burst" | "bubble_guard" | "ink_splat" | "item_steal" | "coin_pouch"
 export type Color = "red" | "blue" | "yellow" | "green" | "rainbow" | Special
-export type Kind = "missile" | "boost" | "shield" | "trap" | "magnet" | Special
+export type Kind = "missile" | "boost" | "shield" | "horn" | "trap" | "magnet" | Special
 export type PodClass = "item" | "speed" | "air" | "unknown"
 export type PickupOutcome = "new" | "upgrade" | "capped" | "replace"
-export type RollBand = "lead" | "front" | "middle" | "back"
-export type TrapForm = "slick" | "mine" | "bubble"
+export type RollBand = "lead" | "front" | "middle" | "back" | "far"
+export type TrapForm = "slick" | "mine" | "crate"
 
 -- level is 0 exactly when color is nil. lastHitBy (REMARKABLE item 18, "getting even"): the racer id whose item last hit
 -- this racer while that grudge is still open (ItemService fills it from its grudge book; pickup/use never set it).
@@ -65,6 +65,7 @@ export type MissileParams = {
 export type BoostParams = {
 	seconds: number,
 	speed: number, -- studs/s target speed while the boost lasts
+	charges: number?, -- v38: presses one held boost gives at this level
 }
 
 export type ShieldParams = {
@@ -108,7 +109,10 @@ local COLORS: { Color } = { "red", "blue", "yellow", "green", "rainbow" }
 local KIND_OF: { [Color]: Kind } = {
 	red = "missile",
 	blue = "boost",
-	yellow = "shield",
+	-- v38 (owner 2026-11-10: "I don't like the shields and bubbles those are not fun interactions"): yellow is the HORN, a
+	-- timed shockwave that destroys the shots and traps about to reach you and spins racers in its ring. The ShieldParams
+	-- table stays for the code paths that read it; no item grants a shield any more.
+	yellow = "horn",
 	green = "trap",
 	rainbow = "magnet",
 }
@@ -123,6 +127,10 @@ local SPECIALS: { Color } = {
 	"frost_shot",
 	"coin_burst",
 	"bubble_guard",
+	-- v38 (owner: "not every item needs to be some missile thing"): three new verbs.
+	"ink_splat", -- everyone ahead gets ink on the screen; a boost clears it
+	"item_steal", -- take the held item of a racer ahead
+	"coin_pouch", -- a handful of coins at once (top speed) plus a little kick
 }
 for _, id in SPECIALS do
 	(KIND_OF :: any)[id] = id
@@ -155,6 +163,20 @@ ItemRules.ALL_ITEMS = ALL_ITEMS
 function ItemRules.isSpecial(id: any): boolean
 	return type(id) == "string" and table.find(SPECIALS, id :: any) ~= nil
 end
+
+-- v38: items out of play (owner 2026-11-10: passive shields/bubbles are not fun; two straight status shots made the
+-- roster "all missiles"). Kept in the tables like the magnet (nothing deleted): no roll, rotation, gift or bot hands them
+-- out. Their effect code still runs if a stale state ever fires one.
+ItemRules.RETIRED = table.freeze({ frost_shot = true, coin_burst = true, bubble_guard = true }) :: { [string]: boolean }
+local LIVE_SPECIALS: { Color } = {}
+for _, id in SPECIALS do
+	if not ItemRules.RETIRED[id] then
+		table.insert(LIVE_SPECIALS, id)
+	end
+end
+table.freeze(LIVE_SPECIALS)
+-- The specials play can hand out (the per-race rotation draws from these).
+ItemRules.LIVE_SPECIALS = LIVE_SPECIALS
 
 -- Magnet retired from play (owner 2026-10-20: "And I thought we were getting rid of the magnet??"). Hidden by config,
 -- never deleted: no roll table hands it out (MYSTERY_WEIGHTS rainbow = 0), the HUD roulette and the cube ghosts never
@@ -192,20 +214,22 @@ ItemRules.POD_COLOR = POD_COLOR
 -- lifetime: an unlocked shot's life; a locked one may live MissileRules.TUNING.lockedLifetime.
 local MISSILE: { MissileParams } = table.freeze({
 	-- S5 "single": one missile. OURS numbers; speed outruns an overcharged plane.
-	table.freeze({ count = 1, homing = true, freeHoming = false, speed = 260, turnRateDeg = 90, lifetime = 3.0, burstInterval = 0, stunSeconds = 1.2 }),
+	table.freeze({ count = 1, homing = true, freeHoming = false, speed = 320, turnRateDeg = 90, lifetime = 3.0, burstInterval = 0, stunSeconds = 1.5 }),
 	-- S5 "homing": one guided missile, faster across lanes. OURS numbers.
-	table.freeze({ count = 1, homing = true, freeHoming = true, speed = 260, turnRateDeg = 120, lifetime = 4.0, burstInterval = 0, stunSeconds = 1.2 }),
+	table.freeze({ count = 1, homing = true, freeHoming = true, speed = 320, turnRateDeg = 120, lifetime = 4.0, burstInterval = 0, stunSeconds = 1.5 }),
 	-- S5 "ten-shot": ten missiles as a burst (N64 firing cadence is unmeasured); each locks at its own launch, going on
 	-- to the next racer ahead once its first target is spinning (MissileRules.pickTarget).
-	table.freeze({ count = 10, homing = true, freeHoming = false, speed = 260, turnRateDeg = 90, lifetime = 3.0, burstInterval = 0.15, stunSeconds = 1.2 }),
+	table.freeze({ count = 10, homing = true, freeHoming = false, speed = 320, turnRateDeg = 90, lifetime = 3.0, burstInterval = 0.15, stunSeconds = 1.5 }),
 })
 
 -- S5 "progressively stronger". OURS: level one equals a ring boost, level three equals an overcharge, so an item never
 -- out-boosts the skill route.
+-- v38 (Mario Kart triple boost): the boost is charged, one boost per press, `charges` of them by level (a cube raises
+-- the level and adds a charge, DKR style). Each charge is a ring boost; a little hotter at higher levels.
 local BOOST: { BoostParams } = table.freeze({
-	table.freeze({ seconds = 1.8, speed = 165 }),
-	table.freeze({ seconds = 2.2, speed = 190 }),
-	table.freeze({ seconds = 2.6, speed = 210 }),
+	table.freeze({ seconds = 1.8, speed = 165, charges = 1 }),
+	table.freeze({ seconds = 1.8, speed = 175, charges = 2 }),
+	table.freeze({ seconds = 1.8, speed = 185, charges = 3 }),
 })
 
 -- S5 "progressively longer". OURS seconds.
@@ -215,12 +239,22 @@ local SHIELD: { ShieldParams } = table.freeze({
 	table.freeze({ seconds = 8.0 }),
 })
 
--- S5 forms slick, mine, bubble by level. OURS counts, lifetimes and stun.
+-- S5 forms slick, mine and a third form by level. OURS counts, lifetimes and stun. v39 (owner 2026-11-10: "I don't like
+-- the shields and bubbles"): the level-three form is a spiked TNT crate (block-built, ItemEffects makeTrap), not a
+-- bubble; its hit also pops the victim's car into a short hop (TRAP_KNOCK_VY) on top of the spin-out.
 local TRAP: { TrapParams } = table.freeze({
 	table.freeze({ count = 1, form = "slick" :: TrapForm, lifetime = 15, stunSeconds = 1.0 }),
 	table.freeze({ count = 1, form = "mine" :: TrapForm, lifetime = 20, stunSeconds = 1.5 }),
-	table.freeze({ count = 1, form = "bubble" :: TrapForm, lifetime = 20, stunSeconds = 2.0 }),
+	table.freeze({ count = 1, form = "crate" :: TrapForm, lifetime = 20, stunSeconds = 2.0 }),
 })
+
+-- v39: the upward kick (studs/s, the car's own gravity is CarConfig.GRAVITY 140) a trap form adds to its victim's car on
+-- a hit: 40 is a ~5.7 stud pop and ~0.57 s of air on flat road. Only the crate kicks; the client applies it (visual
+-- feel, its own physics), the server already decided the hit and the stun.
+ItemRules.TRAP_KNOCK_VY = table.freeze({ crate = 40 }) :: { [string]: number }
+function ItemRules.trapKnockVy(form: any): number
+	return if type(form) == "string" then ItemRules.TRAP_KNOCK_VY[form] or 0 else 0
+end
 
 -- S5 "stronger levels". OURS (magnet v2, owner 2026-10-20: "it should just take the player to the closest person"):
 -- longer, harder pull with a longer reach per level. Each range is about pull x seconds, so a target holding the same
@@ -231,9 +265,18 @@ local MAGNET: { MagnetParams } = table.freeze({
 	table.freeze({ seconds = 3.5, pull = 85, range = 300 }),
 })
 
+-- v38 HORN (yellow): radius: racers inside spin `spin` s; clear: shots, traps, bombs inside are destroyed, and a Storm
+-- Bolt over the holder is broken when the horn sounds inside its warning (the timed answer to the first-place threat).
+local HORN: { { [string]: number } } = table.freeze({
+	table.freeze({ radius = 18, spin = 1.0, clear = 30 }),
+	table.freeze({ radius = 24, spin = 1.2, clear = 38 }),
+	table.freeze({ radius = 30, spin = 1.4, clear = 46 }),
+}) :: any
+
 ItemRules.PARAMS = table.freeze({
 	missile = MISSILE,
 	boost = BOOST,
+	horn = HORN,
 	shield = SHIELD,
 	trap = TRAP,
 	magnet = MAGNET,
@@ -256,15 +299,17 @@ ItemRules.SPECIAL = table.freeze({
 	-- Comeback self buff: autopilot down the racing line (client pure pursuit, the AutoPilot follower), invulnerable,
 	-- traps ignored. shove: racers in the way spin briefly. freeSteer: the last seconds hand the wheel back.
 	rocket_rush = frozenLevels({
-		{ seconds = 2.5, speed = 180, shove = false, shoveSpin = 0, freeSteer = 0 },
-		{ seconds = 4.0, speed = 195, shove = true, shoveSpin = 0.6, freeSteer = 0 },
-		{ seconds = 5.0, speed = 210, shove = true, shoveSpin = 0.6, freeSteer = 1.0 },
+		-- v37 (owner: specials "boring as all get out"): a real comet, longer and faster than any boost.
+		{ seconds = 3.5, speed = 200, shove = true, shoveSpin = 0.8, freeSteer = 0 },
+		{ seconds = 4.5, speed = 215, shove = true, shoveSpin = 1.0, freeSteer = 0 },
+		{ seconds = 5.5, speed = 230, shove = true, shoveSpin = 1.0, freeSteer = 1.0 },
 	}),
 	-- Power fantasy: invulnerable, a little faster, contact spins a rival. coinTrail: each ram drops a coin.
 	golden_wings = frozenLevels({
-		{ seconds = 4.0, factor = 1.10, spin = 1.0, coinTrail = false },
-		{ seconds = 7.0, factor = 1.15, spin = 1.2, coinTrail = false },
-		{ seconds = 7.0, factor = 1.15, spin = 1.2, coinTrail = true },
+		-- v37: "a little faster" was not felt; a fifth faster, longer, harder rams.
+		{ seconds = 5.0, factor = 1.20, spin = 1.2, coinTrail = false },
+		{ seconds = 7.0, factor = 1.25, spin = 1.4, coinTrail = false },
+		{ seconds = 8.0, factor = 1.30, spin = 1.5, coinTrail = true },
 	}),
 	-- Defensive ring, then fire: each orbiter blocks one hit while held; Use fires one homing shot (CHARGES).
 	orbit_missiles = frozenLevels({
@@ -276,16 +321,18 @@ ItemRules.SPECIAL = table.freeze({
 	-- shield, an orbiter, a bubble or a plane's barrel roll inside the warning beats it. splash: racers this near the
 	-- leader are slowed splashSlow s. chain: a blocked bolt jumps to the next racer (with its own warning).
 	storm_bolt = frozenLevels({
-		{ travel = 4.0, warn = 2.0, stun = 1.6, splash = 0, splashSlow = 0, chain = false },
-		{ travel = 4.0, warn = 2.0, stun = 1.6, splash = 20, splashSlow = 0.8, chain = false },
-		{ travel = 4.0, warn = 2.0, stun = 1.6, splash = 20, splashSlow = 0.8, chain = true },
+		-- v37: the race's biggest moment lands like one (longer stun, a wider splash).
+		{ travel = 4.0, warn = 2.0, stun = 2.2, splash = 0, splashSlow = 0, chain = false },
+		{ travel = 4.0, warn = 2.0, stun = 2.2, splash = 30, splashSlow = 1.2, chain = false },
+		{ travel = 4.0, warn = 2.0, stun = 2.2, splash = 30, splashSlow = 1.2, chain = true },
 	}),
 	-- Area blast: lobbed `throw` studs ahead, lands on the ground below (or hangs as an air mine), blows after `fuse`.
 	-- patch: seconds a slow patch stays where it blew (level three).
 	boom_bomb = frozenLevels({
-		{ throw = 60, fuse = 2.0, radius = 12, stun = 1.0, patch = 0 },
-		{ throw = 60, fuse = 2.0, radius = 18, stun = 1.3, patch = 0 },
-		{ throw = 60, fuse = 2.0, radius = 24, stun = 1.6, patch = 4 },
+		-- v37: a 12-stud blast in a 68-stud corridor almost never caught anyone; bigger and harder.
+		{ throw = 60, fuse = 1.6, radius = 20, stun = 1.4, patch = 0 },
+		{ throw = 60, fuse = 1.6, radius = 26, stun = 1.7, patch = 0 },
+		{ throw = 60, fuse = 1.6, radius = 32, stun = 2.0, patch = 4 },
 	}),
 	-- Cluster: `gifts` lesser items fired in GIFT_SEQUENCE order, one per Use (CHARGES).
 	gift_box = frozenLevels({
@@ -296,16 +343,19 @@ ItemRules.SPECIAL = table.freeze({
 	-- Status shot: straight, unguided, dodgeable. slow: speed factor for slowSeconds; freeze: a short stop first
 	-- (a spin-out); patch: seconds an ice patch stays on the line where it hit (level three).
 	frost_shot = frozenLevels({
-		{ speed = 200, lifetime = 2.5, slow = 0.6, slowSeconds = 2.0, freeze = 0, patch = 0 },
-		{ speed = 200, lifetime = 2.5, slow = 0.6, slowSeconds = 2.0, freeze = 1.0, patch = 0 },
-		{ speed = 200, lifetime = 2.5, slow = 0.6, slowSeconds = 2.0, freeze = 1.0, patch = 8 },
+		-- v37: at 200 studs/s it could never catch a boosted plane (210) and flew blind in the shooter's lane; now it
+		-- flies 300 and locks the racer ahead like a missile (statusShot), and every level freezes first.
+		{ speed = 300, lifetime = 3.0, slow = 0.6, slowSeconds = 2.5, freeze = 0.8, patch = 0 },
+		{ speed = 300, lifetime = 3.0, slow = 0.6, slowSeconds = 2.5, freeze = 1.0, patch = 0 },
+		{ speed = 300, lifetime = 3.0, slow = 0.6, slowSeconds = 2.5, freeze = 1.2, patch = 8 },
 	}),
 	-- Risk-reward: a straight shot that slows the racer it hits and spills `coins` around them; anyone may scoop them
 	-- (COIN). magnet: seconds the shooter scoops from COIN.magnetRadius instead (level three).
 	coin_burst = frozenLevels({
-		{ speed = 220, lifetime = 2.5, slow = 0.75, slowSeconds = 1.0, coins = 6, magnet = 0 },
-		{ speed = 220, lifetime = 2.5, slow = 0.75, slowSeconds = 1.0, coins = 10, magnet = 0 },
-		{ speed = 220, lifetime = 2.5, slow = 0.75, slowSeconds = 1.0, coins = 15, magnet = 2.0 },
+		-- v37: same as Frost Shot: fast enough to land, locked on the racer ahead, a bigger fountain.
+		{ speed = 300, lifetime = 3.0, slow = 0.7, slowSeconds = 1.5, coins = 8, magnet = 0 },
+		{ speed = 300, lifetime = 3.0, slow = 0.7, slowSeconds = 1.5, coins = 12, magnet = 0 },
+		{ speed = 300, lifetime = 3.0, slow = 0.7, slowSeconds = 1.5, coins = 16, magnet = 2.0 },
 	}),
 	-- Skill defence: a bubble for `seconds`; inside the first `window` s a missile, frost or coin shot is sent back at
 	-- whoever fired it (up to `reflects`); after it, a plain block. bolts: a storm bolt is reflected too (to its
@@ -315,16 +365,39 @@ ItemRules.SPECIAL = table.freeze({
 		{ seconds = 3.0, window = 1.0, reflects = 2, bolts = false },
 		{ seconds = 3.5, window = 1.3, reflects = 9, bolts = true },
 	}),
+	-- v38 Ink Splat: every racer AHEAD of the user gets ink over the screen for `seconds` (any boost wipes it at once);
+	-- a bot ahead drives a little slow and loose for botSeconds. Nobody behind is touched.
+	ink_splat = frozenLevels({
+		{ seconds = 3.5, botSeconds = 2.0, botSlow = 0.88 },
+		{ seconds = 4.5, botSeconds = 2.5, botSlow = 0.86 },
+		{ seconds = 5.5, botSeconds = 3.0, botSlow = 0.84 },
+	}),
+	-- v38 Item Steal: take the held item of a racer ahead (level 1: the nearest one ahead holding something within
+	-- `reach` course studs; level 2+: anyone ahead, the furthest ahead first). Nobody to rob: `fallback` coins.
+	item_steal = frozenLevels({
+		{ reach = 600, furthest = false, fallback = 3 },
+		{ reach = 1e6, furthest = true, fallback = 4 },
+		{ reach = 1e6, furthest = true, fallback = 5 },
+	}),
+	-- v38 Coin Pouch: `coins` race coins at once (the same coins the Speed pods give, capped as they are) and a short kick.
+	coin_pouch = frozenLevels({
+		{ coins = 3, kick = 0.8 },
+		{ coins = 5, kick = 1.0 },
+		{ coins = 7, kick = 1.2 },
+	}),
 }) :: { [string]: { { [string]: any } } }
 
 -- Charged items: how many presses one held item gives at a level. Each press fires one; picking up a cube while
 -- holding adds the next level's extra charge. Everything else is spent whole on one press.
 local CHARGED: { [string]: string } = { orbit_missiles = "orbiters", gift_box = "gifts" }
 function ItemRules.isCharged(id: any): boolean
-	return type(id) == "string" and CHARGED[id] ~= nil
+	return type(id) == "string" and (CHARGED[id] ~= nil or id == "blue")
 end
 
 function ItemRules.chargesFor(id: any, level: number): number?
+	if id == "blue" then
+		return BOOST[math.clamp(math.floor(level), 1, ItemRules.MAX_LEVEL)].charges
+	end
 	local field = if type(id) == "string" then CHARGED[id] else nil
 	if not field then
 		return nil
@@ -339,7 +412,7 @@ ItemRules.GIFT_SEQUENCE = (table.freeze({ "red", "blue", "yellow", "green", "gol
 ItemRules.GIFT_MINI = table.freeze({
 	red = MISSILE[1],
 	blue = table.freeze({ seconds = 1.2, speed = 150 }),
-	yellow = table.freeze({ seconds = 2.0 }),
+	yellow = table.freeze({ radius = 14, spin = 0.8, clear = 24 }), -- v38: a small horn
 	green = TRAP[1],
 	golden_wings = table.freeze({ seconds = 2.5, factor = 1.10, spin = 0.8, coinTrail = false }),
 }) :: { [string]: any }
@@ -352,11 +425,11 @@ function ItemRules.orbitShot(level: number): MissileParams
 		count = 1,
 		homing = true,
 		freeHoming = lv >= 3,
-		speed = 260,
+		speed = 320,
 		turnRateDeg = o.turnRateDeg,
 		lifetime = o.lockSeconds,
 		burstInterval = 0,
-		stunSeconds = 1.2,
+		stunSeconds = 1.5,
 	}
 end
 
@@ -366,10 +439,10 @@ function ItemRules.statusShot(id: string, level: number): MissileParams
 	local p = ItemRules.SPECIAL[id][lv]
 	return {
 		count = 1,
-		homing = false,
+		homing = true, -- v37: locks the racer ahead (it flew blind in the shooter's lane and almost never landed)
 		freeHoming = false,
 		speed = p.speed,
-		turnRateDeg = 0,
+		turnRateDeg = 60, -- a gentler lane slide than a missile's (missileLateralRate x 60/90)
 		lifetime = p.lifetime,
 		burstInterval = 0,
 		stunSeconds = if type(p.freeze) == "number" then p.freeze else 0,
@@ -409,6 +482,10 @@ ItemRules.COIN = table.freeze({
 	maxSeconds = 2.5,
 	maxCoins = 60, -- in the world at once (oldest go first)
 })
+
+-- v38 (Mario Kart 8): race coins (the "Speed" pods, PlaneConfig/CarConfig MAX_SPEED_PICKUPS, SPEED_PICKUP_BONUS top
+-- speed each) a racer drops when an item hits it. Client-side: the coin bonus is the racer's own top speed.
+ItemRules.COIN_HIT_LOSS = 3
 
 -- Where the n coins of a burst land around `center` (flat offsets, two rings, spread studs at most). Pure.
 function ItemRules.coinOffsets(n: number): { { number } }
@@ -496,13 +573,16 @@ ItemRules.COLOR_RGB = table.freeze({
 	frost_shot = table.freeze({ 160, 232, 255 }),
 	coin_burst = table.freeze({ 212, 164, 44 }),
 	bubble_guard = table.freeze({ 70, 228, 200 }),
+	ink_splat = table.freeze({ 70, 40, 120 }),
+	item_steal = table.freeze({ 150, 160, 190 }),
+	coin_pouch = table.freeze({ 255, 206, 60 }),
 }) :: { [string]: { number } }
 
 -- Short HUD caption per colour (readable at 740x360).
 ItemRules.DISPLAY_NAME = table.freeze({
 	red = "MISSILE",
 	blue = "BOOST",
-	yellow = "SHIELD",
+	yellow = "HORN",
 	green = "TRAP",
 	rainbow = "MAGNET",
 	rocket_rush = "ROCKET RUSH",
@@ -514,6 +594,9 @@ ItemRules.DISPLAY_NAME = table.freeze({
 	frost_shot = "FROST SHOT",
 	coin_burst = "COIN BURST",
 	bubble_guard = "BUBBLE GUARD",
+	ink_splat = "INK SPLAT",
+	item_steal = "ITEM STEAL",
+	coin_pouch = "COIN POUCH",
 }) :: { [string]: string }
 
 -- Items v4 HUD icons, drawn in engine with no new upload (docs/design/ITEMS_V4.md "icon art pending"): `tex` is an
@@ -523,7 +606,7 @@ export type Icon = { tex: string, glyph: string }
 ItemRules.ICON = table.freeze({
 	red = table.freeze({ tex = "missile", glyph = "" }),
 	blue = table.freeze({ tex = "boost", glyph = "" }),
-	yellow = table.freeze({ tex = "shield", glyph = "" }),
+	yellow = table.freeze({ tex = "shield", glyph = "))" }), -- v38 horn: placeholder until the icon lane redraws it
 	green = table.freeze({ tex = "trap", glyph = "" }),
 	rainbow = table.freeze({ tex = "magnet", glyph = "" }),
 	rocket_rush = table.freeze({ tex = "boost", glyph = ">>" }),
@@ -535,7 +618,20 @@ ItemRules.ICON = table.freeze({
 	frost_shot = table.freeze({ tex = "missile", glyph = "*" }),
 	coin_burst = table.freeze({ tex = "missile", glyph = "C" }),
 	bubble_guard = table.freeze({ tex = "shield_hex", glyph = "R" }),
+	-- v38: placeholder icons (existing textures + a glyph) until the icon lane draws them.
+	ink_splat = table.freeze({ tex = "", glyph = "INK" }),
+	item_steal = table.freeze({ tex = "", glyph = "?" }),
+	coin_pouch = table.freeze({ tex = "", glyph = "$" }),
 }) :: { [string]: Icon }
+
+-- v38: UiV2Icons keys standing in for an item whose own item_<id> art does not exist yet (or no longer fits: the yellow
+-- art is a shield). The icon lane replaces these; until then every HUD reads them through iconKey.
+ItemRules.ICON_KEY = table.freeze({
+}) :: { [string]: string }
+
+function ItemRules.iconKey(id: string): string
+	return ItemRules.ICON_KEY[id] or ("item_" .. id)
+end
 
 function ItemRules.iconOf(id: any): Icon?
 	if type(id) ~= "string" then
@@ -548,6 +644,7 @@ local COLOR_OF_KIND: { [Kind]: Color } = table.freeze({
 	missile = "red" :: Color,
 	boost = "blue" :: Color,
 	shield = "yellow" :: Color,
+	horn = "yellow" :: Color,
 	trap = "green" :: Color,
 	magnet = "rainbow" :: Color,
 	rocket_rush = "rocket_rush" :: Color,
@@ -559,6 +656,9 @@ local COLOR_OF_KIND: { [Kind]: Color } = table.freeze({
 	frost_shot = "frost_shot" :: Color,
 	coin_burst = "coin_burst" :: Color,
 	bubble_guard = "bubble_guard" :: Color,
+	ink_splat = "ink_splat" :: Color,
+	item_steal = "item_steal" :: Color,
+	coin_pouch = "coin_pouch" :: Color,
 })
 ItemRules.COLOR_OF_KIND = COLOR_OF_KIND
 
@@ -567,6 +667,8 @@ ItemRules.COLOR_OF_KIND = COLOR_OF_KIND
 ItemRules.TUNING = table.freeze({
 	missileHitRadius = 9, -- plane hull is about 16 wide; a hit inside the wingspan reads as a hit at phone size
 	missileLaunchAhead = 10, -- spawn in front of the nose so the shooter never sees it pass through the cockpit
+	missileFacingMinDot = 0.7, -- v37: a race shot from a vehicle facing further than ~45 deg off the course leaves along it
+	missileLaunchLead = 0.12, -- v37: s of the player's own velocity added to the spawn (server hull lag; see ItemEffects)
 	missileBlendSeconds = 0.35, -- launch line -> course line blend, so a shot from an alternate route stays readable
 	missilePursuitRange = 70, -- a homing missile flies the course until this close, then chases the hull directly
 	missileLateralRate = 70, -- studs/s a homing missile slides across the corridor per 90 deg/s of turn rate
@@ -747,6 +849,8 @@ function ItemRules.effectFor(color: Color, level: number): Effect
 		effect.missile = MISSILE[lv]
 	elseif kind == "boost" then
 		effect.boost = BOOST[lv]
+	elseif kind == "horn" then
+		effect.special = HORN[lv] -- v38: routed as a special (ItemEffects hooks.special "horn")
 	elseif kind == "shield" then
 		effect.shield = SHIELD[lv]
 	elseif kind == "trap" then
@@ -767,8 +871,6 @@ function ItemRules.giftEffect(index: number): Effect
 		effect.missile = mini
 	elseif id == "blue" then
 		effect.boost = mini
-	elseif id == "yellow" then
-		effect.shield = mini
 	elseif id == "green" then
 		effect.trap = mini
 	else
@@ -841,7 +943,27 @@ ItemRules.MYSTERY_WEIGHTS = table.freeze({
 	front = table.freeze({ red = 32, blue = 23, yellow = 25, green = 20, rainbow = 0 }),
 	middle = table.freeze({ red = 36, blue = 32, yellow = 16, green = 16, rainbow = 0 }),
 	back = table.freeze({ red = 38, blue = 52, yellow = 5, green = 5, rainbow = 0 }),
+	-- v38: a racer far off the leader's pace (CATCHUP.farSeconds) whatever its place: boosts first, then shots.
+	far = table.freeze({ red = 30, blue = 62, yellow = 4, green = 4, rainbow = 0 }),
 }) :: { [RollBand]: { [Color]: number } }
+
+-- v38 (Mario Kart 8 rolls by distance to the leader, not only by place): the gap to the leader, in seconds at
+-- `cruise`, can push a racer's band back. A P2 a long way behind a runaway leader rolls catch-up items; a pack that is
+-- nose to tail rolls by place as before. The leader always rolls from "lead".
+ItemRules.CATCHUP = table.freeze({
+	cruise = 130, -- studs/s that convert a course gap to seconds (about a racer's cruise on cars and planes)
+	middleSeconds = 2.0, -- at least the middle band this far behind the leader
+	backSeconds = 4.0, -- at least the back band
+	farSeconds = 7.0, -- the far band: the strongest catch-up table
+})
+
+-- Seconds behind the leader for a course gap in studs (nil / negative / NaN: 0).
+function ItemRules.gapSeconds(gapStuds: number?): number
+	if type(gapStuds) ~= "number" or gapStuds ~= gapStuds or gapStuds <= 0 then
+		return 0
+	end
+	return math.min(gapStuds, 1e7) / ItemRules.CATCHUP.cruise
+end
 
 ------------------------------------------------------------------------------------------------------------------------
 -- Items v4: per-race item ROTATION (owner 2026-10-20: "maybe a random selection of rotated ones per match"). Each race
@@ -853,7 +975,7 @@ ItemRules.MYSTERY_WEIGHTS = table.freeze({
 
 ItemRules.ROTATION = table.freeze({
 	core = table.freeze({ "red", "blue", "yellow", "green" }) :: { string },
-	specials = SPECIALS,
+	specials = LIVE_SPECIALS, -- v38: retired items never rotate in
 	size = 4, -- specials per race
 	poolAttribute = "ItemPool", -- the race's pool for clients (RaceAttr, comma separated ids)
 	announceSeconds = 4.0, -- the countdown toast "This race: ..."
@@ -863,10 +985,13 @@ ItemRules.ROTATION = table.freeze({
 -- weighting in the specs' spirit: Rocket Rush only for the back of the pack, Golden Wings mid/back (rare up front),
 -- Storm Bolt never for the leader, Bubble Guard and Orbit Missiles lean to the front (defence), the rest even.
 ItemRules.SPECIAL_WEIGHTS = table.freeze({
-	lead = table.freeze({ rocket_rush = 0, golden_wings = 0, orbit_missiles = 14, storm_bolt = 0, boom_bomb = 12, gift_box = 10, frost_shot = 10, coin_burst = 10, bubble_guard = 16 }),
-	front = table.freeze({ rocket_rush = 0, golden_wings = 4, orbit_missiles = 14, storm_bolt = 4, boom_bomb = 12, gift_box = 10, frost_shot = 12, coin_burst = 12, bubble_guard = 12 }),
-	middle = table.freeze({ rocket_rush = 0, golden_wings = 10, orbit_missiles = 12, storm_bolt = 8, boom_bomb = 12, gift_box = 12, frost_shot = 12, coin_burst = 10, bubble_guard = 8 }),
-	back = table.freeze({ rocket_rush = 24, golden_wings = 16, orbit_missiles = 10, storm_bolt = 12, boom_bomb = 8, gift_box = 12, frost_shot = 10, coin_burst = 8, bubble_guard = 4 }),
+	-- v38: the retired items (RETIRED) weigh 0; Ink Splat never for the leader (nobody ahead), Coin Pouch leans front
+	-- (the leader's consolation, MK style), Item Steal mid-pack.
+	lead = table.freeze({ rocket_rush = 0, golden_wings = 0, orbit_missiles = 14, storm_bolt = 0, boom_bomb = 12, gift_box = 10, frost_shot = 0, coin_burst = 0, bubble_guard = 0, ink_splat = 0, item_steal = 6, coin_pouch = 18 }),
+	front = table.freeze({ rocket_rush = 0, golden_wings = 4, orbit_missiles = 14, storm_bolt = 4, boom_bomb = 12, gift_box = 10, frost_shot = 0, coin_burst = 0, bubble_guard = 0, ink_splat = 8, item_steal = 10, coin_pouch = 12 }),
+	middle = table.freeze({ rocket_rush = 0, golden_wings = 10, orbit_missiles = 12, storm_bolt = 8, boom_bomb = 12, gift_box = 12, frost_shot = 0, coin_burst = 0, bubble_guard = 0, ink_splat = 12, item_steal = 12, coin_pouch = 6 }),
+	back = table.freeze({ rocket_rush = 24, golden_wings = 16, orbit_missiles = 10, storm_bolt = 12, boom_bomb = 8, gift_box = 12, frost_shot = 0, coin_burst = 0, bubble_guard = 0, ink_splat = 12, item_steal = 10, coin_pouch = 2 }),
+	far = table.freeze({ rocket_rush = 36, golden_wings = 22, orbit_missiles = 6, storm_bolt = 16, boom_bomb = 6, gift_box = 8, frost_shot = 0, coin_burst = 0, bubble_guard = 0, ink_splat = 10, item_steal = 6, coin_pouch = 0 }),
 }) :: { [RollBand]: { [string]: number } }
 
 -- Bots: how long to wait before asking ItemService to use the held item again after a refused use. A rate limited use
@@ -891,7 +1016,7 @@ end
 -- A deterministic shuffle of SPECIALS for a seed (Fisher-Yates over a small LCG; the same seed always gives the same
 -- order on every machine).
 function ItemRules.rotationOrder(seed: number): { Color }
-	local order = table.clone(SPECIALS)
+	local order = table.clone(LIVE_SPECIALS)
 	local x = math.floor(math.abs(seed)) % 2147483647
 	if x == 0 then
 		x = 1
@@ -936,7 +1061,7 @@ function ItemRules.parsePool(text: any): { string }
 	end
 	local out: { string } = {}
 	for _, id in ALL_ITEMS do
-		if seen[id] and (id ~= "rainbow" or ItemRules.MAGNET_ENABLED) then
+		if seen[id] and (id ~= "rainbow" or ItemRules.MAGNET_ENABLED) and not ItemRules.RETIRED[id] then
 			table.insert(out, id)
 		end
 	end
@@ -954,6 +1079,9 @@ ItemRules.SHORT_NAME = table.freeze({
 	frost_shot = "Frost",
 	coin_burst = "Coins",
 	bubble_guard = "Bubble",
+	ink_splat = "Ink",
+	item_steal = "Steal",
+	coin_pouch = "Coins",
 }) :: { [string]: string }
 
 -- The specials of a pool, for the "This race:" toast ("Rocket, Orbit, Frost, Bubble"); "" when the pool is classic.
@@ -999,8 +1127,10 @@ function ItemRules.rollWeights(band: RollBand, pool: { string }?, blocked: { [st
 	return out
 end
 
--- 1 = leading. A field of one (time trial, a lone player) rolls from the middle band.
-function ItemRules.rollBand(rank: number, fieldSize: number): RollBand
+-- 1 = leading. A field of one (time trial, a lone player) rolls from the middle band. v38: gapStuds (optional, course
+-- studs behind the leader) can only push the band back (CATCHUP), never forward; the leader stays "lead".
+local BAND_ORDER: { [string]: number } = { lead = 0, front = 1, middle = 2, back = 3, far = 4 }
+function ItemRules.rollBand(rank: number, fieldSize: number, gapStuds: number?): RollBand
 	local n = math.max(1, math.floor(fieldSize))
 	local r = math.clamp(math.floor(rank), 1, n)
 	if n <= 1 then
@@ -1009,18 +1139,30 @@ function ItemRules.rollBand(rank: number, fieldSize: number): RollBand
 		return "lead"
 	end
 	local f = (r - 1) / (n - 1)
+	local band: RollBand = "back"
 	if f <= 1 / 3 then
-		return "front"
+		band = "front"
 	elseif f < 2 / 3 then
-		return "middle"
+		band = "middle"
 	end
-	return "back"
+	local secs = ItemRules.gapSeconds(gapStuds)
+	local C = ItemRules.CATCHUP
+	local byGap: RollBand? = if secs >= C.farSeconds
+		then "far"
+		elseif secs >= C.backSeconds then "back"
+		elseif secs >= C.middleSeconds then "middle"
+		else nil
+	if byGap and BAND_ORDER[byGap] > BAND_ORDER[band] then
+		band = byGap
+	end
+	return band
 end
 
 -- r in [0, 1) (the caller's random number, so the roll is deterministic under test). Walks ALL_ITEMS in order.
 -- Items v4: pool (the race's rotation; nil = the classic colours) and blocked (ids this roll may not give).
-function ItemRules.rollMystery(rank: number, fieldSize: number, r: number, pool: { string }?, blocked: { [string]: boolean }?): Color
-	local weights = ItemRules.rollWeights(ItemRules.rollBand(rank, fieldSize), pool, blocked)
+-- v38: gapStuds, the racer's course gap to the leader (rollBand).
+function ItemRules.rollMystery(rank: number, fieldSize: number, r: number, pool: { string }?, blocked: { [string]: boolean }?, gapStuds: number?): Color
+	local weights = ItemRules.rollWeights(ItemRules.rollBand(rank, fieldSize, gapStuds), pool, blocked)
 	local total = 0
 	for _, c in ALL_ITEMS do
 		total += weights[c] or 0
@@ -1084,6 +1226,21 @@ function ItemRules.rankIn(progress: number, all: { number }): (number, number)
 		end
 	end
 	return ahead + 1, math.max(1, #all)
+end
+
+-- v38: course studs between `progress` and the furthest racer still racing (finite progress) in `all`; 0 when
+-- `progress` leads that group or is not finite (a finished racer).
+function ItemRules.leaderGap(progress: number, all: { number }): number
+	if progress ~= progress or progress == math.huge then
+		return 0
+	end
+	local best = progress
+	for _, p in all do
+		if p ~= math.huge and p == p and p > best then
+			best = p
+		end
+	end
+	return best - progress
 end
 
 -- Cube centre height after the build raycast. groundY nil: nothing under it (an air pod over a void), unchanged.
@@ -1177,7 +1334,7 @@ end
 
 ------------------------------------------------------------------------------------------------------------------------
 -- REMARKABLE item 18: getting even. A grudge book per race: who last hit whom. Hitting back the racer who hit you
--- inside REVENGE_WINDOW is a REVENGE; answering that is a RE-REVENGE, and a feud keeps counting. Pure; ItemService owns
+-- inside REVENGE_WINDOW is a revenge (banner "EVEN"); answering that escalates the chain ("EVEN x2", ...). Pure; ItemService owns
 -- the live book.
 ------------------------------------------------------------------------------------------------------------------------
 
@@ -1219,7 +1376,7 @@ function ItemRules.recordHit(book: GrudgeBook, victim: string, attacker: string,
 	return kind, chain
 end
 
--- The GET EVEN! tag over the racer who hit you is a toast, not a marker: it pops in (back-out overshoot), holds, fades,
+-- The PAYBACK tag over the racer who hit you is a toast, not a marker: it pops in (back-out overshoot), holds, fades,
 -- and is gone (<= 1.8 s on screen), though the grudge itself stays open for REVENGE_WINDOW. A repeat hit by the same
 -- racer re-pops it at most once per repop seconds.
 ItemRules.NEMESIS_TOAST = table.freeze({ popIn = 0.15, hold = 1.2, fadeOut = 0.3, repop = 4 })
@@ -1244,14 +1401,13 @@ function ItemRules.nemesisRepop(sameRacer: boolean, sinceLastPop: number): boole
 	return not sameRacer or sinceLastPop >= ItemRules.NEMESIS_TOAST.repop
 end
 
--- Callout for the avenger.
+-- Banner word for the avenger: brief and informational (owner tone rule, v38-flow: no "REVENGE!" comic callouts).
+-- chain 1 = "EVEN", 2+ = "EVEN x2", "EVEN x3" ...; the banner reads "EVEN  NAME".
 function ItemRules.revengeLabel(chain: number): string
 	if chain <= 1 then
-		return "REVENGE!"
-	elseif chain == 2 then
-		return "RE-REVENGE!"
+		return "EVEN"
 	end
-	return string.format("FEUD x%d!", math.floor(chain))
+	return string.format("EVEN x%d", math.floor(chain))
 end
 
 -- A display name cut to fit the banner plank at phone size (never mid-way through a multi-byte character).
@@ -1478,14 +1634,15 @@ local ghostCache: { [string]: GhostSchedule } = {}
 -- What a cube can honestly hint for this racer: holding an item, a cube only upgrades it (that one colour); empty
 -- hands, the roll table of the racer's band (rank 1 = leading, of fieldSize). Cached; the result is frozen.
 -- Items v4: poolKey is the race's ItemPool text (nil: the classic table); the ghosts show only what the race can roll.
-function ItemRules.ghostFor(rank: number, fieldSize: number, heldColor: string?, poolKey: string?): GhostSchedule
+-- v38: gapStuds as in rollBand (the client reads its own LeaderGap attribute), so the ghosts stay honest.
+function ItemRules.ghostFor(rank: number, fieldSize: number, heldColor: string?, poolKey: string?, gapStuds: number?): GhostSchedule
 	local key: string
 	local weights: { [string]: number }
 	if heldColor ~= nil and KIND_OF[heldColor :: Color] ~= nil then
 		key = "held:" .. heldColor
 		weights = { [heldColor] = 1 }
 	else
-		local band = ItemRules.rollBand(rank, fieldSize)
+		local band = ItemRules.rollBand(rank, fieldSize, gapStuds)
 		if poolKey and poolKey ~= "" then
 			key = band .. "|" .. poolKey
 			weights = ItemRules.rollWeights(band :: any, ItemRules.parsePool(poolKey), nil)

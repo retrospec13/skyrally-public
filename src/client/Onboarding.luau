@@ -34,6 +34,7 @@ local Prof = require(Shared:WaitForChild("Prof")) -- MicroProfiler labels (perf 
 local OnboardingRules = require(Shared:WaitForChild("OnboardingRules"))
 local TrackInfo = require(Shared:WaitForChild("TrackInfo"))
 local UiSound = require(script.Parent:WaitForChild("UiSound"))
+local UiSkin = require(script.Parent:WaitForChild("UiSkin")) -- UI v2 theme: the guide card, "?" and "!"
 local HudMetrics = require(script.Parent:WaitForChild("HudMetrics"))
 
 local LocalPlayer = Players.LocalPlayer
@@ -58,6 +59,8 @@ local helpBtn: TextButton? = nil
 local card: Frame? = nil
 local cardTitle: TextLabel? = nil
 local cardBody: TextLabel? = nil
+local cardBand: Frame? = nil -- UI v2: the slanted gold title band (holds the icon and cardTitle)
+local cardIconHolder: Frame? = nil
 local cardKind = "" -- "goal" | "tip" | "help" | ""
 local cardShownAt = 0
 local cardToken = 0
@@ -193,8 +196,9 @@ local function cardRest(): (UDim2, number)
 	local lane = HudMetrics.rects().laneA
 	local want = if cardKind == "goal" then math.clamp(vp.X * 0.38, 230, 460) else math.clamp(vp.X * 0.31, 200, 380)
 	local width = math.min(want, lane.w)
-	-- v28 W1.26: race tips (LAP DONE, ITEM READY, drift) rest in the lower third, off the route; the goal and help cards stay up top.
-	local y = if cardKind == "tip" then math.floor(vp.Y * 0.7) else math.floor(lane.y)
+	-- v38-flow: every card rests at the top of lane A, above the horizon; the lower third is the kart (owner rule: nothing
+	-- over the kart; the old 70 % tip spot sat on the plane's tail at 1080p).
+	local y = math.floor(lane.y)
 	return UDim2.fromOffset(math.floor(lane.x + lane.w / 2), y), math.floor(width + 0.5)
 end
 
@@ -207,8 +211,11 @@ local function sizeCard()
 	local k = scaleOf(vp)
 	local pos, width = cardRest()
 	c.Size = UDim2.fromOffset(width, 0)
-	tt.TextSize = math.floor(15 * k)
-	bb.TextSize = math.floor(12.5 * k)
+	tt.TextSize = math.floor(17 * k)
+	bb.TextSize = math.max(12, math.floor(13.5 * k))
+	if cardBand then
+		cardBand.Size = UDim2.new(1, 0, 0, math.floor(tt.TextSize + 14))
+	end
 	if cardToken > 0 and c.Visible then
 		c.Position = pos
 	end
@@ -224,9 +231,8 @@ local function hideCard(kind: string?)
 	end
 	cardToken += 1
 	local my = cardToken
-	local wasTip = cardKind == "tip"
 	cardKind = ""
-	local out = TweenService:Create(c, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.In), { Position = UDim2.fromOffset(c.Position.X.Offset, c.Position.Y.Offset + (if wasTip then 80 else -c.AbsoluteSize.Y - 40)) })
+	local out = TweenService:Create(c, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.In), { Position = UDim2.fromOffset(c.Position.X.Offset, c.Position.Y.Offset - c.AbsoluteSize.Y - 40) })
 	out:Play()
 	out.Completed:Connect(function()
 		if cardToken == my then
@@ -256,9 +262,14 @@ local function showCard(kind: string, title: string, body: string, seconds: numb
 	cardShownAt = os.clock()
 	tt.Text = title
 	bb.Text = body
+	local holder = cardIconHolder
+	if holder then
+		holder:ClearAllChildren()
+		UiSkin.glyph(holder, if kind == "goal" then "flag" elseif kind == "help" then "help" else "star", { size = UDim2.fromScale(1, 1), zIndex = 4 })
+	end
 	sizeCard()
 	local pos = cardRest()
-	c.Position = UDim2.fromOffset(pos.X.Offset, pos.Y.Offset + (if kind == "tip" then 80 else -80))
+	c.Position = UDim2.fromOffset(pos.X.Offset, pos.Y.Offset - 80)
 	c.Visible = true
 	TweenService:Create(c, TweenInfo.new(0.28, Enum.EasingStyle.Back, Enum.EasingDirection.Out), { Position = pos }):Play()
 	UiSound.play("tab", nil, 0.5)
@@ -269,10 +280,215 @@ local function showCard(kind: string, title: string, body: string, seconds: numb
 	end)
 end
 
+
+------------------------------------------------------------------------------------------------------------------------
+-- v38-flow: the first-race controls strip. While the guide is on (a new player's first races) a short stack of key chips
+-- sits at the left edge, mid-height (clear of the kart, the minimap and the touch pad): [SHIFT] DRIFT, [F] ITEM, and on a
+-- car [SHIFT] IN AIR = TRICK. Each chip ticks green and slides away the first time the player does that thing; when all
+-- are done the strip is gone for the session. Words follow the input family (OnboardingRules.turnWord / fireWord).
+------------------------------------------------------------------------------------------------------------------------
+type Coach = { id: string, frame: Frame, done: boolean }
+local function podiumUp(): boolean
+	local pg = LocalPlayer:FindFirstChildOfClass("PlayerGui")
+	local g = pg and pg:FindFirstChild("SkyRallyPodium")
+	return g ~= nil and g:IsA("ScreenGui") and g.Enabled
+end
+local function raceStartedForCoach(): boolean
+	local go = RaceAttr.mine("RaceGoTime")
+	return type(go) == "number" and workspace:GetServerTimeNow() >= go
+end
+local coachFrame: Frame? = nil
+local coachRows: { Coach } = {}
+local coachDone: { [string]: boolean } = {}
+local coachFor = "" -- the race (track id .. family) the strip was built for
+
+local function coachIds(): { string }
+	local ids = { "drift" }
+	if RaceAttr.mine("RaceMode") ~= "timetrial" then
+		table.insert(ids, "item")
+	end
+	if vehicleKind() == "car" then
+		table.insert(ids, "trick")
+	end
+	return ids
+end
+
+local function coachWords(id: string): (string, string)
+	local fam: OnboardingRules.Family = family() :: any
+	local key: string = OnboardingRules.turnWord(fam)
+	local action: string = "JUMP + TRICK"
+	if id == "drift" then
+		action = if vehicleKind() == "car" then "DRIFT" else "SHARP BANK" :: string
+	elseif id == "item" then
+		key = OnboardingRules.fireWord(fam)
+		action = "USE ITEM"
+	end
+	return key, action
+end
+
+local function coachLayout()
+	local f = coachFrame
+	if not f then
+		return
+	end
+	local vp = viewport()
+	local k = math.clamp(vp.Y / 720, 0.62, 1.25)
+	local ins = HudMetrics.get()
+	local left = (ins.insets and ins.insets.left or 0) + math.floor(12 * k)
+	-- under the left column (minimap / token chip) so it never sits on them; a phone shows one chip at a time
+	local rects = HudMetrics.rects()
+	local below = 0
+	for _, name in { "minimap", "token", "item" } do
+		local r = rects[name]
+		if r and r.x < vp.X * 0.4 then
+			below = math.max(below, r.y + r.h)
+		end
+	end
+	local phone = vp.Y < 540
+	local top = math.max(math.floor(vp.Y * 0.36), below + 8)
+	f.Position = UDim2.fromOffset(left, top)
+	f.Size = UDim2.fromOffset(math.floor(230 * k), math.floor((if phone then 1 else 3) * 44 * k))
+	local shown = 0
+	for _, r in coachRows do
+		r.frame.Size = UDim2.new(1, 0, 0, math.max(30, math.floor(38 * k)))
+		if not r.done then
+			shown += 1
+		end
+		r.frame.Visible = not phone or (not r.done and shown == 1)
+	end
+end
+
+local function coachClear()
+	local f = coachFrame
+	if f then
+		f:Destroy()
+	end
+	coachFrame = nil
+	table.clear(coachRows)
+end
+
+local function coachBuild()
+	coachClear()
+	local g = gui
+	if not g then
+		return
+	end
+	local f = Instance.new("Frame")
+	f.Name = "CoachStrip"
+	f.BackgroundTransparency = 1
+	f.Active = false
+	f.ZIndex = 3
+	local list = Instance.new("UIListLayout")
+	list.Padding = UDim.new(0, 6)
+	list.SortOrder = Enum.SortOrder.LayoutOrder
+	list.Parent = f
+	for i, id in coachIds() do
+		if not coachDone[id] then
+			local key, action = coachWords(id)
+			local row = Instance.new("Frame")
+			row.Name = "Coach_" .. id
+			row.BackgroundTransparency = 1
+			row.LayoutOrder = i
+			row.Parent = f
+			local chipF = UiSkin.chip(row, action, nil, { name = "Back", size = UDim2.fromScale(1, 1), alpha = 0.15, S = 1 })
+			local lbl = chipF:FindFirstChildWhichIsA("TextLabel", true)
+			if lbl then
+				lbl.Size = UDim2.new(0.58, 0, 0.8, 0)
+				lbl.Position = UDim2.new(1, -8, 0.5, 0)
+				lbl.AnchorPoint = Vector2.new(1, 0.5)
+				lbl.TextXAlignment = Enum.TextXAlignment.Left
+			end
+			local kb = UiSkin.panel(chipF, "chip", { name = "Key", variant = "sky", size = UDim2.new(0.38, 0, 1, -8), position = UDim2.new(0, 4, 0.5, 0), anchor = Vector2.new(0, 0.5), corner = 8, S = 1 })
+			UiSkin.text(kb, key, "title", { name = "KeyText", maxText = 18, minText = 9, S = 1, size = UDim2.new(1, -8, 0.8, 0), position = UDim2.fromScale(0.5, 0.5), anchor = Vector2.new(0.5, 0.5) })
+			table.insert(coachRows, { id = id, frame = row, done = false })
+		end
+	end
+	f.Parent = g
+	coachFrame = f
+	coachLayout()
+end
+
+local function coachTick(id: string)
+	if coachDone[id] then
+		return
+	end
+	coachDone[id] = true
+	for _, r in coachRows do
+		if r.id == id and not r.done then
+			r.done = true
+			local back = r.frame:FindFirstChild("Back")
+			if back and back:IsA("GuiObject") then
+				UiSkin.retint(back, UiSkin.color("go"))
+				local kt = back:FindFirstChild("KeyText", true)
+				if kt and kt:IsA("TextLabel") then
+					kt.Text = "OK"
+				end
+			end
+			UiSound.play("confirm", nil, 0.5)
+			local fr = r.frame
+			task.delay(1.0, coachLayout)
+			task.delay(0.7, function()
+				if fr.Parent then
+					TweenService:Create(fr, TweenInfo.new(0.25, Enum.EasingStyle.Back, Enum.EasingDirection.In), { Position = UDim2.new(-1.2, 0, 0, 0) }):Play()
+					task.wait(0.27)
+					fr:Destroy()
+				end
+			end)
+		end
+	end
+end
+
+-- Builds / shows / hides the strip from the step loop (10 Hz).
+local function coachStep(fc: any)
+	local mode = raceMode()
+	local want = state.guideOn and mode ~= "hub" and mode ~= "" and mode ~= "battle" and raceStartedForCoach() and workspace:GetAttribute("TrackSwitching") ~= true
+		and LocalPlayer:GetAttribute("RaceFinished") ~= true and not resultsUp() and not podiumUp()
+	local remaining = false
+	for _, id in coachIds() do
+		if not coachDone[id] then
+			remaining = true
+		end
+	end
+	if not want or not remaining then
+		if coachFrame and (not remaining or not want) then
+			if not remaining then
+				task.delay(1.0, coachClear)
+			else
+				coachClear()
+			end
+			coachFor = if remaining then "" else coachFor
+		end
+		return
+	end
+	local key = tostring(RaceAttr.mine("ActiveTrackId")) .. family()
+	if coachFor ~= key or not coachFrame then
+		coachFor = key
+		coachBuild()
+	end
+	if fc and fc.sharpBank == true then
+		coachTick("drift")
+	end
+	local car = workspace:FindFirstChild("Planes")
+	local m = car and car:FindFirstChild("Car_" .. LocalPlayer.Name)
+	local spin = m and m:GetAttribute("TrickSpin")
+	if type(spin) == "number" and spin ~= 0 then
+		coachTick("trick")
+	end
+end
+
 local function showTip(id: string)
 	-- v21 (hud critic 1): in a battle the plaque and the caption lane already fill the top-centre and lane A sits on the kart
 	-- on a phone; the objective line carries the guidance, so no tip card is stacked on top of them.
 	if RaceAttr.mine("RaceMode") == "battle" then
+		return
+	end
+	if id == "drift" then
+		-- v38-flow round 3: no "NICE DRIFT!" callout mid-corner (it sat over the kart while drifting); the controls strip
+		-- and the "?" card teach drifting, the boost sparks reward it
+		return
+	end
+	if coachFrame and id == "item" then
+		-- the controls strip already shows this one (its chip ticks off when done); no second card over the race
 		return
 	end
 	local lapsLeft = OnboardingRules.lapsLeft(LocalPlayer:GetAttribute("Lap") :: any, RaceAttr.mine("TotalLaps") :: any)
@@ -741,6 +957,10 @@ end
 -- "item" (HudExtras: a held item appeared), "portal" (TrackFlow: this player drove through a portal arch), plus the tip
 -- events the step loop raises itself ("pad", "drift", "lap").
 function Onboarding.event(name: string)
+	if name == "itemUsed" then
+		coachTick("item")
+		return
+	end
 	if name == "portal" then
 		OnboardingRules.retire(state, "portal")
 		hideCard("goal")
@@ -828,6 +1048,7 @@ local function step(dt: number)
 	stepAcc = 0
 	layoutHelp()
 	layoutChip()
+	coachStep(fc)
 	if not state.guideOn or not fc or raceMode() == "hub" or switching or not raceStarted() then
 		prevBoost = if fc then fc.boostState else "None"
 		prevSharp = if fc then fc.sharpBank == true else false
@@ -872,76 +1093,82 @@ local function build()
 	c.Name = "GuideCard"
 	c.AnchorPoint = Vector2.new(0.5, 0)
 	c.AutomaticSize = Enum.AutomaticSize.Y
-	c.BackgroundColor3 = WOOD_DARK
-	c.BackgroundTransparency = 0.1
 	c.BorderSizePixel = 0
 	c.Visible = false
 	c.Active = false -- non-blocking: touches go through to the controls
 	c.Parent = sg
-	local corner = Instance.new("UICorner")
-	corner.CornerRadius = UDim.new(0, 10)
-	corner.Parent = c
-	stroke(c, RIM, 2)
+	UiSkin.style(c, "panel", { S = 1 })
+	c.BackgroundTransparency = 0.06
 	local pad = Instance.new("UIPadding")
-	pad.PaddingTop = UDim.new(0, 7)
-	pad.PaddingBottom = UDim.new(0, 8)
+	pad.PaddingTop = UDim.new(0, 8)
+	pad.PaddingBottom = UDim.new(0, 10)
 	pad.PaddingLeft = UDim.new(0, 10)
 	pad.PaddingRight = UDim.new(0, 10)
 	pad.Parent = c
 	local list = Instance.new("UIListLayout")
 	list.SortOrder = Enum.SortOrder.LayoutOrder
-	list.Padding = UDim.new(0, 2)
+	list.Padding = UDim.new(0, 6)
 	list.Parent = c
 	card = c
-	cardTitle = textLabel(c, "Title", Enum.Font.GothamBlack, GOLD, 1)
-	cardBody = textLabel(c, "Body", Enum.Font.GothamBold, CREAM, 2)
+	-- The title band: slanted gold key, icon at its left, ink title text.
+	local band = UiSkin.panel(c, "header", { name = "TitleBand", size = UDim2.new(1, 0, 0, 30), layoutOrder = 1, zIndex = 2, S = 1 })
+	band.Rotation = -1.5
+	cardBand = band
+	local ih = Instance.new("Frame")
+	ih.Name = "Icon"
+	ih.BackgroundTransparency = 1
+	ih.AnchorPoint = Vector2.new(0, 0.5)
+	ih.Position = UDim2.new(0, -6, 0.5, 0)
+	ih.Size = UDim2.fromScale(1.35, 1.35)
+	ih.SizeConstraint = Enum.SizeConstraint.RelativeYY
+	ih.ZIndex = 4
+	ih.Parent = band
+	cardIconHolder = ih
+	local tt = textLabel(band, "Title", Enum.Font.GothamBlack, UiSkin.color("ink"), 1)
+	tt.FontFace = UiSkin.font("display")
+	tt.AutomaticSize = Enum.AutomaticSize.None
+	tt.Size = UDim2.new(1, -52, 1, 0)
+	tt.Position = UDim2.fromOffset(48, 0)
+	tt.TextYAlignment = Enum.TextYAlignment.Center
+	tt.ZIndex = 3
+	local ts = tt:FindFirstChildOfClass("UIStroke")
+	if ts then
+		ts.Enabled = false
+	end
+	cardTitle = tt
+	local bb = textLabel(c, "Body", Enum.Font.GothamBold, Color3.new(1, 1, 1), 2)
+	bb.FontFace = UiSkin.font("body")
+	bb.LineHeight = 1.12
+	local bs = bb:FindFirstChildOfClass("UIStroke")
+	if bs then
+		bs.Color = UiSkin.color("ink")
+		bs.Thickness = 1.5
+	end
+	cardBody = bb
 
-	local b = Instance.new("TextButton")
-	b.Name = "HelpButton"
+	local b: TextButton = (UiSkin.button(sg, "purple", "", { name = "HelpButton", glyph = "help", zIndex = 5, sound = false, S = 1 }) :: any)
 	b.Text = "?"
-	b.Font = Enum.Font.GothamBlack
-	b.TextScaled = true
-	b.TextColor3 = CREAM
-	b.BackgroundColor3 = STONE
-	b.AutoButtonColor = true
-	b.Selectable = true
-	b.ZIndex = 5
-	b.Parent = sg
-	local bc = Instance.new("UICorner")
-	bc.CornerRadius = UDim.new(1, 0)
-	bc.Parent = b
-	stroke(b, RIM, 2)
-	local pb = Instance.new("UIPadding")
-	pb.PaddingTop = UDim.new(0, 5)
-	pb.PaddingBottom = UDim.new(0, 5)
-	pb.Parent = b
+	local hg = b:FindFirstChild("Glyph")
+	if hg and hg:IsA("GuiObject") then
+		hg.AnchorPoint = Vector2.new(0.5, 0.5)
+		hg.Position = UDim2.fromScale(0.5, 0.45)
+		hg.Size = UDim2.fromScale(0.74, 0.74)
+	end
+	local hl = b:FindFirstChild("Label")
+	if hl and hl:IsA("GuiObject") then
+		hl.Visible = false
+	end
 	UiSound.bind(b, "tab")
 	b.Activated:Connect(replay)
 	helpBtn = b
 	layoutHelp()
 
 	-- The notification chip: round, small, gold "!" on the dark guide wood. Quiet on purpose (no sound, no pulse): it can be ignored.
-	local n = Instance.new("TextButton")
-	n.Name = "GuideChip"
-	n.Text = "!"
-	n.Font = Enum.Font.GothamBlack
-	n.TextScaled = true
-	n.TextColor3 = GOLD
-	n.BackgroundColor3 = WOOD_DARK
-	n.BackgroundTransparency = 0.12
-	n.AutoButtonColor = true
-	n.Selectable = true
-	n.Visible = false
-	n.ZIndex = 5
-	n.Parent = sg
-	local nc = Instance.new("UICorner")
-	nc.CornerRadius = UDim.new(1, 0)
-	nc.Parent = n
-	stroke(n, GOLD, 2)
-	local np = Instance.new("UIPadding")
-	np.PaddingTop = UDim.new(0, 6)
-	np.PaddingBottom = UDim.new(0, 6)
-	np.Parent = n
+	local n: TextButton = (UiSkin.button(sg, "header", "!", { name = "GuideChip", zIndex = 5, sound = false, visible = false, S = 1 }) :: any)
+	local nl = n:FindFirstChild("Label")
+	if nl and nl:IsA("TextLabel") then
+		nl.FontFace = UiSkin.font("display")
+	end
 	UiSound.bind(n, "tab")
 	n.Activated:Connect(function()
 		OnboardingRules.chipTap(state, os.clock())
@@ -965,6 +1192,7 @@ function Onboarding.init()
 		layoutHelp()
 		layoutChip()
 		sizeCard()
+		coachLayout()
 	end)
 	-- First lap done: the Lap attribute moves to 2 (the server's RaceManager); a new race starts it again at 1.
 	LocalPlayer:GetAttributeChangedSignal("Lap"):Connect(function()

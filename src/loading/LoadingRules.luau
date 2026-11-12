@@ -131,7 +131,7 @@ end
 
 local CONTROL_TIPS: { [string]: { string } } = {
 	Touch = {
-		"Drag the stone pad to steer.",
+		"Drag the left pad to steer.",
 		"Tap TURN for a sharp bank.",
 		"Tap ITEM to use what you grabbed.",
 		"Stuck? Tap RESPAWN to hop back on.",

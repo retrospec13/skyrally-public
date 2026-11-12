@@ -153,7 +153,7 @@ return function(h)
 			end
 		end
 		h.ok(interleaved, "bots between the humans on some grids")
-		h.eq(G.hudLine("reverse", 7, 1, 8), "Winner starts at the back - you start 7th")
+		h.eq(G.hudLine("reverse", 7, 1, 8), "WINNER STARTS LAST  -  YOU START 7TH")
 	end)
 
 	h.test("MAX_MOVE: nobody moves more than 4 positions from last race's grid", function()
@@ -277,7 +277,7 @@ return function(h)
 			all[i] = true
 		end
 		h.eq(G.lateJoinSlot(all, {}, FIELD, 1), 9, "a full grid wraps past the field")
-		h.eq(G.hudLine("late", 6, nil, 8), "Late start: you are 6th of 8")
+		h.eq(G.hudLine("late", 6, nil, 8), "LATE START  -  6TH OF 8")
 	end)
 
 	h.test("boss / rematch / time trial / battle / hub: the fixed grid, humans from slot 1", function()
@@ -309,9 +309,9 @@ return function(h)
 	end)
 
 	h.test("HUD lines: the doc's three examples and ordinals", function()
-		h.eq(G.hudLine("random", 4, nil, 8), "Random start: you are 4th of 8")
-		h.eq(G.hudLine("catchup", 3, 6, 8), "You start 3rd - last race you finished 6th")
-		h.eq(G.hudLine("reverse", 7, nil, 8), "Winner starts at the back - you start 7th")
+		h.eq(G.hudLine("random", 4, nil, 8), "START 4TH OF 8")
+		h.eq(G.hudLine("catchup", 3, 6, 8), "START 3RD  -  LAST RACE 6TH")
+		h.eq(G.hudLine("reverse", 7, nil, 8), "WINNER STARTS LAST  -  YOU START 7TH")
 		h.eq(G.hudLine("catchup", 2, nil, 8), "", "catch-up needs the last place")
 		h.eq(G.hudLine(nil, 2, nil, 8), "")
 		h.eq({ G.ordinal(1), G.ordinal(2), G.ordinal(3), G.ordinal(4), G.ordinal(11), G.ordinal(12), G.ordinal(13), G.ordinal(21), G.ordinal(22) },

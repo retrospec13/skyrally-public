@@ -168,4 +168,29 @@ return function(h)
 		h.ok(#seen >= afterFirst)
 		h.ok(table.find(seen, "mode:DINO-4:battle") ~= nil, "the key opened the DINO battle")
 	end)
+	h.test("v38 next unlock: one goal at a time, portals by tokens, then the hub boss, SPACE, all tokens", function()
+		local P = h.require("src/shared/Progression.luau")
+		local function profile(tokens: number, rematches: number, finalBoss: boolean)
+			local t = {}
+			for i = 1, tokens do
+				t[P.TOKENS[i]] = true
+			end
+			local boss = {}
+			for i = 1, rematches do
+				boss[P.CHAIN_ZONES[i]] = { rematch = true }
+			end
+			return { tokens = t, boss = boss, keys = {}, battles = {}, finalBoss = finalBoss, bestTimes = {} } :: any
+		end
+		local n: any = P.nextUnlock(profile(0, 0, false))
+		h.eq({ n.key, n.have, n.need }, { "portal_SNOW", 0, 1 })
+		n = P.nextUnlock(profile(2, 0, false))
+		h.eq({ n.key, n.have, n.need }, { "portal_FOREST", 2, 4 })
+		n = P.nextUnlock(profile(5, 1, false))
+		h.eq({ n.key, n.have, n.need }, { "hub_boss", 1, 4 })
+		n = P.nextUnlock(profile(5, 4, false))
+		h.eq(n.key, "portal_SPACE")
+		n = P.nextUnlock(profile(5, 4, true))
+		h.eq({ n.key, n.have, n.need }, { "all_tokens", 5, P.TOKENS_TOTAL })
+		h.eq(P.nextUnlock(profile(P.TOKENS_TOTAL, 4, true)), nil)
+	end)
 end

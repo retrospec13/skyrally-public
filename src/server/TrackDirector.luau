@@ -57,6 +57,7 @@ local MapCache = require(script.Parent.MapCache)
 local MapCacheRules = require(Shared:WaitForChild("MapCacheRules"))
 local DirectorFailsafeRules = require(Shared:WaitForChild("DirectorFailsafeRules"))
 local Prewarm = require(script.Parent.kit.Prewarm)
+local MapReadyGate = require(script.Parent.MapReadyGate) -- v37: the countdown waits for the clients' map (MapReadyRules)
 
 local TrackDirector = {}
 
@@ -92,6 +93,16 @@ TrackDirector.allFinishedAt = nil :: number?
 -- Studio QA: the boot map came from the ActiveTrackKey Edit attribute (set by the boot script). That race is the lane's
 -- own test: a joiner or an idle autopilot never ends it as abandoned. Cleared by the next load.
 TrackDirector.qaBoot = false
+-- Grand Prix (v37, server/GrandPrix; single-race path only): while a cup runs it owns the race end. raceEnded() scores
+-- the race and returns the seconds to hold before due(), which loads the next track or ends the cup; exit() answers FLY
+-- AGAIN / HUB. nil, or active() false: every race ends exactly as before.
+export type GrandPrixHooks = {
+	active: () -> boolean,
+	raceEnded: () -> number,
+	due: () -> (),
+	exit: (player: Player, choice: string) -> string,
+}
+TrackDirector.grandPrix = nil :: GrandPrixHooks?
 
 export type Hooks = {
 	suspendRace: (boolean) -> (),
@@ -338,6 +349,13 @@ function TrackDirector.canOpen(player: Player, key: string, mode: string?): (boo
 	if m == "battle" then
 		local info = TrackInfo.get(td.id)
 		return false, BattleAccessRules.lockReason(if info then info.trackName else tostring(td.id))
+	end
+	if m == "coin" then
+		-- V6-2: a track without a boss (SPACE-4) gates its coin challenge on its own race win (Progression.isModeUnlocked).
+		local info = Progression.TRACKS[td.id]
+		if info and not info.hasBoss then
+			return false, "win the race first"
+		end
 	end
 	return false, LOCK_REASON[m] or "locked"
 end
@@ -646,6 +664,11 @@ local function loadBody(key: string, mode: string?, td: any, builder: ModuleScri
 	if h then
 		h.onTrackChanged()
 		h.spawnBots(m ~= "hub")
+		-- v37 client-ready handshake: the curtain stays up (TrackSwitching) until every player's client holds the map
+		-- and renders smoothly again, or MapReadyRules.TIMEOUT; only then does the grid form and the hold below start.
+		if m ~= "hub" then
+			MapReadyGate.await(root, Players:GetPlayers(), string.format("load %s mode=%s", key, m))
+		end
 		-- Boss races hold BOSS_INTRO longer on the grid so the client's intro sweep (BossIntro) plays before the 3-2-1.
 		local hold = TrackDirector.COUNTDOWN + 1.2 + (if m == "boss" or m == "rematch" then TrackDirector.BOSS_INTRO else 0)
 		local goTime = if m == "hub" then nil else workspace:GetServerTimeNow() + hold
@@ -1323,6 +1346,11 @@ function TrackDirector.requestExit(player: Player, choice: RaceFlowRules.Choice)
 	if not h or TrackDirector.switching or mode == "hub" then
 		return "refused"
 	end
+	local gp = TrackDirector.grandPrix
+	if gp and gp.active() then
+		noteAction(player)
+		return gp.exit(player, choice) -- no replay in a cup; the cup's own player may quit it
+	end
 	if choice == "again" then
 		pendingBattles[player] = nil -- FLY AGAIN after BATTLE: a later hub trip must not start the battle
 	end
@@ -1761,7 +1789,13 @@ local function stepRaceEnd()
 			end
 			log("DNF deadline passed")
 		end
-		if step == "return" or step == "timeout" then
+		local gp = TrackDirector.grandPrix
+		if (step == "return" or step == "timeout") and gp and gp.active() then
+			dnfAt = nil
+			workspace:SetAttribute("DnfAt", nil)
+			TrackDirector.allFinishedAt = now
+			returnAt = now + gp.raceEnded() -- the cup's standings and NEXT card, then due() (no hub timer, no votes)
+		elseif step == "return" or step == "timeout" then
 			dnfAt = nil
 			workspace:SetAttribute("DnfAt", nil)
 			TrackDirector.allFinishedAt = now
@@ -1773,8 +1807,22 @@ local function stepRaceEnd()
 		returnAt = nil
 		TrackDirector.allFinishedAt = nil
 		workspace:SetAttribute("ReturnToHubAt", nil)
-		resolveVotes(true)
+		local gp = TrackDirector.grandPrix
+		if gp and gp.active() then
+			gp.due()
+		else
+			resolveVotes(true)
+		end
 	end
+end
+
+-- Grand Prix CONTINUE: the race end's hold (already running) ends in `seconds` instead, if that is sooner.
+function TrackDirector.raceEndIn(seconds: number): boolean
+	if returnAt == nil then
+		return false
+	end
+	returnAt = math.min(returnAt :: number, os.clock() + seconds)
+	return true
 end
 
 -- FLY AGAIN on the finish screen replays the same race and cancels the return to the hub (and the votes, the DNF
@@ -1933,6 +1981,11 @@ local function initGroups(h: Hooks)
 			print(line)
 		end,
 		hubTrackId = Progression.HUB_TRACK,
+		-- v37 client-ready handshake: the group's countdown waits for its players' clients (MapReadyGate).
+		awaitClients = function(players: { Player }, td: any, label: string)
+			local maps = workspace:FindFirstChild("Maps")
+			MapReadyGate.await(if maps then maps:FindFirstChild(tostring(td.id)) else nil, players, label)
+		end,
 	})
 end
 
@@ -1964,6 +2017,10 @@ function TrackDirector.init(h: Hooks)
 	local lastLeave: { [Player]: number } = setmetatable({}, { __mode = "k" }) :: any
 	(r :: RemoteEvent).OnServerEvent:Connect(function(player: Player, action: any, arg: any, arg2: any)
 		local now = os.clock()
+		if action == "MapReady" then
+			MapReadyGate.ack(player, arg) -- v37 handshake: unthrottled, it only ever marks this player ready
+			return
+		end
 		if action == "LeaveLobby" then
 			if RaceFlowRules.PER_GROUP and now - (lastLeave[player] or 0) >= RaceFlowRules.LEAVE_THROTTLE then
 				lastLeave[player] = now
@@ -2015,7 +2072,7 @@ function TrackDirector.init(h: Hooks)
 	end)
 	-- SaveService replicates SkyTokens and Keys on every award: a token or a hidden key changes what the board opens.
 	local function watchProgress(p: Player)
-		for _, attr in { "SkyTokens", "Keys", BattleAccessRules.ATTR } do
+		for _, attr in { "SkyTokens", "Keys", "FinalBoss", BattleAccessRules.ATTR } do
 			p:GetAttributeChangedSignal(attr):Connect(function()
 				publishPortalStates(p)
 			end)

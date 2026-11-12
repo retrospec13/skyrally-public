@@ -6281,6 +6281,694 @@
       "owned_material_license": "CC-BY-4.0",
       "owned_material_credit": "Waku Worldwide",
       "reason": "Owned visual source included under explicit source-distribution approval."
+    },
+    {
+      "path": "assets/ui/v2/courses/dino4.png",
+      "sha256": "bd2867f171c224516ba8431c0dff948a9841e53f7d89d43adb9a2c51ebce05e7",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v2/courses/forest1.png",
+      "sha256": "8c42bee9cdabe7242f0f9c5b84ba56efdc609a294d0e9f260a89da246c4bd1f8",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v2/courses/hub0.png",
+      "sha256": "f895dcc683b22cb088d2a067149257d3fae26307e6e6af97c0480777b72a2a9d",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v2/courses/island2.png",
+      "sha256": "79c46da7137ec34a42594abb5ed75ee0d2ce8acbf67a6130913f317e9ce5ef8d",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v2/courses/snow1.png",
+      "sha256": "4c7ebd615a18e74d58407f0a6ee67e3534e20c57623c05a6ebe3c239157a2806",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v2/courses/space4.png",
+      "sha256": "4a36c38c212d04f37effdf31baa51657119d0031aefc9210e7afc4d9f9a499e3",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_alert.png",
+      "sha256": "0198668c4b3d97660bb81d8490b215f7db046968f1795c7123789e9d0a3d7267",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_battle.png",
+      "sha256": "3e990b21e01e53108b6fc90e0dc451f766a9e56a9a99aad17218dd49f85f298d",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_boss.png",
+      "sha256": "8c60944d24b9c38215aae02fa3af220ad2cde1dfd80a1c0030dee1d269992a98",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_camera.png",
+      "sha256": "fb6c126f67797255d3ad201a90a702dca531f0e6e0d1e7a431b64ceb3baae87d",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_cash.png",
+      "sha256": "54cd2df83cea9d4815288c5849094a9e4a8b6bb74f9c54507d65190df14cd855",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_check.png",
+      "sha256": "f550c83873e760f126b2663cd6a7add9387c1f0a8298636351219131a1aa2518",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_close.png",
+      "sha256": "04edea033034ecca98bf2379bb2f95ebdd5be07e4dddccd01f0de2517a77566a",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_coin.png",
+      "sha256": "16c171c5a6df1eb8d73d24cdfdb90b576bcf166068637ab54d06bcfc66f1e47e",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_coins.png",
+      "sha256": "1ce1681152e57e506e90acc27057c38892525597c0e92cee669d483c7ac7a597",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_crown.png",
+      "sha256": "22d20d7b6d488d44d086fc96b86dd40e887a07e49fe57bf9eafd0c51a127a222",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_daily.png",
+      "sha256": "5e265f6486ae2f790e5f4545725e251d6a7c936562f3aa3b4013410004eac01f",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_emote.png",
+      "sha256": "30657186b2cc8bbe21e9408561c50f70c181c49cfffdf0d9f96dc49259971cd0",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_flag.png",
+      "sha256": "4ecd616593134456dc419576a3987538b27c2d3768a79698977a90c3da720334",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_gear.png",
+      "sha256": "388cf22f074dd83c8701f73bd9f860782f6f80ea15e98cf2d9db1685a5bc4eda",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_gem.png",
+      "sha256": "ffe049f37938a61749f5d6e26a7600d96e966799d4410894bbe0461b4fc1da34",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_help.png",
+      "sha256": "e510ec0b5feb259e6aa3e46857ce7bb4f91925ababf7d0232a5ab154a1f8097f",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_horn.png",
+      "sha256": "c66ff85a095532c14d04b42a6d9db32dea3c15207aaadba2bedce3aa13533175",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_hub.png",
+      "sha256": "b085f04f960d1f94a1352a6ce188956f2b4303efb1f92a833e15b0d0cc0f47e1",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_info.png",
+      "sha256": "2b1162729b8661ca3d76dc77274ea2a402885d16fb6b741f0ed902bfb3903039",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_key.png",
+      "sha256": "b70973c715a190e78423c5a1f42c2132105eca0cb8f4fa98f1ed8d52731a335a",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_lock.png",
+      "sha256": "84b9be1b4d37f9c913634057cd347031dff3cccf281b5c08f96527f1b41e3b62",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_medal_1.png",
+      "sha256": "9df5a633889d109093ce542b310361fe37cc65a6fe0f32eae01950dcb94e1cfe",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_medal_2.png",
+      "sha256": "62bd8869e019bb3b10672b36d2bdbac5c908abe0f0f9ba8b1aebbeb1323815b3",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_medal_3.png",
+      "sha256": "e6b42f35b0fe65f102c24c7fe995ed30b097963ac0698b8e510937865f2a4ff5",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_paint.png",
+      "sha256": "d8121a8c4329254c1ddf5b83a15e4c2351985eb329bc47c6a579875f7525fbcf",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_pass.png",
+      "sha256": "26c1a25219e9f2d50f7f8407ee087ec7be9db852277bde942e81df23c0e06b40",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_quick.png",
+      "sha256": "3ab4f21c4d43e30d74191ed8902333ec2f2c05512e79763a0c2de9ecb3803a2e",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_race.png",
+      "sha256": "7a006dffcd963e432fcc789e724c2700e670d3e3ce78f6fe00b339a6c1e04702",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_rematch.png",
+      "sha256": "451594c5ae4eea4d96ad759b1ee686154b79d12a4db7cff80b1213d326cc3a04",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_return.png",
+      "sha256": "ba56f506e1c7a79ceab990d194a0a7667804bcd69425177035ddb4472ca9c6f9",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_shop.png",
+      "sha256": "985d3f6d7c71a06fee96972ab25fe9c5743a747c32e1eea3bdaf1f3053581317",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_star.png",
+      "sha256": "420ed33ff0b0465ea4e8b7f067f85ea082513e1302d61a962cc687a1345f725c",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_stopwatch.png",
+      "sha256": "5d1b21dc038743cc0650d55c8c75a0d6b2dc0c92a5b65f9eef634f7617558a05",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_trail.png",
+      "sha256": "cb91fd376fac236be6c6b958ffc18259af324299f98889e5b36452edd5866af6",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_trophy.png",
+      "sha256": "360ab5086341ce6e7c896fea8475453861216a55826b46b37c72a6b539f7be97",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_wrench.png",
+      "sha256": "5f9a31c2382a549814e462b087f73445c6543a5d98c0f14567062108303c7afd",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v2/icons/item_blue.png",
+      "sha256": "f8e48f68a4ae89101e7d0a1941514e5e7cd496d387f942e66349bb2a78f8407f",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v2/icons/item_boom_bomb.png",
+      "sha256": "a7e3e76623d903df062db79240a06b24f2dd593b9ef5a0ad747c7cda6dec3320",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v2/icons/item_bubble_guard.png",
+      "sha256": "a439be002274802eca51bff5068c017dd6ebe453dd29f8349c73c3147785cadd",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v2/icons/item_coin_burst.png",
+      "sha256": "5de5c8a76412dda122ac9013dee74a689afe8752ad421fc782b6c3c940c83e3f",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v2/icons/item_coin_pouch.png",
+      "sha256": "e6bd1d871b9e203317f05d116406d4578d5faac6a475d5054e63d5c863a82e8c",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v2/icons/item_frost_shot.png",
+      "sha256": "55f6725cd59cd8f9823b7f35ae9e320a6efa739e32e69426c4201b8b1610210e",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v2/icons/item_gift_box.png",
+      "sha256": "ee64ec49d825cfa160d1c9d4dd653b4070b9b28b712378495cafaab4269cb389",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v2/icons/item_golden_wings.png",
+      "sha256": "8004b90f74ceae48547dd0d20a734ca9414bc4f20be293159904a8918e3a5e7a",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v2/icons/item_green.png",
+      "sha256": "3b985205f05efb1b1777a589326eb9deda36620a6d1b918499a4d6756d577f5c",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v2/icons/item_ink_splat.png",
+      "sha256": "d5297eb76fb99cade4ed9f7f64a783147acb4fd314946eccd65b872de0b5aa2a",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v2/icons/item_item_steal.png",
+      "sha256": "9759149b6ded39b661b869a317d52af44fa563d099aa61631ed5418c6056dfdb",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v2/icons/item_magnet.png",
+      "sha256": "c1adfbef9c79a9a7d0ad56b023715cd9f197059db0e51242fd32e4c2456553f4",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v2/icons/item_mystery.png",
+      "sha256": "5a8ad4435bd107493e9254ec4f59713291eb5d575e2f183348d1bfed34a3af93",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v2/icons/item_oil.png",
+      "sha256": "acd10fba2313771e18cdbd560f0d803bea9527bb713086b35eaba30dfba013f5",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v2/icons/item_orbit_missiles.png",
+      "sha256": "c6770486075be77461a3fb3a912bb5f12c47686ea78024066d803c81c54bf9c4",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v2/icons/item_rainbow.png",
+      "sha256": "873bd61e1573f7d4e20b6fde9bceee528e06a6fbae65b408f89c57bb5353f9cb",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v2/icons/item_red.png",
+      "sha256": "be1cc0ed64c57c6269208192ba0b096b6d2c532f0532f977a230c1080ad21824",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v2/icons/item_rocket_rush.png",
+      "sha256": "6f4d9ddfd9309de085de9fab7beaef1b6960495d7d396f508b2836778962a1f7",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v2/icons/item_spring.png",
+      "sha256": "c60e91e91de29af099bbe115046d30094c6128853b4be782fe66cfcd9debad21",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v2/icons/item_storm_bolt.png",
+      "sha256": "c2597d21ea390bd0c9777c9f8b5b89a306e685e790bfd64a29de1e7598ec4b1e",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v2/icons/item_yellow.png",
+      "sha256": "ef1716362a3b243746b044791cc43182e853265e5bdcf578151b932b42b15db2",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v2/sheets/boss.png",
+      "sha256": "7e00dd39b33a75cf8f4efaa8c9faac1d2d22e23bf0e59a9cc3c25dbb6c1e6e72",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v2/sheets/items.png",
+      "sha256": "baa94938aa2247f1254c025943b79c924a5169b38c5313dd31a2afcd62f39834",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v2/sheets/menu.png",
+      "sha256": "4ffd0047dc6eac35e3a26d38ce5c02250a074070b6137862de689c2f3b9e8924",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v2/sheets/ui.png",
+      "sha256": "f9d70672b3deffd5e3ba3de517703c6ac54bd2a181dd0b2ec7c1cbf5104bc386",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v3/frames/bar_blue.png",
+      "sha256": "744ae1bd365d292cd361c1d8948e678b4f85bf06055922c7cf6c19ae84b2412a",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v3/frames/bar_danger.png",
+      "sha256": "c64ac1f254c8944337348706e9101bd8cbd969730f49f2b4977240851cbb63fe",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v3/frames/bar_dark.png",
+      "sha256": "37fb3a521bdc4973aafb1852eeacc436a5f0537be2250cb6ce71967decc7a364",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v3/frames/bar_light.png",
+      "sha256": "946d50e941f22e1b995a840ba0ed5b41f2b0219afa8a5c7fb49a9f3a3851cb95",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v3/frames/bar_lime.png",
+      "sha256": "22b734d7cc9ac16479296b8638cd1a304176de1021a013de3789449a2621e3d0",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v3/frames/bar_yellow.png",
+      "sha256": "443e8b4182b0d6c468f4e53731fced1b8c2db83e42156897bbb8ea7fce1b5daa",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v3/frames/chip_blue.png",
+      "sha256": "98dcc7a093ea7bfe5f65d6db6a2d9717f256ef01caed8fabf8a7a5758a147716",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v3/frames/chip_dark.png",
+      "sha256": "8064a9a306ac01056a0a35b2e8eba7dc7462e37af14b7d8d121a6e5e88a03dff",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v3/frames/cursor_tri.png",
+      "sha256": "cde67792a86225d0a1409a579e979d5b71f0a0006309034867af248bc9291a1c",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v3/frames/frame_blue.png",
+      "sha256": "347a0e58611a3e6f2f2aaeac62f1da8e562471f950d93f81bb45086f075b800c",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v3/frames/frame_danger.png",
+      "sha256": "8edd9b4bc2f45b1f8a7697742d20e43269edab48b13e81d9baa2acc7e0a9769a",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v3/frames/frame_dark.png",
+      "sha256": "f7b9b543f7cd8f40645a35f597a4de1e9b6798f007c49c458924bd01f7be1289",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v3/frames/frame_light.png",
+      "sha256": "6d78217da37a68ec9f9427d84e42f54c9e435da7f3da630b954acbff8ab6f5ce",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v3/frames/frame_lime.png",
+      "sha256": "9caabcb7a4d0ee9f5999fcf03029dd2b4706c1fbcd8a9aa8c9ceefdbdecc8543",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v3/frames/frame_yellow.png",
+      "sha256": "a2869aff3f89d6816ff39b730dc99d508d5cda21046c54f74d1a101ce7c68f2e",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v3/frames/stripe_tile.png",
+      "sha256": "ebfec7302590e2c98c43b4dc9d12074fb6fb0066cdf5dc5354d7fa7627626fdf",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v3/frames/tab_dark.png",
+      "sha256": "ae94af01d571fde64f9d4fcd70263d36849218d56b0814ccf1c0a6432b272ab1",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v3/frames/tab_light.png",
+      "sha256": "62e19eda8ac464993511f8c4eb0bcfb458d3565a4e6c8e969a90499459a46f1c",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
+    },
+    {
+      "path": "assets/ui/v3/frames/tab_yellow.png",
+      "sha256": "cf654fa86edfbe798fb903a28fabbd735b1722766ce5f5e261f082092cb593f1",
+      "status": "owner-approved",
+      "reason": "Owned project UI visual source included in the V2 update by Waku Worldwide; hosted Roblox access is separate.",
+      "owned_material_license": "CC-BY-4.0",
+      "owned_material_credit": "Waku Worldwide"
     }
   ]
 }

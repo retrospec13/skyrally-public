@@ -7,6 +7,8 @@
 --   * Storm Shard tier-up sting and badge chime: NotifySpec rows shard_tier_up / badge_earned via client/NotifyKit.
 --   * hologram hum (one loop on the nearest figure) and glitch (a board tears): SPACE-4 client/SpaceNeon.
 --   * eruption rumble, geyser whoosh, sail gate chime: DINO / FOREST set pieces call ToolboxCues.playAt with these names.
+--   * rbx_ui_*: UI panel-motion and event cues; client/UiSound plays them by kind (its own pools and the UiSoundRules
+--     VOLUME, mirrored here), shared/UiSkinRules.cueFor maps UI events to the kinds.
 --   * SNOW crossing horn: the owned foghorn (WorldMomentsAudio ans_foghorn, lowered); no Roblox horn exists, so it has no row here.
 local ToolboxAudioRules = {}
 
@@ -24,6 +26,17 @@ ToolboxAudioRules.CUES = {
 	eruption_rumble = { vol = 0.5, pitch = 0.4, spatial = true, where = "DINO eruption set pieces" },
 	geyser_whoosh = { vol = 0.4, pitch = 0.85, spatial = true, where = "DINO / SNOW geyser jets" },
 	sail_gate_chime = { vol = 0.4, pitch = 1, spatial = true, where = "FOREST sail gate" },
+	rbx_ui_whoosh_1 = { vol = 0.35, pitch = 1, where = "UiSound open: a panel swooshes in (UiMotion swooshIn)" },
+	rbx_ui_whoosh_2 = { vol = 0.3, pitch = 1, where = "UiSound close: a panel swooshes or pops out" },
+	rbx_ui_swipe = { vol = 0.3, pitch = 1, where = "UiSound swipe: a page or toast slides across" },
+	rbx_ui_cute_pop = { vol = 0.35, pitch = 1, where = "UiSound pop: a card pops in (UiMotion popIn, NotifyKit modal)" },
+	rbx_ui_select = { vol = 0.35, pitch = 1, where = "UiSound pick: an option picked" },
+	rbx_ui_bright_click = { vol = 0.4, pitch = 1, where = "UiSound click: a bright confirm" },
+	rbx_ui_notify_low = { vol = 0.35, pitch = 1, where = "UiSound notify: a plain notice" },
+	rbx_ui_back = { vol = 0.4, pitch = 1, where = "UiSound nav_back: leave a page" },
+	rbx_ui_negative = { vol = 0.4, pitch = 1, where = "UiSound negative: refused or locked" },
+	rbx_ui_purchase = { vol = 0.5, pitch = 1, where = "UiSound buy: a purchase landed" },
+	rbx_ui_hover = { vol = 0.15, pitch = 1, where = "UiSound hover_tick: pointer over a card" },
 } :: { [string]: Cue }
 
 ToolboxAudioRules.THUNDER = { "storm_thunder_1", "storm_thunder_2", "storm_thunder_3" }

@@ -108,7 +108,7 @@ return function(h: Harness)
 		local function joined(mode: string): string
 			return table.concat(R.tipsFor(mode), "|")
 		end
-		h.contains(joined("Touch"), "stone pad")
+		h.contains(joined("Touch"), "left pad")
 		h.contains(joined("Gamepad"), "Left stick")
 		h.contains(joined("KeyboardMouse"), "A and D")
 		h.ok(string.find(joined("Touch"), "Left stick", 1, true) == nil, "no gamepad words on a phone")

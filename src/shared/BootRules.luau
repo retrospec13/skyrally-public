@@ -85,6 +85,7 @@ BootRules.INIT_ORDER = {
 	{ name = "StormRaceClient" },
 	{ name = "ZoneVisibility" },
 	{ name = "LiveOpsNotice" }, -- T1-5 server closing banner and toasts
+	{ name = "GrandPrixClient", late = true }, -- v37 Grand Prix: board row, class picker, standings, NEXT card, trophy
 } :: { Step }
 
 function BootRules.isCore(name: string): boolean

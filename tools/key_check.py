@@ -51,6 +51,7 @@ def main():
             if "mode=race ok=" in lane.console():
                 break
         time.sleep(6)
+        print("clear_qa:", lane.clear_qa())  # V4-1: a leftover AutoPilot made two key pilots fly the spline
         print("before:", lane.luau(AIM, dm="Server", name="kaim"))
         caps.append(grab("start"))
         pc_out = f"{lane.PCWIN}\\out\\pilot_{tag}.jsonl"

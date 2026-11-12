@@ -114,8 +114,9 @@ return function(h)
 
 	h.test("kinds: every kind has a cue, a volume and a gap; presses vs notes", function()
 		for _, k in R.KINDS do
-			-- The two sfx_v2 kinds (unlock, vote) play SfxV2Audio roles; every other cue is a ui_* from synth_ui.py.
-			h.ok(type(R.CUE[k]) == "string" and (R.SFX_V2_KINDS[k] or string.sub(R.CUE[k], 1, 3) == "ui_"), k .. " cue")
+			-- The two sfx_v2 kinds (unlock, vote) play SfxV2Audio roles, the UI-overhaul motion/event kinds play Roblox
+			-- free-library cues (shared/ToolboxAudio); every other cue is a ui_* from synth_ui.py.
+			h.ok(type(R.CUE[k]) == "string" and (R.SFX_V2_KINDS[k] or R.TOOLBOX_KINDS[k] or string.sub(R.CUE[k], 1, 3) == "ui_"), k .. " cue")
 			h.ok(type(R.VOLUME[k]) == "number" and R.VOLUME[k] > 0 and R.VOLUME[k] <= 1, k .. " volume")
 			h.ok(type(R.MIN_GAP[k]) == "number", k .. " gap")
 		end
@@ -124,14 +125,23 @@ return function(h)
 		h.eq(R.isPress("select"), false)
 		h.eq(R.isPress("hover"), false)
 		h.ok(R.VOLUME.hover < R.VOLUME.select, "hover is quieter than gamepad selection")
+		h.eq(R.isPress("hover_tick"), false)
+		h.eq(R.gate("hover_tick", { now = 5.1, switching = false, lastPressAt = 5.0 }), false, "hover tick hushed after a press too")
+		for k in R.TOOLBOX_KINDS do
+			h.ok(R.VOLUME[k] <= 0.5, k .. " motion cue sits under the press kit")
+			h.ok(R.poolSize(k) >= 1 and R.poolSize(k) <= R.POOL_SIZE, k .. " pool")
+		end
 	end)
 
 	h.test("cues: every cue the kit names is one synth_ui.py writes", function()
 		local src = h.readFile("tools/audio/synth_ui.py")
 		local sfx = h.readFile("src/shared/SfxV2Audio.luau")
+		local toolbox = h.readFile("src/shared/ToolboxAudio.luau")
 		for _, k in R.KINDS do
 			if R.SFX_V2_KINDS[k] then
 				h.contains(sfx, R.CUE[k] .. " =", k .. " is an uploaded sfx_v2 role")
+			elseif R.TOOLBOX_KINDS[k] then
+				h.contains(toolbox, "\t" .. R.CUE[k] .. " = ", k .. " is a Roblox library cue in ToolboxAudio")
 			else
 				h.contains(src, '"' .. R.CUE[k] .. '"', k)
 			end

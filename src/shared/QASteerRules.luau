@@ -204,6 +204,39 @@ function QASteerRules.guard(isStudio: boolean, ws: any): boolean
 	return true
 end
 
+-- V4-1 (tooling hygiene, Studio only): the workspace attributes a verification run sets stay set after it. The pilot tools clear
+-- them at start (tools/lane.py clear_qa_luau runs this list on the server DataModel; win/key_pilot.js does the same).
+-- QAGoal is deliberately not listed: BattleCore publishes it and tools/key_check.py sets it before the pilot starts.
+QASteerRules.PILOT_WORKSPACE_ATTRS = { "AutoPilot", "QAFollowLine", "QASteer", "QAThrottle" }
+QASteerRules.RESPAWN_ATTR = "QARespawnAt"
+QASteerRules.RESPAWN_RAY_UP = 10 -- the ground ray starts this far above the requested point (a point inside a floor still counts)
+QASteerRules.RESPAWN_RAY_LEN = 600
+
+-- Clears every pilot attribute on `ws` and the one-shot respawn attribute on each player. Returns how many were set.
+function QASteerRules.clearPilotAttrs(ws: any, players: { any }?): number
+	local list: { any } = if players then players else {}
+	local n = 0
+	for _, a in QASteerRules.PILOT_WORKSPACE_ATTRS do
+		if ws:GetAttribute(a) ~= nil then
+			ws:SetAttribute(a, nil)
+			n += 1
+		end
+	end
+	for _, p in list do
+		if p:GetAttribute(QASteerRules.RESPAWN_ATTR) ~= nil then
+			p:SetAttribute(QASteerRules.RESPAWN_ATTR, nil)
+			n += 1
+		end
+	end
+	return n
+end
+
+-- A QARespawnAt point is accepted only with ground under it: `hitY` is the raycast hit height (nil = no ground). A point with
+-- none made the car fall, respawn at the same checkpoint and fall again (V4-1: 18 min below the map).
+function QASteerRules.respawnGroundOk(hitY: number?): boolean
+	return type(hitY) == "number" and hitY == hitY
+end
+
 function QASteerRules.logLine(vehicle: string, event: string, line: RouteBranch.Line, station: number, along: number): string
 	return string.format("[SkyRally][QASTEER] %s %s line %s (%s) at station %.0f along %.0f/%.0f", vehicle, event, line.id, line.style, station, along, line.length)
 end

@@ -16,7 +16,7 @@ export type Tip = { title: string, body: string }
 OnboardingRules.FLAG = "onboarded" -- profile.settings key (SaveService.markOnboarded); replicated as player attribute Onboarded
 OnboardingRules.GOAL_TITLE = "WELCOME, RACER!"
 OnboardingRules.GOAL_TEXT = "Win races, earn Sky Tokens, open new worlds!"
-OnboardingRules.PORTAL_TEXT = "Drive through the glowing portal to start!"
+OnboardingRules.PORTAL_TEXT = "Press RACE or drive into a portal."
 OnboardingRules.TIP_IDS = { "item", "boost", "drift", "lap" } :: { string }
 OnboardingRules.TIP_SECONDS = 6 -- a tip leaves by itself after this long
 OnboardingRules.TIP_MIN_SECONDS = 1.2 -- ... and input dismisses it, but never before this (a held button must not eat it)
@@ -79,7 +79,7 @@ end
 -- How to steer, in the family's words (the goal card's second line and the replay card).
 function OnboardingRules.controlsLine(family: Family): string
 	if family == "Touch" then
-		return "Drag the stone pad to steer."
+		return "Drag the left pad to steer."
 	elseif family == "Gamepad" then
 		return "Left stick steers. A is go."
 	end

@@ -22,12 +22,15 @@ PlaneGuardRules.SLACK = 1.5
 -- 15% shorter than the spline, and nobody holds the overcharge for a lap).
 PlaneGuardRules.MIN_LAP_FRACTION = 0.65
 PlaneGuardRules.MIN_LAP_FLOOR = 8.0 -- the old fixed floor, kept for short or unloaded splines
+-- V5-1: travel credited on arrival at a server teleport (RETURN frame, respawn): 0.2 s at the slacked limit (about
+-- 98 studs with the tolerance) covers a replication burst right after landing; a jump still bigger is corrected.
+PlaneGuardRules.ARRIVAL_SECONDS = 0.2
 
 function PlaneGuardRules.limits(): CarConfig.Limits
 	local top = math.max(PlaneGuardRules.SPEED_CEILING, PlaneConfig.OVERCHARGE_SPEED + PlaneConfig.SPEED_PICKUP_BONUS * PlaneConfig.MAX_SPEED_PICKUPS)
 	local v = top + PlaneGuardRules.PULL_ALLOWANCE
 	-- A plane dives and climbs along its heading, so the vertical bounds are the speed bound too.
-	return { maxH = v, maxRise = v, maxFall = v, slack = PlaneGuardRules.SLACK }
+	return { maxH = v, maxRise = v, maxFall = v, slack = PlaneGuardRules.SLACK, arrivalSeconds = PlaneGuardRules.ARRIVAL_SECONDS }
 end
 
 -- Shortest lap time (s) the finish check accepts for a track of `totalLen` studs.

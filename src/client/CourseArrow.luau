@@ -41,8 +41,8 @@ local function baseScale(): number
 	return math.clamp(vpY * 0.0015, 1.0, 1.7)
 end
 
-local ORANGE = Color3.fromRGB(255, 132, 64)
-local INK = Color3.fromRGB(36, 20, 10)
+local ORANGE = Color3.fromHex("FFB52E") -- UI v2 orange
+local INK = Color3.fromHex("0B1533") -- UI v2 ink
 
 local function bar(parent: Instance, rot: number, x: number)
 	local b = Instance.new("Frame")
@@ -98,15 +98,21 @@ local function build()
 	t.Name = "WrongWay"
 	t.AnchorPoint = Vector2.new(0.5, 1)
 	t.Position = UDim2.fromScale(0.5, 1)
-	t.Size = UDim2.new(1, 0, 0, 26)
+	t.Size = UDim2.new(1.8, 0, 0, 34)
 	t.BackgroundTransparency = 1
-	t.Font = Enum.Font.GothamBlack
+	-- UI v2 hero text: the heavy italic display face, a red-to-orange gradient, a heavy ink outline.
+	t.FontFace = Font.new("rbxasset://fonts/families/Montserrat.json", Enum.FontWeight.Heavy, Enum.FontStyle.Italic)
 	t.TextScaled = true
-	t.TextColor3 = Color3.fromRGB(255, 236, 200)
+	t.TextColor3 = Color3.new(1, 1, 1)
 	t.Text = "WRONG WAY!"
+	local tg = Instance.new("UIGradient")
+	tg.Rotation = 90
+	tg.Color = ColorSequence.new(Color3.fromHex("FFB0A0"), Color3.fromHex("E0281E"))
+	tg.Parent = t
 	local ts = Instance.new("UIStroke")
-	ts.Color = INK
-	ts.Thickness = 2.2
+	ts.Color = Color3.fromHex("0B1533")
+	ts.Thickness = 3.5
+	ts.LineJoinMode = Enum.LineJoinMode.Round
 	ts.Parent = t
 	t.Parent = h
 	h.Parent = sg

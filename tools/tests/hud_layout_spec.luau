@@ -135,7 +135,7 @@ return function(h)
 		h.eq({ d.respawn.x, d.respawn.y, d.respawn.w, d.respawn.h }, { 1726, 1022, 170, 36 })
 	end)
 
-	h.test("MK layout (HUD_MK_LAYOUT.md 3): racing anchors per viewport class (item / gear / ? column left of the right column, minimap in the corner)", function()
+	h.test("MK layout (HUD_MK_LAYOUT.md 3, UI_V2): racing anchors per viewport class (desktop: item box top centre-left, hero position bottom-right; touch: item / gear / ? column left of the right column; minimap in the corner)", function()
 		local function nav(vp)
 			return R.fallbackNav(vp[1], vp[2])
 		end
@@ -145,17 +145,19 @@ return function(h)
 		local t = at(viewports[3], "touch")
 		h.eq({ t.minimap.x, t.minimap.y, t.minimap.w }, { 61, 84, 90 }, "844x390 minimap")
 		h.eq({ t.token.x, t.token.y, t.token.w }, { 159, 84, 96 }, "844x390 token right of the minimap")
-		h.eq({ t.item.x, t.item.y, t.item.w }, { 609, 5, 52 }, "844x390 item")
-		h.eq({ t.gear.x, t.gear.y, t.help.x, t.help.y }, { 617, 61, 617, 109 }, "844x390 gear and help under the item")
+		h.eq({ t.item.x, t.item.y, t.item.w }, { 601, 5, 60 }, "844x390 item (UI v2: 60 px box)")
+		h.eq({ t.gear.x, t.gear.y, t.help.x, t.help.y }, { 617, 69, 617, 117 }, "844x390 gear and help under the item")
 		h.ok(t.laneA.w >= 300 and t.laneB.w >= 280, "844x390 lanes widened: " .. t.laneA.w .. "/" .. t.laneB.w)
 		local c = at(viewports[4], "touch")
-		h.eq({ c.minimap.w, c.item.w, c.item.x }, { 64, 48, 512 }, "740x360 compact")
+		h.eq({ c.minimap.w, c.item.w, c.item.x }, { 64, 52, 508 }, "740x360 compact")
 		h.ok(c.laneA.w >= 200 and c.laneB.w >= 200, "740x360 lanes")
 		local d = at(viewports[2], "desktop")
 		h.eq({ d.minimap.x, d.minimap.y, d.minimap.w }, { 18, 66, 169 }, "1366x768 minimap directly under the nav")
-		h.eq({ d.item.x, d.item.y, d.item.w }, { 1107, 6, 90 }, "1366x768 item")
+		h.eq({ d.item.x, d.item.y, d.item.w }, { 212, 6, 113 }, "1366x768 item box top centre-left (UI v2)")
+		h.eq({ d.position.x, d.position.y, d.position.w, d.position.h }, { 1153, 587, 195, 128 }, "1366x768 hero position bottom-right (UI v2)")
 		local f = at(viewports[1], "desktop")
-		h.eq({ f.minimap.y, f.item.x, f.item.y, f.item.w, f.gear.y, f.help.y }, { 66, 1578, 8, 120, 136, 200 }, "1920x1080")
+		h.eq({ f.minimap.y, f.item.x, f.item.y, f.item.w, f.gear.y, f.help.y }, { 66, 256, 8, 150, 8, 72 }, "1920x1080")
+		h.eq({ f.position.x, f.position.y, f.position.w, f.position.h, f.lapChip.y }, { 1636, 844, 260, 170, 8 }, "1920x1080 hero position bottom-right, lap chip top-right")
 		-- Not racing, nothing moved: the left column keeps the item frame, gear and ? (hub, results, battle).
 		local hub = R.compute(844, 390, viewports[3][4], nav(viewports[3]), "touch")
 		h.eq({ hub.item.x, hub.item.y, hub.item.w }, { 61, 84, 72 }, "left column unchanged without the minimap")
@@ -366,6 +368,20 @@ return function(h)
 			h.ok(r.laneA.w >= 0.2 * vp[1] and r.laneA.h >= 40, "lane A has room at " .. vp[3])
 			h.ok(r.laneB.w >= 0.2 * vp[1], "lane B has room at " .. vp[3])
 			h.ok(r.laneB.h >= 34, "toast chip 34 px")
+		end
+	end)
+
+	h.test("v39: the GAS start ring clears the position numeral even mid-pulse (desktop racing and phone)", function()
+		local function grown(r, k)
+			local dx, dy = r.w * (k - 1) / 2, r.h * (k - 1) / 2
+			return { x = r.x - dx, y = r.y - dy, w = r.w + 2 * dx, h = r.h + 2 * dy }
+		end
+		for _, c in { { 1920, 1080, "desktop", nil }, { 1920, 1080, "desktop", 1740 }, { 1366, 768, "desktop", nil }, { 844, 390, "touch", nil }, { 1920, 1080, "touch", nil } } do
+			local r = R.compute(c[1], c[2], none, R.fallbackNav(c[1], c[2]), c[3], { minimap = true, rightLimit = c[4] })
+			h.ok(not R.overlap(grown(r.startRing, R.RING_PULSE), grown(r.position, R.POS_PULSE)), "ring vs position at " .. c[1] .. "x" .. c[2] .. " " .. c[3])
+			-- the grid can show the ring before the minimap is on: the ring of that layout must also clear the racing numeral
+			local pre = R.compute(c[1], c[2], none, R.fallbackNav(c[1], c[2]), c[3], { minimap = false, rightLimit = c[4] })
+			h.ok(not R.overlap(grown(pre.startRing, R.RING_PULSE), grown(r.position, R.POS_PULSE)), "pre-minimap ring vs racing position at " .. c[1] .. "x" .. c[2] .. " " .. c[3])
 		end
 	end)
 

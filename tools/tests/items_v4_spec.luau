@@ -19,7 +19,7 @@ return function(h: Harness)
 	local ItemService = h.require("src/server/ItemService.luau")
 
 	local R = ItemRules.ROTATION
-	local N = #ItemRules.SPECIALS
+	local N = #ItemRules.LIVE_SPECIALS -- v38: retired specials (ItemRules.RETIRED) never rotate
 
 	local function has(list: { string }, id: string): boolean
 		return table.find(list, id) ~= nil
@@ -77,7 +77,7 @@ return function(h: Harness)
 						seen[id] = true
 					end
 				end
-				for _, id in ItemRules.SPECIALS do
+				for _, id in ItemRules.LIVE_SPECIALS do
 					h.ok(seen[id], string.format("seed %d races %d..%d include %s", seed, start, start + window - 1, id))
 				end
 			end
@@ -154,18 +154,18 @@ return function(h: Harness)
 		for _, id in pool do
 			h.ok(has(back, id), id .. " survives the attribute")
 		end
-		local junk = ItemRules.parsePool("storm_bolt,purple,,rainbow;frost_shot")
-		h.ok(has(junk, "storm_bolt") and has(junk, "frost_shot"), "known specials kept")
-		h.ok(not has(junk, "purple") and not has(junk, "rainbow"), "unknown and retired ids dropped")
+		local junk = ItemRules.parsePool("storm_bolt,purple,,rainbow;ink_splat,bubble_guard")
+		h.ok(has(junk, "storm_bolt") and has(junk, "ink_splat"), "known specials kept")
+		h.ok(not has(junk, "purple") and not has(junk, "rainbow") and not has(junk, "bubble_guard"), "unknown and retired ids dropped")
 		h.ok(has(junk, "red") and has(junk, "green"), "core put back")
 		h.eq(ItemRules.poolText(ItemRules.parsePool(nil)), "red,blue,yellow,green", "missing attribute: classic")
-		h.eq(ItemRules.poolLine(ItemRules.parsePool("rocket_rush,bubble_guard")), "Rocket, Bubble")
+		h.eq(ItemRules.poolLine(ItemRules.parsePool("rocket_rush,item_steal")), "Rocket, Steal")
 		h.eq(ItemRules.poolLine(ItemRules.parsePool("")), "", "classic pool: no line")
-		h.ok(#("This race: " .. ItemRules.poolLine(ItemRules.parsePool("golden_wings,orbit_missiles,bubble_guard,coin_burst"))) <= 44, "the toast fits a phone lane")
+		h.ok(#("This race: " .. ItemRules.poolLine(ItemRules.parsePool("golden_wings,orbit_missiles,item_steal,coin_pouch"))) <= 44, "the toast fits a phone lane")
 	end)
 
 	h.test("roll: only pool items, position weighting, nil pool is the classic table", function()
-		local pool = ItemRules.parsePool("rocket_rush,storm_bolt,frost_shot,bubble_guard")
+		local pool = ItemRules.parsePool("rocket_rush,storm_bolt,ink_splat,coin_pouch")
 		local counts = {}
 		for rank = 1, 8 do
 			for i = 0, 199 do
@@ -176,11 +176,12 @@ return function(h: Harness)
 			end
 		end
 		h.ok((counts[1].rocket_rush or 0) == 0 and (counts[1].storm_bolt or 0) == 0, "the leader never rolls Rocket Rush or Storm Bolt")
+		h.ok((counts[1].ink_splat or 0) == 0, "v38: the leader never rolls Ink Splat (nobody ahead)")
 		for rank = 1, 5 do
 			h.ok((counts[rank].rocket_rush or 0) == 0, "Rocket Rush is back-of-pack only (rank " .. rank .. ")")
 		end
 		h.ok((counts[8].rocket_rush or 0) > 0, "last place can roll Rocket Rush")
-		h.ok((counts[1].bubble_guard or 0) > (counts[8].bubble_guard or 0), "Bubble Guard leans to the front")
+		h.ok((counts[1].coin_pouch or 0) > (counts[8].coin_pouch or 0), "v38: Coin Pouch leans to the front")
 		-- nil pool: exactly the old behaviour
 		for rank = 1, 8 do
 			for i = 0, 49 do
@@ -479,7 +480,21 @@ return function(h: Harness)
 				end
 				return false
 			end,
+			-- v38 Item Steal
+			holdsStealable = function(id: string): boolean
+				return w.held[id] ~= nil
+			end,
+			steal = function(thief: string, victim: string): string?
+				local x = w.held[victim]
+				if not x then
+					return nil
+				end
+				w.held[victim] = nil
+				w.held[thief] = x
+				return x
+			end,
 		}
+		w.held = {}
 		w.engine = ItemEffects.new(ctx :: any)
 		function w.run(seconds: number)
 			for _ = 1, math.floor(seconds * 30 + 0.5) do
@@ -515,7 +530,8 @@ return function(h: Harness)
 			return nil
 		end
 		function w.use(id: string, kind: string, level: number)
-			w.engine.hooks.special(id, kind, ItemRules.SPECIAL[kind][level], level)
+			local p = if kind == "horn" then ItemRules.PARAMS.horn[level] else ItemRules.SPECIAL[kind][level]
+			w.engine.hooks.special(id, kind, p, level)
 		end
 		return w
 	end
@@ -527,8 +543,8 @@ return function(h: Harness)
 		w.add("rival", -6)
 		w.use("me", "rocket_rush", 2)
 		local b = w.payload("me", "boost")
-		h.ok(b ~= nil and b.speed == 195 and b.auto > 0 and b.item == "rocket_rush", "the boost carries its autopilot")
-		h.eq(w.guards[1], "me:4.0", "invulnerable for the whole rocket (far behind P1)")
+		h.ok(b ~= nil and b.speed == 215 and b.auto > 0 and b.item == "rocket_rush", "the boost carries its autopilot")
+		h.eq(w.guards[1], "me:4.5", "invulnerable for the whole rocket (far behind P1)")
 		w.run(0.1)
 		h.ok(w.has("rival:hit"), "a rival in the way is shoved (spins)")
 		-- near the leader it is cut short
@@ -537,7 +553,7 @@ return function(h: Harness)
 		w2.add("me", 0)
 		w2.use("me", "rocket_rush", 3)
 		local b2 = w2.payload("me", "boost")
-		h.ok(b2.seconds < 5 and b2.seconds >= ItemRules.ROCKET.minSeconds, "never carries the racer far past P1: " .. b2.seconds)
+		h.ok(b2.seconds < 5.5 and b2.seconds >= ItemRules.ROCKET.minSeconds, "never carries the racer far past P1: " .. b2.seconds)
 		h.ok(b2.auto <= b2.seconds - 1 + 1e-6, "level three hands the wheel back for the last second")
 	end)
 
@@ -547,7 +563,7 @@ return function(h: Harness)
 		w.add("rival", -5)
 		w.use("me", "golden_wings", 3)
 		local b = w.payload("me", "boost")
-		h.ok(b.factor == 1.15 and b.seconds == 7, "cruise factor boost")
+		h.ok(b.factor == 1.30 and b.seconds == 8, "cruise factor boost")
 		h.ok(w.shielded.me > w.t, "guarded")
 		w.run(0.2)
 		local hits = 0
@@ -640,13 +656,122 @@ return function(h: Harness)
 		h.eq(#w5.fxNamed("stormCloud"), 1, "the leader's bolt hunts the next racer instead")
 	end)
 
+	-- v38 (owner 2026-11-10: no passive shields, not every item a missile): the new verbs.
+	h.test("v38 Horn: spins racers in its ring, clears traps in reach, breaks a Storm Bolt inside its warning", function()
+		local w = world({ "me", "close", "far" })
+		w.add("me", 0)
+		w.add("close", 10)
+		w.add("far", 200)
+		w.engine.hooks.spawnTrap("close", ItemRules.PARAMS.trap[2], 2) -- dropped 14 behind "close": right at "me"
+		local _, trapsBefore = w.engine.counts()
+		h.ok(trapsBefore == 1, "a trap is down")
+		w.use("me", "horn", 1)
+		h.ok(w.has("close:hit"), "a racer inside the ring spins")
+		h.ok(not w.has("far:hit"), "a racer outside it does not")
+		local _, trapsAfter = w.engine.counts()
+		h.eq(trapsAfter, 0, "the trap in reach is destroyed")
+		h.eq(#w.fxNamed("horn"), 1, "everyone sees the shockwave")
+		-- Storm Bolt: a horn after the siren breaks it; before the siren it does not count
+		local w2 = world({ "me", "x" })
+		w2.add("me", -500)
+		w2.add("x", 0)
+		w2.use("x", "storm_bolt", 1)
+		w2.run(2.2)
+		h.ok(w2.has("me:stormWarn"), "the siren sounded")
+		w2.use("me", "horn", 1)
+		w2.run(2.5)
+		h.ok(not w2.has("me:hit"), "a horn inside the warning breaks the bolt")
+		local w3 = world({ "me", "x" })
+		w3.add("me", -500)
+		w3.add("x", 0)
+		w3.use("x", "storm_bolt", 1)
+		w3.run(0.5)
+		w3.use("me", "horn", 1)
+		w3.run(4)
+		h.ok(w3.has("me:hit"), "a horn long before the siren is wasted")
+	end)
+
+	h.test("v38 Storm Bolt: an item boost inside the warning outruns it", function()
+		local w = world({ "lead", "me" })
+		w.add("lead", -500)
+		w.add("me", 0)
+		w.use("me", "storm_bolt", 1)
+		w.run(2.3)
+		w.engine.hooks.applyBoost("lead", ItemRules.PARAMS.boost[1], 1)
+		w.run(2)
+		h.ok(not w.has("lead:hit"), "the boost outran the strike")
+		local d = w.fxNamed("dodge")
+		h.ok(#d == 1 and d[1].how == "boost", "a dodge by boost")
+	end)
+
+	h.test("v38 Ink Splat: everyone ahead is inked (players on screen, bots slowed); nobody behind", function()
+		local w = world({ "a", "b", "me", "c" })
+		w.add("a", -300)
+		w.add("b", -200, 2)
+		w.add("me", 0)
+		w.add("c", 100)
+		w.use("me", "ink_splat", 2)
+		h.ok(w.has("a:ink"), "the player ahead gets ink")
+		h.eq(w.payload("a", "ink").seconds, ItemRules.SPECIAL.ink_splat[2].seconds)
+		h.ok(w.has("bot2:slow"), "the bot ahead drives slow and loose")
+		h.ok(not w.has("c:ink") and not w.has("me:ink"), "nobody behind, never the user")
+	end)
+
+	h.test("v38 Item Steal: takes the nearest held item ahead (level 2: the furthest ahead); nothing to take = coins", function()
+		local w = world({ "a", "b", "me" })
+		w.add("a", -300)
+		w.add("b", -100)
+		w.add("me", 0)
+		w.held.a = "storm_bolt:1"
+		w.held.b = "red:2"
+		w.use("me", "item_steal", 1)
+		h.eq(w.held.me, "red:2", "level one robs the nearest holder ahead")
+		h.eq(w.held.b, nil)
+		w.held.me = nil
+		w.use("me", "item_steal", 2)
+		h.eq(w.held.me, "storm_bolt:1", "level two robs the furthest ahead")
+		local w2 = world({ "a", "me" })
+		w2.add("a", -100)
+		w2.add("me", 0)
+		w2.use("me", "item_steal", 1)
+		h.ok(w2.has("me:coins"), "nobody holding anything: coins instead")
+	end)
+
+	h.test("v38 Coin Pouch: coins into the user's count and a short kick", function()
+		local w = world({ "me" })
+		w.add("me", 0)
+		w.use("me", "coin_pouch", 3)
+		h.eq(w.payload("me", "coins").count, 7)
+		h.ok(w.has("me:boost"), "a short kick")
+	end)
+
+	h.test("v38 roster: two projectiles at most among the live items; no live item grants a shield", function()
+		local projectiles = 0
+		for _, id in ItemRules.LIVE_COLORS do
+			local e = ItemRules.effectFor(id, 1)
+			h.ok(e.shield == nil, id .. " grants no shield")
+			if e.missile then
+				projectiles += 1
+			end
+		end
+		for _, id in ItemRules.LIVE_SPECIALS do
+			h.ok(id ~= "bubble_guard" and id ~= "frost_shot" and id ~= "coin_burst", id .. " is live")
+			if id == "orbit_missiles" then
+				projectiles += 1
+			end
+		end
+		h.eq(projectiles, 2, "missile and orbit missiles are the only shots")
+		h.eq(ItemRules.chargesFor("blue", 3), 3, "a level-three boost is three taps")
+		h.eq(ItemRules.KIND_OF.yellow, "horn")
+	end)
+
 	h.test("Boom Bomb: lands ahead, blows after its fuse, stuns inside the radius only; level three leaves a patch", function()
 		local w = world({ "far", "inside", "me" })
 		w.add("far", -100)
 		w.add("inside", -66)
 		w.add("me", 0)
 		w.use("me", "boom_bomb", 3)
-		w.run(1.9)
+		w.run(1.5)
 		h.ok(not w.has("inside:hit"), "the fuse burns first")
 		w.run(0.2)
 		h.ok(w.has("inside:hit"), "the blast catches a racer inside the radius")
@@ -664,9 +789,9 @@ return function(h: Harness)
 		w.use("me", "frost_shot", 1)
 		w.run(0.6)
 		h.ok(w.has("target:slow"), "slowed")
-		h.ok(not w.has("target:hit"), "level one: no spin")
+		h.ok(w.has("target:hit"), "v37: level one freezes too")
 		local p = w.payload("target", "slow")
-		h.ok(p.factor == 0.6 and p.seconds == 2, "40 percent for 2 s")
+		h.ok(p.factor == 0.6 and p.seconds == ItemRules.SLOW.maxSeconds, "40 percent, freeze + 2.5 s capped at the slow cap: " .. tostring(p.seconds))
 		local w2 = world({ "target", "me" })
 		w2.add("target", -60)
 		w2.add("me", 0)

@@ -23,6 +23,7 @@ def main():
     lane.sync(["win"])
     lane.play(True)
     time.sleep(18)
+    print("clear_qa:", lane.clear_qa())  # V4-1: no AutoPilot/QA steering left over from an earlier run
     pc_out = f"{lane.PCWIN}\\out\\pilot_{tag}.jsonl"
     proc = subprocess.Popen(["ssh", "-o", "BatchMode=yes", "-i", lane.KEY, lane.HOST,
                              f"node {lane.PCWIN}\\tools\\windows\\key_pilot.js {pc_out} {secs} {assist} {skill}{(' ' + extra) if extra else ''}"],

@@ -26,9 +26,9 @@ These are not proven active runtime inputs or proven disposable duplicates. Reta
 - `builder_dino4.luau` deliberately remains at the root. It is a real input to the DINO author, extractor, route parity fixtures and compiler check, and its path appears in provenance-bearing plans/extracted data. Moving it would require regenerating map plan hashes and compiled map outputs, beyond presentation cleanup. Rojo uses `build/dino4/builder_module.luau`, not this legacy root script.
 - Other `win/` references belong to optional, externally supplied deployment/capture/upload helpers, not tracked files moved here. Their operational protocol was not renamed or claimed to be a shipped end-to-end production workflow.
 
-## Preview gap
+## Trailer
 
-No verified plane-boost or boss-fight recording is included in this release copy. The tracked GIFs are VFX asset previews, not gameplay footage. No gameplay GIF was fabricated, substituted or generated for the README.
+The main README includes the tracked SkyRally gameplay trailer GIF. It shows the game, not an independent recipient's remapped source kit. V2 keeps this existing trailer unchanged.
 
 ## Validation compatibility
 

@@ -1,0 +1,78 @@
+{
+  "bar_blue": {
+    "id": 138512713067485,
+    "sha256": "744ae1bd365d292cd361c1d8948e678b4f85bf06055922c7cf6c19ae84b2412a"
+  },
+  "bar_danger": {
+    "id": 88354274182287,
+    "sha256": "c64ac1f254c8944337348706e9101bd8cbd969730f49f2b4977240851cbb63fe"
+  },
+  "bar_dark": {
+    "id": 104759489026409,
+    "sha256": "37fb3a521bdc4973aafb1852eeacc436a5f0537be2250cb6ce71967decc7a364"
+  },
+  "bar_light": {
+    "id": 123318017111751,
+    "sha256": "946d50e941f22e1b995a840ba0ed5b41f2b0219afa8a5c7fb49a9f3a3851cb95"
+  },
+  "bar_lime": {
+    "id": 110871403800180,
+    "sha256": "22b734d7cc9ac16479296b8638cd1a304176de1021a013de3789449a2621e3d0"
+  },
+  "bar_yellow": {
+    "id": 91914250860066,
+    "sha256": "443e8b4182b0d6c468f4e53731fced1b8c2db83e42156897bbb8ea7fce1b5daa"
+  },
+  "chip_blue": {
+    "id": 112509680128593,
+    "sha256": "98dcc7a093ea7bfe5f65d6db6a2d9717f256ef01caed8fabf8a7a5758a147716"
+  },
+  "chip_dark": {
+    "id": 121678070042721,
+    "sha256": "8064a9a306ac01056a0a35b2e8eba7dc7462e37af14b7d8d121a6e5e88a03dff"
+  },
+  "cursor_tri": {
+    "id": 135034275520304,
+    "sha256": "cde67792a86225d0a1409a579e979d5b71f0a0006309034867af248bc9291a1c"
+  },
+  "frame_blue": {
+    "id": 137883766773530,
+    "sha256": "347a0e58611a3e6f2f2aaeac62f1da8e562471f950d93f81bb45086f075b800c"
+  },
+  "frame_danger": {
+    "id": 120561981645423,
+    "sha256": "8edd9b4bc2f45b1f8a7697742d20e43269edab48b13e81d9baa2acc7e0a9769a"
+  },
+  "frame_dark": {
+    "id": 109504459472702,
+    "sha256": "f7b9b543f7cd8f40645a35f597a4de1e9b6798f007c49c458924bd01f7be1289"
+  },
+  "frame_light": {
+    "id": 111114319060020,
+    "sha256": "6d78217da37a68ec9f9427d84e42f54c9e435da7f3da630b954acbff8ab6f5ce"
+  },
+  "frame_lime": {
+    "id": 106689197082173,
+    "sha256": "9caabcb7a4d0ee9f5999fcf03029dd2b4706c1fbcd8a9aa8c9ceefdbdecc8543"
+  },
+  "frame_yellow": {
+    "id": 72788931089327,
+    "sha256": "a2869aff3f89d6816ff39b730dc99d508d5cda21046c54f74d1a101ce7c68f2e"
+  },
+  "stripe_tile": {
+    "id": 73170844219815,
+    "sha256": "ebfec7302590e2c98c43b4dc9d12074fb6fb0066cdf5dc5354d7fa7627626fdf"
+  },
+  "tab_dark": {
+    "id": 116185865299468,
+    "sha256": "ae94af01d571fde64f9d4fcd70263d36849218d56b0814ccf1c0a6432b272ab1"
+  },
+  "tab_light": {
+    "id": 134788326908983,
+    "sha256": "62e19eda8ac464993511f8c4eb0bcfb458d3565a4e6c8e969a90499459a46f1c"
+  },
+  "tab_yellow": {
+    "id": 98225292703252,
+    "sha256": "cf654fa86edfbe798fb903a28fabbd735b1722766ce5f5e261f082092cb593f1"
+  }
+}

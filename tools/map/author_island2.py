@@ -219,6 +219,7 @@ CLIFF_RING_LIFT = 8.0  # ring centre over the ground along the surface normal (t
 CLIFF_STEP = 16.0  # polyline spacing
 CLIFF_SINK = 2.0  # line height under the grid surface: the stranded test measures from it, so a low reading is the safe side
 CLIFF_PAD = {"name": "GroundBoost_CliffEntry", "station": 50.0, "lateral": 31.0}  # on the line, beyond the road edge
+CLIFF_PAD_CLEAR = 160.0  # v37: the pad's horizontal distance from the front grid row (station 20)
 
 
 # ------------------------------------------------------------------------------------------------ small helpers
@@ -1184,11 +1185,51 @@ def prefab_cliff_chevron() -> dict:
     # v28 critic 1.23: two stakes from the board down into the slope (boards on the climb face read as floating);
     # both reach 9 studs under the site ground, so the downhill one still meets the face
     P = [part("B", (sx, -0.5, -0.2), (0.9, 17.0, 0.9), (0, 0, 0), WOOD_DARK, "Wood", nc=True) for sx in (-4.2, 4.2)]
+    # v37: the amber trim runs along the board's top edge (at the centre line it crossed both chevrons into an "A")
     P += [part("B", (0, 11.0, 0), (13.0, 11.0, 0.7), (0, 0, 0), CLIFF_NAVY, "SmoothPlastic", nc=True),
-         part("B", (0, 11.0, 0.45), (13.8, 0.7, 0.4), (0, 0, 0), CLIFF_AMBER, "Neon", nc=True)]
+         part("B", (0, 16.5, 0.45), (13.8, 0.7, 0.4), (0, 0, 0), CLIFF_AMBER, "Neon", nc=True)]
     for k, y0 in enumerate((8.4, 12.2)):
         for sgn in (-1, 1):  # arm centre 2.3 either side of the apex, 45 deg, 5.4 long
             P.append(part("B", (sgn * 2.3, y0, 0.5), (5.4, 1.5, 0.4), (0, 0, -sgn * 45), CLIFF_AMBER, "Neon", nc=True))
+    return {"parts": P}
+
+
+TURN_BOARD_DEG = 60.0  # heading change over +-100 studs that earns turn boards (ISLAND-2: only the st 4090 bend)
+TURN_BOARD_SEAT = 1.5  # the baked voxel ground stands 1.1-1.6 over terrain.height (v37 Studio)
+
+
+def sharp_turns(fr, length: float, min_deg: float, span: float = 100.0, step: float = 10.0) -> list[tuple[float, int]]:
+    """(apex station, +1 right-hand / -1 left-hand) of every bend turning at least min_deg within +-span."""
+    def heading(s: float) -> float:
+        t = fr(s % length).tangent
+        return math.atan2(t[0], -t[2])
+    out, cur = [], []
+    s = 0.0
+    while s <= length:
+        d = math.degrees((heading(s + span) - heading(s - span) + math.pi) % (2 * math.pi) - math.pi)
+        if abs(d) >= min_deg:
+            cur.append((s, d))
+        elif cur:
+            s_b, d_b = max(cur, key=lambda r: abs(r[1]))
+            if out and s_b - out[-1][0] < span * 1.5 and (d_b > 0) == (out[-1][1] > 0):
+                if abs(d_b) > abs(out[-1][2]):  # one bend dipping under the threshold is still one bend
+                    out[-1] = (s_b, 1 if d_b > 0 else -1, d_b)
+            else:
+                out.append((s_b, 1 if d_b > 0 else -1, d_b))
+            cur = []
+        s += step
+    return [(r1(a), b) for a, b, _ in out]
+
+
+def prefab_turn_board(sgn: int) -> dict:
+    """Turn sign on two posts: navy board, three amber chevrons pointing +X (sgn 1, a right-hand bend) or -X, face +Z
+    (the driver, who comes from +Z). A bar long in x rolled rz runs along (cos rz, sin rz) in (x, y)."""
+    P = [part("B", (sx, 1.5, -0.2), (0.7, 12.0, 0.7), (0, 0, 0), WOOD_DARK, "Wood", nc=True) for sx in (-3.9, 3.9)]
+    P.append(part("B", (0, 6.6, 0), (10.0, 4.6, 0.6), (0, 0, 0), CLIFF_NAVY, "SmoothPlastic", nc=True))
+    for tx in (-2.6, 0.2, 3.0):
+        for up in (1, -1):  # upper arm runs down to the tip, lower arm up to it
+            P.append(part("B", (sgn * (tx - 1.15), 6.6 + up * 1.15, 0.45), (3.3, 0.9, 0.3), (0, 0, -sgn * up * 45),
+                          CLIFF_AMBER, "Neon", nc=True))
     return {"parts": P}
 
 
@@ -1205,10 +1246,12 @@ def prefab_cliff_banner() -> dict:
 
 
 def prefab_cliff_arrow() -> dict:
-    """Flat chevron lying on the ground, apex towards -Z (the direction of travel), 0.3 thick."""
+    """Flat chevron lying on the ground, apex towards -Z (the direction of travel), 0.3 thick.
+    v37: a bar long in x yawed ry runs along (cos ry, -sin ry) in (x, z), so the right arm (x > 0) takes ry < 0 to reach
+    the apex at the front; it had +45 and every ground chevron on the cliff line pointed back at the driver."""
     P = []
     for sgn in (-1, 1):
-        P.append(part("B", (sgn * 2.6, 0.2, -0.9), (7.2, 0.3, 1.8), (0, sgn * 45, 0), CLIFF_AMBER, "Neon", nc=True))
+        P.append(part("B", (sgn * 2.6, 0.2, -0.9), (7.2, 0.3, 1.8), (0, -sgn * 45, 0), CLIFF_AMBER, "Neon", nc=True))
     return {"parts": P}
 
 
@@ -2079,11 +2122,14 @@ def main() -> None:
                 d = cliff_dir(i)
                 place("CliffBanner", [q[0], q[1] - 0.5, q[2]], "Coast", yaw_of((d[0], 0.0, d[1])))
                 cliff_tell["banners"] += 1
+    # v37 Studio: the baked voxel ground (and the paver ribbon at the join) stands 1.1-1.6 over terrain.height, so at +0.4
+    # 19 of the 20 ground chevrons were buried; +2.1 puts them 0.1-0.6 proud of the surface
+    ARROW_LIFT = 2.1
     for i in list(range(1, 10)) + [12, 15, 18, 21, 24]:  # ground chevrons, the line itself
         q = cliff_site(i, 0.0)
         if q:
             d = cliff_dir(i)
-            place("CliffArrow", [q[0], q[1] + 0.4, q[2]], "Coast", yaw_of((d[0], 0.0, d[1])))
+            place("CliffArrow", [q[0], q[1] + ARROW_LIFT, q[2]], "Coast", yaw_of((d[0], 0.0, d[1])))
             cliff_tell["arrows"] += 1
     # exit tell: ground chevrons along the run-out on the inland plain, pointing along the road the line merges into (only
     # where the line is still off the deck, so nothing lies on the road surface)
@@ -2094,7 +2140,7 @@ def main() -> None:
             q = cliff_site(i, 0.0)
             if q:
                 d = cliff_dir(i)
-                place("CliffArrow", [q[0], q[1] + 0.4, q[2]], "Coast", yaw_of((d[0], 0.0, d[1])))
+                place("CliffArrow", [q[0], q[1] + ARROW_LIFT, q[2]], "Coast", yaw_of((d[0], 0.0, d[1])))
                 cliff_tell["exitArrows"] += 1
     for i in (4, 7, 10, 13, 34, 37, 40, 43, 46, 49, 52, 58, 62, 66):  # boards both sides: entry, face, crest, descent
         for lat in (-14.0, 14.0):
@@ -2104,6 +2150,22 @@ def main() -> None:
                 place("CliffChevron", [q[0], q[1] - 1.5, q[2]], "Coast", yaw_of((d[0], 0.0, d[1])))
                 cliff_tell["boards"] += 1
     alt_np = np.vstack([np.array([[p[0] - ORIGIN[0], p[2] - ORIGIN[2]] for p in alt_pts]), cliff_np])
+    # v37 turn boards (Mario Kart rule: on the outside of a bend, facing the driver, chevrons pointing the way the road
+    # turns). Only the lap's sharpest bend (about 90 degrees inside 200 studs, the min radius) gets them: the others read.
+    prefabs["TurnBoardR"] = prefab_turn_board(1)
+    prefabs["TurnBoardL"] = prefab_turn_board(-1)
+    turn_boards = []
+    for s_t, sgn_t in sharp_turns(fr, route.length, TURN_BOARD_DEG):
+        for along in (-55.0, 0.0, 55.0):
+            f_t = fr((s_t + along) % route.length)
+            lat_t = -sgn_t * (DECK_WIDTH / 2 + 10.0)  # the outside: left of a right-hand bend
+            q = f_t.offset(lat_t, 0.0)
+            g = terrain.height(q[0] - ORIGIN[0], q[2] - ORIGIN[2])
+            if g < 1.8:
+                continue  # never on the water
+            place("TurnBoardR" if sgn_t > 0 else "TurnBoardL", [q[0], g + SEA + TURN_BOARD_SEAT, q[2]], "Coast",
+                  yaw_of(f_t.tangent))
+            turn_boards.append(round(s_t + along, 1))
 
     # lagoon dock, rowboats, buoys, crates
     prefabs["LagoonDock"] = prefab_dock()
@@ -2266,6 +2328,31 @@ def main() -> None:
             {"name": "GroundBoost_JumpRunup", "station": round(st[15] - 60, 1), "lateral": 0},
             {"name": "GroundBoost_BridgeApproach", "station": round(s_bridge_from - 90, 1), "lateral": 0},
             dict(CLIFF_PAD)]
+    # v37: the pad stood ~43 studs from the front grid row (a free boost at GO for anyone steering right). It now sits
+    # on the cliff line at its first point CLIFF_PAD_CLEAR studs (horizontal) from the front row, projected back onto the
+    # route frame (station + lateral) the adapter places pads by.
+    g0 = fr(20.0).pos
+    for q in cliff_pts:
+        if math.hypot(q[0] - g0[0], q[2] - g0[2]) >= CLIFF_PAD_CLEAR:
+            best_s, best_d = 0.0, None
+            s_ = 0.0
+            while s_ < 600.0:
+                f_ = fr(s_)
+                d_ = (q[0] - f_.pos[0]) ** 2 + (q[2] - f_.pos[2]) ** 2
+                if best_d is None or d_ < best_d:
+                    best_s, best_d = s_, d_
+                s_ += 0.5
+            f_ = fr(best_s)
+            pads[-1]["station"] = round(best_s, 1)
+            pads[-1]["lateral"] = round((q[0] - f_.pos[0]) * f_.right[0] + (q[2] - f_.pos[2]) * f_.right[2], 1)
+            break
+    CLIFF_PAD.update(station=pads[-1]["station"], lateral=pads[-1]["lateral"])
+    # v37: the cliff-entry pad lies on the Alt2 line, which leaves the road at about 80 degrees, so it faces the line's
+    # own direction there (the main tangent made its chevrons point across the line)
+    cp = fr(CLIFF_PAD["station"]).offset(CLIFF_PAD["lateral"], 0.0)
+    ci = int(np.argmin(np.hypot(cliff_np[:, 0] - (cp[0] - ORIGIN[0]), cliff_np[:, 1] - (cp[2] - ORIGIN[2]))))
+    cd = cliff_dir(ci)
+    pads[-1]["facing"] = [r3(float(cd[0])), 0.0, r3(float(cd[1]))]
     lip = max((w for w in route.waypoints if st[15] - 5 <= w.station <= st[17] + 5), key=lambda w: w.pos[1]).station
     # Item cubes v3 (docs/design/ITEM_BOXES.md; rules in tools/map/item_cubes.json): 7 staggered sets of 5 mystery
     # cubes (front rank +-8, back rank -16/0/+16 32 studs on) every 540-700 studs (v1 had 4 rows ~1300 apart). Fixed
@@ -3077,6 +3164,7 @@ def main() -> None:
                 "seaFrame": list(SEA_FRAME),
                 "cliffLine": {**cliff_rep, "join": CLIFF_JOIN, "rejoin": CLIFF_REJOIN, "tell": cliff_tell,
                               "mainStretch": r1(CLIFF_REJOIN - CLIFF_JOIN)},
+                "turnBoards": turn_boards,
                 "palms": len(palms), "huts": len(huts), "parapets": parapet_count, "tikiTorchStations": len(torch_stations),
                 "seeds": {"palms": 4242, "noise": [3, 5, 11], "sky": 20261018},
             },

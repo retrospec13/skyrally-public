@@ -109,8 +109,12 @@ local function applyMode(mode: Mode, showHint: boolean)
 		chip.Position = UDim2.fromOffset(rect.x, rect.y)
 		chip.Size = UDim2.fromOffset(rect.w, rect.h)
 		chip.Text = HINTS[mode]
-		chip.BackgroundTransparency = 0.35
+		chip.BackgroundTransparency = 0.3
 		chip.TextTransparency = 0
+		local cs = chip:FindFirstChildOfClass("UIStroke")
+		if cs then
+			cs.Transparency = 0
+		end
 		chip.Visible = true
 		-- L27: the clock starts when the loading screen (display order 1000) leaves, not at join.
 		task.spawn(function()
@@ -124,6 +128,10 @@ local function applyMode(mode: Mode, showHint: boolean)
 			end
 			local info = TweenInfo.new(HINT_FADE_S)
 			TweenService:Create(chip, info, { BackgroundTransparency = 1, TextTransparency = 1 }):Play()
+			local fs = chip:FindFirstChildOfClass("UIStroke")
+			if fs then
+				TweenService:Create(fs, info, { Transparency = 1 }):Play()
+			end
 			task.wait(HINT_FADE_S)
 			if hintToken == my then
 				chip.Visible = false
@@ -142,21 +150,79 @@ function InputMode.init()
 	local t = Instance.new("TextLabel")
 	t.Name = "Hint"
 	t.AnchorPoint = Vector2.zero -- bottom-left corner chip (HudMetrics hintChip), never bottom-centre under the kart
-	t.BackgroundTransparency = 0.35
-	t.BackgroundColor3 = Color3.fromRGB(42, 26, 18)
-	t.TextColor3 = Color3.fromRGB(255, 240, 210)
-	t.Font = Enum.Font.GothamBold
+	-- UI v2 theme: the dark navy inset pill, white rounded-bold text with the ink stroke.
+	t.BackgroundTransparency = 0.3
+	t.BackgroundColor3 = Color3.fromRGB(14, 27, 69)
+	t.TextColor3 = Color3.new(1, 1, 1)
+	local fr = (require(game:GetService("ReplicatedStorage"):WaitForChild("Shared"):WaitForChild("UiSkinRules")) :: any).FONT.body
+	t.FontFace = Font.new(fr.family, (Enum.FontWeight :: any)[fr.weight], (Enum.FontStyle :: any)[fr.style])
 	t.TextScaled = true
 	t.Visible = false
 	local c = Instance.new("UICorner")
-	c.CornerRadius = UDim.new(0, 8)
+	c.CornerRadius = UDim.new(0, 10)
 	c.Parent = t
+	local ts = Instance.new("UIStroke")
+	ts.Color = Color3.fromRGB(11, 21, 51)
+	ts.Thickness = 1.5
+	ts.Parent = t
+	local tp = Instance.new("UIPadding")
+	tp.PaddingLeft = UDim.new(0, 8)
+	tp.PaddingRight = UDim.new(0, 8)
+	tp.PaddingTop = UDim.new(0, 3)
+	tp.PaddingBottom = UDim.new(0, 3)
+	tp.Parent = t
 	local lim = Instance.new("UITextSizeConstraint")
 	lim.MaxTextSize = 16
 	lim.Parent = t
 	t.Parent = sg
 	sg.Parent = lp:WaitForChild("PlayerGui")
 	hintLabel = t
+	-- UI v2: a full panel (course select, Garage, Settings, a modal, the vendor) is up: the hint steps aside (it sat over
+	-- the mode tiles on a phone). The LocalPlayer attribute UiOverlayOpen tells other HUD chips the same.
+	local OVERLAYS = { "AdventureBoard", "GaragePanel", "SettingsPanel", "NotifyModal", "StormVendorPanel" }
+	local found: { [string]: GuiObject } = {}
+	local function shown(g: GuiObject): boolean
+		local a: Instance? = g
+		while a and a ~= lp.PlayerGui do
+			if a:IsA("GuiObject") and not a.Visible then
+				return false
+			end
+			if a:IsA("ScreenGui") and not a.Enabled then
+				return false
+			end
+			a = a.Parent
+		end
+		return a ~= nil
+	end
+	task.spawn(function()
+		local pg = lp:WaitForChild("PlayerGui")
+		local scanAt = 0
+		while sg.Parent do
+			local now = os.clock()
+			if now - scanAt > 2 then
+				scanAt = now
+				for _, n in OVERLAYS do
+					local cur = found[n]
+					if not cur or not cur:IsDescendantOf(pg) then
+						local f = pg:FindFirstChild(n, true)
+						found[n] = if f and f:IsA("GuiObject") then f else nil
+					end
+				end
+			end
+			local open = false
+			for _, g in found do
+				if g.Parent and shown(g) then
+					open = true
+					break
+				end
+			end
+			if lp:GetAttribute("UiOverlayOpen") ~= open then
+				lp:SetAttribute("UiOverlayOpen", open)
+			end
+			sg.Enabled = not open
+			task.wait(0.2)
+		end
+	end)
 	HudMetrics.onChanged(function()
 		local rect = HudMetrics.rects().hintChip
 		if rect then

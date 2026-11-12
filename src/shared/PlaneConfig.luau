@@ -107,6 +107,8 @@ PlaneConfig.CAM_HEIGHT = 4.5
 PlaneConfig.CAM_BANK_FACTOR = 0.32
 PlaneConfig.CAM_BASE_FOV = 65
 PlaneConfig.CAM_BOOST_FOV = 73
+PlaneConfig.CAM_OVERCHARGE_FOV = 77 -- v38-feel: an Overcharge boost reads wider than a ring
+PlaneConfig.CAM_FOV_EASE_BACK = 2.6 -- (1/s) the boost FOV eases back over ~1 s (widening stays at 9/s)
 -- Turn lead (C5): the look point swings into the turn by the yaw rate times CAM_TURN_LEAD_S (capped), so the bend's
 -- exit is on screen while turning; the camera position and the framing lock (FOV, distance) are unchanged. Eased at
 -- CAM_LEAD_LERP 1/s so a flick does not whip the view. At 75 deg/s: 12 deg of lead.
@@ -298,6 +300,10 @@ PlaneConfig.AI_ITEMS = {
 	bombMinAhead = 35,
 	bombMaxAhead = 95,
 	shotMaxAhead = 110,
+	-- v38: the horn spins a rival this near (its ring is 18-30); Item Steal waits this long (a pickup then a theft read
+	-- as two moments).
+	hornReach = 16,
+	stealDelay = 1.5,
 }
 
 -- Bot reaction to a missile/trap hit (ItemService.setBotHitHandler): speed cut, brake rate and barrel-roll spin.

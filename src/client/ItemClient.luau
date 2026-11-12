@@ -43,7 +43,7 @@
 -- REMARKABLE Batch 2 (items 14, 18, 19; sounds, HUD and soot in client/ItemJuice, world text in client/RivalBubbles):
 -- "IncomingItem" -> beeps + the INCOMING badge, DODGED! when the shot misses; an item hit on this player is a hit
 -- knock (plus circling birdies) instead of the crash thud, and every hit vehicle goes sooty for a
--- few seconds (Highlight overlay); "ItemGrudge" -> GOT <NAME>! / <NAME> GOT YOU! / REVENGE! and the GET EVEN! tag over
+-- few seconds (Highlight overlay); "ItemGrudge" -> HIT <NAME> / HIT BY <NAME> / EVEN <NAME> and the PAYBACK tag over
 -- whoever hit you; "BotTaunt" -> a bot's speech bubble. A homing shot locked on this player blinks with the beeps.
 -- Magnet v2 (client/MagnetAim): a held Rainbow item aims at the closest racer (reticle + range readout + particle
 -- tether, holder only); a press with nobody in range still spends it (server pulse); the server's "magnet" lock and the vehicle's
@@ -74,12 +74,16 @@ local RivalBubbles = require(script.Parent:WaitForChild("RivalBubbles"))
 local TrickJuice = require(script.Parent:WaitForChild("TrickJuice"))
 local Settings = require(script.Parent:WaitForChild("Settings"))
 local ItemFxRules = require(Shared:WaitForChild("ItemFxRules"))
+local Sfx37 = require(script.Parent:WaitForChild("Sfx37"))
 local ItemsV4Fx = require(script.Parent:WaitForChild("ItemsV4Fx")) -- items v4 look (rocket, storm, bomb, coins, rings)
+local ItemShow = require(script.Parent:WaitForChild("ItemShow")) -- v37 spectacle (lightning, comet, frost, screen payoff)
+local ItemsV5Fx = require(script.Parent:WaitForChild("ItemsV5Fx")) -- v38 verbs: horn ring, ink, steal, coin pouch
 local PodLocal = require(script.Parent:WaitForChild("PodLocal"))
 local MagnetAim = require(script.Parent:WaitForChild("MagnetAim"))
 local RespawnRules = require(Shared:WaitForChild("RespawnRules"))
 local MissileRules = require(Shared:WaitForChild("MissileRules"))
 local NotifyKit = require(script.Parent:WaitForChild("NotifyKit"))
+local UiSkin = require(script.Parent:WaitForChild("UiSkin")) -- uifix: the hit banner icon
 
 local LocalPlayer = Players.LocalPlayer
 
@@ -324,6 +328,30 @@ local BURSTS: { [string]: { Burst } } = {
 			size = ns({ { 0, 1.3 }, { 1, 0.1 } }), transparency = ns({ { 0, 0 }, { 1, 1 } }), color = ColorSequence.new(CREAM, rgb(ItemRules.COLOR_RGB.rainbow)),
 			light = 1, orient = Enum.ParticleOrientation.VelocityParallel },
 	},
+	-- v37 (client/ItemShow): a wide shock ring that reads from 100+ studs (bomb, far missile hits, reflects).
+	bigRing = {
+		ring(34, 0.55, ColorSequence.new(CREAM, ORANGE)),
+		ring(20, 0.4, ColorSequence.new(Color3.new(1, 1, 1), CREAM)),
+	},
+	-- v37: a lightning strike's ground crackle: violet arcs and white-hot sparks thrown off the impact.
+	stormSparks = {
+		{ tex = "electric_arc_4x4", count = 5, lifetime = NumberRange.new(0.15, 0.3), speed = NumberRange.new(0, 4), spread = Vector2.new(180, 180),
+			size = ns({ { 0, 9 }, { 1, 6 } }), transparency = ns({ { 0, 0 }, { 1, 0.6 } }), color = ColorSequence.new(Color3.fromRGB(230, 220, 255)),
+			light = 1, rotation = NumberRange.new(0, 360), keepColor = true },
+		{ tex = "spark_streak", count = 26, lifetime = NumberRange.new(0.3, 0.6), speed = NumberRange.new(50, 110), spread = Vector2.new(80, 80),
+			size = ns({ { 0, 1.8 }, { 1, 0.1 } }), transparency = ns({ { 0, 0 }, { 1, 1 } }), color = ColorSequence.new(Color3.new(1, 1, 1), Color3.fromRGB(196, 170, 255)),
+			light = 1, accel = Vector3.new(0, -90, 0), drag = 1.2, orient = Enum.ParticleOrientation.VelocityParallel, dir = Enum.NormalId.Top, keepColor = true },
+	},
+	-- v37: Frost Shot landing: a burst of snow and ice shards off the victim.
+	frostShards = {
+		{ tex = "snow_burst_4x4", count = 2, lifetime = NumberRange.new(0.5, 0.7), speed = NumberRange.new(0, 3), spread = Vector2.new(180, 180),
+			size = ns({ { 0, 9 }, { 1, 12 } }), transparency = ns({ { 0, 0 }, { 1, 0.4 } }), color = ColorSequence.new(Color3.new(1, 1, 1), Color3.fromRGB(170, 232, 255)),
+			light = 0.6, rotation = NumberRange.new(0, 360), keepColor = true, fbSize = ns({ { 0, 4 }, { 1, 9 } }) },
+		{ tex = "debris_shard", count = 16, lifetime = NumberRange.new(0.5, 0.9), speed = NumberRange.new(25, 55), spread = Vector2.new(180, 180),
+			size = ns({ { 0, 1.1 }, { 1, 0.6 } }), transparency = ns({ { 0, 0 }, { 0.8, 0.1 }, { 1, 1 } }), color = ColorSequence.new(Color3.fromRGB(210, 245, 255), Color3.fromRGB(140, 210, 255)),
+			light = 0.8, accel = Vector3.new(0, -100, 0), rotation = NumberRange.new(0, 360), rotSpeed = NumberRange.new(-400, 400), keepColor = true },
+		ring(16, 0.4, ColorSequence.new(Color3.new(1, 1, 1), Color3.fromRGB(170, 232, 255))),
+	},
 }
 
 -- The local victim's own blast: no flash layer, a thinner fireball and fewer sparks, so being hit never whites out the view.
@@ -516,6 +544,14 @@ end
 
 local missiles: { [BasePart]: BasePart } = {} -- server part -> local smoothed copy
 local missileRoll: { [BasePart]: number } = {} -- local mesh copy -> roll about its flight axis (radians)
+-- v37 (owner: "missiles are being shot out the wrong direction"): my own shot's server body trails my client hull by the
+-- network lag, so it appeared behind my tail and crept forward. Its copy starts at my nose and the offset fades out
+-- (missileLead); every copy leads its smoothed pose by the server body's velocity so the easing never drags it back.
+type MissileLead = { offset: Vector3, t0: number }
+local missileLead: { [BasePart]: MissileLead } = {}
+local missileVel: { [BasePart]: { pos: Vector3, vel: Vector3, t: number } } = {}
+local MISSILE_LEAD_FADE = 0.45
+local MISSILE_EASE = 22
 local lockedOnMe: { [BasePart]: PointLight } = {} -- local copy -> its light, for shots whose Target is this player
 type TrapVis = { model: Model, light: BasePart?, glow: PointLight?, pivot: CFrame, spawnedAt: number, arm: number, phase: number, bob: number, spin: number, embers: ParticleEmitter?, halo: ParticleEmitter?, wasOn: boolean }
 local traps: { [Model]: TrapVis } = {}
@@ -630,11 +666,12 @@ local function makeMissileCopy(server: BasePart): BasePart
 	trail.Attachment0 = front
 	trail.Attachment1 = back
 	trail.Texture = tex("trail_soft")
-	trail.Lifetime = 0.35
+	-- Studio QA (workspace QALongTrails): a 3 s trail draws a shot's whole path in one capture.
+	trail.Lifetime = if RunService:IsStudio() and workspace:GetAttribute("QALongTrails") == true then 3 else 0.5
 	trail.MinLength = 0.1
 	trail.FaceCamera = true
 	trail.LightEmission = 1
-	trail.WidthScale = ns({ { 0, 2.2 }, { 1, 0.4 } })
+	trail.WidthScale = ns({ { 0, 3.4 }, { 1, 0.6 } }) -- v37: thicker, so a shot's path reads from far back
 	trail.Transparency = ns({ { 0, 0.1 }, { 1, 1 } })
 	trail.Color = ColorSequence.new(CREAM, if homing then HOMING_PINK else ORANGE)
 	trail.Parent = body
@@ -687,12 +724,27 @@ local function makeMissileCopy(server: BasePart): BasePart
 	sparks.LightInfluence = 0
 	sparks.EmissionDirection = Enum.NormalId.Front
 	sparks.Parent = exhaust
+	-- v37: a hot glow core the size of a car, so a shot is a bright point from 100+ studs (one particle at a time).
+	local glow = Instance.new("ParticleEmitter")
+	glow.Texture = tex("glow_soft")
+	glow.Rate = 30
+	glow.Lifetime = NumberRange.new(0.08, 0.1)
+	glow.Speed = NumberRange.new(0)
+	glow.Size = NumberSequence.new(5.5)
+	glow.Transparency = NumberSequence.new(0.25)
+	glow.Color = ColorSequence.new(statusTint or (if homing then HOMING_PINK else ORANGE))
+	glow.LightEmission = 1
+	glow.LightInfluence = 0
+	glow.LockedToPart = true
+	glow.ZOffset = -0.5
+	glow.Parent = body
 	local light = Instance.new("PointLight")
 	light.Color = ORANGE
-	light.Range = 12
-	light.Brightness = 2
+	light.Range = 18
+	light.Brightness = 3
 	light.Shadows = false
 	light.Parent = body
+	ItemShow.dressShot(body, if type(status) == "string" then status else nil)
 	body.Parent = workspace.CurrentCamera or workspace
 	if mesh then
 		missileRoll[body] = math.random() * math.pi * 2
@@ -712,11 +764,28 @@ local function track(inst: Instance, fresh: boolean?)
 		local copy = makeMissileCopy(inst)
 		missiles[inst] = copy
 		local mineShot = inst:GetAttribute("Owner") == ownRacerId()
+		local launchAt = inst.Position
+		if fresh == true and mineShot then
+			local planesF = workspace:FindFirstChild("Planes")
+			local own = if planesF then (planesF:FindFirstChild("Plane_" .. LocalPlayer.Name) or planesF:FindFirstChild("Car_" .. LocalPlayer.Name)) else nil
+			local myHull = hullOf(own)
+			if myHull then
+				local look = myHull.CFrame.LookVector
+				local nose = myHull.Position + look * (myHull.Size.Z * 0.5 + 6)
+				local offset = nose - inst.Position
+				if offset:Dot(look) > 0 and offset.Magnitude < 80 then
+					missileLead[copy] = { offset = offset, t0 = os.clock() }
+					copy.CFrame = CFrame.lookAt(nose, nose + inst.CFrame.LookVector)
+					launchAt = nose
+				end
+			end
+		end
 		if fresh == true then
 			local cam = cameraPos()
 			if cam and (cam - inst.Position).Magnitude < 300 then
-				ItemClient.burst("missileLaunch", inst.Position, nil)
-				Sfx.at("missile_launch", inst.Position, if mineShot then 0.86 else Sfx.quiet(0.86))
+				ItemClient.burst("missileLaunch", launchAt, nil, if mineShot then 1.5 else 1.2)
+				Sfx.at("missile_launch", launchAt, if mineShot then 0.6 else Sfx.quiet(0.6))
+				Sfx37.at("missile_whoosh", launchAt, if mineShot then 0.7 else 0.45)
 			end
 		end
 		local onMe = inst:GetAttribute("Target") == ownRacerId()
@@ -848,6 +917,8 @@ local function untrack(inst: Instance)
 			missiles[inst] = nil
 			lockedOnMe[copy] = nil
 			missileRoll[copy] = nil
+			missileLead[copy] = nil
+			missileVel[copy] = nil
 			copy:Destroy()
 		end
 	elseif inst:IsA("Model") then
@@ -1584,6 +1655,7 @@ end
 
 local function step(dt: number)
 	ItemsV4Fx.step(dt)
+	ItemShow.step(dt)
 	do
 		local planesFolder = workspace:FindFirstChild("Planes")
 		local own = if planesFolder then planesFolder:FindFirstChild("Plane_" .. LocalPlayer.Name) else nil
@@ -1599,15 +1671,41 @@ local function step(dt: number)
 	hueClock = (hueClock + dt * 0.4) % 1
 	stepDragged()
 	stepSpikes(now)
-	local alpha = 1 - math.exp(-dt * 22)
+	local alpha = 1 - math.exp(-dt * MISSILE_EASE)
 	for server, copy in missiles do
 		if not server.Parent then
 			missiles[server] = nil
 			lockedOnMe[copy] = nil
 			missileRoll[copy] = nil
+			missileLead[copy] = nil
+			missileVel[copy] = nil
 			copy:Destroy()
 		else
 			local goal = server.CFrame
+			-- Lead the easing by the body's own velocity (the steady lag of an exponential ease is velocity / rate).
+			local sp = server.Position
+			local mv = missileVel[copy]
+			if mv then
+				if (sp - mv.pos).Magnitude > 0.01 then
+					local span = now - mv.t
+					local v = if span > 1e-3 then (sp - mv.pos) / span else mv.vel
+					mv.vel = if v.Magnitude > 700 then mv.vel else mv.vel:Lerp(v, 0.5)
+					mv.pos, mv.t = sp, now
+				end
+			else
+				mv = { pos = sp, vel = server.CFrame.LookVector * 300, t = now }
+				missileVel[copy] = mv
+			end
+			goal = goal + mv.vel / MISSILE_EASE
+			local lead = missileLead[copy]
+			if lead then
+				local k = 1 - (now - lead.t0) / MISSILE_LEAD_FADE
+				if k > 0 then
+					goal = goal + lead.offset * k
+				else
+					missileLead[copy] = nil
+				end
+			end
 			-- The mesh rolls about its flight axis: take last frame's roll off before easing toward the server pose.
 			local roll = missileRoll[copy]
 			local cur = if roll then copy.CFrame * CFrame.Angles(0, 0, -roll) else copy.CFrame
@@ -1740,7 +1838,8 @@ local function step(dt: number)
 			if type(rank) == "number" then rank else 1,
 			if type(field) == "number" then field else 1,
 			ghostHeld,
-			if type(poolText) == "string" then poolText else nil
+			if type(poolText) == "string" then poolText else nil,
+			LocalPlayer:GetAttribute("LeaderGap") :: number? -- v38: the server's gap bands (ItemRules.CATCHUP)
 		)
 	end
 	local gFrom, gTo, gBlend = ItemRules.ghostAt(ghostSchedule, now)
@@ -1985,6 +2084,8 @@ local function onItemEffect(kind: any, payload: any)
 		FlightController.applyItemEffect(kind, data)
 	end
 	ItemsV4Fx.onEffect(kind, data) -- items v4: callouts, the storm siren (the controllers apply the speed side)
+	ItemShow.onEffect(kind, data)
+	ItemsV5Fx.onEffect(kind, data)
 	if kind == "hit" then
 		-- Item 14: the hit knock (and birdies) replaces the crash thud the controllers used to play for an item hit;
 		-- before the cues are uploaded the old thud stands in. The warning is over either way.
@@ -1995,7 +2096,7 @@ local function onItemEffect(kind: any, payload: any)
 		if data.source == "trap" and data.form == "slick" then
 			Sfx.play("oil_slip", 1, 0.5) -- under the knock
 		end
-		say(if data.source == "trap" then "TRAPPED!" else "SPIN-OUT", Color3.fromRGB(255, 120, 90), 1.4)
+		say(if data.source == "trap" then "TRAPPED" else "SPIN-OUT", Color3.fromRGB(255, 120, 90), 1.4)
 	elseif kind == "shield" then
 		say("SHIELD UP", SHIELD_YELLOW, 1.2)
 	elseif kind == "magnet" then
@@ -2012,7 +2113,7 @@ local function onItemEffect(kind: any, payload: any)
 	elseif kind == "blocked" then
 		-- Item bugs audit: my missile met a shield or a respawn bubble. Said outright, so a block never looks like a hit
 		-- that did no damage (the puff and the shield_block cue already play at the target).
-		TrickJuice.callout(if data.respawn == true then "BLOCKED! (RESPAWN)" else "BLOCKED!", SHIELD_YELLOW, 1.1)
+		TrickJuice.callout(if data.respawn == true then "BLOCKED (RESPAWN)" else "BLOCKED", SHIELD_YELLOW, 1.1)
 	end
 end
 
@@ -2065,6 +2166,8 @@ local function onItemFx(fx: any, payload: any)
 	local plane = payload.plane
 	local planeModel = if typeof(plane) == "Instance" and plane:IsA("Model") then plane else nil
 	ItemsV4Fx.onFx(fx, payload) -- items v4 (it ignores the classic events it does not draw)
+	ItemShow.onFx(fx, payload)
+	ItemsV5Fx.onFx(fx, payload)
 	if fx == "explode" then
 		if typeof(pos) == "Vector3" then
 			local source = if type(payload.source) == "string" then payload.source else ""
@@ -2157,7 +2260,7 @@ local function onItemFx(fx: any, payload: any)
 			local now = os.clock()
 			if mine == planeModel and now - lastSafeToast > 1 then
 				lastSafeToast = now
-				say("SAFE! RESPAWN BUBBLE", RESPAWN_BUBBLE, 1.2)
+				say("SAFE: RESPAWNING", RESPAWN_BUBBLE, 1.2)
 			end
 		end
 	elseif fx == "respawnShield" then
@@ -2218,7 +2321,7 @@ local function onIncoming(payload: any)
 	if type(payload) == "table" and payload.blocked == true then
 		ItemJuice.setIncoming(payload)
 		FlightController.itemDragging = false -- the dragged trap is spent
-		TrickJuice.callout("BLOCKED!", MINT, 1.0)
+		TrickJuice.callout("BLOCKED", MINT, 1.0)
 		return
 	end
 	if ItemJuice.setIncoming(payload) then
@@ -2226,7 +2329,7 @@ local function onIncoming(payload: any)
 		if now - lastDodgeAt > 1 then
 			lastDodgeAt = now
 			ItemJuice.play("item_flyby")
-			TrickJuice.callout("DODGED!", MINT, 1.0)
+			TrickJuice.callout("DODGED", MINT, 1.0)
 		end
 		return
 	end
@@ -2239,7 +2342,6 @@ end
 
 -- Item 18: getting even. Display names only (the server sends Player.DisplayName or a bot's roster name).
 local GOT_GOLD = Color3.fromRGB(255, 214, 90)
-local REVENGE_RED = Color3.fromRGB(255, 110, 70)
 local OWN_TRAP_LILAC = Color3.fromRGB(205, 170, 255)
 local function onGrudge(payload: any)
 	if type(payload) ~= "table" then
@@ -2250,18 +2352,33 @@ local function onGrudge(payload: any)
 	local name = string.upper(ItemRules.shortName(payload.name, 14))
 	local plane = payload.plane
 	if role == "self" then
-		TrickJuice.callout("OWN TRAP!", OWN_TRAP_LILAC, 1.3)
+		TrickJuice.callout("OWN TRAP", OWN_TRAP_LILAC, 1.3)
+	elseif role == "robbed" then
+		-- v38 Item Steal: who took it, and what.
+		local what = if type(payload.item) == "string" then ItemRules.DISPLAY_NAME[payload.item] else nil
+		say(name .. " TOOK YOUR " .. (what or "ITEM"), Color3.fromRGB(255, 150, 110), 1.8)
+		if typeof(plane) == "Instance" then
+			RivalBubbles.setNemesis(plane, name, ItemRules.REVENGE_WINDOW)
+		end
+	elseif role == "thief" then
+		local what = if type(payload.item) == "string" then ItemRules.DISPLAY_NAME[payload.item] else nil
+		TrickJuice.callout("STOLE " .. (what or "AN ITEM"), GOT_GOLD, 1.4)
 	elseif role == "attacker" then
 		if kind == "revenge" then
-			TrickJuice.callout(ItemRules.revengeLabel(chain), REVENGE_RED, 1.6)
+			-- v38-flow: the same compact banner as a plain hit ("EVEN  NAME", "EVEN x2  NAME"), not hero callout text.
+			local short = string.gsub(string.upper(ItemRules.shortName(payload.name, 12)), "[%.!]+$", "")
+			NotifyKit.toast(ItemRules.revengeLabel(chain) .. "  " .. short, { key = "item_hit", kind = "success", seconds = 1.6, icon = UiSkin.artFor("icon_battle") })
 			ItemJuice.play("item_revenge")
 			RivalBubbles.clearNemesis(plane)
 		else
-			TrickJuice.callout("GOT " .. name .. "!", GOT_GOLD, 1.2)
+			-- uifix: a compact banner in the upper message lane, never hero text over the road. One line: "HIT  NAME",
+			-- the name cut to 12 characters without the "." shortName adds.
+			local short = string.gsub(string.upper(ItemRules.shortName(payload.name, 12)), "[%.!]+$", "")
+			NotifyKit.toast("HIT  " .. short, { key = "item_hit", kind = "success", seconds = 1.4, icon = UiSkin.artFor("icon_battle") })
 			ItemJuice.play("item_gotcha", 0.98 + math.random() * 0.06)
 		end
 	elseif role == "victim" then
-		say(if kind == "revenge" then name .. " GOT EVEN!" else name .. " GOT YOU!", Color3.fromRGB(255, 150, 110), 1.8)
+		say("HIT BY " .. name, Color3.fromRGB(255, 150, 110), 1.8)
 		if typeof(plane) == "Instance" then
 			RivalBubbles.setNemesis(plane, name, ItemRules.REVENGE_WINDOW)
 		end
@@ -2298,8 +2415,10 @@ function ItemClient.init(toastFn: Toast?)
 			ItemClient.burst("magnetZap", h.Position, nil)
 		end
 		kick(0.12)
-		TrickJuice.callout("CAUGHT!", rgb(ItemRules.COLOR_RGB.rainbow), 0.9)
+		TrickJuice.callout("CAUGHT", rgb(ItemRules.COLOR_RGB.rainbow), 0.9)
 	end
+	ItemShow.init(ItemClient.burst, kick)
+	ItemsV5Fx.init(ItemClient.burst)
 	task.spawn(watchFxFolder)
 	RunService.RenderStepped:Connect(Prof.wrap("SR_ItemClient", step))
 	RunService.RenderStepped:Connect(Prof.wrap("SR_MagnetAim", MagnetAim.step))

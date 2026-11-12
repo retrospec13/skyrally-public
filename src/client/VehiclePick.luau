@@ -7,6 +7,9 @@
 -- avatar (server/AvatarSelect). It shows in the hub only: on an arch's apron when slowed down, and while the lobby this
 -- player opened gathers racers (shared/VehiclePickRules). It never joins, starts or cancels anything. Looks come from
 -- NotifySkin.PICKER so the owner's art drops in there; the full list lives in the Garage VEHICLES tab.
+-- UI overhaul phase B: strip, chip and cards draw through UiSkin (a NotifySkin.PICKER image wins, then the UiImages slot,
+-- then today's flat fill); the strip swooshes up from the bottom when the chip opens it and back down when it folds; a
+-- card press plays the pick cue.
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RunService = game:GetService("RunService")
@@ -21,7 +24,14 @@ local TrackInfo = require(Shared:WaitForChild("TrackInfo"))
 local Prof = require(Shared:WaitForChild("Prof"))
 local NotifyKit = require(script.Parent:WaitForChild("NotifyKit"))
 local UiSound = require(script.Parent:WaitForChild("UiSound"))
+local UiSkin = require(script.Parent:WaitForChild("UiSkin"))
+local UiMotion = require(script.Parent:WaitForChild("UiMotion"))
+local UiSkinRules = require(Shared:WaitForChild("UiSkinRules"))
 local HudMetrics = require(script.Parent:WaitForChild("HudMetrics"))
+-- UI v2 (round 2): the chip is a navy key with the class icon, the strip a navy card of small vehicle cards with the
+-- real model's thumbnail (client/VehicleThumbs), the pick ringed in gold.
+local ArcadeUi = require(script.Parent:WaitForChild("ArcadeUi"))
+local VehicleThumbs = require(script.Parent:WaitForChild("VehicleThumbs"))
 
 local LocalPlayer = Players.LocalPlayer
 local SKIN: any = NotifySkin.PICKER
@@ -32,7 +42,7 @@ local request: RemoteFunction? = nil
 local gui: ScreenGui
 local strip: Frame
 local list: ScrollingFrame
-local chip: TextButton
+local chip: GuiButton
 local expanded = false
 local expandedAt = 0
 local pickedWhileOpen = false
@@ -132,59 +142,9 @@ local function build()
 	gui.DisplayOrder = 6
 	gui.Parent = LocalPlayer:WaitForChild("PlayerGui")
 
-	strip = Instance.new("Frame")
-	strip.Name = "Strip"
-	strip.BackgroundColor3 = rgb(SKIN.panel.color)
-	strip.BackgroundTransparency = SKIN.panel.alpha
+	strip = ArcadeUi.card(gui, { name = "Strip", radius = 12, strokeWidth = 3 })
 	strip.Visible = false
-	strip.Parent = gui
-	local c = Instance.new("UICorner")
-	c.CornerRadius = UDim.new(0, SKIN.corner)
-	c.Parent = strip
-	local s = Instance.new("UIStroke")
-	s.Color = rgb(SKIN.rim)
-	s.Thickness = 2
-	s.Parent = strip
-	if SKIN.panel.image then
-		local img = Instance.new("ImageLabel")
-		img.Name = "Art"
-		img.BackgroundTransparency = 1
-		img.Image = SKIN.panel.image
-		img.Size = UDim2.fromScale(1, 1)
-		if SKIN.panel.slice then
-			img.ScaleType = Enum.ScaleType.Slice
-			local sl = SKIN.panel.slice
-			img.SliceCenter = Rect.new(sl[1], sl[2], sl[3], sl[4])
-		end
-		img.Parent = strip
-	end
-
-	chip = Instance.new("TextButton")
-	chip.Name = "Chip"
-	chip.BackgroundColor3 = rgb(SKIN.panel.color)
-	chip.BackgroundTransparency = SKIN.panel.alpha
-	chip.Font = (Enum.Font :: any)[SKIN.font]
-	chip.TextScaled = true
-	chip.TextColor3 = rgb(SKIN.header)
-	chip.Text = ""
-	chip.Visible = false
-	chip.Parent = gui
-	local cc2 = Instance.new("UICorner")
-	cc2.CornerRadius = UDim.new(0, SKIN.corner)
-	cc2.Parent = chip
-	local cs = Instance.new("UIStroke")
-	cs.Color = rgb(SKIN.rim)
-	cs.Thickness = 2
-	cs.Parent = chip
-	local ctc = Instance.new("UITextSizeConstraint")
-	ctc.MinTextSize = 12
-	ctc.MaxTextSize = 20
-	ctc.Parent = chip
-	local cpad = Instance.new("UIPadding")
-	cpad.PaddingLeft = UDim.new(0, 8)
-	cpad.PaddingRight = UDim.new(0, 8)
-	cpad.Parent = chip
-	UiSound.bind(chip, "tap")
+	chip = ArcadeUi.button(gui, "navy", "", { name = "Chip", icon = "plane", sound = "tap", maxText = 18, minText = 12, visible = false, radius = 12 })
 	chip.Activated:Connect(function()
 		expanded = true
 		expandedAt = os.clock()
@@ -249,7 +209,7 @@ local function render(class: string)
 	local rects = HudMetrics.rects()
 	local rect = rects.vehicleStrip
 	local cardW, cardH = VehiclePickRules.cardSize(rect, HudMetrics.S())
-	strip.Position = UDim2.fromOffset(rect.x, rect.y)
+	UiMotion.place(strip, UDim2.fromOffset(rect.x, rect.y)) -- a running swoosh lands on the new rect
 	strip.Size = UDim2.fromOffset(rect.w, rect.h)
 	local cr = rects.vehicleChip
 	chip.Position = UDim2.fromOffset(cr.x, cr.y)
@@ -260,7 +220,18 @@ local function render(class: string)
 			pickName = v.name
 		end
 	end
-	chip.Text = string.format("VEHICLE: %s  >", pickName)
+	ArcadeUi.setText(chip, string.format("%s  >", string.upper(pickName)))
+	local face = chip:FindFirstChild("Face")
+	local glyph = face and face:FindFirstChild("Glyph")
+	if glyph and glyph:IsA("Frame") and glyph:GetAttribute("IconKind") ~= class then
+		local ni = ArcadeUi.icon(face, class, { name = "Glyph", anchor = glyph.AnchorPoint, position = glyph.Position, size = glyph.Size }, 32)
+		for _, c in glyph:GetChildren() do
+			if c:IsA("UIAspectRatioConstraint") then
+				c.Parent = ni
+			end
+		end
+		glyph:Destroy()
+	end
 	local padY = math.floor((rect.h - cardH) / 2)
 	list.Position = UDim2.fromOffset(6, padY)
 	list.Size = UDim2.new(1, -12, 0, cardH)
@@ -271,34 +242,36 @@ local function render(class: string)
 	end
 	for i, v in owned do
 		local on = v.key == pick
+		-- A small card: the model's thumbnail on the left, the name on the right; the pick is gold-ringed with a check.
 		local b = Instance.new("TextButton")
 		b.Name = "Card_" .. v.key
+		b.Text = ""
+		b.AutoButtonColor = false
 		b.LayoutOrder = i
 		b.Size = UDim2.fromOffset(cardW, cardH)
-		b.BackgroundColor3 = rgb(if on then SKIN.cardSelected.color else SKIN.card.color)
-		b.Font = (Enum.Font :: any)[SKIN.font]
-		b.TextScaled = true
-		b.TextWrapped = true
-		b.TextColor3 = rgb(SKIN.cardText)
-		b.Text = if on then v.name .. "\nSELECTED" else v.name
+		b.BackgroundColor3 = Color3.new(1, 1, 1)
+		ArcadeUi.gradient(b, if on then Color3.fromHex("3A63D0") else ArcadeUi.C.panelTop, ArcadeUi.C.panelBot)
+		ArcadeUi.corner(b, 10)
+		local st = ArcadeUi.stroke(b, if on then 3 else 2)
+		st.Color = if on then ArcadeUi.C.gold else ArcadeUi.C.ink
 		b.Parent = list
-		local cc = Instance.new("UICorner")
-		cc.CornerRadius = UDim.new(0, SKIN.corner)
-		cc.Parent = b
-		local rs = Instance.new("UIStroke")
-		rs.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-		rs.Color = rgb(GarageModel.AVATAR_RARITY_RGB[v.rarity] or SKIN.cardText)
-		rs.Thickness = if on then 3 else 1.5
-		rs.Parent = b
-		local tc = Instance.new("UITextSizeConstraint")
-		tc.MaxTextSize = 18
-		tc.MinTextSize = 9
-		tc.Parent = b
-		local pad = Instance.new("UIPadding")
-		pad.PaddingLeft = UDim.new(0, 4)
-		pad.PaddingRight = UDim.new(0, 4)
-		pad.Parent = b
-		UiSound.bind(b, "tap")
+		local well = Instance.new("Frame")
+		well.Name = "Thumb"
+		well.BackgroundColor3 = ArcadeUi.C.inset
+		well.BackgroundTransparency = 0.3
+		well.Position = UDim2.fromOffset(3, 3)
+		well.Size = UDim2.new(0, cardH - 6, 1, -6)
+		well.Active = false
+		well.Parent = b
+		ArcadeUi.corner(well, 8)
+		VehicleThumbs.view(well, v.key, class, { name = "Model", yaw = 215, silhouette = if v.built == false then ArcadeUi.RARITY[tostring(v.rarity)] else nil })
+		local n = ArcadeUi.text(b, { name = "Name", text = string.upper(v.name), font = ArcadeUi.FONT.display, maxSize = 16, minSize = 10, stroke = 1.5, wrap = true })
+		n.Position = UDim2.fromOffset(cardH + 2, 2)
+		n.Size = UDim2.new(1, -(cardH + 6), 1, -4)
+		if on then
+			ArcadeUi.icon(b, "check", { name = "Picked", anchor = Vector2.new(1, 0), position = UDim2.new(1, 2, 0, -4), size = UDim2.fromOffset(18, 18) }, 18)
+		end
+		UiSound.bind(b, UiSkinRules.cueFor("select") or "pick")
 		b.Activated:Connect(function()
 			select(v)
 		end)
@@ -306,6 +279,17 @@ local function render(class: string)
 end
 
 ---------------------------------------------------------------------------------------------------- tick
+
+-- The strip swooshes up from the bottom edge (its open cue: the chip tap opened it) and folds back down quietly (after a
+-- pick the confirm already spoke; a timeout or leaving the apron should not make a sound).
+local function setStrip(on: boolean)
+	local shown = strip.Visible and not UiMotion.isHiding(strip)
+	if on and not shown then
+		UiMotion.show(strip, "swooshIn", { side = "bottom" })
+	elseif not on and shown then
+		UiMotion.hide(strip, "swooshOut", nil, { side = "bottom", silent = true })
+	end
+end
 
 local function tick()
 	local enabled = AvatarConfig.ENABLED and LocalPlayer:GetAttribute("SaveState") == "ok"
@@ -370,10 +354,10 @@ local function tick()
 		if expanded and VehiclePickRules.shouldCollapse(expandedAt, os.clock(), pickedWhileOpen) then
 			expanded = false
 		end
-		strip.Visible = expanded
+		setStrip(expanded)
 		chip.Visible = not expanded
 	else
-		strip.Visible = false
+		setStrip(false)
 		chip.Visible = false
 		expanded = false
 		shownClass = nil

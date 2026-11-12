@@ -67,6 +67,14 @@ local AUDITED: { [string]: Row } = {
 		rate = "StormShards.REQUEST_GAP (reads and writes spaced separately)",
 		guards = { "StormShards.REQUEST_GAP", "#key > MAX_KEY_LEN" },
 	},
+	["src/server/GrandPrix.luau"] = {
+		handlers = 1,
+		remote = "GrandPrixRemote (Start, Continue, Quit)",
+		types = "action compared to three constants; class checked by GrandPrixRules.isClass + classOpen on the saved record; "
+			.. "length only selects short/full; Continue/Quit act only for the cup's own player",
+		rate = "0.75 s per player",
+		guards = { "now - (last[player] or 0) < 0.75", "GrandPrixRules.isClass(class)", "c.player ~= player" },
+	},
 	["src/server/StormRace.luau"] = {
 		handlers = 1,
 		remote = "StormRace event (Join, Leave)",

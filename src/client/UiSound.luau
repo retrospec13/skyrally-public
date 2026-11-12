@@ -10,7 +10,8 @@
 --   select   gamepad selection: one marimba note pitched along a major pentatonic by the button's place in its row,
 --            so walking the D-pad across a menu plays a scale; hover is the same note, quieter, for the mouse
 -- Cues come from tools/audio/synth_ui.py (synthesised, no licence) through shared/UiAudioAssets (or ui_* keys in
--- shared/AudioAssets); a cue with no id stays silent. Four pooled, preloaded Sounds per kind live in the SoundGroup
+-- shared/AudioAssets); the panel-motion / event kinds (open, close, swipe, pop, pick, click, notify, ...; played by
+-- client/UiMotion) come from Roblox's free library via shared/ToolboxAudio. A cue with no id stays silent. Four pooled, preloaded Sounds per kind live in the SoundGroup
 -- SoundService.SkyRallyUI (volume = LocalPlayer attribute UiVolume, default 0.6); nothing is allocated per frame, and the
 -- gates (shared/UiSoundRules) keep the curtain quiet and fifty rapid taps from stacking.
 -- Usage: UiSound.bind(button, kind) once per button (sound + feel); UiSound.setKind(button, kind) to change what a
@@ -28,6 +29,7 @@ local Rules = require(Shared:WaitForChild("UiSoundRules"))
 local UiAudioAssets = require(Shared:WaitForChild("UiAudioAssets")) :: any
 local AudioAssets = require(Shared:WaitForChild("AudioAssets")) :: any
 local SfxV2Audio = require(Shared:WaitForChild("SfxV2Audio")) :: any
+local ToolboxAudio = require(Shared:WaitForChild("ToolboxAudio")) :: any
 
 local LocalPlayer = Players.LocalPlayer
 
@@ -43,7 +45,7 @@ local ready = false
 local gateState: Rules.GateState = { now = 0, switching = false }
 
 local function cueId(cue: string): string?
-	local id = UiAudioAssets[cue] or AudioAssets[cue] or SfxV2Audio[cue]
+	local id = UiAudioAssets[cue] or AudioAssets[cue] or SfxV2Audio[cue] or ToolboxAudio[cue]
 	return if type(id) == "string" and id ~= "" then id else nil
 end
 
@@ -64,7 +66,7 @@ local function ensure()
 		local id = cueId(Rules.CUE[kind])
 		if id then
 			local pool: { Sound } = {}
-			for i = 1, Rules.POOL_SIZE do
+			for i = 1, Rules.poolSize(kind) do
 				local s = Instance.new("Sound")
 				s.Name = kind .. i
 				s.SoundId = id

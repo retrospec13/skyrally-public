@@ -359,6 +359,8 @@ local StormShards = require(script.StormShards)
 StormShards.init(SaveService.service() :: any)
 -- Hub PAINT SHOP kiosk (economy v3 section 4): a block-built stand on the plaza whose prompts open the Garage (client/PaintShop).
 require(script.PaintShopStand).start()
+-- UI v2 Garage: one stripped display copy per vehicle look in ReplicatedStorage.SkyRallyShowroom (the cards' 3D thumbnails).
+require(script.ShowroomModels).start()
 -- Hub plaza floor bands (visual critic v28 1.18): flat painted slabs on the paving, CanQuery false so no ground ray reads them.
 require(script.PlazaBands).start()
 -- One hook for all after a real finish's saved award (RaceManager.completePlayerLap); none can change the result.
@@ -411,6 +413,16 @@ TrackDirector.init({
 		return any
 	end,
 })
+-- Grand Prix (v37, server/GrandPrix): a cup of the unlocked race tracks, solo with the bot field; owns the race end
+-- through TrackDirector.grandPrix while one runs.
+require(script.GrandPrix).init({
+	TrackDirector = TrackDirector,
+	RaceManager = RaceManager,
+	AIRacers = AIRacers,
+	FlightServer = FlightServer,
+	SaveService = SaveService,
+	Economy = Economy,
+})
 -- Storm Cup at :00/:30 UTC and the Festival banner attributes (MONETIZATION_PROPOSAL; L54). Studio runs the cup only
 -- with workspace.StormCupQA = true. Storm race v2 (StormConfig.RACE_V2 + PER_GROUP; server/StormRace) replaces the
 -- whole-server cup launch with the per-group storm race; RACE_V2 without PER_GROUP warns and keeps the cup.
@@ -451,7 +463,26 @@ if game:GetService("RunService"):IsStudio() then
 			if typeof(cf) ~= "CFrame" or not rec then
 				return
 			end
-			player:SetAttribute("QARespawnAt", nil)
+			player:SetAttribute("QARespawnAt", nil) -- one-shot: consumed whether or not it is accepted
+			-- V4-1: refuse a point with no ground under it (it would become the checkpoint and the car would fall forever)
+			local rp = RaycastParams.new()
+			rp.FilterType = Enum.RaycastFilterType.Exclude
+			rp.IgnoreWater = true
+			local ex = {}
+			local planes = workspace:FindFirstChild("Planes")
+			if planes then
+				table.insert(ex, planes)
+			end
+			if player.Character then
+				table.insert(ex, player.Character)
+			end
+			rp.FilterDescendantsInstances = ex
+			local QR = require(ReplicatedStorage:WaitForChild("Shared"):WaitForChild("QASteerRules"))
+			local hit = workspace:Raycast(cf.Position + Vector3.new(0, QR.RESPAWN_RAY_UP, 0), Vector3.new(0, -QR.RESPAWN_RAY_LEN, 0), rp)
+			if not QR.respawnGroundOk(hit and hit.Position.Y or nil) then
+				warn(string.format("[SkyRally][QA] respawn REFUSED for %s: no ground under (%.0f,%.0f,%.0f)", player.Name, cf.X, cf.Y, cf.Z))
+				return
+			end
 			rec.lastCheckpointCF = cf
 			if CarServer.isCar(rec.plane) then
 				CarServer.expectTeleport(player, cf)

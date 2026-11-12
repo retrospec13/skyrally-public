@@ -55,6 +55,32 @@ function QATools.run(deps: Deps, player: Player, cmd: any, arg: any): string
 			return deps.AIRacers.qaPlaceAhead(pos, studs, lateral, nil)
 		end)
 		return if ok then string.format("ok:%s:%d", res, studs) else "error:" .. res
+	elseif cmd == "botuse" then
+		-- v38: "<item>[:<level>]@<studs>" (studs may be negative: behind the player): the first bot is put there, given
+		-- the item and fires it at once (testing an item by being hit by it).
+		local itemText, offText = string.match(tostring(arg), "^([%w_:]+)@(%-?[%d%.]+)$")
+		local color, level, why = Rules.parseGive(itemText)
+		local studs = tonumber(offText)
+		if not color or not studs then
+			return "error:" .. (if color then "bad_offset" else why)
+		end
+		local pos = hullPosition(deps, player)
+		if not pos then
+			return "error:no_vehicle"
+		end
+		local ok, res = RaceScope.run(RaceScope.instanceOf(player), function(): (boolean, string)
+			local placed, name = deps.AIRacers.qaPlaceAhead(pos, studs, 0, nil)
+			if not placed then
+				return false, name
+			end
+			for _, b in deps.AIRacers.bots do
+				if b.name == name then
+					return deps.ItemService.qaBotUse(player, deps.ItemService.botRacerId(b.id), color, level)
+				end
+			end
+			return false, "no_bot"
+		end)
+		return if ok then string.format("ok:botuse:%s:%d", color, level) else "error:" .. tostring(res)
 	end
 	return "error:unknown_command"
 end
@@ -97,6 +123,7 @@ function QATools.start(deps: Deps)
 	end
 	watch(Rules.GIVE_ATTR, "give")
 	watch(Rules.AHEAD_ATTR, "ahead")
+	watch("QABotUse", "botuse") -- v38
 	print(LOG .. "Studio helpers on (give item, bot ahead)")
 end
 

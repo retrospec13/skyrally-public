@@ -21,7 +21,12 @@
 --     FILLING / RACING from workspace ArchStates), the Adventure board's state line and JOIN / LEAVE per track, and the
 --     joined player's "Waiting for racers 0:14 - 3/8" line with LEAVE (player attribute LobbyArch). Only the joined
 --     player hears the lobby's moments (LobbyJoined / LobbyLeft / LobbyRefused).
--- Every button is a TextButton (gamepad selectable); sizes scale for phone landscape and desktop (D20).
+-- Every button is gamepad selectable; sizes scale for phone landscape and desktop (D20).
+-- UI overhaul phase C: the hub bar, the Adventure board (panel_wood, zone rows on row_plank tinted by the zone colour),
+-- the lobby banner (sign_hanging) and the battle plank / board / results draw through client/UiSkin, buttons through
+-- UiSkin.button (a TextButton in the flat fallback, an ImageButton with a "Label" once art lands: text goes through
+-- UiSkin.setText). With no art uploaded the look is the same flat wood as before. The board swooshes up from the bottom
+-- and back down, the battle results pop in and out (client/UiMotion); the curtain stays a plain fade.
 local CollectionService = game:GetService("CollectionService")
 local GuiService = game:GetService("GuiService")
 local HttpService = game:GetService("HttpService")
@@ -39,14 +44,19 @@ local TrackInfo = require(Shared:WaitForChild("TrackInfo"))
 local GarageModel = require(Shared:WaitForChild("GarageModel")) -- Storm Cup line size and modifier names
 local RaceFlowRules = require(Shared:WaitForChild("RaceFlowRules")) -- lobby banner and vote labels (L30-L32)
 local GroupCurtainRules = require(Shared:WaitForChild("GroupCurtainRules")) -- per-group loading curtain (phase 2b)
+local MapReadyRules = require(Shared:WaitForChild("MapReadyRules")) -- v37: answer the server once the new map is in
 local ResultsLayoutRules = require(Shared:WaitForChild("ResultsLayoutRules")) -- where the return countdown sits under the results card
 local FidelityRules = require(Shared:WaitForChild("FidelityRules")) -- completion line on the Adventure board (M-1)
 local GridOrder = require(Shared:WaitForChild("GridOrder")) -- the grid line under the countdown (GRID_ORDER.md)
 local ItemRules = require(Shared:WaitForChild("ItemRules")) -- items v4: the race's rotation line in the countdown
 -- REMARKABLE 4: board buttons speak wood and marimba (tab / confirm / back / deny) and squash on press.
 local UiSound = require(script.Parent.UiSound)
+local UiSkin = require(script.Parent:WaitForChild("UiSkin"))
+local UiMotion = require(script.Parent:WaitForChild("UiMotion"))
+local CourseSelect = require(script.Parent:WaitForChild("CourseSelect")) -- UI v2 course select (the Adventure board's look)
 local Sfx = require(script.Parent:WaitForChild("Sfx"))
 local SfxRules = require(Shared:WaitForChild("SfxRules"))
+local UiSkinRules = require(Shared:WaitForChild("UiSkinRules")) -- the lobby banner's open cue
 -- REMARKABLE 8: Curtain Kart, a playable mini track of the next map inside the curtain (start/stop in showCurtain).
 local CurtainKart = require(script.Parent:WaitForChild("CurtainKart"))
 -- REMARKABLE 20 and 24: Portal Plunge (warp, emblem iris, locked arches spit you out) and Token Homecoming.
@@ -87,6 +97,8 @@ local hubBarLogged = false -- the one-time [SkyRally][HUD] hub bar size log (app
 local curtain: Frame
 local curtainZone: TextLabel
 local curtainTrack: TextLabel
+local CURTAIN_NAVY = Color3.fromRGB(42, 75, 168) -- UI v2 panel top (#2A4BA8; the gradient darkens it to the bottom)
+local curtainZoneColor: Color3 = Color3.fromRGB(62, 40, 24) -- the arriving zone's colour (iris reveal, map well)
 local curtainHint: TextLabel
 local countdownLabel: TextLabel
 local numeralSize = 0 -- px of the countdown glyphs from HudLayoutRules.countdownNumeral (0: size it from lane A, as the hub does)
@@ -94,8 +106,6 @@ local lastCountdownText = "" -- v21: the countdown label carries RichText markup
 local gridLabel: TextLabel -- "You start 3rd - last race you finished 6th" over the grid hold (server Grid* attributes)
 local hubBar: Frame
 local boardFrame: Frame
-local boardList: ScrollingFrame
-local progressLabel: TextLabel? -- the short progress line under the board title (J3)
 local returnLabel: TextLabel
 local stormLabel: TextLabel
 local lastCount = -1
@@ -116,14 +126,16 @@ local archLabelByPart: { [BasePart]: ArchLabel } = {}
 -- (filling / racing) now reads in the sign's own gate line, and an idle arch says nothing extra.
 local ARCH_BILLBOARD = false
 local archSignByPart: { [BasePart]: string } = {} -- shimmer -> trackId, for the sign's gate line
-local boardQueue: { [string]: { status: TextLabel, button: TextButton } } = {}
+local boardQueue: { [string]: boolean } = {} -- open arch track ids whose queue line the course select shows
 local lastWaitText = ""
 local lastQueueStep = -math.huge
 
-local finishAgainBtn: TextButton? = nil
-local finishHubBtn: TextButton? = nil
-local resultsHub: TextButton? = nil
-local resultsAgainBtn: TextButton? = nil
+-- GuiButton: RaceUI's finish buttons and the results buttons are UiSkin buttons (TextButton or ImageButton + Label).
+local finishAgainBtn: GuiButton? = nil
+local finishHubBtn: GuiButton? = nil
+local boardOnHubAt = -math.huge -- v38-flow: COURSES on the results card: open the course select when the hub is back
+local resultsHub: GuiButton? = nil
+local resultsAgainBtn: GuiButton? = nil
 
 local function corner(p: Instance, r: number)
 	local c = Instance.new("UICorner")
@@ -146,9 +158,17 @@ local function label(parent: Instance, name: string, text: string, size: UDim2, 
 	l.Size = size
 	l.Position = pos
 	l.Font = font or Enum.Font.GothamBlack
+	-- UI v2: the theme faces (GothamBlack -> the heavy italic display face, others -> the rounded body face), white text
+	-- with the ink stroke.
+	l.FontFace = UiSkin.font(if font == nil or font == Enum.Font.GothamBlack then "display" else "bodyHeavy")
 	l.TextScaled = true
-	l.TextColor3 = CREAM
+	l.TextColor3 = Color3.new(1, 1, 1)
 	l.Text = text
+	local ink = Instance.new("UIStroke")
+	ink.Color = UiSkin.color("ink")
+	ink.Thickness = 1.5
+	ink.LineJoinMode = Enum.LineJoinMode.Round
+	ink.Parent = l
 	l.Parent = parent
 	local c = Instance.new("UITextSizeConstraint")
 	c.MaxTextSize = 96
@@ -176,19 +196,24 @@ local function refreshVoteLabels()
 	local hub = RaceAttr.mine("VotesHub")
 	local fa = finishAgainBtn
 	if fa then
-		fa.Text = RaceFlowRules.voteLabel("FLY AGAIN", "AGAIN", again, humans)
+		-- planes fly again, cars race again (owner copy 2026-11-10)
+		local tinfo = TrackInfo.get(RaceAttr.mine("ActiveTrackId") :: string?)
+		local idle = if tinfo and tinfo.vehicle == "car" then "RACE AGAIN" else "FLY AGAIN"
+		UiSkin.setText(fa, RaceFlowRules.voteLabel(idle, "AGAIN", again, humans))
 	end
 	local fh = finishHubBtn
 	if fh then
-		fh.Text = RaceFlowRules.voteLabel("HUB", "HUB", hub, humans)
+		-- v38-flow: solo, the card's third key is COURSES (back to the island with the course select open, MK's
+		-- "change course"); with votes it stays the HUB vote.
+		UiSkin.setText(fh, RaceFlowRules.voteLabel("COURSES", "HUB", hub, humans))
 	end
 	local ra = resultsAgainBtn
 	if ra then
-		ra.Text = RaceFlowRules.voteLabel("AGAIN", "AGAIN", again, humans)
+		UiSkin.setText(ra, RaceFlowRules.voteLabel("AGAIN", "AGAIN", again, humans))
 	end
 	local rh = resultsHub
 	if rh then
-		rh.Text = RaceFlowRules.voteLabel("HUB", "HUB", hub, humans)
+		UiSkin.setText(rh, RaceFlowRules.voteLabel("HUB", "HUB", hub, humans))
 	end
 end
 
@@ -270,213 +295,175 @@ function TrackFlow.addBoardRow(fn: (parent: Instance, layoutOrder: number) -> ()
 	table.insert(boardRowHooks, fn)
 end
 
+local openBoard: (on: boolean, silent: boolean?) -> () -- below; the board's buttons close it
+
+-- UI v2 course select (client/CourseSelect draws it): the board's model from PortalStates and CompletionInfo.
 local function rebuildBoard()
 	table.clear(boardQueue)
-	for _, c in boardList:GetChildren() do
+	-- J3: tokens, keys, fragments and the final boss along the top; once everything is done, the full text leads.
+	local info = FidelityRules.decode(LocalPlayer:GetAttribute(FidelityRules.COMPLETION_ATTRIBUTE))
+	local nums = {}
+	if info then
+		for a, b2 in string.gmatch(info.line, "(%d+)/(%d+)") do
+			table.insert(nums, { tonumber(a) or 0, tonumber(b2) or 0 })
+		end
+	end
+	local function n(i: number, j: number, default: number): number
+		local r = nums[i]
+		return if r then r[j] else default
+	end
+	local tokens = tonumber(LocalPlayer:GetAttribute("SkyTokens")) or 0
+	local function listAttr(name: string): { [string]: boolean }
+		local out: { [string]: boolean } = {}
+		local raw = LocalPlayer:GetAttribute(name)
+		if type(raw) ~= "string" or raw == "" then
+			return out
+		end
+		local ok, t = pcall(function()
+			return HttpService:JSONDecode(raw)
+		end)
+		if ok and type(t) == "table" then
+			for _, v in t do
+				out[tostring(v)] = true
+			end
+		else
+			for v in string.gmatch(raw, "[^,]+") do
+				out[v] = true
+			end
+		end
+		return out
+	end
+	local keys, bosses = listAttr("KeysHeld"), listAttr("BossesBeaten")
+	local zones: { CourseSelect.Zone } = {}
+	for _, st in portalStates() do
+		local tinfo = TrackInfo.get(st.id)
+		local zone = tostring(st.zone)
+		local lockLine: string? = nil
+		if not st.open then
+			local lrow = LadderRules.row(zone, tonumber(st.have) or 0, false)
+			if type(st.need) == "number" then
+				lrow.need = st.need
+				lrow.remaining = math.max(0, st.need - lrow.have)
+			end
+			if zone == "HUB" then
+				lockLine = "Beat all four bosses"
+			elseif lrow.need == nil then
+				lockLine = "Beat the final boss"
+			elseif lrow.remaining > 0 then
+				lockLine = string.format("%d more Sky Token%s", lrow.remaining, if lrow.remaining == 1 then "" else "s")
+			else
+				lockLine = tostring(st.why or "Locked")
+			end
+		end
+		local modes: { CourseSelect.Mode } = {}
+		for _, md in (st.modes or {}) :: { any } do
+			table.insert(modes, { mode = tostring(md.mode), open = md.open == true, why = if md.why then tostring(md.why) else nil })
+		end
+		table.insert(zones, {
+			id = tostring(st.id),
+			zone = zone,
+			name = if zone == "HUB" then "FINAL BOSS" else (if tinfo then tinfo.zoneName:upper() else zone),
+			track = if tinfo then tinfo.trackName else tostring(st.id),
+			vehicle = if tinfo and tinfo.vehicle == "car" then "car" else "plane",
+			color = if tinfo then tinfo.color else WOOD,
+			open = st.open == true,
+			lockLine = lockLine,
+			modes = modes,
+			-- A listed but shut battle says why (V9: the dim button only told on a click).
+			battleLine = if st.open then BattleAccessRules.boardLockLine(st.modes) else nil,
+			key = keys[zone] == true,
+			boss = bosses[zone] == true or bosses[tostring(st.id)] == true,
+		})
+		if st.open and ARCH_LABELS and zone ~= "HUB" then
+			boardQueue[tostring(st.id)] = true :: any
+		end
+	end
+	local lobby = LocalPlayer:GetAttribute("LobbyArch")
+	CourseSelect.refresh({
+		tokens = n(1, 1, tokens),
+		tokensTotal = n(1, 2, 14),
+		keys = n(2, 1, 0),
+		keysTotal = n(2, 2, 4),
+		boss = n(3, 1, 0),
+		bossTotal = n(3, 2, 4),
+		battle = n(4, 1, 0),
+		battleTotal = n(4, 2, 4),
+		completeText = if info and info.complete then info.text else nil,
+		zones = zones,
+		lobby = if type(lobby) == "string" then lobby else nil,
+	})
+	lastQueueStep = -math.huge
+	-- Storm race v2 (client/StormRaceClient): extra rows under the cards.
+	local extras = CourseSelect.extras()
+	for _, c in extras:GetChildren() do
 		if c:IsA("GuiObject") then
 			c:Destroy()
 		end
 	end
-	-- J3: tokens, keys, fragments and the final boss under the title; once everything is done, the full text and the
-	-- roadmap lead the list ("more worlds coming", never "game complete").
-	local info = FidelityRules.decode(LocalPlayer:GetAttribute(FidelityRules.COMPLETION_ATTRIBUTE))
-	if progressLabel then
-		progressLabel.Text = if info then info.line else ""
-		progressLabel.Visible = info ~= nil
-	end
-	if info and info.complete then
-		local done = Instance.new("Frame")
-		done.Name = "Completion"
-		done.LayoutOrder = 0
-		done.Size = UDim2.new(1, -8, 0, 64)
-		done.BackgroundColor3 = WOOD_DARK
-		done.BackgroundTransparency = 0.1
-		done.Parent = boardList
-		corner(done, 10)
-		stroke(done, Color3.fromRGB(255, 214, 120), 2)
-		local t1 = label(done, "Text", info.text, UDim2.new(1, -16, 0, 30), UDim2.new(0, 8, 0, 4), Enum.Font.GothamBlack)
-		t1.TextWrapped = true
-		local t2 = label(done, "Roadmap", info.roadmap, UDim2.new(1, -16, 0, 24), UDim2.new(0, 8, 0, 36), Enum.Font.GothamBold)
-		t2.TextWrapped = true
-		t2.TextColor3 = Color3.fromRGB(255, 226, 170)
-	end
-	-- Phase 8: the map-unlock ladder with progress (Sky Tokens needed per zone, SPACE after the final boss) and the next goal.
-	local states = portalStates()
-	do
-		local tokens = tonumber(LocalPlayer:GetAttribute("SkyTokens")) or 0
-		local finalBoss = false
-		for _, st in states do
-			if st.zone == "SPACE" and st.open == true then
-				finalBoss = true
-			end
-		end
-		local strip = Instance.new("Frame")
-		strip.Name = "Ladder"
-		strip.LayoutOrder = 1
-		strip.Size = UDim2.new(1, -8, 0, 62)
-		strip.BackgroundColor3 = WOOD_DARK
-		strip.BackgroundTransparency = 0.25
-		strip.Parent = boardList
-		corner(strip, 10)
-		stroke(strip, RIM, 2)
-		local nextLine = LadderRules.nextLine(tokens, LadderNotices.zoneName)
-		local head = label(strip, "Head", string.format("SKY TOKENS %d  -  %s", tokens, nextLine and string.upper(nextLine) or "ALL TOKEN GATES OPEN"), UDim2.new(1, -16, 0, 16), UDim2.new(0, 8, 0, 3), Enum.Font.GothamBold)
-		head.TextXAlignment = Enum.TextXAlignment.Left
-		local chips = LadderRules.ladder(tokens, finalBoss)
-		for i, r in chips do
-			local zinfo = TrackInfo.forZone(r.zone)
-			local chip = Instance.new("Frame")
-			chip.Name = "Step_" .. r.zone
-			chip.Size = UDim2.new(1 / #chips, -6, 0, 36)
-			chip.Position = UDim2.new((i - 1) / #chips, 3 + 0, 0, 22)
-			chip.BackgroundColor3 = if zinfo then zinfo.color else WOOD
-			chip.BackgroundTransparency = if r.open then 0 else 0.6
-			chip.Parent = strip
-			corner(chip, 6)
-			local nm = label(chip, "Zone", if zinfo then string.upper(zinfo.zoneName) else r.zone, UDim2.new(1, -6, 0, 17), UDim2.new(0, 3, 0, 1), Enum.Font.GothamBlack)
-			nm.TextColor3 = if r.open then CREAM else MUTED_CREAM
-			local pr = label(chip, "Progress", if r.open then "OPEN" else LadderRules.progressText(r), UDim2.new(1, -6, 0, 14), UDim2.new(0, 3, 0, 19), Enum.Font.GothamBold)
-			pr.TextColor3 = if r.open then Color3.fromRGB(255, 244, 170) else MUTED_CREAM
-		end
-	end
-	-- Storm race v2 (client/StormRaceClient): extra rows between the ladder and the zones (LayoutOrder 2).
 	for _, addRow in boardRowHooks do
 		local ok, err = pcall(function(): any
-			addRow(boardList, 2)
+			addRow(extras, 2)
 			return nil
 		end)
 		if not ok then
 			warn("[SkyRally][TRACKFLOW] board row hook failed: " .. tostring(err))
 		end
 	end
-	for i, st in states do
-		local info = TrackInfo.get(st.id)
-		local row = Instance.new("Frame")
-		row.Name = "Zone_" .. tostring(st.zone)
-		row.LayoutOrder = i + 2
-		row.Size = UDim2.new(1, -8, 0, 78)
-		row.BackgroundColor3 = if info then info.color else WOOD
-		row.BackgroundTransparency = if st.open then 0 else 0.45
-		row.Parent = boardList
-		corner(row, 10)
-		stroke(row, if st.open then (if info then info.accent else RIM) else RIM, 2)
-		local title = if st.zone == "HUB" then "FINAL BOSS" else (if info then info.zoneName:upper() else tostring(st.zone))
-		local zn = label(row, "ZoneName", title, UDim2.new(0.5, -12, 0, 26), UDim2.new(0, 12, 0, 4))
-		zn.TextXAlignment = Enum.TextXAlignment.Left
-		local sub = label(row, "TrackName", (if info then info.trackName else st.id) .. "  -  " .. (if info and info.vehicle == "car" then "car" else "plane"), UDim2.new(0.5, -12, 0, 16), UDim2.new(0, 12, 0, 30), Enum.Font.GothamBold)
-		sub.TextXAlignment = Enum.TextXAlignment.Left
-		if not st.open then
-			local lrow = LadderRules.row(tostring(st.zone), tonumber(st.have) or 0, false)
-			if type(st.need) == "number" then
-				lrow.need = st.need
-				lrow.remaining = math.max(0, st.need - lrow.have)
-			end
-			local lock = label(row, "Lock", LadderRules.archText(lrow) or ("LOCKED: " .. tostring(st.why)), UDim2.new(0.5, -12, 0, 22), UDim2.new(0.5, 0, 0, 8), Enum.Font.GothamBold)
-			lock.TextXAlignment = Enum.TextXAlignment.Right
-			local lockHint = label(row, "LockHint", LadderRules.hintText(lrow) or "", UDim2.new(0.5, -12, 0, 16), UDim2.new(0.5, 0, 0, 30), Enum.Font.GothamBold)
-			lockHint.TextXAlignment = Enum.TextXAlignment.Right
-			lockHint.TextColor3 = MUTED_CREAM
-		elseif ARCH_LABELS and st.zone ~= "HUB" then
-			-- Phase 3: the arch's state, mirrored for players who are not near it, and JOIN / LEAVE for its lobby.
-			local trackId = tostring(st.id)
-			local status = label(row, "Queue", "", UDim2.new(0.5, -104, 0, 40), UDim2.new(0.5, 0, 0, 4), Enum.Font.GothamBold)
-			status.TextXAlignment = Enum.TextXAlignment.Right
-			status.TextWrapped = true
-			local jb = Instance.new("TextButton")
-			jb.Name = "Join"
-			jb.Size = UDim2.new(0, 88, 0, 36)
-			jb.Position = UDim2.new(1, -96, 0, 6)
-			jb.BackgroundColor3 = MODE_COLOR.race
-			jb.AutoButtonColor = true
-			jb.Font = Enum.Font.GothamBlack
-			jb.TextScaled = true
-			jb.TextColor3 = CREAM
-			jb.Text = if LocalPlayer:GetAttribute("LobbyArch") == trackId then "LEAVE" else "JOIN"
-			jb.Selectable = true
-			jb.Parent = row
-			UiSound.bind(jb, "confirm")
-			corner(jb, 6)
-			local jtc = Instance.new("UITextSizeConstraint")
-			jtc.MaxTextSize = 18
-			jtc.Parent = jb
-			jb.Activated:Connect(function()
-				if LocalPlayer:GetAttribute("LobbyArch") == trackId then
-					fire("LeaveLobby")
-				else
-					boardFrame.Visible = false
-					fire("RequestRace", trackId, "race")
-				end
-			end)
-			boardQueue[trackId] = { status = status, button = jb }
-			lastQueueStep = -math.huge
-		end
-		-- A listed but shut battle says why on the row (V9: the dim button only told on a click).
-		local battleLine = if st.open then BattleAccessRules.boardLockLine(st.modes) else nil
-		if battleLine then
-			row.Size = UDim2.new(1, -8, 0, 96)
-			local bl = label(row, "BattleLock", battleLine, UDim2.new(1, -24, 0, 15), UDim2.new(0, 12, 0, 47), Enum.Font.GothamBold)
-			bl.TextXAlignment = Enum.TextXAlignment.Left
-			bl.TextColor3 = Color3.fromRGB(255, 214, 160)
-		end
-		local bar = Instance.new("Frame")
-		bar.Name = "Modes"
-		bar.BackgroundTransparency = 1
-		bar.Position = UDim2.new(0, 8, 0, if battleLine then 66 else 48)
-		bar.Size = UDim2.new(1, -16, 0, 26)
-		bar.Parent = row
-		local hl = Instance.new("UIListLayout")
-		hl.FillDirection = Enum.FillDirection.Horizontal
-		hl.Padding = UDim.new(0, 6)
-		hl.SortOrder = Enum.SortOrder.LayoutOrder
-		hl.Parent = bar
-		local modeList = (st.modes or {}) :: { any }
-		for j, md in modeList do
-			local b = Instance.new("TextButton")
-			b.Name = "Mode_" .. tostring(md.mode)
-			b.LayoutOrder = j
-			-- Five buttons at 0.19 each; six or seven (QUICK, BATTLE) share the row, less the 6 px list padding each.
-			b.Size = if #modeList > 5 then UDim2.new(1 / #modeList, -6, 1, 0) else UDim2.new(0.19, 0, 1, 0)
-			b.BackgroundColor3 = MODE_COLOR[md.mode] or WOOD
-			b.BackgroundTransparency = if md.open then 0 else 0.6
-			b.AutoButtonColor = md.open == true
-			b.Font = Enum.Font.GothamBlack
-			b.TextScaled = true
-			b.TextColor3 = if md.open then CREAM else Color3.fromRGB(200, 190, 180)
-			b.Text = (MODE_LABEL[md.mode] or string.upper(tostring(md.mode)))
-			b.Selectable = true
-			b.Parent = bar
-			UiSound.bind(b, if md.open then "confirm" else "deny")
-			corner(b, 6)
-			local tc = Instance.new("UITextSizeConstraint")
-			tc.MaxTextSize = 16
-			tc.Parent = b
-			b.Activated:Connect(function()
-				if md.open then
-					boardFrame.Visible = false
-					fire("RequestRace", st.id, md.mode)
-				else
-					TrackFlow.toast(string.format("%s: %s", MODE_LABEL[md.mode] or md.mode, tostring(md.why)), Color3.fromRGB(255, 214, 160))
-				end
-			end)
-		end
+end
+
+-- Open and not on its way out (a closing board stays Visible through its swoosh).
+local function boardShown(): boolean
+	local f = boardFrame :: Frame? -- typed Frame but nil until the board is built
+	return f ~= nil and f.Visible and not UiMotion.isHiding(f)
+end
+
+local BOARD_HOME = UDim2.fromScale(0.5, 0.5)
+
+-- The board's fit (v37 uifix): explicit pixels from its own ScreenGui, centred, as large as the screen allows with a
+-- margin (scale sizes plus a UISizeConstraint let a stray parent size or an interrupted swoosh shift it). The aspect
+-- stays between 1.6 and 2.2 so cards keep their shape on a short wide window and on a phone.
+local function fitBoard()
+	local f = boardFrame :: Frame?
+	local bg = if f then f.Parent else nil
+	if not f or not bg or not bg:IsA("ScreenGui") then
+		return
+	end
+	local vw, vh = bg.AbsoluteSize.X, bg.AbsoluteSize.Y
+	if vw <= 0 or vh <= 0 then
+		return
+	end
+	local mx = math.max(12, math.floor(vw * 0.03))
+	local my = math.max(8, math.floor(vh * 0.04))
+	local w = math.min(vw - 2 * mx, 1600)
+	local h = math.min(vh - 2 * my, 900)
+	if w / h > 2.2 then
+		w = math.floor(h * 2.2)
+	elseif w / h < 1.6 and vh >= 500 then
+		h = math.floor(w / 1.6)
+	end
+	f.AnchorPoint = Vector2.new(0.5, 0.5)
+	f.Size = UDim2.fromOffset(math.floor(w), math.floor(h))
+	if not UiMotion.isBusy(f) then
+		f.Position = BOARD_HOME
 	end
 end
 
-local function openBoard(on: boolean)
-	boardFrame.Visible = on
+-- Open: swoosh up from the bottom with the open cue. Close: swoosh back down (close cue unless silent: a curtain, a
+-- mode switch or a JOIN / mode press that already spoke).
+function openBoard(on: boolean, silent: boolean?)
+	if on and workspace:GetAttribute("TrackSwitching") == true then
+		return -- never under the map-switch curtain (it closes the board; opening there left it mid-swoosh)
+	end
+	if on then
+		fitBoard()
+		UiMotion.show(boardFrame, "swooshIn", { side = "bottom", home = BOARD_HOME })
+	else
+		UiMotion.hide(boardFrame, "swooshOut", nil, { side = "bottom", silent = silent == true })
+	end
 	if on then
 		rebuildBoard()
-		-- Gamepad: focus the first open mode button (rows are frames, buttons sit inside them).
-		local first: GuiObject? = nil
-		for _, d in boardList:GetDescendants() do
-			if d:IsA("TextButton") and d.AutoButtonColor then
-				first = d
-				break
-			end
-		end
-		if first and (GuiService:IsTenFootInterface() or game:GetService("UserInputService").GamepadEnabled) then
-			GuiService.SelectedObject = first
-		end
+		-- Gamepad: focus the selected zone card.
+		CourseSelect.focus()
 	elseif GuiService.SelectedObject and GuiService.SelectedObject:IsDescendantOf(boardFrame) then
 		GuiService.SelectedObject = nil
 	end
@@ -484,14 +471,14 @@ end
 
 -- The Garage (client/Garage) closes the board when it opens, and closes itself when the board opens.
 function TrackFlow.closeBoard()
-	if boardFrame and boardFrame.Visible then
-		openBoard(false)
+	if boardShown() then
+		openBoard(false, true) -- the Garage's own open speaks
 	end
 end
 
 function TrackFlow.isBoardOpen(): boolean
 	-- boardFrame is typed Frame but stays nil until the board is built.
-	return if boardFrame then boardFrame.Visible else false
+	return boardShown()
 end
 
 local VfxAssets = require(Shared:WaitForChild("VfxAssets"))
@@ -627,8 +614,8 @@ local function signFace(sign: BasePart, face: Enum.NormalId, info: TrackInfo.Inf
 	sg.Parent = sign
 	local name = label(sg, "Name", if info then info.zoneName:upper() else zone, UDim2.new(1, -16, 0.4, 0), UDim2.new(0, 8, 0, 4))
 	name.TextColor3 = if info then info.accent else CREAM
-	local ns = Instance.new("UIStroke")
-	ns.Color = WOOD_DARK
+	local ns = name:FindFirstChildOfClass("UIStroke") or Instance.new("UIStroke")
+	ns.Color = UiSkin.color("ink")
 	ns.Thickness = 3
 	ns.Parent = name
 	-- Phase 8: a locked arch also says how to open it (one short line under the gate text).
@@ -833,7 +820,7 @@ local resultsTitle: TextLabel
 local resultsReason: TextLabel
 local resultsAward: TextLabel
 local resultsList: Frame
-local resultsAgain: TextButton
+local resultsAgain: GuiButton
 local lastBoardRaw = ""
 
 local TONE_COLOR: { [string]: Color3 } = {
@@ -937,8 +924,8 @@ local function refreshBattleBoard()
 			if lim then
 				lim:Destroy()
 			end
-			local st = Instance.new("UIStroke")
-			st.Color = WOOD_DARK
+			local st = l:FindFirstChildOfClass("UIStroke") or Instance.new("UIStroke")
+			st.Color = UiSkin.color("ink")
 			st.Thickness = 1.5
 			st.Parent = l
 			return l
@@ -1118,7 +1105,7 @@ local function showResults(data: any)
 		return
 	end
 	for _, c in resultsList:GetChildren() do
-		if c:IsA("TextLabel") then
+		if c:IsA("GuiObject") then
 			c:Destroy()
 		end
 	end
@@ -1127,18 +1114,30 @@ local function showResults(data: any)
 		elseif data.youWon then "VICTORY!"
 		elseif data.winnerName then string.format("%s WINS", string.upper(tostring(data.winnerName)))
 		else "NO WINNER"
-	resultsTitle.TextColor3 = if data.youWon then Color3.fromRGB(255, 226, 95) else CREAM
+	resultsTitle.TextColor3 = if data.youWon then UiSkin.color("gold") else Color3.new(1, 1, 1)
 	resultsReason.Text = string.format("%s  -  %s", title, tostring(data.reason or ""))
 	for i, row in (if type(data.rows) == "table" then data.rows else {}) :: { any } do
 		if i > 8 then
 			break
 		end
 		local you = row.userId == LocalPlayer.UserId
-		local l = label(resultsList, "Row" .. i, string.format("%d.  %s  -  %s", tonumber(row.rank) or i, tostring(row.name), tostring(row.text or "")), UDim2.new(1, -8, 0, 24), UDim2.new(0, 4, 0, 0), Enum.Font.GothamBold)
-		l.LayoutOrder = i
-		l.ZIndex = 33
+		-- UI v2: one chip row per racer (the gold key for you), the medal for places 1-3.
+		local rank = tonumber(row.rank) or i
+		-- Rows share the list's height (a phone card is short): 16-26 px each.
+		local nRows = math.min(8, #((data.rows :: any) or {}))
+		local rowH = math.clamp(math.floor((resultsList.AbsoluteSize.Y - 3 * (nRows - 1)) / math.max(1, nRows)), 16, 26)
+		local rf = UiSkin.panel(resultsList, "chip", { name = "Row" .. i, variant = if you then "header" else "inset", size = UDim2.new(1, -8, 0, rowH), layoutOrder = i, zIndex = 33, S = 1 })
+		if rank <= 3 then
+			UiSkin.icon(rf, "icon_medal_" .. rank, tostring(rank), { size = UDim2.fromOffset(rowH - 4, rowH - 4), position = UDim2.new(0, 6, 0.5, 0), anchor = Vector2.new(0, 0.5), zIndex = 35 })
+		end
+		local l = label(rf, "Text", string.format("%d.  %s  -  %s", rank, tostring(row.name), tostring(row.text or "")), UDim2.new(1, -40, 1, -6), UDim2.new(0, 34, 0, 3), Enum.Font.GothamBold)
+		l.ZIndex = 35
 		l.TextXAlignment = Enum.TextXAlignment.Left
-		l.TextColor3 = if you then Color3.fromRGB(255, 236, 140) else CREAM
+		l.TextColor3 = if you then UiSkin.color("ink") else Color3.new(1, 1, 1)
+		local ls = l:FindFirstChildOfClass("UIStroke")
+		if ls then
+			ls.Enabled = not you
+		end
 	end
 	-- The award line says what the SERVER saved (BattleCore -> SaveService), never a client guess.
 	local award = if type(data.award) == "table" then data.award else {}
@@ -1160,16 +1159,20 @@ local function showResults(data: any)
 	end
 	resultsAward.Text = line
 	LadderNotices.battleAward(award)
-	resultsAward.TextColor3 = if award.amulet then Color3.fromRGB(255, 214, 90) else Color3.fromRGB(226, 246, 200)
-	resultsFrame.Visible = true
+	resultsAward.TextColor3 = if award.amulet then UiSkin.color("gold") else Color3.fromRGB(150, 240, 160)
+	-- Pop in with its cue the first time; a later update (votes, award) leaves the card where it is.
+	if not resultsFrame.Visible or UiMotion.isHiding(resultsFrame) then
+		UiMotion.show(resultsFrame, "popIn")
+	end
 	if GuiService:IsTenFootInterface() or game:GetService("UserInputService").GamepadEnabled then
 		GuiService.SelectedObject = resultsAgain
 	end
 end
 
 local function hideResults()
-	if resultsFrame and resultsFrame.Visible then
-		resultsFrame.Visible = false
+	if resultsFrame and resultsFrame.Visible and not UiMotion.isHiding(resultsFrame) then
+		-- Silent pop out: the HUB / AGAIN press already spoke, and a reset or a curtain needs no extra cue.
+		UiMotion.hide(resultsFrame, "popOut", nil, { silent = true })
 		if GuiService.SelectedObject and GuiService.SelectedObject:IsDescendantOf(resultsFrame) then
 			GuiService.SelectedObject = nil
 		end
@@ -1227,8 +1230,9 @@ end
 
 local function boardAction(_name: string, state: Enum.UserInputState, _obj: InputObject): Enum.ContextActionResult
 	if state == Enum.UserInputState.Begin then
-		UiSound.play(if boardFrame.Visible then "back" else "tab") -- the key path speaks like the ADVENTURE / CLOSE buttons
-		openBoard(not boardFrame.Visible)
+		local open = boardShown()
+		UiSound.play(if open then "back" else "tab") -- the key path speaks like the ADVENTURE / CLOSE buttons
+		openBoard(not open)
 	end
 	return Enum.ContextActionResult.Sink
 end
@@ -1271,7 +1275,7 @@ local function applyMode()
 		task.delay(t, refreshKeys)
 	end
 	if not hub then
-		openBoard(false)
+		openBoard(false, true)
 	else
 		-- The hub map replicates after the mode flips; label again as it streams in.
 		for _, t in { 1, 4, 10, 20 } do
@@ -1346,14 +1350,15 @@ end
 local function showCurtain(on: boolean)
 	if on then
 		local info = TrackInfo.get(curtainAttr("NextTrackId") :: string?)
-		curtain.BackgroundColor3 = if info then info.color else WOOD_DARK
+		curtain.BackgroundColor3 = CURTAIN_NAVY
+		curtainZoneColor = if info then info.color else WOOD_DARK
 		curtainZone.Text = if info then info.zoneName:upper() else "LOADING"
 		curtainTrack.Text = if info then info.trackName else ""
 		local mode = curtainAttr("NextMode")
 		local BossConfig = require(Shared:WaitForChild("BossConfig")) :: any
 		local boss = BossConfig.forZone(info and info.zone)
 		local vehicle = if info and info.vehicle == "car" then "Car" else "Plane"
-		curtainHint.Text = if mode == "hub" then "Back to Central Island"
+		curtainHint.Text = string.upper(if mode == "hub" then "Back to Central Island"
 			elseif mode == "boss" and boss then string.format("BOSS RACE vs %s, %s", boss.name, boss.title)
 			elseif mode == "rematch" and boss then string.format("BOSS REMATCH vs %s - harder hazards", boss.name)
 			elseif mode == "coin" then "COIN CHALLENGE - take all 8 silver coins AND win"
@@ -1362,11 +1367,17 @@ local function showCurtain(on: boolean)
 			elseif mode == "stormrace" then "STORM RACE  -  3 laps vs the storm dragon"
 			elseif mode == "stormcup" then string.format("STORM CUP  -  %s  -  3 laps vs 7 rivals", stormModifierText(workspace:GetAttribute("RaceModifier")))
 			elseif mode == "battle" then (BATTLE_HINT[tostring(curtainAttr("NextBattleKind"))] or "BATTLE - 3 minutes")
-			else vehicle .. " race  -  3 laps vs 7 rivals"
+			else vehicle .. " race  -  3 laps vs 7 rivals")
+		-- v38-flow: the curtain is a wipe, not a cross-fade: it sweeps in from the left over 0.45 s (fading up as it
+		-- comes), so select -> curtain reads as one move, like a console racer's loading wipe.
+		local wasUp = curtain.Visible and curtain.BackgroundTransparency < 0.5
 		curtain.Visible = true
-		curtain.BackgroundTransparency = 1
-		TweenService:Create(curtain, TweenInfo.new(0.5), { BackgroundTransparency = 0 }):Play()
-		openBoard(false)
+		if not wasUp then
+			curtain.Position = UDim2.fromScale(-1, 0)
+			curtain.BackgroundTransparency = 0.35
+			TweenService:Create(curtain, TweenInfo.new(0.45, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), { Position = UDim2.fromScale(0, 0), BackgroundTransparency = 0 }):Play()
+		end
+		openBoard(false, true)
 		-- REMARKABLE 8: the kart appears after the 0.5 s fade (CurtainKart waits for it; no outline = no kart).
 		CurtainKart.start(curtain, curtainAttr("NextTrackId"), if info then info.color else nil)
 	else
@@ -1383,7 +1394,7 @@ local function showCurtain(on: boolean)
 		end)
 		-- REMARKABLE 20: the curtain lifts as the destination's emblem iris opening (the fade is the fallback).
 		local arriving = TrackInfo.get(RaceAttr.mine("ActiveTrackId") :: string?) or TrackInfo.get(workspace:GetAttribute("NextTrackId") :: string?)
-		local irisOn = PortalPlunge.irisReveal(curtain.BackgroundColor3, if arriving then arriving.zone else nil, 0.6, function()
+		local irisOn = PortalPlunge.irisReveal(curtainZoneColor, if arriving then arriving.zone else nil, 0.6, function()
 			curtain.BackgroundTransparency = 1
 			curtain.Visible = false
 		end)
@@ -1446,7 +1457,7 @@ local function stepGroupCurtain()
 		-- The seat replicated before its root: name the track once the root's Next* attributes are in.
 		local info = TrackInfo.get(curtainAttr("NextTrackId") :: string?)
 		if info then
-			curtain.BackgroundColor3 = info.color
+			curtainZoneColor = info.color
 			curtainZone.Text = info.zoneName:upper()
 			curtainTrack.Text = info.trackName
 		end
@@ -1455,6 +1466,49 @@ local function stepGroupCurtain()
 		-- Lifted (labels already off) yet still drawn after the guard: never leave a bare curtain on screen.
 		forceCurtainOff()
 	end
+end
+
+-- v37 client-ready handshake (shared/MapReadyRules): when a map root gets a new MapReadyToken, answer "MapReady" once
+-- this client holds the map (descendant count) and has rendered a run of smooth frames after it. The race's countdown
+-- (server/MapReadyGate) waits for that answer, so it never runs while this client is frozen taking the map in.
+local readyAnswered: { [Instance]: number } = setmetatable({}, { __mode = "k" }) :: any
+local function answerMapReady(root: Instance)
+	local token = root:GetAttribute(MapReadyRules.TOKEN_ATTR)
+	if type(token) ~= "number" or readyAnswered[root] == token then
+		return
+	end
+	readyAnswered[root] = token
+	task.spawn(function()
+		local t0 = os.clock()
+		local function current(): boolean
+			return root.Parent ~= nil and root:GetAttribute(MapReadyRules.TOKEN_ATTR) == token and os.clock() - t0 < MapReadyRules.CLIENT_GIVEUP
+		end
+		while current() and not MapReadyRules.countReady(#root:GetDescendants(), root:GetAttribute(MapReadyRules.COUNT_ATTR)) do
+			task.wait(0.25)
+		end
+		local run = 0
+		while current() and run < MapReadyRules.SMOOTH_FRAMES do
+			run = MapReadyRules.smoothStep(run, RunService.RenderStepped:Wait())
+		end
+		if root:GetAttribute(MapReadyRules.TOKEN_ATTR) == token then
+			fire("MapReady", token)
+		end
+	end)
+end
+local function watchMapReady()
+	local function watch(root: Instance)
+		root:GetAttributeChangedSignal(MapReadyRules.TOKEN_ATTR):Connect(function()
+			answerMapReady(root)
+		end)
+		answerMapReady(root)
+	end
+	task.spawn(function()
+		local maps = workspace:WaitForChild("Maps", math.huge)
+		maps.ChildAdded:Connect(watch)
+		for _, c in maps:GetChildren() do
+			watch(c)
+		end
+	end)
 end
 
 -- The "Back to Central Island in N" line: with the results card up it sits just under the card (ResultsLayoutRules), clear
@@ -1533,12 +1587,11 @@ local function refreshQueue(now: number)
 	end
 	local mine = LocalPlayer:GetAttribute("LobbyArch")
 	if boardFrame and boardFrame.Visible then
-		for trackId, b in boardQueue do
-			if b.status.Parent then
-				b.status.Text = (archText(states[trackId], now))
-				b.button.Text = if mine == trackId then "LEAVE" else "JOIN"
-			end
+		local texts: { [string]: string } = {}
+		for trackId in boardQueue do
+			texts[trackId] = (archText(states[trackId], now))
 		end
+		CourseSelect.updateQueue(texts, if type(mine) == "string" then mine else nil)
 	end
 	local line = ""
 	local id: string?, vars: { [string]: any } = nil, {}
@@ -1595,6 +1648,13 @@ local function step()
 			text = "GO!"
 		end
 	end
+	-- Studio-only capture hook (UI v2 verification, lane 5): SkyRallyTrackFlow.QACountdown holds a beat on screen.
+	if RunService:IsStudio() then
+		local qa = gui:GetAttribute("QACountdown")
+		if type(qa) == "string" and qa ~= "" then
+			text = qa
+		end
+	end
 	if text ~= lastCountdownText then
 		lastCountdownText = text
 		countdownLabel.Visible = text ~= ""
@@ -1618,9 +1678,19 @@ local function step()
 			countdownLabel.RichText = true
 			countdownLabel.TextSize = math.min(100, target)
 			countdownLabel.Text = string.format('<font size="%d">%s</font>', target, text)
-			sc.Scale = 1.3
-			TweenService:Create(sc, TweenInfo.new(0.35, Enum.EasingStyle.Back, Enum.EasingDirection.Out), { Scale = 1 }):Play()
-			countdownLabel.TextColor3 = if text == "GO!" then Color3.fromRGB(140, 255, 120) else CREAM
+			-- UI v2 (lane 5): each beat punches in big and tilted and settles flat; 3-2-1 in a gold-to-orange gradient, GO! in green.
+			local isGo = text == "GO!"
+			sc.Scale = if isGo then 1.9 else 1.6
+			TweenService:Create(sc, TweenInfo.new(if isGo then 0.4 else 0.3, Enum.EasingStyle.Back, Enum.EasingDirection.Out), { Scale = 1 }):Play()
+			countdownLabel.Rotation = if isGo then -14 else -10
+			TweenService:Create(countdownLabel, TweenInfo.new(0.32, Enum.EasingStyle.Back, Enum.EasingDirection.Out), { Rotation = 0 }):Play()
+			countdownLabel.TextColor3 = Color3.new(1, 1, 1)
+			local cg = countdownLabel:FindFirstChildOfClass("UIGradient")
+			if cg then
+				cg.Color = if isGo
+					then ColorSequence.new(Color3.fromHex("C8FFB0"), Color3.fromHex("1FA83A"))
+					else ColorSequence.new(Color3.fromHex("FFF6C8"), Color3.fromHex("FF9A1F"))
+			end
 			task.spawn(pcall, function() -- moments VFX: pulse ring at the car, GO ring + FOV pop + gantry confetti
 				(require(script.Parent:WaitForChild("CelebrationFx")) :: any).countdown(text)
 			end)
@@ -1652,7 +1722,7 @@ local function step()
 		local n = math.ceil(back - now) * (if replaying then -1 else 1)
 		if n ~= lastCount then
 			lastCount = n
-			returnLabel.Text = if replaying then string.format("Flying again in %d", -n) else string.format("Back to Central Island in %d", n)
+			returnLabel.Text = if replaying then string.format("RACING AGAIN IN %d", -n) else string.format("BACK TO HUB IN %d", n)
 		end
 		placeReturnLabel()
 		-- The podium ceremony owns the screen (HudPhase "podium"): the line would sit on its stats plank. The photo cam ("finish") too.
@@ -1680,6 +1750,9 @@ local function step()
 			if sc then
 				sc.Scale = if wasHidden then 0.85 else 1.04
 				TweenService:Create(sc, TweenInfo.new(0.25, Enum.EasingStyle.Back, Enum.EasingDirection.Out), { Scale = 1 }):Play()
+			end
+			if wasHidden then
+				UiSound.play(UiSkinRules.cueFor("open") or "open") -- the banner appearing (its countdown ticks stay their own)
 			end
 		end
 	end
@@ -1738,13 +1811,14 @@ end
 -- The hub hint under the ADVENTURE bar: an explicit TextSize (TextScaled at 12-17 px collapsed the word spaces:
 -- "Drivethrough a portalarch") on a rounded dark backing with a stroke, the longest wording that fits the bar's width.
 local function fitHubHint(width: number, height: number, touch: boolean)
-	local hint = hubBar:FindFirstChild("Hint") :: TextLabel?
-	if not hint then
+	local hint = hubBar:FindFirstChild("Hint") :: Frame?
+	local hintText = hint and hint:FindFirstChild("Text") :: TextLabel?
+	if not hint or not hintText then
 		return
 	end
 	local texts: { string } = if touch
-		then { "Drive through a portal arch or tap ADVENTURE", "Drive through a portal arch" }
-		else { "Drive through a portal arch or open the board (B / Y)", "Drive through a portal arch or press B", "Drive through a portal arch" }
+		then { "Tap RACE or drive into a portal", "Drive into a portal" }
+		else { "Press B or drive into a portal", "Drive into a portal" }
 	local maxSize = math.max(HudLayoutRules.MIN_TEXT, math.floor(height))
 	local pick, pickSize = texts[#texts], HudLayoutRules.MIN_TEXT
 	local found = false
@@ -1760,13 +1834,17 @@ local function fitHubHint(width: number, height: number, touch: boolean)
 			break
 		end
 	end
-	hint.TextScaled = false
-	hint.TextWrapped = false
-	hint.TextTruncate = Enum.TextTruncate.AtEnd
-	hint.Text = pick
-	hint.TextSize = pickSize
+	hintText.TextScaled = false
+	hintText.TextWrapped = false
+	hintText.TextTruncate = Enum.TextTruncate.AtEnd
+	hintText.Text = pick
+	hintText.TextSize = pickSize
 	hint.AutomaticSize = Enum.AutomaticSize.None
-	hint.Size = UDim2.new(1, 0, 0, math.max(pickSize, math.floor(height)))
+	-- a compact chip right-aligned under the RACE key
+	local tw = TextService:GetTextSize(pick, pickSize, Enum.Font.GothamBold, Vector2.new(10000, 100)).X
+	hint.AnchorPoint = Vector2.new(1, 0)
+	hint.Position = UDim2.new(1, 0, hint.Position.Y.Scale, hint.Position.Y.Offset)
+	hint.Size = UDim2.new(0, math.min(width, tw + 28), 0, math.max(pickSize, math.floor(height)) + 6)
 end
 
 -- Positions that depend on the viewport, the safe-area insets, the Roblox nav and the input kind; build() and
@@ -1810,7 +1888,18 @@ local function applyLayout()
 			end)
 		end
 	end
-	fitHubHint(hw, hubBarH * 0.32, HudMetrics.get().kind == "touch")
+	-- The RACE key: the GARAGE button's width (GarageModel.hubButtonRect), a touch-safe height, right-aligned.
+	local adv = hubBar:FindFirstChild("AdventureButton") :: GuiObject?
+	local keyW = GarageModel.hubButtonRect(vp.X, vp.Y).w
+	local keyH = math.clamp(math.floor(hubBarH * 0.6), 44, 60)
+	if adv then
+		adv.Size = UDim2.fromOffset(keyW, keyH)
+	end
+	local hintEl = hubBar:FindFirstChild("Hint") :: GuiObject?
+	if hintEl then
+		hintEl.Position = UDim2.new(1, 0, 0, keyH + 4)
+	end
+	fitHubHint(hw, math.min(hubBarH * 0.26, 20), HudMetrics.get().kind == "touch")
 	placeLaneA()
 	returnLabel.Position = UDim2.new(0.3, 0, 0.8, -ins.bottom)
 	-- Battle: the plaque in the top-centre slot (lane B drops below it), the field board under the nav column (desktop)
@@ -1848,37 +1937,93 @@ local function build()
 	curtain = Instance.new("Frame")
 	curtain.Name = "Curtain"
 	curtain.Size = UDim2.fromScale(1, 1)
-	curtain.BackgroundColor3 = WOOD_DARK
+	curtain.BackgroundColor3 = CURTAIN_NAVY
 	curtain.Visible = false
 	curtain.ZIndex = 50
 	curtain.Parent = gui
+	-- UI v2 curtain (presentation only; timing lives in showCurtain / the MapReady handshake): the board's navy
+	-- gradient, the zone name on a slanted gold band with a checker strip, the track name in the display face, the
+	-- race line in a dark pill. The zone colour shows only in CurtainKart's map well.
 	local grad = Instance.new("UIGradient")
 	grad.Rotation = 90
-	grad.Color = ColorSequence.new(Color3.new(1, 1, 1), Color3.fromRGB(120, 120, 140))
+	grad.Color = ColorSequence.new(Color3.fromRGB(255, 255, 255), Color3.fromRGB(122, 128, 140))
 	grad.Parent = curtain
-	curtainZone = label(curtain, "ZoneName", "", UDim2.new(0.8, 0, 0.16, 0), UDim2.new(0.1, 0, 0.3, 0))
+	curtainZone = label(curtain, "ZoneName", "", UDim2.new(0.5, 0, 0.14, 0), UDim2.new(0.25, 0, 0.3, 0))
 	curtainZone.ZIndex = 51
+	curtainZone.BackgroundTransparency = 0
+	curtainZone.BackgroundColor3 = Color3.fromRGB(255, 216, 61)
+	curtainZone.TextColor3 = UiSkin.color("ink")
+	curtainZone.Rotation = -2
+	do
+		local zs = curtainZone:FindFirstChildOfClass("UIStroke")
+		if zs then
+			zs.Enabled = false
+		end
+		local bandGrad = Instance.new("UIGradient")
+		bandGrad.Rotation = 90
+		bandGrad.Color = ColorSequence.new(Color3.new(1, 1, 1), Color3.fromRGB(255, 160, 50))
+		bandGrad.Parent = curtainZone
+		local bc = Instance.new("UICorner")
+		bc.CornerRadius = UDim.new(0, 12)
+		bc.Parent = curtainZone
+		local bs = Instance.new("UIStroke")
+		bs.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+		bs.Color = UiSkin.color("ink")
+		bs.Thickness = 4
+		bs.Parent = curtainZone
+		local bp = Instance.new("UIPadding")
+		bp.PaddingTop = UDim.new(0.12, 0)
+		bp.PaddingBottom = UDim.new(0.1, 0)
+		bp.Parent = curtainZone
+		local chk = UiSkin.checker(curtainZone, { name = "Checker", size = UDim2.new(0.9, 0, 0, 8), position = UDim2.new(0.5, 0, 1, 10), anchor = Vector2.new(0.5, 0), cells = 30, zIndex = 51 })
+		local cc = Instance.new("UICorner")
+		cc.CornerRadius = UDim.new(0, 3)
+		cc.Parent = chk
+	end
 	curtainTrack = label(curtain, "TrackName", "", UDim2.new(0.7, 0, 0.09, 0), UDim2.new(0.15, 0, 0.47, 0), Enum.Font.GothamBold)
 	curtainTrack.ZIndex = 51
+	curtainTrack.FontFace = UiSkin.font("display")
 	curtainHint = label(curtain, "Hint", "", UDim2.new(0.6, 0, 0.06, 0), UDim2.new(0.2, 0, 0.6, 0), Enum.Font.Gotham)
 	curtainHint.ZIndex = 51
+	curtainHint.FontFace = UiSkin.font("bodyHeavy")
+	curtainHint.BackgroundTransparency = 0.25
+	curtainHint.BackgroundColor3 = Color3.fromRGB(14, 27, 69)
+	do
+		local hc = Instance.new("UICorner")
+		hc.CornerRadius = UDim.new(0.5, 0)
+		hc.Parent = curtainHint
+		local hp = Instance.new("UIPadding")
+		hp.PaddingTop = UDim.new(0.14, 0)
+		hp.PaddingBottom = UDim.new(0.14, 0)
+		hp.PaddingLeft = UDim.new(0.03, 0)
+		hp.PaddingRight = UDim.new(0.03, 0)
+		hp.Parent = curtainHint
+	end
 
 	-- countdown
 	countdownLabel = label(gui, "Countdown", "", UDim2.new(0.3, 0, 0.22, 0), UDim2.new(0.35, 0, 0.19, 0)) -- lane A (applyLayout)
 	countdownLabel.Visible = false
 	countdownLabel.ZIndex = 40
-	local cs = Instance.new("UIStroke")
-	cs.Thickness = 6
-	cs.Color = WOOD_DARK
+	-- UI v2 hero numerals (lane 5 owns the countdown look): the heavy italic display face over a vertical gradient.
+	countdownLabel.FontFace = UiSkin.font("display") -- v38-flow: the kit face
+	local cdg = Instance.new("UIGradient")
+	cdg.Rotation = 90
+	cdg.Color = ColorSequence.new(Color3.fromHex("FFF6C8"), Color3.fromHex("FF9A1F"))
+	cdg.Parent = countdownLabel
+	local cs = countdownLabel:FindFirstChildOfClass("UIStroke") or Instance.new("UIStroke")
+	cs.Thickness = 7
+	cs.LineJoinMode = Enum.LineJoinMode.Round
+	cs.Color = UiSkin.color("ink")
 	cs.Parent = countdownLabel
 	local sc = Instance.new("UIScale")
 	sc.Parent = countdownLabel
 	gridLabel = label(gui, "GridLine", "", UDim2.new(0.4, 0, 0.055, 0), UDim2.new(0.3, 0, 0.42, 0), Enum.Font.GothamBold) -- under lane A
 	gridLabel.Visible = false
 	gridLabel.ZIndex = 40
-	local gs = Instance.new("UIStroke")
+	gridLabel.FontFace = UiSkin.font("display") -- v38-flow: the display face, like every other centre line
+	local gs = gridLabel:FindFirstChildOfClass("UIStroke") or Instance.new("UIStroke")
 	gs.Thickness = 2.5
-	gs.Color = WOOD_DARK
+	gs.Color = UiSkin.color("ink")
 	gs.Parent = gridLabel
 
 	-- hub bar: ADVENTURE button + hint
@@ -1894,34 +2039,37 @@ local function build()
 	sz.MaxSize = Vector2.new(520, 96)
 	sz.MinSize = Vector2.new(160, 52) -- hubBarPlacement keeps the width >= 160 itself
 	sz.Parent = hubBar
-	local adv = Instance.new("TextButton")
-	adv.Name = "AdventureButton"
-	adv.Size = UDim2.new(1, 0, 0.66, 0)
-	adv.BackgroundColor3 = Color3.fromRGB(78, 148, 58)
-	adv.Font = Enum.Font.GothamBlack
-	adv.TextScaled = true
-	adv.TextColor3 = CREAM
-	adv.Text = "ADVENTURE"
-	adv.Parent = hubBar
-	corner(adv, 10)
-	UiSound.bind(adv, "tab")
-	stroke(adv, Color3.fromRGB(168, 232, 128), 2)
-	local hint = label(hubBar, "Hint", "Drive through a portal arch or open the board (B / Y)", UDim2.new(1, 0, 0.32, 0), UDim2.new(0, 0, 0.68, 0), Enum.Font.GothamBold)
-	hint.TextScaled = false
-	hint.TextSize = 14
-	local hc = hint:FindFirstChildOfClass("UITextSizeConstraint")
+	-- UI v2: a primary hub key sized like the GARAGE button under it (applyLayout), not a bar across the sky.
+	local adv = UiSkin.button(hubBar, "go", "RACE", {
+		name = "AdventureButton",
+		anchor = Vector2.new(1, 0),
+		position = UDim2.fromScale(1, 0),
+		size = UDim2.new(0, 210, 0.66, 0),
+		glyph = "flag",
+		maxText = 34,
+		sound = "tab",
+	})
+	-- The hint's backing is a toast slab Frame ("Hint", which applyMode / fitHubHint look up) with the text in a child:
+	-- slab art on a TextLabel would cover its own text.
+	local hint = Instance.new("Frame")
+	hint.Name = "Hint"
+	hint.Size = UDim2.new(1, 0, 0.32, 0)
+	hint.Position = UDim2.new(0, 0, 0.68, 0)
+	hint.Parent = hubBar
+	UiSkin.style(hint, "toast_slab", { color = WOOD_DARK, alpha = 0.35, corner = 8 })
+	local hintText = label(hint, "Text", "Drive through a portal arch or open the board (B / Y)", UDim2.fromScale(1, 1), UDim2.new(), Enum.Font.GothamBold)
+	hintText.TextScaled = false
+	hintText.TextSize = 14
+	local hc = hintText:FindFirstChildOfClass("UITextSizeConstraint")
 	if hc then
 		hc:Destroy()
 	end
-	hint.BackgroundColor3 = WOOD_DARK
-	hint.BackgroundTransparency = 0.35
-	corner(hint, 8)
-	local hs = Instance.new("UIStroke")
-	hs.Color = WOOD_DARK
+	local hs = hintText:FindFirstChildOfClass("UIStroke") or Instance.new("UIStroke")
+	hs.Color = UiSkin.color("ink")
 	hs.Thickness = 1.5
-	hs.Parent = hint
+	hs.Parent = hintText
 	adv.Activated:Connect(function()
-		openBoard(not boardFrame.Visible)
+		openBoard(not boardShown())
 	end)
 	-- Two lines under the bar; the Garage's hub button sits below this band (GarageModel.hubButtonRect).
 	stormLabel = label(hubBar, "StormCup", "", UDim2.new(1, 0, GarageModel.STORM_LINE_SCALE, 0), UDim2.new(0, 0, 1, 4), Enum.Font.GothamBold)
@@ -1929,65 +2077,64 @@ local function build()
 	stormLabel.TextTruncate = Enum.TextTruncate.AtEnd
 	stormLabel.TextColor3 = Color3.fromRGB(190, 225, 255)
 	stormLabel.Visible = false
-	local ss = Instance.new("UIStroke")
-	ss.Color = WOOD_DARK
+	local ss = stormLabel:FindFirstChildOfClass("UIStroke") or Instance.new("UIStroke")
+	ss.Color = UiSkin.color("ink")
 	ss.Thickness = 1.5
 	ss.Parent = stormLabel
 
-	-- adventure board
+	-- adventure board (UI v2 course select: client/CourseSelect)
 	boardFrame = Instance.new("Frame")
 	boardFrame.Name = "AdventureBoard"
 	boardFrame.AnchorPoint = Vector2.new(0.5, 0.5)
-	boardFrame.Position = UDim2.fromScale(0.5, 0.56)
-	boardFrame.Size = UDim2.fromScale(0.5, 0.72)
-	boardFrame.BackgroundColor3 = WOOD
+	boardFrame.Position = BOARD_HOME
+	boardFrame.Size = UDim2.fromScale(0.9, 0.86) -- fitBoard sets pixels from the gui size
 	boardFrame.Visible = false
 	boardFrame.ZIndex = 30
-	boardFrame.Parent = gui
-	corner(boardFrame, 14)
-	stroke(boardFrame, RIM, 3)
-	local bsz = Instance.new("UISizeConstraint")
-	bsz.MaxSize = Vector2.new(620, 520)
-	bsz.MinSize = Vector2.new(320, 220)
-	bsz.Parent = boardFrame
-	local title = label(boardFrame, "Title", "CHOOSE A ZONE", UDim2.new(1, -20, 0, 34), UDim2.new(0, 10, 0, 6))
-	title.ZIndex = 31
-	local pl = label(boardFrame, "Progress", "", UDim2.new(1, -20, 0, 18), UDim2.new(0, 10, 0, 40), Enum.Font.GothamBold)
-	pl.ZIndex = 31
-	pl.TextColor3 = Color3.fromRGB(255, 226, 170)
-	pl.Visible = false
-	progressLabel = pl
-	boardList = Instance.new("ScrollingFrame")
-	boardList.Name = "List"
-	boardList.BackgroundTransparency = 1
-	boardList.Position = UDim2.new(0, 8, 0, 62)
-	boardList.Size = UDim2.new(1, -16, 1, -114)
-	boardList.CanvasSize = UDim2.new()
-	boardList.AutomaticCanvasSize = Enum.AutomaticSize.Y
-	boardList.ScrollBarThickness = 6
-	boardList.ZIndex = 31
-	boardList.Parent = boardFrame
-	local layout = Instance.new("UIListLayout")
-	layout.Padding = UDim.new(0, 6)
-	layout.SortOrder = Enum.SortOrder.LayoutOrder
-	layout.Parent = boardList
-	local close = Instance.new("TextButton")
-	close.Name = "CloseBoard"
-	close.AnchorPoint = Vector2.new(0.5, 1)
-	close.Position = UDim2.new(0.5, 0, 1, -8)
-	close.Size = UDim2.new(0.4, 0, 0, 40)
-	close.BackgroundColor3 = WOOD_DARK
-	close.Font = Enum.Font.GothamBlack
-	close.TextScaled = true
-	close.TextColor3 = CREAM
-	close.Text = "CLOSE"
-	close.ZIndex = 31
-	close.Parent = boardFrame
-	corner(close, 8)
-	UiSound.bind(close, "back")
-	close.Activated:Connect(function()
-		openBoard(false)
+	-- Its own ScreenGui over the Garage button (26), under Settings (30) and the toasts (31), with a scrim behind it.
+	local boardGui = Instance.new("ScreenGui")
+	boardGui.Name = "SkyRallyCourseSelect"
+	boardGui.ResetOnSpawn = false
+	boardGui.DisplayOrder = 27
+	boardGui.IgnoreGuiInset = gui.IgnoreGuiInset
+	boardGui.ScreenInsets = gui.ScreenInsets
+	boardGui.ZIndexBehavior = gui.ZIndexBehavior
+	boardGui.Parent = pg
+	local scrim = Instance.new("Frame")
+	scrim.Name = "Scrim"
+	scrim.BackgroundColor3 = Color3.fromRGB(6, 10, 30)
+	scrim.BackgroundTransparency = 1
+	scrim.BorderSizePixel = 0
+	scrim.Position = UDim2.fromScale(-0.1, -0.2)
+	scrim.Size = UDim2.fromScale(1.2, 1.4)
+	scrim.Visible = false
+	scrim.ZIndex = 1
+	scrim.Parent = boardGui
+	boardFrame.Parent = boardGui
+	boardFrame:GetPropertyChangedSignal("Visible"):Connect(function()
+		scrim.Visible = boardFrame.Visible
+		if boardFrame.Visible then
+			scrim.BackgroundTransparency = 1
+			TweenService:Create(scrim, TweenInfo.new(0.2), { BackgroundTransparency = 0.4 }):Play()
+		end
 	end)
+	UiSkin.style(boardFrame, "panel", { S = 1 })
+	boardGui:GetPropertyChangedSignal("AbsoluteSize"):Connect(fitBoard)
+	task.defer(fitBoard)
+	CourseSelect.build(boardFrame, {
+		go = function(z: CourseSelect.Zone, mode: string)
+			openBoard(false, true) -- the press already spoke; the curtain follows
+			fire("RequestRace", z.id, mode)
+		end,
+		leave = function()
+			fire("LeaveLobby")
+		end,
+		close = function()
+			openBoard(false)
+		end,
+		toast = function(msg: string)
+			TrackFlow.toast(msg, Color3.fromRGB(255, 214, 160))
+		end,
+	})
 
 	-- toast: NotifyKit draws it in lane B; it only needs to know when the hub bar is up (the lane stops short of it)
 	NotifyKit.setHubProbe(function()
@@ -2000,12 +2147,9 @@ local function build()
 	lobbyFrame.AnchorPoint = Vector2.zero
 	lobbyFrame.Position = UDim2.new(0.5, 0, 0.26, 0)
 	lobbyFrame.Size = UDim2.new(0.4, 0, 0.12, 0)
-	lobbyFrame.BackgroundColor3 = WOOD
-	lobbyFrame.BackgroundTransparency = 0.08
 	lobbyFrame.Visible = false
 	lobbyFrame.Parent = gui
-	corner(lobbyFrame, 10)
-	stroke(lobbyFrame, Color3.fromRGB(255, 214, 120), 2)
+	UiSkin.style(lobbyFrame, "sign_hanging", { color = WOOD, alpha = 0.08, corner = 10, stroke = Color3.fromRGB(255, 214, 120), strokeWidth = 2 })
 	local lsz = Instance.new("UISizeConstraint")
 	lsz.MinSize = Vector2.new(200, 56)
 	lsz.MaxSize = Vector2.new(560, 92)
@@ -2013,8 +2157,8 @@ local function build()
 	Instance.new("UIScale").Parent = lobbyFrame
 	lobbyText = label(lobbyFrame, "Text", "", UDim2.new(1, -16, 1, -8), UDim2.new(0, 8, 0, 4), Enum.Font.GothamBlack)
 	lobbyText.TextWrapped = true
-	local lts = Instance.new("UIStroke")
-	lts.Color = WOOD_DARK
+	local lts = lobbyText:FindFirstChildOfClass("UIStroke") or Instance.new("UIStroke")
+	lts.Color = UiSkin.color("ink")
 	lts.Thickness = 1.5
 	lts.Parent = lobbyText
 	lobbyGuest = label(lobbyFrame, "Guest", RaceFlowRules.GUEST_TEXT, UDim2.new(1, -16, 0.34, 0), UDim2.new(0, 8, 0.62, 0), Enum.Font.GothamBold)
@@ -2023,20 +2167,21 @@ local function build()
 	local cl = label(gui, "CoinCounter", "", UDim2.new(0.16, 0, 0.055, 0), UDim2.new(0.42, 0, 0.11, 0), Enum.Font.GothamBlack)
 	cl.Visible = false
 	cl.TextColor3 = Color3.fromRGB(226, 234, 248)
-	local cls = Instance.new("UIStroke")
-	cls.Color = WOOD_DARK
+	local cls = cl:FindFirstChildOfClass("UIStroke") or Instance.new("UIStroke")
+	cls.Color = UiSkin.color("ink")
 	cls.Thickness = 2
 	cls.Parent = cl
 	coinLabel = cl
 	returnLabel = label(gui, "ReturnTimer", "", UDim2.new(0.4, 0, 0.05, 0), UDim2.new(0.3, 0, 0.8, 0), Enum.Font.GothamBold)
 	returnLabel.Visible = false
-	local rs = Instance.new("UIStroke")
-	rs.Color = WOOD_DARK
+	returnLabel.FontFace = UiSkin.font("display") -- v38-flow: the v2 display face on a navy pill
+	local rs = returnLabel:FindFirstChildOfClass("UIStroke") or Instance.new("UIStroke")
+	rs.Color = UiSkin.color("ink")
 	rs.Thickness = 1.5
 	rs.Parent = returnLabel
 	-- Pill backing: bare cream text vanished over a bright or busy scene (a lava tunnel behind the results card).
-	returnLabel.BackgroundColor3 = WOOD_DARK
-	returnLabel.BackgroundTransparency = 0.12
+	returnLabel.BackgroundColor3 = UiSkin.color("inset")
+	returnLabel.BackgroundTransparency = 0.05
 	corner(returnLabel, 11)
 	local rpad = Instance.new("UIPadding")
 	rpad.PaddingTop = UDim.new(0, 2)
@@ -2044,7 +2189,7 @@ local function build()
 	rpad.PaddingLeft = UDim.new(0, 12)
 	rpad.PaddingRight = UDim.new(0, 12)
 	rpad.Parent = returnLabel
-	stroke(returnLabel, RIM, 1.5)
+	stroke(returnLabel, UiSkin.color("ink"), 2)
 
 	-- battle plank (top centre, non-modal): mode and clock, this player's objective line under it
 	battleHud = Instance.new("Frame")
@@ -2052,12 +2197,9 @@ local function build()
 	battleHud.AnchorPoint = Vector2.new(0.5, 0)
 	battleHud.Position = UDim2.new(0.5, 0, 0, 8)
 	battleHud.Size = UDim2.new(0.34, 0, 0.1, 0)
-	battleHud.BackgroundColor3 = WOOD_DARK
-	battleHud.BackgroundTransparency = 0.25
 	battleHud.Visible = false
 	battleHud.Parent = gui
-	corner(battleHud, 10)
-	stroke(battleHud, RIM, 2)
+	UiSkin.style(battleHud, "sign_hanging", { color = WOOD_DARK, alpha = 0.25, corner = 10, stroke = RIM, strokeWidth = 2 })
 	local bhs = Instance.new("UISizeConstraint")
 	bhs.MaxSize = Vector2.new(560, 120)
 	bhs.MinSize = Vector2.new(160, 40)
@@ -2069,14 +2211,12 @@ local function build()
 	-- field board (left, under the item slot area): one row per entrant, this player highlighted, out rows dimmed
 	battleBoard = Instance.new("Frame")
 	battleBoard.Name = "BattleBoard"
-	battleBoard.BackgroundColor3 = WOOD_DARK
-	battleBoard.BackgroundTransparency = 0.45 -- a translucent panel so the rows read over any sky
 	battleBoard.Position = UDim2.new(0, 12, 0.3, 0)
 	battleBoard.Size = UDim2.new(0.2, 0, 0, 180)
 	battleBoard.Visible = false
 	battleBoard.Parent = gui
-	corner(battleBoard, 8)
-	stroke(battleBoard, RIM, 1.5)
+	-- alpha 0.45: a translucent panel so the rows read over any sky
+	UiSkin.style(battleBoard, "panel_wood", { color = WOOD_DARK, alpha = 0.45, corner = 8, stroke = RIM, strokeWidth = 1.5 })
 	local bbp = Instance.new("UIPadding")
 	bbp.PaddingLeft = UDim.new(0, BOARD_PAD)
 	bbp.PaddingRight = UDim.new(0, BOARD_PAD)
@@ -2093,13 +2233,11 @@ local function build()
 	resultsFrame.Name = "BattleResults"
 	resultsFrame.AnchorPoint = Vector2.new(0.5, 0.5)
 	resultsFrame.Position = UDim2.fromScale(0.5, 0.47)
-	resultsFrame.Size = UDim2.fromScale(0.46, 0.6)
-	resultsFrame.BackgroundColor3 = WOOD
+	resultsFrame.Size = UDim2.fromScale(0.5, 0.8) -- capped by the size constraint on desktop; a phone needs the height for 8 rows
 	resultsFrame.Visible = false
 	resultsFrame.ZIndex = 32
 	resultsFrame.Parent = gui
-	corner(resultsFrame, 14)
-	stroke(resultsFrame, RIM, 3)
+	UiSkin.style(resultsFrame, "panel", { S = 1 })
 	local rsz = Instance.new("UISizeConstraint")
 	rsz.MaxSize = Vector2.new(600, 470)
 	rsz.MinSize = Vector2.new(300, 230)
@@ -2121,32 +2259,26 @@ local function build()
 	rll.Parent = resultsList
 	resultsAward = label(resultsFrame, "Award", "", UDim2.new(1, -20, 0, 24), UDim2.new(0, 10, 1, -92), Enum.Font.GothamBold)
 	resultsAward.ZIndex = 33
-	local function resultsButton(name: string, text: string, x: number, color: Color3): TextButton
-		local b = Instance.new("TextButton")
-		b.Name = name
-		b.AnchorPoint = Vector2.new(0.5, 1)
-		b.Position = UDim2.new(x, 0, 1, -10)
-		b.Size = UDim2.new(0.38, 0, 0, 44)
-		b.BackgroundColor3 = color
-		b.Font = Enum.Font.GothamBlack
-		b.TextScaled = true
-		b.TextColor3 = CREAM
-		b.Text = text
-		b.ZIndex = 33
-		b.Selectable = true
-		b.Parent = resultsFrame
-		corner(b, 8)
-		local tc = Instance.new("UITextSizeConstraint")
-		tc.MaxTextSize = 26
-		tc.Parent = b
-		return b
+	local function resultsButton(name: string, slot: string, text: string, x: number, color: Color3, sound: string): GuiButton
+		return UiSkin.button(resultsFrame, slot, text, {
+			name = name,
+			anchor = Vector2.new(0.5, 1),
+			position = UDim2.new(x, 0, 1, -10),
+			size = UDim2.new(0.38, 0, 0, 44),
+			color = color,
+			font = Enum.Font.GothamBlack,
+			textScaled = true,
+			textColor = CREAM,
+			zIndex = 33,
+			corner = 8,
+			maxText = 26,
+			sound = sound,
+		})
 	end
-	local hubBtn = resultsButton("HubButton", "HUB", 0.27, WOOD_DARK)
+	local hubBtn = resultsButton("HubButton", "sky", "HUB", 0.27, WOOD_DARK, "back")
 	resultsHub = hubBtn
-	resultsAgain = resultsButton("AgainButton", "AGAIN", 0.73, Color3.fromRGB(196, 120, 24))
+	resultsAgain = resultsButton("AgainButton", "go", "AGAIN", 0.73, Color3.fromRGB(78, 200, 90), "confirm")
 	resultsAgainBtn = resultsAgain
-	UiSound.bind(hubBtn, "back")
-	UiSound.bind(resultsAgain, "confirm")
 	-- L30: with 2+ humans a press is a vote; the panel stays up showing the count until the server acts.
 	hubBtn.Activated:Connect(function()
 		if not voting() then
@@ -2173,18 +2305,21 @@ local function hookFinishScreen()
 		local pg = LocalPlayer:WaitForChild("PlayerGui")
 		local hud = pg:WaitForChild("SkyRallyHUD", 30)
 		local btn = hud and hud:FindFirstChild("CloseFinishButton", true)
-		if btn and btn:IsA("TextButton") then
+		if btn and btn:IsA("GuiButton") then
 			finishHubBtn = btn
 			btn.Activated:Connect(function()
 				fire("RequestHub")
+				if not voting() then
+					boardOnHubAt = os.clock()
+				end
 			end)
 		end
 		local again = hud and hud:FindFirstChild("FlyAgainButton", true)
-		if again and again:IsA("TextButton") then
+		if again and again:IsA("GuiButton") then
 			finishAgainBtn = again -- FLY AGAIN after BATTLE cancels it on the server (TrackDirector.requestExit "again")
 		end
 		local battle = hud and hud:FindFirstChild("BattleFinishButton", true)
-		if battle and battle:IsA("TextButton") then
+		if battle and battle:IsA("GuiButton") then
 			-- BATTLE: one request; the server routes it (BattleAccessRules.cardRoute): solo straight into this map's battle,
 			-- with 2+ humans the HUB vote and then the battle once the hub has loaded. The server re-checks the unlock.
 			battle.Activated:Connect(function()
@@ -2364,6 +2499,7 @@ function TrackFlow.init()
 	workspace:GetAttributeChangedSignal("TrackSwitching"):Connect(function()
 		showCurtain(workspace:GetAttribute("TrackSwitching") == true)
 	end)
+	watchMapReady() -- v37 client-ready handshake
 	LadderNotices.init()
 	if RaceFlowRules.PER_GROUP then
 		-- Phase 2b: this player's own group curtain (GroupCurtainRules), level-driven: on his seat or its Loading flag
@@ -2451,6 +2587,20 @@ function TrackFlow.init()
 	end
 	RaceAttr.changed("RaceMode", function()
 		task.delay(0.5, labelIfHub)
+		-- COURSES: once the island is back and the curtain is up, the course select swooshes in (within 60 s of the press).
+		if RaceAttr.mine("RaceMode") == "hub" and os.clock() - boardOnHubAt < 60 then
+			boardOnHubAt = -math.huge
+			task.spawn(function()
+				local waited = 0
+				while workspace:GetAttribute("TrackSwitching") == true and waited < 20 do
+					waited += task.wait(0.25)
+				end
+				task.wait(0.9)
+				if RaceAttr.mine("RaceMode") == "hub" and not boardShown() then
+					openBoard(true)
+				end
+			end)
+		end
 	end)
 	RaceAttr.changed("ActiveTrackId", function()
 		task.delay(0.5, labelIfHub)

@@ -38,6 +38,8 @@ local StormRules = require(ReplicatedStorage:WaitForChild("Shared"):WaitForChild
 local AvatarRules = require(ReplicatedStorage:WaitForChild("Shared"):WaitForChild("AvatarRules"))
 -- T1-14: the session lock's ttl (holder-declared, legacy 180 s), shared with SaveAdmin and tools/save_admin.
 local SaveLockRules = require(ReplicatedStorage:WaitForChild("Shared"):WaitForChild("SaveLockRules"))
+-- Grand Prix (v37): the best trophy and points per class (shared/GrandPrixRules).
+local GrandPrixRules = require(ReplicatedStorage:WaitForChild("Shared"):WaitForChild("GrandPrixRules"))
 
 local SaveService = {}
 
@@ -123,6 +125,10 @@ export type Profile = {
 	-- Economy v3 phase 6 (AvatarRules header). Added without a version bump, like winPass.races: reconcile fills it for
 	-- an old record (starters and free rows owned, starters selected) and derive settles it after every change.
 	avatars: AvatarRules.State,
+	-- Grand Prix (v37; shared/GrandPrixRules.Record): best trophy (0..3) and best points per class, cups completed.
+	-- Additive like storm and avatars: an older record reconciles to zeros, no version bump. Written only by
+	-- server/GrandPrix through edit() at a cup's end.
+	grandPrix: GrandPrixRules.Record,
 }
 
 export type AwardKind = "token" | "hubFind" | "key" | "bossFirst" | "bossRematch" | "battle" | "finalBoss" | "bestTime" | "duck"
@@ -403,6 +409,7 @@ function SaveService.newProfile(): Profile
 		economy = { receipts = {}, oneTime = {}, intents = {}, favorites = {}, presets = {} },
 		storm = StormRules.defaults(),
 		avatars = AvatarRules.defaultState(),
+		grandPrix = GrandPrixRules.defaults(),
 	}
 end
 
@@ -620,6 +627,9 @@ function SaveService.new(options: Options): Service
 		end
 		st.player:SetAttribute("SkyTokens", Progression.tokenCount(profile))
 		st.player:SetAttribute("Keys", Progression.keyCount(profile))
+		-- V6-1: the final boss opens SPACE; the board watches this attribute like SkyTokens and Keys, so an award (a win or
+		-- an admin seed) republishes PortalStates at once instead of on the next hub return.
+		st.player:SetAttribute("FinalBoss", profile.finalBoss == true)
 		-- J3: the board's progress line, plus the full completion text and roadmap once everything is done.
 		st.player:SetAttribute(FidelityRules.COMPLETION_ATTRIBUTE, FidelityRules.encode(Progression.completion(profile)))
 		st.player:SetAttribute("BossFragments", profile.fragments)
@@ -638,6 +648,8 @@ function SaveService.new(options: Options): Service
 		st.player:SetAttribute("StormTier", StormRules.tierFor(storm.lifetime).id)
 		st.player:SetAttribute("StormDragonWins", storm.dragonWins)
 		st.player:SetAttribute("StormLoadout", StormRules.encodeLoadout(storm.loadout))
+		-- Grand Prix (v37): trophies and best points per class (the course select's trophy row, the class picker).
+		st.player:SetAttribute("GPTrophies", GrandPrixRules.encode(GrandPrixRules.read(profile.grandPrix)))
 		-- Phase 6: the pick per class (the pre-race pick preselects it; the spawners read the profile itself).
 		st.player:SetAttribute("AvatarPlane", profile.avatars.selected.plane)
 		st.player:SetAttribute("AvatarCar", profile.avatars.selected.car)

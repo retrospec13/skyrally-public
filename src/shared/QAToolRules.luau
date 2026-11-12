@@ -24,6 +24,9 @@ QAToolRules.SPECIALS = table.freeze({
 	"frost_shot",
 	"coin_burst",
 	"bubble_guard",
+	"ink_splat",
+	"item_steal",
+	"coin_pouch",
 })
 QAToolRules.MAX_LEVEL = 3
 QAToolRules.AHEAD_MIN = 15 -- studs: closer than this overlaps the plane

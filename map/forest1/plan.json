@@ -9668,7 +9668,7 @@
    "rings": [
      {
       "name": "BoosterRing_StartArch_1",
-      "station": 112,
+      "station": 175,
       "lateral": 0.0,
       "height": 14.0,
       "coin": false,
@@ -12921,7 +12921,7 @@
      "class": "ParticleEmitter",
      "name": "RingSparkle_BoosterRing_StartArch_1",
      "group": "Ambience",
-     "cf": [-1000.0, 75.457, -6311.768, 1.0, 0.0, 0.0, 0.0, 1.0, -0.016, 0.0, 0.016, 1.0],
+     "cf": [-1000.063, 76.855, -6374.605, 1.0, 0.0, 0.003, 0.0, 1.0, -0.027, -0.003, 0.027, 1.0],
      "size": [24, 24, 0.5],
      "props": {
       "Texture": "rbxassetid://125372754946919",

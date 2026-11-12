@@ -546,7 +546,8 @@ function StormCup.init(opts: { publishOnly: boolean? }?): Service
 			return {
 				mode = if type(mode) == "string" and mode ~= "" then mode else "race",
 				switching = TrackDirector.switching == true,
-				finishedFor = if type(doneAt) == "number" then os.clock() - doneAt else nil,
+				-- A Grand Prix (server/GrandPrix) moves on between its races: never "finished" for a cup start.
+				finishedFor = if type(doneAt) == "number" and workspace:GetAttribute("GPActive") ~= true then os.clock() - doneAt else nil,
 				players = #Players:GetPlayers(),
 			}
 		end,

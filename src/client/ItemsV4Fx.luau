@@ -1,8 +1,7 @@
 --!strict
 -- Items v4 client look (docs/design/ITEMS_V4.md; the server decides everything in server/kit/ItemEffects). ItemClient
 -- forwards the item events it receives here: ItemFx for everyone ("rocket", "golden", "stormCloud", "stormStrike",
--- "bombBlast", "coinTake", "reflect", "slow") and ItemEffect for this player ("slow", "stormWarn", a special's "boost"
--- and Bubble Guard's "shield"). Each draws with ParticleEmitters on an Attachment of the vehicle's hull (or a pooled
+-- "bombBlast", "coinTake", "reflect", "slow") and ItemEffect for this player ("slow", "stormWarn", a special's "boost"). Each draws with ParticleEmitters on an Attachment of the vehicle's hull (or a pooled
 -- burst at a point) for its seconds, never a mesh over the chase camera, and plays an existing Sfx cue (no new upload).
 -- The charged items' ring (Orbit Missiles orbiters, Gift Box gifts) is drawn from the holders' ItemColor/ItemCharges
 -- attributes (Player for a player, the bot's model for a bot), rescanned every ORBIT_FX.scan seconds, as sparks
@@ -16,6 +15,7 @@ local ItemFxRules = require(Shared:WaitForChild("ItemFxRules"))
 
 local Sfx = require(script.Parent:WaitForChild("Sfx"))
 local Settings = require(script.Parent:WaitForChild("Settings"))
+local Sfx37 = require(script.Parent:WaitForChild("Sfx37"))
 local TrickJuice = require(script.Parent:WaitForChild("TrickJuice"))
 local NotifyKit = require(script.Parent:WaitForChild("NotifyKit"))
 
@@ -140,12 +140,8 @@ function ItemsV4Fx.onFx(fx: string, payload: { [string]: any })
 			local frost = payload.source == "frost_shot"
 			aura(hull, tonumber(payload.seconds) or 1, if frost then rgb("frost_shot") else Color3.fromRGB(200, 200, 210), 14, 0.7, 2, Vector3.new(0, 1, 0), 0.8)
 		end
-	elseif fx == "shield" and payload.bubble == true then
-		-- Bubble Guard: the classic bubble draws (ItemClient); the reflect window glints aqua on top.
-		if hull then
-			aura(hull, tonumber(payload.window) or 0.8, rgb("bubble_guard"), 40, 0.8, 8, Vector3.zero, 0.3)
-		end
 	end
+	-- v39: Bubble Guard is retired (ItemRules.RETIRED); its aqua reflect-window glint and its callout are gone.
 end
 
 ------------------------------------------------------------------------------------------------------------------------
@@ -153,8 +149,8 @@ end
 ------------------------------------------------------------------------------------------------------------------------
 
 local CALLOUT: { [string]: string } = {
-	rocket_rush = "ROCKET RUSH!",
-	golden_wings = "GOLDEN WINGS!",
+	rocket_rush = "ROCKET RUSH",
+	golden_wings = "GOLDEN WINGS",
 }
 
 function ItemsV4Fx.onEffect(kind: string, data: { [string]: any })
@@ -165,7 +161,7 @@ function ItemsV4Fx.onEffect(kind: string, data: { [string]: any })
 			TrickJuice.callout(text, rgb(item), 1.2)
 		end
 	elseif kind == "slow" then
-		TrickJuice.callout(if data.source == "frost_shot" then "FROZEN!" else "SLOWED", Color3.fromRGB(170, 230, 255), 0.9)
+		TrickJuice.callout(if data.source == "frost_shot" then "FROZEN" else "SLOWED", Color3.fromRGB(170, 230, 255), 0.9)
 	elseif kind == "stormWarn" then
 		-- The siren: a rising alarm, and the answer for this vehicle (NotifySpec storm_warn_*).
 		Sfx.play("wrong_way", 1.35, 0.7)
@@ -173,8 +169,6 @@ function ItemsV4Fx.onEffect(kind: string, data: { [string]: any })
 			Sfx.play("wrong_way", 1.5, 0.7)
 		end)
 		NotifyKit.fromSpec(if data.vehicle == "car" then "storm_warn_block" else "storm_warn_roll")
-	elseif kind == "shield" and data.bubble == true then
-		TrickJuice.callout("BUBBLE GUARD", rgb("bubble_guard"), 1.0)
 	end
 end
 
@@ -182,7 +176,7 @@ end
 -- The charged items' ring: Orbit Missiles orbiters and Gift Box gifts circling their holders
 ------------------------------------------------------------------------------------------------------------------------
 
-type Ring = { hull: BasePart, atts: { Attachment }, id: string }
+type Ring = { hull: BasePart, atts: { Attachment }, tails: { Attachment }, id: string }
 local rings: { [Model]: Ring } = {}
 local scanAt = 0
 
@@ -208,6 +202,9 @@ local function dropRing(model: Model)
 		for _, a in r.atts do
 			a:Destroy()
 		end
+		for _, a in r.tails do
+			a:Destroy()
+		end
 		rings[model] = nil
 	end
 end
@@ -215,6 +212,7 @@ end
 local function buildRing(model: Model, hull: BasePart, id: string, n: number)
 	dropRing(model)
 	local atts: { Attachment } = {}
+	local tails: { Attachment } = {}
 	local gift = id == "gift_box"
 	for i = 1, n do
 		local att = Instance.new("Attachment")
@@ -225,17 +223,19 @@ local function buildRing(model: Model, hull: BasePart, id: string, n: number)
 		local color = if gift then rgb(seq[((i - 1) % #seq) + 1]) else rgb(id)
 		pe.Color = ColorSequence.new(color)
 		pe.LightEmission = 1
-		pe.Rate = rate(30)
+		-- v37: orbiters you can see from behind the pack: a bigger, brighter core. (A ribbon tail was tried and dropped:
+		-- at race speed it streamed 45 studs back through the chase camera.)
+		pe.Rate = rate(45)
 		pe.Lifetime = NumberRange.new(0.15, 0.25)
 		pe.Speed = NumberRange.new(0, 0.5)
-		pe.Size = NumberSequence.new(if gift then 0.9 else 0.7, 0)
+		pe.Size = NumberSequence.new(if gift then 1.4 else 1.9, 0)
 		pe.Transparency = NumberSequence.new(0, 1)
 		pe.LockedToPart = false
 		pe.Parent = att
 		att.Parent = hull
 		table.insert(atts, att)
 	end
-	rings[model] = { hull = hull, atts = atts, id = id }
+	rings[model] = { hull = hull, atts = atts, tails = tails, id = id }
 end
 
 -- Coin Burst's coins are 2.4 stud server discs; Studio V9 showed one filling the chase view. Here each is drawn at
@@ -294,6 +294,14 @@ function ItemsV4Fx.step(_dt: number)
 						local r = rings[m]
 						if not r or r.hull ~= hull or r.id ~= id or #r.atts ~= n then
 							buildRing(m, hull, id, n)
+							local fresh = rings[m]
+							if id == "orbit_missiles" and not r and fresh and fresh.atts[1] then
+								-- A short spin-up hum when the orbiters appear (not a drone: it fades after 3 s).
+								Sfx37.loopOn("orbit_hum", fresh.atts[1], 0.3, 3, 90)
+							elseif id == "gift_box" and r and r.id == id and n < #r.atts then
+								-- A gift leaves the ring: a pop at the holder.
+								Sfx37.at("gift_pop", hull.Position, 0.5)
+							end
 						end
 					end
 				end
@@ -301,6 +309,10 @@ function ItemsV4Fx.step(_dt: number)
 		end
 		for m in rings do
 			if not seen[m] then
+				local gone = rings[m]
+				if gone and gone.id == "gift_box" and gone.hull.Parent then
+					Sfx37.at("gift_pop", gone.hull.Position, 0.5) -- the last gift leaves the ring
+				end
 				dropRing(m)
 			end
 		end
@@ -315,6 +327,10 @@ function ItemsV4Fx.step(_dt: number)
 			local o = offs[i]
 			if o then
 				att.Position = Vector3.new(o[1], F.height, o[2])
+				local tail = r.tails[i]
+				if tail then
+					tail.Position = Vector3.new(o[1], F.height + 0.9, o[2])
+				end
 			end
 		end
 	end

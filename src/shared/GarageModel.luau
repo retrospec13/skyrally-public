@@ -94,18 +94,27 @@ export type Layout = {
 	gap: number,
 	header: Rect, -- panel-local
 	tabs: Rect,
-	tabW: number,
+	tabW: number, -- every tab on a wide panel
+	tabUnit: number, -- compact: the icon-only tabs
+	tabWide: number, -- compact: the selected tab (icon + label)
 	content: Rect,
-	columns: number,
+	stage: Rect, -- content-local: the big preview column (UI v2)
+	grid: Rect, -- content-local: the card grid right of the stage
+	cols: number, -- cards per grid row
+	cardW: number,
+	cardH: number,
+	columns: number, -- full-width lists (win pass tiers)
 	rowW: number,
 	rowH: number,
 	dailyCellW: number,
 	compact: boolean,
 }
 
--- Panel geometry for a viewport. topInset is the core top bar (GuiService:GetGuiInset().Y): the panel starts below it
--- so the menu and chat buttons never cover the header. OURS tuning: 960x560 cap keeps rows short on desktop; two
--- columns from 880 px wide (a row needs ~380 px: swatch, name, two livery buttons and FAV).
+-- Panel geometry for a viewport (UI v2 Garage, docs/design/UI_V2.md section 2). topInset is the core top bar
+-- (GuiService:GetGuiInset().Y): the panel starts below it so the menu and chat buttons never cover the header. A wide
+-- panel (capped 1280x760) has a header band, a row of icon + label tabs, then the stage (the selected thing, large,
+-- with its actions) on the left and the card grid on the right. A phone-height panel is compact: 44 px header and tabs,
+-- the tabs are icons with only the selected one labelled (tabUnit / tabWide).
 function GarageModel.layout(vw: number, vh: number, topInset: number?): Layout
 	local t = GarageModel.MIN_TARGET
 	local insetX = math.floor(vw * GarageModel.SAFE_INSET + 0.5)
@@ -113,28 +122,45 @@ function GarageModel.layout(vw: number, vh: number, topInset: number?): Layout
 	local top = math.max(insetY, topInset or 0)
 	local availW = math.max(0, vw - 2 * insetX)
 	local availH = math.max(0, vh - top - insetY)
-	local w = math.min(availW, 960)
-	local h = math.min(availH, 560)
+	-- v38-flow round 2: the panel fills ~84 % of a desktop screen (it was capped at 1280x760, a small window in 1080p)
+	local w = math.min(availW, math.max(1280, math.floor(vw * 0.84)))
+	local h = math.min(availH, math.max(760, math.floor(vh * 0.86)))
 	local x = math.floor((vw - w) / 2)
 	local y = top + math.floor((availH - h) / 2)
-	local compact = h < 320
-	local pad = if compact then 6 else 10
-	local gap = if compact then 4 else 6
+	local compact = h < 420
+	local pad = if compact then 6 else 14
+	local gap = if compact then 6 else 10
 	local nTabs = #GarageModel.TABS
-	local header = { x = pad, y = pad, w = w - 2 * pad, h = t }
-	local tabs = { x = pad, y = header.y + header.h + gap, w = w - 2 * pad, h = t }
+	local header = { x = pad, y = pad, w = w - 2 * pad, h = if compact then t else 56 }
+	local tabs = { x = pad, y = header.y + header.h + gap, w = w - 2 * pad, h = if compact then t else 58 }
 	local contentY = tabs.y + tabs.h + gap
 	local content = { x = pad, y = contentY, w = w - 2 * pad, h = math.max(0, h - contentY - pad) }
-	local columns = if w >= 880 then 2 else 1
+	local stageW = math.floor(content.w * (if compact then 0.36 else 0.38)) -- the hero vehicle gets the room
+	local stage = { x = 0, y = 0, w = stageW, h = content.h }
+	local grid = { x = stageW + gap, y = 0, w = content.w - stageW - gap, h = content.h }
 	local scrollBar = 6
+	local cardMin = if compact then 104 else math.max(150, math.floor(w * 0.13)) -- desktop: 3-4 big picture cards a row
+	local cols = math.max(2, math.floor((grid.w - scrollBar + gap) / (cardMin + gap)))
+	local cardW = math.floor((grid.w - scrollBar - gap * (cols - 1)) / cols)
+	local tabAvail = tabs.w - gap * (nTabs - 1)
+	local unit = math.floor(tabAvail / (nTabs - 1 + 2.6))
+	local columns = if w >= 880 then 2 else 1
 	return {
 		panel = { x = x, y = y, w = w, h = h },
 		pad = pad,
 		gap = gap,
 		header = header,
 		tabs = tabs,
-		tabW = math.floor((tabs.w - gap * (nTabs - 1)) / nTabs),
+		tabW = math.floor(tabAvail / nTabs),
+		tabUnit = unit,
+		tabWide = tabAvail - unit * (nTabs - 1),
 		content = content,
+		stage = stage,
+		grid = grid,
+		cols = cols,
+		cardW = cardW,
+		-- Compact: a card row (under the 48 px class bar) always fits whole, so names are never cut at the bottom.
+		cardH = if compact then math.min(math.floor(cardW * 1.1), content.h - 56) else math.floor(cardW * 1.16),
 		columns = columns,
 		rowW = math.floor((content.w - scrollBar - gap * (columns - 1)) / columns),
 		rowH = t + 8,

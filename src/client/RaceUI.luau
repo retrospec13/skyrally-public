@@ -4,6 +4,7 @@ local GuiService = game:GetService("GuiService")
 local RunService = game:GetService("RunService")
 local StarterGui = game:GetService("StarterGui")
 local TweenService = game:GetService("TweenService")
+local TextService = game:GetService("TextService")
 local UserInputService = game:GetService("UserInputService")
 local ContextActionService = game:GetService("ContextActionService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -28,6 +29,13 @@ local ItemClient = require(script.Parent.ItemClient)
 local Sfx = require(script.Parent.Sfx)
 -- REMARKABLE 4: the Wood-and-Stone UI sound kit and press feel (squash, wobble, selection marimba).
 local UiSound = require(script.Parent.UiSound)
+-- UI overhaul phase C: the position and lap chips hang as sign_hanging, the results card is panel_wood with skinned
+-- FLY AGAIN / BATTLE / CLOSE (client/UiSkin; with no art uploaded, the same flat wood as before), and the card pops in
+-- and out (client/UiMotion). The steer pad, TURN / ITEM stones and the brake pedal are unchanged.
+local UiSkin = require(script.Parent:WaitForChild("UiSkin"))
+local UiMotion = require(script.Parent:WaitForChild("UiMotion"))
+-- UI v2 race HUD (docs/design/UI_V2.md "Race HUD"): hero position numeral, navy lap chip, slanted hero text.
+local ArcadeUi = require(script.Parent:WaitForChild("ArcadeUi"))
 -- L28 / L82 / audit H15: the HUD ScreenGui stays full-bleed, but its frames keep inside the device safe area (notch,
 -- rounded corners, home bar) and, on a TV, a 5 percent margin: client/HudMetrics folds SafeArea in.
 local HudPhase = require(script.Parent.HudPhase)
@@ -41,6 +49,8 @@ local DodgeRules = require(Shared:WaitForChild("DodgeRules")) -- dodge = double 
 local TouchSteerRules = require(Shared:WaitForChild("TouchSteerRules")) -- controls v2: floating-origin steer pad
 
 local RaceUI = {}
+-- v38: a time trial ghost (client/TimeTrialGhost) sets this: the reference lap time for completed lap n, or nil.
+RaceUI.splitRef = nil :: ((lap: number) -> number?)?
 
 -- Uploaded custom wood/stone HUD sprite asset IDs (granted to Universe 0)
 local ASSET_IDS = {
@@ -61,6 +71,14 @@ local lapChip: Frame? = nil
 local lapLabel: TextLabel? = nil
 local timerLabel: TextLabel? = nil
 local heroLabel: TextLabel? = nil -- lane A: the hero message (FINAL LAP!, trick stamps)
+local heroSub: TextLabel? = nil -- UI v2: the smaller line under the hero (a lap split)
+local heroShadow: TextLabel? = nil -- v39: the hero's drop shadow (UiSkin.dropShadow, a sibling under it)
+local heroBar: Frame? = nil -- v39: the hero's accent bar under the text (the one colour of a callout)
+local heroShownAt = 0
+local heroHiding = false
+local posNumeral: TextLabel? = nil -- UI v2: the big place digit
+local posOrdinal: TextLabel? = nil -- "ST" / "ND" / "RD" / "TH"
+local posTotal: TextLabel? = nil -- "/8"
 local heroHideClock: number = 0
 local posTextCache = ""
 -- Last values written by the per-frame HUD step (perf review v21 PF-10): the timer text only changes at 10 Hz (tenths),
@@ -91,11 +109,19 @@ local finishSubLabel: TextLabel? = nil
 local finishOrbBadge: Frame? = nil
 local finishOrbText: TextLabel? = nil
 local standingsContainer: Frame? = nil
+local layoutFinishContent: () -> () -- below (the results card layout)
+local finishBig = false -- the desktop design frame (layoutFinishContent)
+local revealSeq = 0 -- the results sequence running (a newer card cancels the older delays)
+local cardLayoutScale = 1 -- the results card's CardScale from the layout (desktop grow); its pop scales around it
+-- Standings medals for places 1-3 (gold, silver, bronze), the fallback disc's numeral ink.
+local MEDAL_COLORS: { [number]: Color3 } = { Color3.fromRGB(255, 214, 90), Color3.fromRGB(214, 220, 228), Color3.fromRGB(214, 140, 72) }
+local MEDAL_INK = Color3.fromRGB(36, 20, 10)
 
 local activeSteerTouch: InputObject? = nil
 local steerDraggingMouse = false
 local padOriginOffset = Vector2.zero -- controls v2: the floating stick origin, relative to the pad centre (px)
 local lastDisplayedRank: number? = nil
+local lastPosCue = -math.huge -- v37 position cue rate limit
 local lastDisplayedLap: number? = nil
 
 local ORDINALS = { "1ST", "2ND", "3RD", "4TH", "5TH", "6TH", "7TH", "8TH" }
@@ -186,33 +212,110 @@ function RaceUI.showBanner(msg: string, color: Color3?, duration: number?, alway
 end
 
 -- Lane A (hero, 30 percent of the screen height, centred): one message at a time, a newer one replaces the older.
--- Outlined text, no panel: the sky behind it is empty by design.
-function RaceUI.hero(msg: string, color: Color3?, duration: number?)
+-- No panel: the sky behind it is empty by design.
+-- v39 (UI_V2.md section 4, one arcade-racer kit): every lane A callout is the same v3 type. White condensed caps (Oswald
+-- Bold) with a soft drop shadow instead of a fat ink stroke, ONE accent colour (the callout's colour) as a short bar under
+-- the text, a slight tilt, and a 120 ms pop. Text size follows the type scale (HERO_TEXT_BASE at phone size). Exclamation
+-- marks are dropped (tone rule: brief informational text, no comic shouting), whoever sent the text.
+local HERO_TEXT_BASE = 40 -- px cap on a phone (<= 540 px tall); 80 at 1080p (UiSkin.typeScale)
+local HERO_TILT = -3 -- degrees
+local HERO_POP_S = 0.12
+local function calloutText(msg: string): string
+	local t = string.gsub(msg, "!+", "")
+	t = string.gsub(t, "%s%s+", " ")
+	t = string.gsub(t, "^%s+", "")
+	t = string.gsub(t, "%s+$", "")
+	return t
+end
+
+-- The accent bar under the hero text: 70 percent of the text's width, ~8 percent of its height, just under it. animate:
+-- the 140 ms swoosh out from the centre (a new message); otherwise it snaps to the new bounds.
+local function heroBarFit(animate: boolean?)
+	local lbl, bar = heroLabel, heroBar
+	if not lbl or not bar or not lbl.Visible or heroHiding then
+		return
+	end
+	local b = lbl.TextBounds
+	if b.X <= 0 then
+		return
+	end
+	local h = math.max(3, math.floor(b.Y * 0.08))
+	bar.Position = UDim2.new(0.5, 0, 0.5, math.floor(b.Y * 0.5) + 2)
+	local size = UDim2.fromOffset(math.floor(b.X * 0.7), h)
+	if animate then
+		TweenService:Create(bar, TweenInfo.new(0.14, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { Size = size }):Play()
+	else
+		bar.Size = size
+	end
+end
+
+local function heroPop(lbl: TextLabel, fromScale: number)
+	local pop = TweenInfo.new(HERO_POP_S, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
+	for _, l in { lbl, heroShadow } :: { TextLabel? } do
+		if l then
+			local sc = getOrCreateUIScale(l)
+			sc.Scale = fromScale
+			TweenService:Create(sc, pop, { Scale = 1 }):Play()
+			l.Rotation = HERO_TILT
+		end
+	end
+	local bar = heroBar
+	if bar then
+		bar.Rotation = HERO_TILT
+		bar.BackgroundTransparency = 0
+		bar.Size = UDim2.fromOffset(0, bar.Size.Y.Offset)
+		-- TextBounds is known once the label has laid out the new text; heroBarFit also runs on every TextBounds change.
+		task.defer(heroBarFit, true)
+	end
+end
+
+function RaceUI.hero(msg: string, color: Color3?, duration: number?, sub: string?)
 	local lbl = heroLabel
 	if not lbl or not HudPhase.allows("MessageLane") then
 		return
 	end
-	lbl.Text = msg
-	lbl.TextColor3 = color or Color3.fromRGB(255, 240, 195)
+	lbl.Text = calloutText(msg)
+	local c = color or Color3.fromRGB(255, 240, 195)
+	lbl.TextColor3 = Color3.new(1, 1, 1)
+	lbl.TextTransparency = 0
+	local st = lbl:FindFirstChildOfClass("UIStroke")
+	if st then
+		st.Transparency = 0.55
+	end
+	local shadow = heroShadow
+	if shadow then
+		shadow.TextTransparency = 0.35
+	end
+	if heroBar then
+		heroBar.BackgroundColor3 = c
+	end
 	lbl.Visible = true
+	heroHiding = false
+	heroShownAt = os.clock()
 	heroHideClock = os.clock() + (duration or 1.6)
 	LocalPlayer:SetAttribute("HudHeroUp", true) -- RivalBubbles keeps its bubbles out of lane A meanwhile
-	pulseGuiObject(lbl, 0.8, 0.22)
+	heroPop(lbl, 1.22)
+	local sl = heroSub
+	if sl then
+		sl.Text = sub or ""
+		sl.Visible = sub ~= nil and sub ~= ""
+		sl.TextTransparency = 0
+		local ss = sl:FindFirstChildOfClass("UIStroke")
+		if ss then
+			ss.Transparency = 0
+		end
+	end
 end
 
--- Trick-lane callouts (REMARKABLE items 5-7: STUCK IT!, PERFECT START!, FLOODED!, THREADED!), called through
--- TrickJuice.callout. Slammed into lane A like a rubber stamp: big and tilted, then settling flat.
+-- Trick-lane callouts (REMARKABLE items 5-7: STUCK IT, PERFECT START, THREADED; item callouts), called through
+-- TrickJuice.callout. v39: the same v3 hero type as every lane A message, with a slightly harder pop.
 function RaceUI.stamp(msg: string, color: Color3?, duration: number?)
 	local lbl = heroLabel
 	if not lbl or not HudPhase.allows("MessageLane") then
 		return -- the hero is gated off (hub, results, podium): no tweens on a hidden label
 	end
 	RaceUI.hero(msg, color, duration or 1.1)
-	local sc = getOrCreateUIScale(lbl)
-	sc.Scale = 1.5
-	TweenService:Create(sc, TweenInfo.new(0.2, Enum.EasingStyle.Back, Enum.EasingDirection.Out), { Scale = 1 }):Play()
-	lbl.Rotation = -12
-	TweenService:Create(lbl, TweenInfo.new(0.35, Enum.EasingStyle.Back, Enum.EasingDirection.Out), { Rotation = 0 }):Play()
+	heroPop(lbl, 1.3)
 end
 
 -- ASSIST (auto throttle + steering assist): the player's saved switch (Settings "assist", mirrored to FlightController); this
@@ -265,6 +368,19 @@ local function updateResponsiveLayout()
 	if p then
 		posBadge.Position = UDim2.fromOffset(p.x, p.y)
 		posBadge.Size = UDim2.fromOffset(p.w, p.h)
+		-- UI v2: the numeral fills the rect's height; the ordinal and the field size stack on its right.
+		if posNumeral and posOrdinal and posTotal then
+			local big = p.h >= 100
+			posNumeral.TextSize = math.floor(p.h * 1.02)
+			posOrdinal.TextSize = math.max(HudLayoutRules.MIN_TEXT, math.floor(p.h * (if big then 0.36 else 0.42)))
+			posTotal.TextSize = math.max(HudLayoutRules.MIN_TEXT, math.floor(p.h * (if big then 0.2 else 0.26)))
+			for _, l in { posNumeral, posOrdinal, posTotal } do
+				local st = l:FindFirstChildOfClass("UIStroke")
+				if st then
+					st.Thickness = math.max(2, math.floor(p.h * (if l == posNumeral then 0.045 else 0.03)))
+				end
+			end
+		end
 		posSizes = {
 			math.min(math.floor(HudLayoutRules.textSize(TB.positionNumeral, S) * 1.3 + 0.5), math.floor(p.h * 0.9)), -- v21: the biggest HUD numeral
 
@@ -282,9 +398,14 @@ local function updateResponsiveLayout()
 			if lbl then
 				local lim = lbl:FindFirstChildOfClass("UITextSizeConstraint")
 				if lim then
-					lim.MaxTextSize = rowPx
+					lim.MaxTextSize = if lbl == lapLabel then math.floor(rowPx * 1.25) else rowPx
 				end
 			end
+		end
+		local flag = lapChip:FindFirstChild("Flag")
+		if flag and flag:IsA("GuiObject") then
+			local fs = math.floor(c.h * 0.62)
+			flag.Size = UDim2.fromOffset(fs, fs)
 		end
 	end
 
@@ -294,7 +415,16 @@ local function updateResponsiveLayout()
 		heroLabel.Size = UDim2.fromOffset(la.w, la.h)
 		local lim = heroLabel:FindFirstChildOfClass("UITextSizeConstraint")
 		if lim then
-			lim.MaxTextSize = math.floor(vp.Y * (if HudLayoutRules.isPhoneClass(vp.Y) then 0.14 else 0.08))
+			lim.MaxTextSize = math.floor(HERO_TEXT_BASE * UiSkin.typeScale() + 0.5) -- v39: the type scale
+		end
+		local st = heroLabel:FindFirstChildOfClass("UIStroke")
+		if st then
+			st.Thickness = if HudLayoutRules.isPhoneClass(vp.Y) then 1 else 1.5 -- v39: a thin edge; the drop shadow carries it
+		end
+		local sl = heroSub
+		if sl then
+			sl.Position = UDim2.fromOffset(la.x, la.y + la.h - 2)
+			sl.Size = UDim2.fromOffset(la.w, math.max(20, math.floor(la.h * 0.34)))
 		end
 	end
 
@@ -327,8 +457,10 @@ local function updateResponsiveLayout()
 	if modalScale and modalScale:IsA("UIScale") then
 		modalScale.Scale = modalK
 	end
+	cardLayoutScale = modalK
 	finishModal.Size = UDim2.fromOffset(modalW / modalK, modalH / modalK)
 	finishModal.Position = UDim2.fromOffset(math.floor(modalCx), modalTop)
+	layoutFinishContent()
 
 	HudExtras.layout(snap)
 end
@@ -340,6 +472,98 @@ local function voting(): boolean
 end
 -- With votes the first HUB press is the vote (the card stays up showing "HUB 1/3"); a second press closes the card.
 local hubVoted = false
+
+-- UI v2 results layout inside the card's design frame (420 wide; 252 tall on phones, ResultsLayoutRules
+-- DESKTOP_DESIGN_H on desktop): header (numeral + times), the reward chips, the standings (rows share the space left),
+-- the buttons along the bottom. Called from the responsive layout and when the card fills.
+-- A UITextSizeConstraint caps the size in screen px, after the card's CardScale: inside a grown card every cap is
+-- multiplied by the scale (each constraint keeps its design cap in the CapBase attribute).
+local function scaleCardTextCaps(m: Instance, k: number)
+	for _, d in m:GetDescendants() do
+		if d:IsA("UITextSizeConstraint") then
+			local base = d:GetAttribute("CapBase")
+			if type(base) ~= "number" then
+				base = d.MaxTextSize
+				d:SetAttribute("CapBase", base)
+				d:SetAttribute("CapMinBase", d.MinTextSize)
+			end
+			local minBase = d:GetAttribute("CapMinBase")
+			d.MaxTextSize = math.clamp(math.floor((base :: number) * k + 0.5), 1, 100)
+			if type(minBase) == "number" then
+				d.MinTextSize = math.clamp(math.floor(minBase * k + 0.5), 1, d.MaxTextSize)
+			end
+		end
+	end
+end
+
+function layoutFinishContent()
+	local m = finishModal
+	if not m then
+		return
+	end
+	scaleCardTextCaps(m, cardLayoutScale)
+	local H = m.Size.Y.Offset
+	finishBig = H >= 290
+	local hdr = if finishBig then 92 else 68
+	local title = m:FindFirstChild("FinishPlacementTitle")
+	if title and title:IsA("TextLabel") then
+		title.Size = UDim2.fromOffset(if finishBig then 236 else 220, hdr)
+		title.TextSize = if finishBig then 90 else 66
+	end
+	local burst = m:FindFirstChild("PlaceBurst")
+	if burst and burst:IsA("GuiObject") then
+		local d = if finishBig then 190 else 130
+		burst.Size = UDim2.fromOffset(d, d)
+		burst.Position = UDim2.fromOffset(if finishBig then 62 else 50, 12 + hdr // 2)
+	end
+	local sub = m:FindFirstChild("FinishTimeSummary")
+	if sub and sub:IsA("TextLabel") then
+		sub.Position = UDim2.fromOffset(232, if finishBig then 22 else 20)
+		sub.Size = UDim2.fromOffset(176, if finishBig then 64 else 52)
+		local c = sub:FindFirstChildOfClass("UITextSizeConstraint")
+		if c then
+			c.MaxTextSize = if finishBig then 28 else 24
+		end
+	end
+	local rewardsY = 12 + hdr
+	local rewardsH = if finishBig then 30 else 26
+	local orb = m:FindFirstChild("OrbRewardBanner")
+	if orb and orb:IsA("GuiObject") then
+		orb.Position = UDim2.fromOffset(14, rewardsY)
+		orb.Size = UDim2.new(1, -28, 0, rewardsH)
+	end
+	local standY = rewardsY + rewardsH + 5
+	-- v38 (design lane): the one "what is next" bar (client/NextUnlockBar) between the rewards row and the standings.
+	local nextBar = m:FindFirstChild("NextUnlockBar")
+	if nextBar and nextBar:IsA("GuiObject") then
+		local barH = if finishBig then 22 else 18
+		nextBar.Position = UDim2.fromOffset(14, standY)
+		nextBar.Size = UDim2.new(1, -28, 0, barH)
+		standY += barH + 5
+	end
+	local standH = H - standY - 58
+	local st = m:FindFirstChild("StandingsList")
+	if st and st:IsA("GuiObject") then
+		st.Position = UDim2.fromOffset(14, standY)
+		st.Size = UDim2.new(1, -28, 0, standH)
+		local grid = st:FindFirstChildOfClass("UIGridLayout")
+		if grid then
+			grid.CellSize = UDim2.new(0.5, -3, 0, math.max(18, math.floor((standH - 9) / 4)))
+		end
+	end
+end
+
+-- The results card's pop out (silent when the press already spoke or a reset / curtain follows); gamepad focus leaves.
+local function hideFinishCard(silent: boolean)
+	local m = finishModal
+	if not m or not m.Visible or UiMotion.isHiding(m) then
+		return
+	end
+	UiMotion.hide(m, "popOut", nil, { silent = silent, scale = cardLayoutScale })
+	if GuiService.SelectedObject and GuiService.SelectedObject:IsDescendantOf(m) then
+		GuiService.SelectedObject = nil
+	end
+end
 
 -- Finish card button row: FLY AGAIN / HUB as before, or FLY AGAIN / BATTLE / HUB when this map's battle is open
 -- (BattleAccessRules.cardButton). TrackFlow wires BATTLE (it owns the hub trip and the request).
@@ -418,17 +642,36 @@ end
 --     "NEXT TIME!". The title is a label, so no button's hit area moves with it.
 local MusicRules = require(Shared:WaitForChild("MusicRules"))
 local LAP_CREAM = Color3.fromRGB(250, 242, 222)
-local CHIP_WOOD = Color3.fromRGB(96, 60, 34) -- principle 7: the small wood chip behind a numeral
+local CHIP_WOOD = Color3.new(1, 1, 1) -- UI v2: the chip's own navy gradient (a white fill tint = no tint)
 local CHIP_SAND = Color3.fromRGB(188, 168, 142)
-local LAP_RED_CHIP = Color3.fromRGB(176, 52, 34)
-local LAP_RED_GLOW = Color3.fromRGB(232, 100, 58)
+local LAP_RED_CHIP = Color3.fromRGB(255, 110, 100) -- multiplies the navy gradient (UI v2): a hot red-violet chip
+local LAP_RED_GLOW = Color3.fromRGB(255, 170, 120)
 local LAP_RED_TEXT = Color3.fromRGB(255, 78, 56)
 local LAP_FLASH_TEXT = Color3.fromRGB(255, 226, 95)
-local CHIP_IDLE_ALPHA = 0.15 -- v21: 0.35 let the busy track through the lap and time chip
+local CHIP_IDLE_ALPHA = 0.08 -- v21: 0.35 let the busy track through the lap and time chip
 local POS_GOLD = Color3.fromRGB(255, 214, 90) -- first place
+local NextUnlockBar = require(script.Parent:WaitForChild("NextUnlockBar")) -- v38: the results card's next-goal bar
 local LapChipRules = require(Shared:WaitForChild("LapChipRules")) -- the chip text and FINAL LAP! state (V9 stale-label fix)
 local lapState = LapChipRules.new()
 local lapGlowTween: Tween? = nil
+
+-- A chip's fill: BackgroundColor3 / BackgroundTransparency in the flat look, ImageColor3 / ImageTransparency on the
+-- sign art (UiSkin.tweenTarget). On the art the wood colour is white (the art's own wood) and the reds multiply in raw:
+-- sign_hanging takes no caller tint, which would drop the red-hot glow.
+local function chipFill(chip: GuiObject, color: Color3): (GuiObject, string, Color3, string)
+	local target, colorProp, alphaProp = UiSkin.tweenTarget(chip)
+	if colorProp == "ImageColor3" and color == CHIP_WOOD then
+		return target, colorProp, Color3.new(1, 1, 1), alphaProp
+	end
+	return target, colorProp, color, alphaProp
+end
+
+local function setChipFill(chip: GuiObject, color: Color3, alpha: number)
+	local target, colorProp, c, alphaProp = chipFill(chip, color)
+	local t = target :: any
+	t[colorProp] = c
+	t[alphaProp] = alpha
+end
 
 -- The chip back to wood and cream (the final-lap state ended: a new race, or a lap below the last).
 local function lapChipReset()
@@ -437,8 +680,7 @@ local function lapChipReset()
 		lapGlowTween = nil
 	end
 	if lapChip then
-		lapChip.BackgroundColor3 = CHIP_WOOD
-		lapChip.BackgroundTransparency = CHIP_IDLE_ALPHA
+		setChipFill(lapChip, CHIP_WOOD, CHIP_IDLE_ALPHA)
 		lapChip.Rotation = 0
 	end
 	if lapLabel then
@@ -452,15 +694,17 @@ local function lapChipFinal()
 	if not chip then
 		return
 	end
-	chip.BackgroundColor3 = LAP_RED_CHIP
-	chip.BackgroundTransparency = 0.1
+	setChipFill(chip, LAP_RED_CHIP, 0.1)
 	if lapLabel then
 		lapLabel.TextColor3 = LAP_FLASH_TEXT
 	end
 	pulseGuiObject(chip, 1.32, 0.3)
-	RaceUI.hero(LapChipRules.FINAL_TEXT, LAP_RED_TEXT, 1.8) -- lane A (HudLayoutRules): the hero banner
+	if os.clock() - heroShownAt > 0.5 then
+		RaceUI.hero(LapChipRules.FINAL_TEXT, LAP_RED_TEXT, 1.8) -- lane A (HudLayoutRules): the hero banner
+	end
 	-- Red-hot: the chip breathes between two reds until the lap resets (one looping tween, nothing per frame).
-	local glow = TweenService:Create(chip, TweenInfo.new(0.55, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut, -1, true), { BackgroundColor3 = LAP_RED_GLOW })
+	local glowTarget, glowProp, glowColor = chipFill(chip, LAP_RED_GLOW)
+	local glow = TweenService:Create(glowTarget, TweenInfo.new(0.55, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut, -1, true), { [glowProp] = glowColor })
 	lapGlowTween = glow
 	glow:Play()
 	task.spawn(function()
@@ -527,7 +771,7 @@ local function resultsSign(rank: number, total: any)
 		return
 	end
 	if finishSubLabel then
-		local tt = string.match(finishSubLabel.Text, "^(TOTAL [^ ]+)")
+		local tt = string.match(finishSubLabel.Text, "^(TOTAL [^%s]+)")
 		finishSubLabel.Text = if tt then "NEXT TIME!   •   " .. tt else "NEXT TIME!"
 	end
 	nailHeld = nailHeld or nail("SignNailHeld")
@@ -592,6 +836,7 @@ local function populateFinishModal(data: any)
 		return
 	end
 
+	layoutFinishContent()
 	local rank = (type(data) == "table" and type(data.rank) == "number") and data.rank or 1
 	local totalTime = (type(data) == "table" and type(data.totalTime) == "number") and data.totalTime or 0
 	local bestLap = (type(data) == "table" and type(data.bestLap) == "number") and data.bestLap or 0
@@ -604,10 +849,27 @@ local function populateFinishModal(data: any)
 	-- L30: the DNF card (RaceDNF) reuses this card: no placement, no time.
 	local dnf = type(data) == "table" and data.dnf == true
 	hubVoted = false
-	finishTitleLabel.Text = if dnf then "DNF - TIME'S UP" elseif stormCup then stormTitle .. ord .. "!" else ord .. " PLACE!"
+	-- The placement: "1ST" in place colour, the ordinal suffix smaller (Mario Kart style); long titles scale down.
+	local placeNum, placeSuf = string.match(ord, "^(%d+)(%a+)$")
+	local titleText: string
+	if dnf then
+		titleText = "DNF"
+	elseif stormCup then
+		titleText = string.format('<font size="30">%s</font>%s', stormTitle, ord)
+	elseif placeNum then
+		titleText = string.format('%s<font size="%d">%s</font>', placeNum, if finishBig then 50 else 38, placeSuf or "")
+	else
+		titleText = ord
+	end
+	finishTitleLabel.Text = titleText
 	local flyAgain = finishModal:FindFirstChild("FlyAgainButton")
 	if flyAgain and flyAgain:IsA("GuiObject") then
 		flyAgain.Visible = not stormCup
+		-- planes fly again, cars race again (TrackFlow's vote labels say the same)
+		local tinfo = TrackInfo.get(RaceAttr.mine("ActiveTrackId") :: string?)
+		if not voting() then
+			UiSkin.setText(flyAgain, if tinfo and tinfo.vehicle == "car" then "RACE AGAIN" else "FLY AGAIN")
+		end
 	end
 	layoutFinishButtons(
 		not stormCup
@@ -617,17 +879,129 @@ local function populateFinishModal(data: any)
 				BattleAccessRules.decode(LocalPlayer:GetAttribute(BattleAccessRules.ATTR))
 			)
 	)
-	finishTitleLabel.TextColor3 = if rank == 1 and not dnf then Color3.fromRGB(255, 226, 95) else Color3.fromRGB(235, 220, 195)
-	finishSubLabel.Text = if dnf
-		then "Results only count when you cross the line"
-		else string.format("TOTAL %s   •   BEST LAP %s", formatTime(totalTime), formatTime(bestLap))
-
-	if rank == 1 and not dnf then
-		finishOrbBadge.BackgroundColor3 = Color3.fromRGB(88, 128, 56)
-	else
-		finishOrbBadge.BackgroundColor3 = Color3.fromRGB(92, 68, 48)
+	-- Grand Prix (v37, client/GrandPrixClient): the cup's own panel carries NEXT RACE / QUIT; this card shows the result only.
+	local gp = workspace:GetAttribute("GPActive") == true
+	for _, name in { "FlyAgainButton", "BattleFinishButton", "CloseFinishButton" } do
+		local bb = finishModal:FindFirstChild(name)
+		if bb and bb:IsA("GuiObject") then
+			if gp then
+				bb.Visible = false
+			elseif name == "CloseFinishButton" then
+				bb.Visible = true
+			end
+		end
 	end
-	finishOrbText.Text = awardLine(data, rank)
+	finishTitleLabel.TextColor3 = if dnf then Color3.fromRGB(255, 120, 110) else UiSkin.color("place_" .. tostring(rank))
+	finishSubLabel.Text = if dnf
+		then "TIME'S UP"
+		else string.format("TOTAL %s\n<font color=\"#FFFFFF\">BEST LAP %s</font>", formatTime(totalTime), formatTime(bestLap))
+
+	-- Reward chips: the first part of the server's award line leads in gold, the rest follow with icons.
+	local line = awardLine(data, rank)
+	finishOrbText.Text = line
+	for _, ch in finishOrbBadge:GetChildren() do
+		if ch:IsA("GuiObject") and ch ~= finishOrbText then
+			ch:Destroy()
+		end
+	end
+	local chips: { GuiObject } = {}
+	local parts = string.split(line, "  •  ")
+	-- The Cash the server paid for this finish (RaceManager -> Economy.raceFinished): a chip that counts up.
+	local earned = if type(data) == "table" and type(data.gears) == "table" then data.gears else nil
+	local cashN = if earned and type(earned.gears) == "number" and earned.gears > 0 then math.floor(earned.gears) else 0
+	local cashMult = if earned and type(earned.multiplier) == "number" and earned.multiplier > 1 then earned.multiplier else nil
+	if cashN > 0 then
+		table.insert(parts, 2, string.format("+%d CASH%s", cashN, if cashMult then " x" .. tostring(cashMult) else ""))
+	end
+	-- New players: a race that paid no token says how to get one (tokens open the next worlds).
+	local award0 = if type(data) == "table" and type(data.award) == "table" then data.award else nil
+	local mode0 = RaceAttr.mine("RaceMode")
+	if not dnf and rank > 1 and (mode0 == "race" or mode0 == "quickrace") and not (award0 and award0.tokenResult) then
+		local held = tonumber(LocalPlayer:GetAttribute("SkyTokens")) or 0
+		if held < 14 and #parts < 4 then
+			if #parts >= 2 and not string.find(parts[#parts], "CASH", 1, true) then
+				parts[#parts] = "WIN = +1 SKY TOKEN" -- replaces the bare track id line
+			else
+				table.insert(parts, "WIN = +1 SKY TOKEN")
+			end
+		end
+	end
+	-- A phone card fits three chips: with four the lead chip (VICTORY! / RACE COMPLETE) goes, the numeral says it.
+	local hasLead = true
+	if not finishBig and #parts >= 4 then
+		table.remove(parts, 1)
+		hasLead = false
+	end
+	-- Chip widths from the text (the display face runs about 18 % wider than GothamBlack), shrunk together to fit the row.
+	local widths: { number } = {}
+	local total = 0
+	for i, part in parts do
+		local tw = TextService:GetTextSize(part, 14, Enum.Font.GothamBlack, Vector2.new(1000, 40)).X * 1.18
+		widths[i] = tw + (if (i == 1 and hasLead) or string.find(part, "TOKEN", 1, true) or string.find(part, "BEST TIME", 1, true) or string.find(part, " CASH", 1, true) then 40 else 22)
+		total += widths[i]
+	end
+	local avail = 392 - 6 * (#parts - 1)
+	local shrink = if total > avail then avail / total else 1
+	for i, part in parts do
+		local glyph: string? = nil
+		if string.find(part, " CASH", 1, true) and string.sub(part, 1, 1) == "+" then
+			glyph = "cash"
+		elseif string.find(part, "SKY TOKEN", 1, true) or string.find(part, "TOKEN", 1, true) then
+			glyph = "star"
+		elseif string.find(part, "BEST TIME", 1, true) then
+			glyph = "stopwatch"
+		elseif string.find(part, "BOSS", 1, true) or string.find(part, "DRAGON", 1, true) then
+			glyph = "trophy"
+		elseif i == 1 and hasLead and (rank == 1 or string.find(part, "CHAMPION", 1, true)) then
+			glyph = "trophy"
+		end
+		local w = math.floor(widths[i] * shrink)
+		local chipH = if finishBig then 30 else 26
+		local f: Frame
+		if i == 1 and hasLead then
+			f = UiSkin.header(finishOrbBadge, part, { name = "Reward_" .. i, size = UDim2.fromOffset(w, chipH), layoutOrder = i, zIndex = 4, maxText = 16, S = 1 })
+			if glyph then
+				local t = f:FindFirstChild("Title")
+				local g = UiSkin.glyph(f, glyph, { size = UDim2.fromOffset(22, 22), position = UDim2.new(0, 4, 0.5, 0), anchor = Vector2.new(0, 0.5), zIndex = 6 })
+				g.Name = "Glyph"
+				if t and t:IsA("TextLabel") then
+					t.Position = UDim2.fromOffset(24, 0)
+					t.Size = UDim2.new(1, -26, 1, 0)
+				end
+			end
+		else
+			local lab: TextLabel
+			f, lab = UiSkin.chip(finishOrbBadge, part, glyph, { name = "Reward_" .. i, size = UDim2.fromOffset(w, chipH), layoutOrder = i, zIndex = 4, maxText = 15, S = 1 })
+			if glyph == "cash" then
+				f.Name = "CashChip"
+				f:SetAttribute("CountTo", cashN)
+				f:SetAttribute("CountSuffix", string.match(part, "CASH.*$") or "CASH")
+				lab.Text = "+0 CASH"
+				lab.Name = "Label"
+			end
+		end
+		if glyph == "star" and string.find(part, "+1", 1, true) and not string.find(part, "WIN", 1, true) then
+			f.Name = "TokenChip"
+		end
+		local sc = Instance.new("UIScale")
+		sc.Scale = 0
+		sc.Parent = f
+		table.insert(chips, f)
+	end
+
+	-- v38 (design lane): one progress bar toward the next unlock (server: award.nextUnlock), placed by layoutFinishContent.
+	do
+		local old = finishModal:FindFirstChild("NextUnlockBar")
+		if old then
+			old:Destroy()
+		end
+		local nu = if award0 and not dnf then award0.nextUnlock else nil
+		if type(nu) == "table" and type(nu.have) == "number" then
+			local before = if award0 and award0.tokenResult == "awarded" and nu.unit == "token" then nu.have - 1 else nu.have
+			NextUnlockBar.build(finishModal, nu, before, math.max(100, finishModal.Size.X.Offset - 28), if finishBig then 22 else 18, 1.2)
+		end
+		layoutFinishContent()
+	end
 
 	for _, child in ipairs(standingsContainer:GetChildren()) do
 		if child:IsA("Frame") then
@@ -649,59 +1023,257 @@ local function populateFinishModal(data: any)
 		return nil
 	end
 
+	local rows: { Frame } = {}
 	local standings = if type(data) == "table" and type(data.standings) == "table" then data.standings else {}
 	for i, row in ipairs(standings) do
 		if i <= PlaneConfig.AI_FIELD_SIZE then
 			local rowFrame = Instance.new("Frame")
 			rowFrame.Name = "Row_" .. tostring(i)
-			rowFrame.Size = UDim2.new(1, 0, 0, 25)
-			rowFrame.BackgroundColor3 = if row.isPlayer then Color3.fromRGB(132, 86, 46) else Color3.fromRGB(82, 56, 36)
+			rowFrame.Size = UDim2.new(1, 0, 0, 19)
+			local grid = standingsContainer:FindFirstChildOfClass("UIGridLayout")
+			local cellH = if grid then grid.CellSize.Y.Offset else 19
+			local rowText = math.clamp(cellH - 6, 12, 20) -- round 3: up to 20 px on tall rows (17 read small at 1080p)
 			rowFrame.BorderSizePixel = 0
 			rowFrame.LayoutOrder = i
+			rowFrame.ZIndex = 4
 			rowFrame.Parent = standingsContainer
-			addCorner(rowFrame, 6)
-			addStroke(rowFrame, Color3.fromRGB(185, 138, 82), 1)
+			UiSkin.style(rowFrame, "chip", { variant = if row.isPlayer then "header" else "inset", S = 1 })
+			if not row.isPlayer then
+				rowFrame.BackgroundTransparency = 0.25
+			end
+			local ink = row.isPlayer == true
 
-			-- Racer colour swatch (RacerColor on the vehicle, matched by account name / bot name): a 5 px bar at the row's edge.
+			-- Racer colour swatch (RacerColor on the vehicle, matched by account name / bot name): a bar at the row's edge.
 			local swatchColor = racerColorFor(tostring(row.name))
 			if swatchColor then
 				local sw = Instance.new("Frame")
 				sw.Name = "RacerSwatch"
 				sw.Position = UDim2.fromOffset(4, 4)
-				sw.Size = UDim2.new(0, 5, 1, -8)
+				sw.Size = UDim2.new(0, 4, 1, -8)
 				sw.BackgroundColor3 = swatchColor
 				sw.BorderSizePixel = 0
+				sw.ZIndex = 5
 				sw.Parent = rowFrame
 				addCorner(sw, 2)
 			end
 
-			local rText = Instance.new("TextLabel")
-			rText.Size = UDim2.new(0.65, -16, 1, 0)
-			rText.Position = UDim2.fromOffset(16, 0)
-			rText.BackgroundTransparency = 1
-			rText.Font = Enum.Font.GothamBlack
-			rText.TextSize = 12
-			rText.TextTruncate = Enum.TextTruncate.AtEnd
-			rText.TextXAlignment = Enum.TextXAlignment.Left
-			rText.TextColor3 = if row.isPlayer then Color3.fromRGB(255, 240, 165) else Color3.fromRGB(240, 232, 215)
-			rText.Text = string.format("%s  %s", ORDINALS[row.rank] or tostring(row.rank), tostring(row.name))
-			rText.Parent = rowFrame
+			-- Places 1-3: the medal icon left of the text.
+			local place = tonumber(row.rank)
+			local textX = 13
+			if place and MEDAL_COLORS[place] then
+				local md = UiSkin.icon(rowFrame, "icon_medal_" .. tostring(place), tostring(place), {
+					name = "Medal",
+					size = UDim2.fromOffset(20, 20),
+					position = UDim2.new(0, 10, 0.5, 0),
+					anchor = Vector2.new(0, 0.5),
+					zIndex = 6,
+					color = MEDAL_INK,
+				})
+				md.ZIndex = 6
+				textX = 33
+			end
 
-			local tText = Instance.new("TextLabel")
-			tText.Size = UDim2.new(0.35, -10, 1, 0)
-			tText.Position = UDim2.new(0.65, 0, 0, 0)
-			tText.BackgroundTransparency = 1
-			tText.Font = Enum.Font.GothamBold
-			tText.TextSize = 11
-			tText.TextXAlignment = Enum.TextXAlignment.Right
-			tText.TextColor3 = Color3.fromRGB(248, 224, 175)
-			tText.Text = if row.finished and row.finishTime > 0 then formatTime(row.finishTime) else ("LAP " .. tostring(row.lap) .. "/3")
-			tText.Parent = rowFrame
+			local rText = UiSkin.text(rowFrame, string.format("%s  %s", ORDINALS[row.rank] or tostring(row.rank), tostring(row.name)), "caption", {
+				size = UDim2.new(0.68, -textX, 1, 0),
+				position = UDim2.fromOffset(textX, 0),
+				align = "left",
+				textSize = rowText,
+				zIndex = 6,
+				color = if ink then UiSkin.color("ink") else Color3.fromRGB(240, 244, 255),
+				stroke = if ink then 0 else 1.5,
+			})
+			rText.TextTruncate = Enum.TextTruncate.AtEnd
+			rText.Name = "NameText" -- RivalBubbles.decorateResults marks this label (not the medal)
+
+			local tText = UiSkin.text(rowFrame, if row.finished and row.finishTime > 0 then formatTime(row.finishTime) else ("LAP " .. tostring(row.lap) .. "/3"), "caption", {
+				size = UDim2.new(0.32, -8, 1, 0),
+				position = UDim2.new(0.68, 0, 0, 0),
+				align = "right",
+				textSize = rowText,
+				zIndex = 6,
+				color = if ink then UiSkin.color("ink") else Color3.fromRGB(255, 225, 77),
+				stroke = if ink then 0 else 1.5,
+			})
+			tText.Name = "Time"
+			table.insert(rows, rowFrame)
 		end
 	end
 
-	finishModal.Visible = true
-	pulseGuiObject(finishModal, 0.85, 0.26)
+	scaleCardTextCaps(finishModal, cardLayoutScale) -- the new chips and rows
+	-- The Mario Kart finish sequence: placement slam, time, rewards popping in, standings staggering in, then buttons.
+	revealSeq += 1
+	local seqNow = revealSeq
+	local podium = not dnf and rank <= 3
+	local burst = finishModal:FindFirstChild("PlaceBurst")
+	if burst and burst:IsA("GuiObject") then
+		burst.Visible = podium
+		local col = UiSkin.color("place_" .. tostring(rank))
+		for _, d in burst:GetDescendants() do
+			if d:IsA("Frame") and (d.Name == "Ray" or d.Name == "Glow") then
+				d.BackgroundColor3 = col:Lerp(Color3.new(1, 1, 1), 0.35)
+			end
+		end
+		local rays = burst:FindFirstChild("Rays")
+		if podium and rays and rays:IsA("GuiObject") then
+			rays.Rotation = 0
+			TweenService:Create(rays, TweenInfo.new(14, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, -1), { Rotation = 360 }):Play()
+			local bs = burst:FindFirstChildOfClass("UIScale") or Instance.new("UIScale")
+			bs.Parent = burst
+			bs.Scale = 0.2
+			task.delay(0.12, function()
+				TweenService:Create(bs, TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.Out), { Scale = 1 }):Play()
+			end)
+		end
+	end
+	if podium then
+		-- Confetti out of the numeral: a short burst of paper bits in the place colours (UI only, inside the card).
+		task.delay(0.15, function()
+			if seqNow ~= revealSeq or not finishModal then
+				return
+			end
+			local colors = { UiSkin.color("place_1"), UiSkin.color("sky"), UiSkin.color("go"), UiSkin.color("danger"), UiSkin.color("purple"), Color3.new(1, 1, 1) }
+			local ox = if finishBig then 62 else 50
+			local oy = if finishBig then 58 else 46
+			for i = 1, 26 do
+				local c = Instance.new("Frame")
+				c.Name = "Confetti"
+				c.BorderSizePixel = 0
+				c.BackgroundColor3 = colors[(i % #colors) + 1]
+				c.Size = UDim2.fromOffset(math.random(4, 7), math.random(7, 11))
+				c.AnchorPoint = Vector2.new(0.5, 0.5)
+				c.Position = UDim2.fromOffset(ox, oy)
+				c.Rotation = math.random(0, 360)
+				c.ZIndex = 7
+				c.Parent = finishModal
+				local ang = math.rad(math.random(-160, -20))
+				local dist = math.random(60, 170)
+				local tx, ty = ox + math.cos(ang) * dist, oy + math.sin(ang) * dist * 0.6
+				TweenService:Create(c, TweenInfo.new(0.45, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { Position = UDim2.fromOffset(tx, ty), Rotation = c.Rotation + math.random(-200, 200) }):Play()
+				task.delay(0.45, function()
+					if c.Parent then
+						TweenService:Create(c, TweenInfo.new(1.1, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
+							Position = UDim2.fromOffset(tx + math.random(-30, 30), ty + math.random(90, 160)),
+							Rotation = c.Rotation + math.random(-300, 300),
+							BackgroundTransparency = 1,
+						}):Play()
+						task.delay(1.15, function()
+							c:Destroy()
+						end)
+					end
+				end)
+			end
+		end)
+	end
+	local slam = finishTitleLabel:FindFirstChild("SlamScale")
+	if slam and slam:IsA("UIScale") then
+		slam.Scale = 2.4
+		finishTitleLabel.TextTransparency = 1
+		task.delay(0.08, function()
+			if seqNow ~= revealSeq or not finishTitleLabel then
+				return
+			end
+			finishTitleLabel.TextTransparency = 0
+			TweenService:Create(slam, TweenInfo.new(0.26, Enum.EasingStyle.Back, Enum.EasingDirection.Out), { Scale = 1 }):Play()
+			task.delay(0.16, function() -- v37: the numeral lands
+				if seqNow == revealSeq then
+					require(script.Parent:WaitForChild("Sfx37")).play("placement_slam", if podium then 0.6 else 0.45)
+				end
+			end)
+		end)
+	end
+	finishSubLabel.TextTransparency = 1
+	local subStroke = finishSubLabel:FindFirstChildOfClass("UIStroke")
+	if subStroke then
+		subStroke.Transparency = 1
+	end
+	task.delay(0.32, function()
+		if seqNow ~= revealSeq or not finishSubLabel then
+			return
+		end
+		local fi = TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+		TweenService:Create(finishSubLabel, fi, { TextTransparency = 0 }):Play()
+		if subStroke then
+			TweenService:Create(subStroke, fi, { Transparency = 0 }):Play()
+		end
+	end)
+	for i, f in chips do
+		task.delay(0.5 + (i - 1) * 0.12, function()
+			local sc = f:FindFirstChildOfClass("UIScale")
+			if seqNow ~= revealSeq or not sc then
+				return
+			end
+			TweenService:Create(sc, TweenInfo.new(0.24, Enum.EasingStyle.Back, Enum.EasingDirection.Out), { Scale = 1 }):Play()
+			UiSound.play("tab", nil, 0.5)
+			local to = f:GetAttribute("CountTo")
+			local lab = f:FindFirstChild("Label")
+			if type(to) == "number" and lab and lab:IsA("TextLabel") then
+				local sfx = f:GetAttribute("CountSuffix")
+				local suffix = if type(sfx) == "string" then sfx else "CASH"
+				local t0 = os.clock()
+				local ticks = 0
+				local Sfx37 = require(script.Parent:WaitForChild("Sfx37"))
+				task.spawn(function()
+					while seqNow == revealSeq and lab.Parent do
+						local k = math.clamp((os.clock() - t0) / 0.8, 0, 1)
+						local eased = 1 - (1 - k) * (1 - k)
+						lab.Text = string.format("+%d %s", math.floor(to * eased + 0.5), suffix)
+						-- v37 tally: a quiet tick every ~0.1 s, rising in pitch (8 at most)
+						if ticks < 8 and os.clock() - t0 >= ticks * 0.1 then
+							ticks += 1
+							Sfx37.play("tally_tick", 0.28, 0.9 + ticks * 0.05)
+						end
+						if k >= 1 then
+							break
+						end
+						task.wait(0.03)
+					end
+				end)
+			end
+		end)
+	end
+	local rowsAt = 0.55 + #chips * 0.12
+	for i, r in rows do
+		r.Visible = false
+		task.delay(rowsAt + (i - 1) * 0.05, function()
+			if seqNow ~= revealSeq or not r.Parent then
+				return
+			end
+			r.Visible = true
+			local sc = Instance.new("UIScale")
+			sc.Scale = 0.6
+			sc.Parent = r
+			TweenService:Create(sc, TweenInfo.new(0.2, Enum.EasingStyle.Back, Enum.EasingDirection.Out), { Scale = 1 }):Play()
+			if r:GetAttribute("SkinVariant") == "header" then
+				task.delay(0.2, function()
+					pulseGuiObject(r, 1.08, 0.22)
+				end)
+			end
+		end)
+	end
+	local btnAt = rowsAt + #rows * 0.05 + 0.1
+	for _, name in { "FlyAgainButton", "BattleFinishButton", "CloseFinishButton" } do
+		local bb = finishModal:FindFirstChild(name)
+		if bb and bb:IsA("GuiButton") then
+			local sc = bb:FindFirstChildOfClass("UIScale")
+			if not sc then
+				local n = Instance.new("UIScale")
+				n.Parent = bb
+				sc = n
+			end
+			local bsc = sc :: UIScale
+			bsc.Scale = 0
+			task.delay(btnAt, function()
+				if seqNow ~= revealSeq then
+					bsc.Scale = 1
+					return
+				end
+				TweenService:Create(bsc, TweenInfo.new(0.24, Enum.EasingStyle.Back, Enum.EasingDirection.Out), { Scale = 1 }):Play()
+			end)
+		end
+	end
+
+	-- Pop in on CardScale around its layout value (the desktop grow), the pop cue kept under the finish jingle.
+	UiMotion.show(finishModal, "popIn", { scale = cardLayoutScale, volume = 0.6 })
 	if not dnf then
 		resultsSign(rank, if #standings > 0 then #standings else RaceAttr.mine("TotalRacers")) -- REMARKABLE 2: last-place sign drop
 		require(script.Parent.StyleChain).decorateResults(finishModal) -- REMARKABLE 17: best style chain sticker
@@ -721,6 +1293,9 @@ local function populateFinishModal(data: any)
 end
 
 function RaceUI.init()
+	pcall(function() -- v38 (design lane): the time trial ghost and the lap split reference (look only)
+		require(script.Parent:WaitForChild("TimeTrialGhost")).init(RaceUI)
+	end)
 	-- Enforce LANDSCAPE ONLY on mobile per owner ruling
 	pcall(function()
 		StarterGui.ScreenOrientation = Enum.ScreenOrientation.LandscapeSensor
@@ -788,11 +1363,7 @@ function RaceUI.init()
 	-- Race HUD v2 (docs/design/HUD_LAYOUT.md principle 7): bold outlined numerals on SMALL rounded wood chips, no plank art.
 	-- Sizes and positions are set by updateResponsiveLayout from HudMetrics; the values below are placeholders.
 	local function chip(f: Frame, transparency: number)
-		f.BackgroundColor3 = CHIP_WOOD
-		f.BackgroundTransparency = transparency
-		f.BorderSizePixel = 0
-		addCorner(f, 10)
-		addStroke(f, CHIP_SAND, 2)
+		UiSkin.style(f, "sign_hanging", { color = CHIP_WOOD, alpha = transparency, corner = 10, stroke = CHIP_SAND, strokeWidth = 2 })
 	end
 	local function numeralLabel(parent: Instance, name: string, align: Enum.TextXAlignment, stroke: number): TextLabel
 		local l = Instance.new("TextLabel")
@@ -807,61 +1378,109 @@ function RaceUI.init()
 		return l
 	end
 
-	-- 1. Top-right: race position, "3RD/8" (numeral, ordinal suffix, field size). Display only; ASSIST lives in the gear panel.
+	-- 1. Race position (UI v2 hero numeral: bottom-right on desktop, top-right on touch; the rect says where): the big
+	-- slanted place-coloured digit, the ordinal small on its right with the field size under it. Display only.
 	local posFrame = Instance.new("Frame")
 	posFrame.Name = "PositionBadge"
 	posFrame.Position = UDim2.fromOffset(700, 6)
 	posFrame.Size = UDim2.fromOffset(90, 50)
-	chip(posFrame, 0.2)
+	posFrame.BackgroundTransparency = 1
 	posFrame.Active = false
 	posFrame.Parent = sg
 	posBadge = posFrame
-
-	local pLbl = numeralLabel(posFrame, "PositionText", Enum.TextXAlignment.Right, 3)
-	pLbl.Position = UDim2.new(0, 0, 0, 0)
-	pLbl.Size = UDim2.new(1, -8, 1, 0)
-	pLbl.RichText = true
-	pLbl.TextSize = 38
-	pLbl.Text = "1/4"
-	posTextLabel = pLbl
-
-	-- 2. Below it: the lap / time chip ("LAP 2/3" over "0:42.6"); FINAL LAP turns it red-hot.
-	local lapFrame = Instance.new("Frame")
-	lapFrame.Name = "LapTimeChip"
-	lapFrame.Position = UDim2.fromOffset(669, 60)
-	lapFrame.Size = UDim2.fromOffset(114, 46)
-	chip(lapFrame, CHIP_IDLE_ALPHA)
-	lapFrame.Active = false
-	lapFrame.Parent = sg
-	lapChip = lapFrame
-
-	local function row(name: string, y: number, text: string): TextLabel
-		local l = numeralLabel(lapFrame, name, Enum.TextXAlignment.Right, 2.2)
-		l.Position = UDim2.fromScale(0, y)
-		l.Size = UDim2.new(1, -10, 0.5, 0)
-		l.TextScaled = true
-		l.Text = text
-		local lim = Instance.new("UITextSizeConstraint")
-		lim.MinTextSize = HudLayoutRules.MIN_TEXT
-		lim.MaxTextSize = 17
-		lim.Parent = l
+	local function heroText(parent: Instance, name: string, align: Enum.TextXAlignment): TextLabel
+		local l = ArcadeUi.text(parent, { name = name, text = "", font = ArcadeUi.FONT.display, size = 20, align = align, stroke = 3 })
+		l.TextColor3 = Color3.new(1, 1, 1)
+		local g = Instance.new("UIGradient")
+		g.Rotation = 90
+		g.Parent = l
 		return l
 	end
-	lapLabel = row("LapCounter", 0.02, "LAP 1/3")
-	timerLabel = row("RaceTimer", 0.5, "0:00.0")
+	local num = heroText(posFrame, "Numeral", Enum.TextXAlignment.Right)
+	num.Position = UDim2.fromScale(0, 0)
+	num.Size = UDim2.fromScale(0.6, 1)
+	posNumeral = num
+	local ord = heroText(posFrame, "Ordinal", Enum.TextXAlignment.Left)
+	ord.Position = UDim2.new(0.6, 2, 0.08, 0)
+	ord.Size = UDim2.new(0.4, -2, 0.46, 0)
+	posOrdinal = ord
+	local tot = heroText(posFrame, "FieldSize", Enum.TextXAlignment.Left)
+	tot.Position = UDim2.new(0.6, 4, 0.54, 0)
+	tot.Size = UDim2.new(0.4, -4, 0.34, 0)
+	posTotal = tot
+	-- PositionText stays (probes read it): the plain "3/8" text, invisible.
+	local pLbl = Instance.new("TextLabel")
+	pLbl.Name = "PositionText"
+	pLbl.BackgroundTransparency = 1
+	pLbl.TextTransparency = 1
+	pLbl.Size = UDim2.fromScale(1, 1)
+	pLbl.Text = "1/4"
+	pLbl.Active = false
+	pLbl.Parent = posFrame
+	posTextLabel = pLbl
 
-	-- Lane A: the hero message (FINAL LAP!, trick stamps), 30 percent down the screen, no panel.
-	local hero = numeralLabel(sg, "HeroBanner", Enum.TextXAlignment.Center, 3)
+	-- 2. The lap / time chip: a navy card, the checker flag, "LAP 2/3" over the timer; FINAL LAP turns it red-hot.
+	local lapFrame = ArcadeUi.card(sg, { name = "LapTimeChip", radius = 12, strokeWidth = 3 })
+	lapFrame.Position = UDim2.fromOffset(669, 60)
+	lapFrame.Size = UDim2.fromOffset(114, 46)
+	lapFrame.BackgroundTransparency = CHIP_IDLE_ALPHA
+	lapFrame.Active = false
+	lapChip = lapFrame
+	ArcadeUi.icon(lapFrame, "flag", { name = "Flag", anchor = Vector2.new(0, 0.5), position = UDim2.new(0, 4, 0.5, 0), size = UDim2.fromOffset(30, 30) }, 30)
+
+	local function row(name: string, y: number, h: number, text: string): TextLabel
+		local l = ArcadeUi.text(lapFrame, { name = name, text = text, font = ArcadeUi.FONT.display, maxSize = 17, minSize = HudLayoutRules.MIN_TEXT, align = Enum.TextXAlignment.Right, stroke = 2 })
+		l.Position = UDim2.new(0.3, 0, y, 0)
+		l.Size = UDim2.new(0.7, -10, h, 0)
+		return l
+	end
+	lapLabel = row("LapCounter", 0.04, 0.54, "LAP 1/3")
+	local tl = row("RaceTimer", 0.56, 0.4, "0:00.0")
+	tl.TextColor3 = ArcadeUi.C.gold
+	timerLabel = tl
+
+	-- Lane A: the hero message (FINAL LAP, lap splits, trick stamps), 30 percent down the screen, no panel: big slanted
+	-- display text, a gradient of its colour, a heavy ink outline (UI v2).
+	local hero = heroText(sg, "HeroBanner", Enum.TextXAlignment.Center)
 	hero.Position = UDim2.fromOffset(250, 80)
 	hero.Size = UDim2.fromOffset(340, 70)
 	hero.TextScaled = true
 	hero.Visible = false
 	hero.ZIndex = 3
+	-- v39: white type, no colour gradient (the accent bar carries the colour)
+	local hg = hero:FindFirstChildOfClass("UIGradient")
+	if hg then
+		hg:Destroy()
+	end
+	local hst = hero:FindFirstChildOfClass("UIStroke")
+	if hst then
+		hst.Thickness = 1.5
+		hst.Transparency = 0.55
+	end
 	local hLim = Instance.new("UITextSizeConstraint")
 	hLim.MinTextSize = 14
-	hLim.MaxTextSize = 54
+	hLim.MaxTextSize = HERO_TEXT_BASE
 	hLim.Parent = hero
 	heroLabel = hero
+	heroShadow = UiSkin.dropShadow(hero, 4)
+	hero:GetPropertyChangedSignal("TextBounds"):Connect(function()
+		heroBarFit(false)
+	end)
+	local bar = Instance.new("Frame")
+	bar.Name = "HeroAccent"
+	bar.AnchorPoint = Vector2.new(0.5, 0)
+	bar.BorderSizePixel = 0
+	bar.Size = UDim2.fromOffset(0, 4)
+	bar.Position = UDim2.fromScale(0.5, 1)
+	bar.Active = false
+	bar.ZIndex = hero.ZIndex
+	bar.Parent = hero
+	heroBar = bar
+	local sub = ArcadeUi.text(sg, { name = "HeroSub", text = "", font = ArcadeUi.FONT.display, maxSize = 34, minSize = 12, align = Enum.TextXAlignment.Center, stroke = 3, color = ArcadeUi.C.gold })
+	sub.Visible = false
+	sub.ZIndex = 3
+	sub.RichText = true -- v38: the lap split's green/red delta (LapChipRules.splitRich)
+	heroSub = sub
 
 	-- 4. Bottom-Left Carved Stone D-Pad / Thumbstick ("LeftSteerZone") using uploaded hud_stone_dpad.png sprite
 	local sPad = Instance.new("ImageButton")
@@ -996,6 +1615,70 @@ function RaceUI.init()
 	itemSizeConstraint.MaxTextSize = 22
 	itemSizeConstraint.Parent = itemLbl
 
+	-- UI v2 round 2: the touch controls in the theme (sizes and hit areas unchanged). The steer pad is a navy glass disc
+	-- with a light rim and a glossy sky puck; TURN a sky key with the turn arrow; ITEM an orange key showing the held
+	-- item's art (the faint mystery box while empty). Their press tints write BackgroundColor3 (it multiplies the face).
+	local function key(btn: ImageButton, top: Color3, bottom: Color3)
+		btn.Image = ""
+		btn.AutoButtonColor = false
+		btn.BackgroundTransparency = 0.12
+		ArcadeUi.gradient(btn, top, bottom)
+		ArcadeUi.corner(btn, UDim.new(0.28, 0))
+		ArcadeUi.stroke(btn, 3)
+		ArcadeUi.shine(btn, 14, 4)
+	end
+	key(bankBtn, Color3.fromHex("5CCBFF"), Color3.fromHex("1E8CE8"))
+	key(itemBtn, Color3.fromHex("FFB52E"), Color3.fromHex("F57C00"))
+	local turnIcon = ArcadeUi.icon(bankBtn, "turn", { name = "TurnArrow", anchor = Vector2.new(0.5, 0.5), position = UDim2.fromScale(0.5, 0.5), size = UDim2.fromScale(0.62, 0.62) }, 56)
+	turnIcon.SizeConstraint = Enum.SizeConstraint.RelativeYY
+	local idleArt = ArcadeUi.artOf("mystery")
+	if idleArt then
+		local idle = Instance.new("ImageLabel")
+		idle.Name = "IdleItem"
+		idle.BackgroundTransparency = 1
+		idle.Image = idleArt
+		idle.ImageTransparency = 0.6
+		idle.ScaleType = Enum.ScaleType.Fit
+		idle.AnchorPoint = Vector2.new(0.5, 0.5)
+		idle.Position = UDim2.fromScale(0.5, 0.48)
+		idle.Size = UDim2.fromScale(0.6, 0.6)
+		idle.Active = false
+		idle.Parent = itemBtn
+	end
+	heldIcon.Size = UDim2.fromScale(0.72, 0.72)
+	sPad.Image = ""
+	sPad.BackgroundColor3 = Color3.new(1, 1, 1)
+	sPad.BackgroundTransparency = 0.3
+	ArcadeUi.gradient(sPad, ArcadeUi.C.panelTop, ArcadeUi.C.panelBot)
+	ArcadeUi.corner(sPad, UDim.new(0.5, 0))
+	ArcadeUi.stroke(sPad, 3)
+	local padRim = Instance.new("Frame")
+	padRim.Name = "Rim"
+	padRim.Active = false
+	padRim.BackgroundTransparency = 1
+	padRim.AnchorPoint = Vector2.new(0.5, 0.5)
+	padRim.Position = UDim2.fromScale(0.5, 0.5)
+	padRim.Size = UDim2.fromScale(0.72, 0.72)
+	padRim.Parent = sPad
+	ArcadeUi.corner(padRim, UDim.new(0.5, 0))
+	local rimStroke = ArcadeUi.stroke(padRim, 2, Color3.fromHex("5CCBFF"))
+	rimStroke.Transparency = 0.35
+	puck.BackgroundTransparency = 0
+	ArcadeUi.gradient(puck, Color3.fromHex("E8F7FF"), Color3.fromHex("5CCBFF"))
+	local ps = puck:FindFirstChildOfClass("UIStroke")
+	if ps then
+		ps.Color = ArcadeUi.C.ink
+		ps.Thickness = 3
+	end
+	for _, cap in { turnLbl, itemLbl } do
+		cap.FontFace = ArcadeUi.FONT.display
+		local cs = cap:FindFirstChildOfClass("UIStroke")
+		if cs then
+			cs.Color = ArcadeUi.C.ink
+			cs.Thickness = 2.5
+		end
+	end
+
 	-- Controls v2 (docs/research/MOBILE_CONTROLS_AND_REVERSE.md): the stones sit right of the BRAKE pedal; layout places them.
 	local function stone(g: GuiObject, left: number, top: number, h: number)
 		g:SetAttribute("StoneLeft", left)
@@ -1024,11 +1707,11 @@ function RaceUI.init()
 	plate.Name = "Pedal"
 	plate.Active = false
 	plate.Size = UDim2.fromScale(1, 0.78)
-	plate.BackgroundColor3 = Color3.fromRGB(104, 90, 78)
 	plate.BackgroundTransparency = 0.12
 	plate.Parent = pedal
-	addCorner(plate, 12)
-	addStroke(plate, creamText, 2)
+	ArcadeUi.gradient(plate, Color3.fromHex("FF6464"), Color3.fromHex("D62D2D")) -- UI v2: a red key
+	addCorner(plate, 14)
+	addStroke(plate, ArcadeUi.C.ink, 3)
 	for i = 1, 3 do -- pedal ridges
 		local ridge = Instance.new("Frame")
 		ridge.Name = "Ridge" .. i
@@ -1048,7 +1731,7 @@ function RaceUI.init()
 	pedalLbl.Position = UDim2.fromScale(0, 0.79)
 	pedalLbl.Size = UDim2.fromScale(1, 0.21)
 	pedalLbl.BackgroundTransparency = 1
-	pedalLbl.Font = Enum.Font.GothamBlack
+	pedalLbl.FontFace = ArcadeUi.FONT.display
 	pedalLbl.TextScaled = true
 	pedalLbl.TextColor3 = creamText
 	pedalLbl.Text = "BRAKE"
@@ -1060,71 +1743,139 @@ function RaceUI.init()
 	pedalSize.Parent = pedalLbl
 	brakeCaption = pedalLbl
 
-	-- 6. Finish Position Screen (Wooden & Stone Adventure Theme, hidden until Lap 3 completion)
+	-- 6. Finish Position Screen (UI v2 results: hidden until the finish). Contents are laid out in the 420 x 252 design
+	-- frame (ResultsLayoutRules.cardRect; CardScale grows it on desktop): checker strip, the placement numeral slammed in
+	-- big and slanted at the left, time and best lap at the right, reward chips, the 2 x 4 standings, the buttons.
 	local fModal = Instance.new("Frame")
 	fModal.Name = "FinishPositionScreen"
 	fModal.AnchorPoint = Vector2.new(0.5, 0)
 	fModal.Position = UDim2.new(0.5, 0, 0, 58)
 	fModal.Size = UDim2.fromOffset(360, 236)
-	fModal.BackgroundColor3 = Color3.fromRGB(64, 42, 26)
+	UiSkin.style(fModal, "panel", { S = 1 })
 	fModal.BackgroundTransparency = 0 -- solid card: reads on any scene, however dark (finish stage lighting)
 	fModal.Visible = false
 	fModal.Parent = sg
-	addCorner(fModal, 14)
-	addStroke(fModal, Color3.fromRGB(224, 172, 76), 3)
 	finishModal = fModal
 	local fScale = Instance.new("UIScale")
 	fScale.Name = "CardScale"
 	fScale.Parent = fModal
 
-	local fTitle = Instance.new("TextLabel")
-	fTitle.Name = "FinishPlacementTitle"
-	fTitle.Position = UDim2.fromOffset(12, 3)
-	fTitle.Size = UDim2.new(1, -24, 0, 26)
-	fTitle.BackgroundTransparency = 1
-	fTitle.Font = Enum.Font.GothamBlack
-	fTitle.TextSize = 21
-	fTitle.TextColor3 = Color3.fromRGB(255, 226, 95)
-	fTitle.Text = "1ST PLACE!"
-	fTitle.Parent = fModal
-	addTextStroke(fTitle, darkInk, 2.0)
+	local chk = UiSkin.checker(fModal, { name = "FinishChecker", size = UDim2.new(1, -28, 0, 8), position = UDim2.fromOffset(14, 7), cells = 28, alpha = 0.15, zIndex = 2 })
+	local chkc = Instance.new("UICorner")
+	chkc.CornerRadius = UDim.new(0, 3)
+	chkc.Parent = chk
+
+	-- A light burst behind a podium numeral: soft glow plus slowly turning rays in the place colour (layoutFinishContent
+	-- sizes it; populateFinishModal shows it for places 1-3).
+	local burst = Instance.new("Frame")
+	burst.Name = "PlaceBurst"
+	burst.BackgroundTransparency = 1
+	burst.AnchorPoint = Vector2.new(0.5, 0.5)
+	burst.Size = UDim2.fromOffset(130, 130)
+	burst.Position = UDim2.fromOffset(50, 46)
+	burst.ZIndex = 2
+	burst.Visible = false
+	burst.Parent = fModal
+	local glow = Instance.new("Frame")
+	glow.Name = "Glow"
+	glow.AnchorPoint = Vector2.new(0.5, 0.5)
+	glow.Position = UDim2.fromScale(0.5, 0.5)
+	glow.Size = UDim2.fromScale(0.7, 0.7)
+	glow.BackgroundColor3 = Color3.new(1, 1, 1)
+	glow.BorderSizePixel = 0
+	glow.ZIndex = 2
+	local gc = Instance.new("UICorner")
+	gc.CornerRadius = UDim.new(0.5, 0)
+	gc.Parent = glow
+	glow.BackgroundTransparency = 0.78 -- a soft disc (UIGradient is linear only: a radial fade reads as a half moon)
+	glow.Size = UDim2.fromScale(0.56, 0.56)
+	glow.Parent = burst
+	local glow2 = glow:Clone()
+	glow2.Name = "Glow"
+	glow2.Size = UDim2.fromScale(0.8, 0.8)
+	glow2.BackgroundTransparency = 0.9
+	glow2.Parent = burst
+	local rays = Instance.new("Frame")
+	rays.Name = "Rays"
+	rays.BackgroundTransparency = 1
+	rays.Size = UDim2.fromScale(1, 1)
+	rays.ZIndex = 2
+	rays.Parent = burst
+	for i = 0, 11 do
+		local r = Instance.new("Frame")
+		r.Name = "Ray"
+		r.AnchorPoint = Vector2.new(0.5, 1)
+		r.Position = UDim2.fromScale(0.5, 0.5)
+		r.Size = UDim2.new(0.09, 0, 0.5, 0)
+		r.Rotation = i * 30
+		r.BorderSizePixel = 0
+		r.BackgroundColor3 = Color3.new(1, 1, 1)
+		r.ZIndex = 2
+		local rg = Instance.new("UIGradient")
+		rg.Rotation = 90
+		rg.Transparency = NumberSequence.new({ NumberSequenceKeypoint.new(0, 1), NumberSequenceKeypoint.new(0.6, 0.7), NumberSequenceKeypoint.new(1, 0.95) })
+		rg.Parent = r
+		r.Parent = rays
+	end
+	-- Ray frames rotate about their own anchor, not the burst centre: pivot each one by placing its foot at the centre.
+	for _, r in rays:GetChildren() do
+		if r:IsA("Frame") then
+			local a = math.rad(r.Rotation)
+			r.AnchorPoint = Vector2.new(0.5, 0.5)
+			r.Position = UDim2.fromScale(0.5 + 0.25 * math.sin(a), 0.5 - 0.25 * math.cos(a))
+		end
+	end
+
+	local fTitle = UiSkin.title(fModal, "1ST", {
+		name = "FinishPlacementTitle",
+		size = UDim2.fromOffset(220, 68),
+		position = UDim2.fromOffset(10, 12),
+		textSize = 66, -- fixed (design px; CardScale grows the card): RichText sizes and TextScaled do not mix
+		align = "left",
+		rich = true,
+		zIndex = 3,
+		S = 1.2,
+	})
+	fTitle.Rotation = -4
+	local titleScale = Instance.new("UIScale")
+	titleScale.Name = "SlamScale"
+	titleScale.Parent = fTitle
 	finishTitleLabel = fTitle
 
-	local fSub = Instance.new("TextLabel")
-	fSub.Name = "FinishTimeSummary"
-	fSub.Position = UDim2.fromOffset(12, 33)
-	fSub.Size = UDim2.new(1, -24, 0, 16)
-	fSub.BackgroundTransparency = 1
-	fSub.Font = Enum.Font.GothamBold
-	fSub.TextSize = 12
-	fSub.TextColor3 = creamText
-	fSub.Text = "TOTAL 02:15.0   •   BEST LAP 00:44.2"
-	fSub.Parent = fModal
+	local fSub = UiSkin.text(fModal, "TOTAL 02:15.0\nBEST LAP 00:44.2", "numeral", {
+		name = "FinishTimeSummary",
+		size = UDim2.fromOffset(176, 52),
+		position = UDim2.fromOffset(232, 20),
+		align = "right",
+		maxText = 24,
+		minText = 9,
+		color = Color3.fromRGB(255, 225, 77),
+		stroke = 2.5,
+		rich = true,
+		zIndex = 3,
+	})
 	finishSubLabel = fSub
 
+	-- Reward chips (the server's award line split at its bullets); FinishShow flies the token from the "TokenChip".
 	local fOrb = Instance.new("Frame")
 	fOrb.Name = "OrbRewardBanner"
-	fOrb.Position = UDim2.fromOffset(14, 50)
-	fOrb.Size = UDim2.new(1, -28, 0, 22)
-	fOrb.BackgroundColor3 = Color3.fromRGB(88, 128, 56)
+	fOrb.BackgroundTransparency = 1
+	fOrb.Position = UDim2.fromOffset(14, 80)
+	fOrb.Size = UDim2.new(1, -28, 0, 26)
+	fOrb.ZIndex = 3
 	fOrb.Parent = fModal
-	addCorner(fOrb, 8)
+	local orbList = Instance.new("UIListLayout")
+	orbList.FillDirection = Enum.FillDirection.Horizontal
+	orbList.Padding = UDim.new(0, 6)
+	orbList.SortOrder = Enum.SortOrder.LayoutOrder
+	orbList.VerticalAlignment = Enum.VerticalAlignment.Center
+	orbList.Parent = fOrb
 	finishOrbBadge = fOrb
 
-	local fOrbTxt = Instance.new("TextLabel")
+	local fOrbTxt = Instance.new("TextLabel") -- the whole award line, kept for code and tools that read it (not drawn)
 	fOrbTxt.Name = "OrbRewardText"
-	fOrbTxt.Size = UDim2.fromScale(1, 1)
+	fOrbTxt.Visible = false
 	fOrbTxt.BackgroundTransparency = 1
-	fOrbTxt.Font = Enum.Font.GothamBlack
-	fOrbTxt.TextSize = 11
-	-- The award line can carry three parts ("VICTORY! • +1 SKY TOKEN • NEW BEST TIME"); scale down rather than clip
-	-- on a 300 px modal at 740x360.
-	fOrbTxt.TextScaled = true
-	local orbTextLimit = Instance.new("UITextSizeConstraint")
-	orbTextLimit.MinTextSize = 9
-	orbTextLimit.MaxTextSize = 13
-	orbTextLimit.Parent = fOrbTxt
-	fOrbTxt.TextColor3 = Color3.fromRGB(255, 248, 195)
 	local circuit = TrackInfo.circuitName(TrackRegistry.getActiveId())
 	fOrbTxt.Text = if circuit then "VICTORY! — " .. circuit else "VICTORY!"
 	fOrbTxt.Parent = fOrb
@@ -1132,67 +1883,57 @@ function RaceUI.init()
 
 	local stCont = Instance.new("Frame")
 	stCont.Name = "StandingsList"
-	stCont.Position = UDim2.fromOffset(14, 76)
-	stCont.Size = UDim2.new(1, -28, 0, 108)
+	stCont.Position = UDim2.fromOffset(14, 111)
+	stCont.Size = UDim2.new(1, -28, 0, 88)
 	stCont.BackgroundTransparency = 1
+	stCont.ZIndex = 3
 	stCont.Parent = fModal
 	standingsContainer = stCont
 
 	-- Eight entrants (L08): a 2 x 4 grid filled column-first keeps every row, the player's included, on screen at 740x360.
 	local uiGrid = Instance.new("UIGridLayout")
 	uiGrid.CellPadding = UDim2.fromOffset(6, 3)
-	uiGrid.CellSize = UDim2.new(0.5, -3, 0, 24)
+	uiGrid.CellSize = UDim2.new(0.5, -3, 0, 19) -- 4 rows of 19 + 3 px gaps fit the 88 px list (a fifth would spill a third column)
 	uiGrid.FillDirection = Enum.FillDirection.Vertical
 	uiGrid.FillDirectionMaxCells = 4
 	uiGrid.SortOrder = Enum.SortOrder.LayoutOrder
 	uiGrid.Parent = stCont
 
-	local playAgainBtn = Instance.new("TextButton")
-	playAgainBtn.Name = "FlyAgainButton"
-	playAgainBtn.AnchorPoint = Vector2.new(0, 1)
-	playAgainBtn.Position = UDim2.new(0, 14, 1, -10)
-	playAgainBtn.Size = UDim2.new(0.64, -24, 0, 40) -- 6 px between FLY AGAIN and HUB
-	playAgainBtn.BackgroundColor3 = Color3.fromRGB(78, 148, 58)
-	playAgainBtn.Font = Enum.Font.GothamBlack
-	playAgainBtn.TextSize = 15
-	playAgainBtn.TextColor3 = creamText
-	playAgainBtn.Text = "FLY AGAIN"
-	playAgainBtn.AutoButtonColor = true
-	playAgainBtn.Parent = fModal
-	addCorner(playAgainBtn, 8)
-	addStroke(playAgainBtn, Color3.fromRGB(168, 232, 128), 2)
+	-- sound = false: wireButtonFeedback below binds the kit with each button's kind, as before.
+	local playAgainBtn = UiSkin.button(fModal, "go", "FLY AGAIN", {
+		name = "FlyAgainButton",
+		anchor = Vector2.new(0, 1),
+		position = UDim2.new(0, 14, 1, -10),
+		size = UDim2.new(0.64, -24, 0, 40), -- 6 px between FLY AGAIN and HUB
+		maxText = 22,
+		glyph = "rematch",
+		zIndex = 4,
+		sound = false,
+		S = 1,
+	})
 
-	local battleBtn = Instance.new("TextButton")
-	battleBtn.Name = "BattleFinishButton"
-	battleBtn.AnchorPoint = Vector2.new(0, 1)
-	battleBtn.Position = UDim2.new(0.36, -14, 1, -10)
-	battleBtn.Size = UDim2.new(0.32, -13, 0, 40)
-	battleBtn.BackgroundColor3 = Color3.fromRGB(196, 120, 24)
-	battleBtn.Font = Enum.Font.GothamBlack
-	battleBtn.TextSize = 15
-	battleBtn.TextColor3 = creamText
-	battleBtn.Text = "BATTLE"
-	battleBtn.AutoButtonColor = true
-	battleBtn.Visible = false
-	battleBtn.Parent = fModal
-	addCorner(battleBtn, 8)
-	addStroke(battleBtn, Color3.fromRGB(255, 200, 120), 2)
+	local battleBtn = UiSkin.button(fModal, "orange", "BATTLE", {
+		name = "BattleFinishButton",
+		anchor = Vector2.new(0, 1),
+		position = UDim2.new(0.36, -14, 1, -10),
+		size = UDim2.new(0.32, -13, 0, 40),
+		maxText = 22,
+		zIndex = 4,
+		visible = false,
+		sound = false,
+		S = 1,
+	})
 
-	local closeModalBtn = Instance.new("TextButton")
-	closeModalBtn.Name = "CloseFinishButton"
-	closeModalBtn.AnchorPoint = Vector2.new(1, 1)
-	closeModalBtn.Position = UDim2.new(1, -14, 1, -10)
-	closeModalBtn.Size = UDim2.new(0.36, -10, 0, 40)
-	closeModalBtn.BackgroundColor3 = Color3.fromRGB(108, 76, 52)
-	closeModalBtn.Font = Enum.Font.GothamBlack
-	closeModalBtn.TextSize = 14
-	closeModalBtn.TextColor3 = creamText
-	closeModalBtn.Text = "CLOSE"
-	closeModalBtn.AutoButtonColor = true
-	closeModalBtn.Parent = fModal
-	addCorner(closeModalBtn, 8)
-	addStroke(closeModalBtn, stoneRim, 1.5)
-
+	local closeModalBtn = UiSkin.button(fModal, "sky", "CLOSE", {
+		name = "CloseFinishButton",
+		anchor = Vector2.new(1, 1),
+		position = UDim2.new(1, -14, 1, -10),
+		size = UDim2.new(0.36, -10, 0, 40),
+		maxText = 22,
+		zIndex = 4,
+		sound = false,
+		S = 1,
+	})
 	closeModalBtn.Activated:Connect(function()
 		-- L30: with 2+ humans this is a HUB vote (TrackFlow fires it); the card stays up to show the count, and a
 		-- second press closes it.
@@ -1200,10 +1941,7 @@ function RaceUI.init()
 			hubVoted = true
 			return
 		end
-		fModal.Visible = false
-		if GuiService.SelectedObject and GuiService.SelectedObject:IsDescendantOf(fModal) then
-			GuiService.SelectedObject = nil
-		end
+		hideFinishCard(false)
 	end)
 	wireButtonFeedback(playAgainBtn, "confirm")
 	wireButtonFeedback(battleBtn, "confirm")
@@ -1214,14 +1952,14 @@ function RaceUI.init()
 		if inp.UserInputType == Enum.UserInputType.Touch or inp.UserInputType == Enum.UserInputType.MouseButton1 then
 			FlightController.mobileSharpBank = true
 			UiSound.play("stone", nil, 0.6) -- REMARKABLE 4: a quiet carved-stone thunk under the thumb
-			bankBtn.ImageColor3 = Color3.fromRGB(255, 230, 175)
+			bankBtn.BackgroundColor3 = Color3.fromRGB(255, 240, 160)
 			tweenGuiScale(bankBtn, 0.90, BUTTON_PRESS_S, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
 		end
 	end)
 	bankBtn.InputEnded:Connect(function(inp: InputObject)
 		if inp.UserInputType == Enum.UserInputType.Touch or inp.UserInputType == Enum.UserInputType.MouseButton1 then
 			FlightController.mobileSharpBank = false
-			bankBtn.ImageColor3 = Color3.fromRGB(255, 255, 255)
+			bankBtn.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 			tweenGuiScale(bankBtn, 1.0, BUTTON_RELEASE_S, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
 		end
 	end)
@@ -1230,14 +1968,14 @@ function RaceUI.init()
 		if inp.UserInputType == Enum.UserInputType.Touch or inp.UserInputType == Enum.UserInputType.MouseButton1 then
 			FlightController.requestItemUse()
 			UiSound.play("stone", nil, 0.6)
-			itemBtn.ImageColor3 = Color3.fromRGB(185, 245, 255)
+			itemBtn.BackgroundColor3 = Color3.fromRGB(185, 245, 255)
 			tweenGuiScale(itemBtn, 0.90, BUTTON_PRESS_S, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
 		end
 	end)
 	itemBtn.InputEnded:Connect(function(inp: InputObject)
 		if inp.UserInputType == Enum.UserInputType.Touch or inp.UserInputType == Enum.UserInputType.MouseButton1 then
 			FlightController.releaseItemUse() -- missile v3: a held trap drops on the release (a hold drags it first)
-			itemBtn.ImageColor3 = Color3.fromRGB(255, 255, 255)
+			itemBtn.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 			tweenGuiScale(itemBtn, 1.0, BUTTON_RELEASE_S, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
 		end
 	end)
@@ -1245,20 +1983,14 @@ function RaceUI.init()
 	playAgainBtn.Activated:Connect(function()
 		-- L30: with 2+ humans FLY AGAIN is a vote; the card stays up showing "AGAIN 1/3" until the server acts.
 		if not voting() then
-			fModal.Visible = false
-			if GuiService.SelectedObject and GuiService.SelectedObject:IsDescendantOf(fModal) then
-				GuiService.SelectedObject = nil
-			end
+			hideFinishCard(true) -- the confirm press spoke; the reset follows
 		end
 		FlightController.requestPlayAgain()
 	end)
 	-- BATTLE (TrackFlow fires RequestBattle): solo the card goes at once, like FLY AGAIN; with 2+ humans it stays for the vote.
 	battleBtn.Activated:Connect(function()
 		if not voting() then
-			fModal.Visible = false
-			if GuiService.SelectedObject and GuiService.SelectedObject:IsDescendantOf(fModal) then
-				GuiService.SelectedObject = nil
-			end
+			hideFinishCard(true)
 		end
 	end)
 	-- L30/L81: the gamepad selection held back while others raced lands on FLY AGAIN once everyone is done (the return
@@ -1411,11 +2143,13 @@ function RaceUI.init()
 				if lapChip then
 					pulseGuiObject(lapChip, 1.18, 0.24)
 				end
-				RaceUI.showBanner(
-					string.format("LAP %d / %d  •  %s", payload.lap or 2, payload.totalLaps or 3, formatTime(payload.lapTime or 0)),
-					Color3.fromRGB(255, 232, 120),
-					2.0
-				)
+				-- UI v2: the split is hero text (the lap reached, big; the lap time under it), FINAL LAP in red.
+				local lapN, total = payload.lap or 2, payload.totalLaps or 3
+				local final = lapN >= total
+				-- v38: the split against the best lap so far (or, in a time trial, the ghost run's same lap), green/red.
+				local ref = RaceUI.splitRef and RaceUI.splitRef(lapN - 1) or nil
+				local split = LapChipRules.splitRich(payload.lapTime, ref or payload.prevBest)
+				RaceUI.hero(if final then LapChipRules.FINAL_TEXT else string.format("LAP %d/%d", lapN, total), if final then LAP_RED_TEXT else Color3.fromRGB(255, 214, 60), 2.0, formatTime(payload.lapTime or 0) .. (if split ~= "" then "  " .. split else ""))
 			elseif eventType == "CheckpointRespawn" then
 				RaceUI.showBanner("CHECKPOINT RESPAWN", Color3.fromRGB(255, 195, 110), 1.2)
 			elseif eventType == "RaceFinished" then
@@ -1431,7 +2165,7 @@ function RaceUI.init()
 				require(script.Parent.FinishShow).onPhotoFinish(payload) -- REMARKABLE 23: the server-confirmed gap
 			elseif eventType == "RaceReset" then
 				require(script.Parent.FinishShow).cancel() -- REMARKABLE 23/24/30: a reset ends the finish sequence
-				fModal.Visible = false
+				hideFinishCard(true)
 			elseif eventType == "LobbyTimeout" then
 				HudExtras.showLobbyTimeout(if type(payload) == "table" and type(payload.seconds) == "number" then payload.seconds else nil)
 			elseif eventType == "Notice" and type(payload) == "table" and type(payload.text) == "string" then
@@ -1482,6 +2216,22 @@ function RaceUI.init()
 		return Enum.ContextActionResult.Sink
 	end, false, Enum.KeyCode.T)
 
+	-- Studio-only capture hook (UI v2 verification): SkyRallyHUD.QAHero = "text|sub|r,g,b" holds a hero message 6 s.
+	if RunService:IsStudio() then
+		sg:GetAttributeChangedSignal("QAHero"):Connect(function()
+			local v = sg:GetAttribute("QAHero")
+			if type(v) == "string" and v ~= "" then
+				local parts = string.split(v, "|")
+				local col: Color3? = nil
+				if parts[3] then
+					local c = string.split(parts[3], ",")
+					col = Color3.fromRGB(tonumber(c[1]) or 255, tonumber(c[2]) or 255, tonumber(c[3]) or 255)
+				end
+				RaceUI.hero(parts[1], col, 6, parts[2])
+			end
+		end)
+	end
+
 	updateResponsiveLayout()
 	-- A rotation, an emulated device, a TV mode, the chat window changing the nav reserve, touch <-> keyboard, a battle.
 	HudMetrics.onChanged(updateResponsiveLayout)
@@ -1496,7 +2246,14 @@ function RaceUI.init()
 			pulseGuiObject(posBadge, 1.16, 0.22)
 			-- A place change in a live race (not the grid shuffle, not after the finish, not in the hub): up or down.
 			if elapsed >= 3 and LocalPlayer:GetAttribute("RaceFinished") ~= true and RaceAttr.mine("RaceMode") ~= "hub" then
-				Sfx.play(if rank < lastDisplayedRank then "place_up" else "place_down", 1, if rank < lastDisplayedRank then 0.31 else 0.25)
+				-- v37: the generated position cues, quiet and at most one per 0.6 s (the old place_up / place_down as fallback)
+				if os.clock() - lastPosCue >= 0.6 then
+					lastPosCue = os.clock()
+					local up = rank < lastDisplayedRank
+					if not require(script.Parent:WaitForChild("Sfx37")).play(if up then "pos_gain" else "pos_loss", 0.3) then
+						Sfx.play(if up then "place_up" else "place_down", 1, if up then 0.31 else 0.25)
+					end
+				end
 			end
 		end
 		lastDisplayedRank = rank
@@ -1529,23 +2286,49 @@ function RaceUI.init()
 			local text = GridOrder.plankText(started, rank, totalRacers, LocalPlayer:GetAttribute("GridPosition"), LocalPlayer:GetAttribute("GridField"), PlaneConfig.AI_FIELD_SIZE)
 			if text ~= posTextCache then
 				if posTextCache ~= "" and posBadge then
-					pulseGuiObject(posBadge, 1.22, 0.3) -- v21: a place change pops
+					pulseGuiObject(posBadge, HudLayoutRules.POS_PULSE, 0.32) -- v21: a place change pops (UI v2: harder, with a tilt)
+					posBadge.Rotation = -8
+					TweenService:Create(posBadge, TweenInfo.new(0.35, Enum.EasingStyle.Back, Enum.EasingDirection.Out), { Rotation = 0 }):Play()
+					-- Round 2: the new digit slides up into place with a white flash on its outline.
+					local num = posNumeral
+					if num then
+						num.Position = UDim2.fromScale(0, 0.35)
+						TweenService:Create(num, TweenInfo.new(0.22, Enum.EasingStyle.Back, Enum.EasingDirection.Out), { Position = UDim2.fromScale(0, 0) }):Play()
+						local st = num:FindFirstChildOfClass("UIStroke")
+						if st then
+							st.Color = Color3.new(1, 1, 1)
+							TweenService:Create(st, TweenInfo.new(0.35, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { Color = ArcadeUi.C.ink }):Play()
+						end
+					end
 				end
 				posTextCache = text
 				local numeral, suffix, total = HudLayoutRules.positionParts(text)
-				local numColor = if started and numeral == "1" then POS_GOLD else LAP_CREAM
-				posTextLabel.TextSize = posSizes[1]
-				posTextLabel.Text = string.format(
-					'<font size="%d" color="#%s">%s</font><font size="%d" color="#%s">%s</font><font size="%d" color="#%s">%s</font>',
-					posSizes[1], numColor:ToHex(), numeral, posSizes[2], numColor:ToHex(), suffix, posSizes[3], LAP_CREAM:ToHex(), total
-				)
+				posTextLabel.Text = text
+				local n = tonumber(numeral)
+				local place = if n then ArcadeUi.placeColor(n) else ArcadeUi.C.white -- by place at all times (grid seat too)
+				if posNumeral and posOrdinal and posTotal then
+					posNumeral.Text = numeral
+					posOrdinal.Text = suffix
+					posTotal.Text = total
+					for _, l in { posNumeral, posOrdinal } do
+						local g = l:FindFirstChildOfClass("UIGradient")
+						if g then
+							g.Color = ColorSequence.new(place:Lerp(Color3.new(1, 1, 1), 0.5), place)
+						end
+					end
+					local tg = posTotal:FindFirstChildOfClass("UIGradient")
+					if tg then
+						tg.Color = ColorSequence.new(Color3.new(1, 1, 1), Color3.fromRGB(200, 214, 240))
+					end
+				end
 			end
 		end
-		local resultsUp = finishModal ~= nil and finishModal.Visible
+		-- The Grand Prix standings / trophy panel (client/GrandPrixClient, local attribute GPPanelUp) holds the results phase too.
+		local resultsUp = (finishModal ~= nil and finishModal.Visible) or LocalPlayer:GetAttribute("GPPanelUp") == true
 		HudExtras.setResultsShown(resultsUp)
 		HudPhase.setResultsUp(resultsUp)
 		if lapLabel and lapTextChanged then
-			lapLabel.Text = lapText
+			lapLabel.Text = (string.gsub(lapText, "^\u{1F3C1}%s*", "")) -- UI v2: the chip draws the flag icon itself
 		end
 		if timerLabel then
 			-- The grid shows a dim 0:00.0 until GO.
@@ -1561,9 +2344,44 @@ function RaceUI.init()
 			end
 		end
 
-		if heroLabel and heroLabel.Visible and (os.clock() >= heroHideClock or not HudPhase.allows("MessageLane")) then
-			heroLabel.Visible = false
-			LocalPlayer:SetAttribute("HudHeroUp", false)
+		if heroLabel and heroLabel.Visible and not heroHiding and (os.clock() >= heroHideClock or not HudPhase.allows("MessageLane")) then
+			-- Out: a quick zoom and fade (0.16 s), then hidden.
+			heroHiding = true
+			local lbl = heroLabel
+			local sc = getOrCreateUIScale(lbl)
+			local out = TweenInfo.new(0.16, Enum.EasingStyle.Quad, Enum.EasingDirection.In)
+			TweenService:Create(sc, out, { Scale = 1.25 }):Play()
+			TweenService:Create(lbl, out, { TextTransparency = 1 }):Play()
+			local st = lbl:FindFirstChildOfClass("UIStroke")
+			if st then
+				TweenService:Create(st, out, { Transparency = 1 }):Play()
+			end
+			local shadow = heroShadow
+			if shadow then
+				TweenService:Create(getOrCreateUIScale(shadow), out, { Scale = 1.25 }):Play()
+				TweenService:Create(shadow, out, { TextTransparency = 1 }):Play()
+			end
+			if heroBar then
+				TweenService:Create(heroBar, out, { BackgroundTransparency = 1 }):Play()
+			end
+			local sl = heroSub
+			if sl then
+				TweenService:Create(sl, out, { TextTransparency = 1 }):Play()
+				local ss = sl:FindFirstChildOfClass("UIStroke")
+				if ss then
+					TweenService:Create(ss, out, { Transparency = 1 }):Play()
+				end
+			end
+			local my = heroShownAt
+			task.delay(0.17, function()
+				if heroShownAt == my and heroHiding then
+					lbl.Visible = false
+					if heroSub then
+						heroSub.Visible = false
+					end
+					LocalPlayer:SetAttribute("HudHeroUp", false)
+				end
+			end)
 		end
 		if _steerPuck and steerPadBtn and not activeSteerTouch and not steerDraggingMouse then
 			local maxR = TouchSteerRules.radius(steerPadBtn.AbsoluteSize.X)
@@ -1580,7 +2398,7 @@ function RaceUI.init()
 		end
 		if _sharpBankBtn and FlightController.sharpBank ~= bankTintCache then
 			bankTintCache = FlightController.sharpBank
-			_sharpBankBtn.ImageColor3 = if FlightController.sharpBank then Color3.fromRGB(255, 230, 175) else Color3.fromRGB(255, 255, 255)
+			_sharpBankBtn.BackgroundColor3 = if FlightController.sharpBank then Color3.fromRGB(255, 230, 175) else Color3.fromRGB(255, 255, 255)
 		end
 		if _throttleUpBtn then
 			-- Disabled look while empty; a light tint of the held item's colour while holding one.
@@ -1596,10 +2414,14 @@ function RaceUI.init()
 			if _heldIcon then
 				if _heldIcon.Visible ~= showHeld then
 					_heldIcon.Visible = showHeld
+					local idle = _throttleUpBtn:FindFirstChild("IdleItem")
+					if idle and idle:IsA("GuiObject") then
+						idle.Visible = not showHeld
+					end
 				end
 				if showHeld then
 					local ic = ItemRules.iconOf(heldColor) -- items v4: specials too (ItemRules.ICON)
-					local img = if ic then ItemTexAssets[ic.tex] or "" else ""
+					local img = ArcadeUi.itemImage(heldColor) or (if ic then ItemTexAssets[ic.tex] or "" else "") -- UI v2: the same art as the item box
 					if _heldIcon.Image ~= img then
 						_heldIcon.Image = img
 					end
@@ -1614,8 +2436,8 @@ function RaceUI.init()
 			local tintKey = if tint then string.format("%g,%g,%g", tint[1], tint[2], tint[3]) else ""
 			if tintKey ~= itemTintCache then
 				itemTintCache = tintKey
-				_throttleUpBtn.ImageTransparency = if tint then 0 else 0.35
-				_throttleUpBtn.ImageColor3 = if tint
+				_throttleUpBtn.BackgroundTransparency = if tint then 0 else 0.12
+				_throttleUpBtn.BackgroundColor3 = if tint
 					then Color3.fromRGB(tint[1], tint[2], tint[3]):Lerp(Color3.new(1, 1, 1), 0.55)
 					else Color3.new(1, 1, 1)
 			end

@@ -50,6 +50,7 @@ type PlayerState = {
 	held: boolean, -- server holds the hull (escalation)
 	trusted: boolean, -- false from a correction until the client is back on a validated position
 	isPlane: boolean, -- the validator carries the plane's limits (rebuilt when the vehicle type changes)
+	teleportGen: number, -- R-1: bumped by every server teleport/expectation; a correction hold re-arms only if unchanged
 }
 
 local CAR_PALETTE = {
@@ -145,6 +146,7 @@ local function stateFor(player: Player, cf: CFrame): PlayerState
 		st.validator = CarConfig.newValidator(if isPlane then PlaneGuardRules.limits() else nil)
 		st.isPlane = isPlane
 		st.lastValidCF = cf
+		st.teleportGen += 1
 		st.held = false
 		table.clear(st.corrections)
 	end
@@ -157,6 +159,7 @@ local function stateFor(player: Player, cf: CFrame): PlayerState
 			held = false,
 			trusted = true,
 			isPlane = isPlane,
+			teleportGen = 0,
 		}
 		CarServer.states[player] = st
 	end
@@ -186,6 +189,7 @@ end
 function CarServer.expectTeleport(player: Player, cf: CFrame)
 	local st = stateFor(player, cf)
 	st.lastValidCF = cf
+	st.teleportGen += 1
 	local p = cf.Position
 	CarConfig.expectTeleport(st.validator, p.X, p.Y, p.Z, os.clock())
 end
@@ -336,6 +340,19 @@ function CarServer.install()
 	end
 end
 
+-- The end of an escalate hold, for cars and planes alike (R-3). The client is judged as legal travel FROM the held
+-- frame since heldAt (CarConfig.expectFlightFrom, V5-1), not as an arrival AT it, which looped for planes.
+-- R-1: skipped when a newer server teleport (spawn/reset reusing the hull, RequestRespawn, QARespawnAt, expectLaunch)
+-- or a fresh state replaced the correction during the hold; that expectation stands instead of the stale frame.
+local function rearmAfterHold(player: Player, st: PlayerState, gen: number, cf: CFrame, heldAt: number)
+	if CarServer.states[player] ~= st or st.teleportGen ~= gen then
+		return
+	end
+	st.lastValidCF = cf
+	local p = cf.Position
+	CarConfig.expectFlightFrom(st.validator, p.X, p.Y, p.Z, heldAt)
+end
+
 local function correct(player: Player, rec: Record, st: PlayerState, dist: number, allowed: number, dt: number)
 	local now = os.clock()
 	local pos = rec.hull.Position
@@ -367,20 +384,22 @@ local function correct(player: Player, rec: Record, st: PlayerState, dist: numbe
 		-- The client ignored repeated corrections: the server holds the hull on the valid frame for a moment.
 		st.held = true
 		print(string.format("[SkyRally][CAR] correction escalate player=%s count=%d hold=%.1fs", player.Name, #st.corrections, CarConfig.ESCALATE_HOLD))
+		local heldCF, heldAt, gen = st.lastValidCF, os.clock(), st.teleportGen
 		local hull = rec.hull
 		pcall(function()
 			hull:SetNetworkOwner(nil)
 		end)
 		hull.AssemblyLinearVelocity = Vector3.zero
 		hull.AssemblyAngularVelocity = Vector3.zero
-		hull.CFrame = st.lastValidCF
+		hull.CFrame = heldCF
 		task.delay(CarConfig.ESCALATE_HOLD, function()
 			local cur = FlightServer.records[player]
 			if cur and cur.hull == hull and hull.Parent and player.Parent then
 				pcall(function()
 					hull:SetNetworkOwner(player)
 				end)
-				CarServer.expectTeleport(player, st.lastValidCF)
+				-- R-3: was expectTeleport(st.lastValidCF), the arrival re-arm that looped for planes (V5-1).
+				rearmAfterHold(player, st, gen, heldCF, heldAt)
 			end
 			st.held = false
 			table.clear(st.corrections)
@@ -409,6 +428,7 @@ local function correctPlane(player: Player, rec: Record, st: PlayerState, dist: 
 	))
 	CarServer.expectTeleport(player, cf)
 	st.held = true
+	local heldAt, gen = os.clock(), st.teleportGen
 	local hull = rec.hull
 	pcall(function()
 		hull:SetNetworkOwner(nil)
@@ -425,7 +445,11 @@ local function correctPlane(player: Player, rec: Record, st: PlayerState, dist: 
 			pcall(function()
 				hull:SetNetworkOwner(player)
 			end)
-			CarServer.expectTeleport(player, cf)
+			-- V5-1: the client got CheckpointRespawn at heldAt and has been flying on from cf through the hold, so
+			-- judge it as legal flight from cf since then. expectTeleport(cf) here treated it as an arrival at cf: the
+			-- server's own held copy passed as "arrived", the client's first packet ~speed * 1.3 s ahead failed the
+			-- bare tolerance budget, and the plane was corrected back to cf again every hold, forever.
+			rearmAfterHold(player, st, gen, cf, heldAt)
 		end
 		st.held = false
 	end)

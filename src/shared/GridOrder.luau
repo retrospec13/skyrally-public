@@ -433,25 +433,29 @@ end
 
 -- HUD strings (client TrackFlow formats only; the server publishes GridReason / GridPosition / GridLastPlace /
 -- GridField on the player).
+-- v38-flow: brief, upper case, MK-like (one glance under the countdown, never a sentence).
 GridOrder.TEXT = {
-	random = "Random start: you are %s of %d",
-	catchup = "You start %s - last race you finished %s",
-	reverse = "Winner starts at the back - you start %s",
-	late = "Late start: you are %s of %d",
+	random = "START %s OF %d",
+	catchup = "START %s  -  LAST RACE %s",
+	reverse = "WINNER STARTS LAST  -  YOU START %s",
+	late = "LATE START  -  %s OF %d",
 }
 
 function GridOrder.hudLine(reason: any, position: any, lastPlace: any, field: any): string
 	if type(position) ~= "number" or type(field) ~= "number" then
 		return ""
 	end
+	local function ord(n: number): string
+		return string.upper(GridOrder.ordinal(n))
+	end
 	if reason == "random" then
-		return string.format(GridOrder.TEXT.random, GridOrder.ordinal(position), field)
+		return string.format(GridOrder.TEXT.random, ord(position), field)
 	elseif reason == "catchup" and type(lastPlace) == "number" then
-		return string.format(GridOrder.TEXT.catchup, GridOrder.ordinal(position), GridOrder.ordinal(lastPlace))
+		return string.format(GridOrder.TEXT.catchup, ord(position), ord(lastPlace))
 	elseif reason == "reverse" then
-		return string.format(GridOrder.TEXT.reverse, GridOrder.ordinal(position))
+		return string.format(GridOrder.TEXT.reverse, ord(position))
 	elseif reason == "late" then
-		return string.format(GridOrder.TEXT.late, GridOrder.ordinal(position), field)
+		return string.format(GridOrder.TEXT.late, ord(position), field)
 	end
 	return ""
 end

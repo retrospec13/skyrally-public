@@ -21,8 +21,15 @@ KEY = os.environ.get("SKYRALLY_SSH_KEY", "")
 HOST = os.environ.get("SKYRALLY_SSH_HOST", "")
 PCROOT = os.environ.get("SKYRALLY_PC_ROOT", "")
 PCWIN = PCROOT.replace("/", chr(92))
-PLACE = "skyrally_1.rbxlx"
-TASK = "skyrally_1"
+# Optional independent Studio lane. All machine targets stay locally configured.
+LANE_N = os.environ.get("SKY_LANE", "1").strip() or "1"
+if not LANE_N.isdigit() or int(LANE_N) < 1:
+    raise ValueError("SKY_LANE must be a positive integer")
+if LANE_N != "1" and PCROOT:
+    PCROOT += "_l" + LANE_N
+PCWIN = PCROOT.replace("/", chr(92))
+PLACE = f"skyrally_{LANE_N}.rbxlx"
+TASK = f"skyrally_{LANE_N}"
 
 # Paths deployed to the PC deploy target (never its Git; it is a stale tree used as a target).
 SYNC_PATHS = ["default.project.json", "src", "tools/windows", "map", "build", "assets/kits",
@@ -114,6 +121,7 @@ def sync(paths=None, channel="studio"):
                 t.add(f, arcname=rel)
     tmp = OUT / "lane_sync.tar"
     tmp.write_bytes(buf.getvalue())
+    ssh(f'cmd /c "(if not exist {PCWIN}\\out mkdir {PCWIN}\\out) & (if not exist {PCWIN}\\win\\calls mkdir {PCWIN}\\win\\calls)"', check=False)
     put(tmp, "out/lane_sync.tar")
     ssh(f"cmd /c \"cd /d {PCWIN} && tar -xf out\\lane_sync.tar\"")
     th = tree_hash(paths)
@@ -211,6 +219,24 @@ def luau(code, dm="Edit", name="luau", timeout=120):
     return _retrying(lambda: text(mcp([{"name": "execute_luau", "arguments": {"datamodel_type": dm, "code": code}, "timeout": timeout}], name, timeout=timeout + 60)))
 
 
+# V4-1: a previous run's AutoPilot / QASteer / QAThrottle / QAFollowLine / QARespawnAt stayed set and steered the next one
+# (two key pilots flew the spline). The pilot tools call this before they start. Server DataModel, Studio only.
+# Keep in step with QASteerRules.PILOT_WORKSPACE_ATTRS / RESPAWN_ATTR and the copy in win/key_pilot.js.
+CLEAR_QA_LUAU = """local ws = workspace
+local n = 0
+for _, a in { 'AutoPilot', 'QAFollowLine', 'QASteer', 'QAThrottle' } do
+	if ws:GetAttribute(a) ~= nil then ws:SetAttribute(a, nil) n += 1 end
+end
+for _, p in game:GetService('Players'):GetPlayers() do
+	if p:GetAttribute('QARespawnAt') ~= nil then p:SetAttribute('QARespawnAt', nil) n += 1 end
+end
+return 'cleared ' .. n"""
+
+
+def clear_qa():
+    return luau(CLEAR_QA_LUAU, dm="Server", name="clearqa")
+
+
 def state():
     return text(mcp([{"name": "get_studio_state", "arguments": {}}], "state"))
 
@@ -300,6 +326,14 @@ def b64(path):
 def launch(wait_s=240):
     """Launch the lane's own Studio window through the existing schtask (console session, rojo build first)."""
     before = own_studio_id()
+    if LANE_N != "1":
+        # an extra lane: its own launcher .vbs (run_skyrally.ps1 takes Root and Name) and a schtask made on first use
+        vbs = OUT / f"run_lane_{LANE_N}.vbs"
+        vbs.write_text(f'Set sh = CreateObject("WScript.Shell")\r\nsh.Run "cmd /c powershell -NoProfile -ExecutionPolicy Bypass '
+                       f'-WindowStyle Hidden -File {PCWIN}\\win\\run_skyrally.ps1 -Root {PCWIN} -Name {TASK} > {PCWIN}\\out\\run.log 2>&1", 0, False\r\n')
+        ssh(f'cmd /c "if not exist {PCWIN}\\out mkdir {PCWIN}\\out"', check=False)
+        put(vbs, "win/run_lane.vbs")
+        ssh(f'schtasks /Query /TN {TASK} >nul 2>&1 || schtasks /Create /TN {TASK} /TR "wscript.exe {PCWIN}\\win\\run_lane.vbs" /SC ONCE /ST 00:00 /IT /F')
     ssh("schtasks /Run /TN " + TASK)
     t0 = time.time()
     while time.time() - t0 < wait_s:
@@ -310,15 +344,22 @@ def launch(wait_s=240):
     return own_studio_id()
 
 
+def close():
+    """Close this lane's own Studio window (pid file + title check on the PC). Call it when the lane is done:
+    owner rule 2026-11-10, no idle Studio windows left open."""
+    put(ROOT / "tools" / "windows" / "close_lane.ps1", "win/close_lane.ps1")
+    return ssh(f"powershell -NoProfile -ExecutionPolicy Bypass -File {PCWIN}\\win\\close_lane.ps1 -Root {PCWIN} -Name {TASK}", check=False).strip()
+
+
 def run_log():
     return ssh(f"type {PCWIN}\\out\\run.log", check=False)
 
 
 def critic_key():
-    for line in Path(os.path.expanduser("~/.hermes/.env")).read_text().splitlines():
-        if line.startswith("OPENROUTER_API_KEY="):
-            return line.split("=", 1)[1].strip().strip('"').strip("'")
-    raise RuntimeError("OPENROUTER_API_KEY not found in ~/.hermes/.env")
+    key = os.environ.get("OPENROUTER_API_KEY", "").strip()
+    if not key:
+        raise RuntimeError("Set OPENROUTER_API_KEY in your local environment")
+    return key
 
 
 # ---------------- Hot reload (Edit DataModel) from default.project.json ----------------

@@ -168,6 +168,17 @@ function FlameRules.rate(name: string, thr: number, heat: number, over: number, 
 	return math.max(r, FlameRules.MIN_RATE)
 end
 
+-- v38-feel: a car pipe (FlameScale under 1) grows while boosting, so the boost reads at the chase camera (at 0.55 the
+-- boosted core was a ~0.7-stud speck behind the body). Planes (scale 1) keep their flame. Returns the scale multiplier.
+FlameRules.PIPE_BOOST_GROW = 1.0 -- standard boost: x2 (0.55 -> 1.1)
+FlameRules.PIPE_OVER_GROW = 0.5 -- overcharge on top: x2.5 (0.55 -> 1.375)
+function FlameRules.boostScale(scale: number, heat: number, over: number): number
+	if scale >= 1 then
+		return 1
+	end
+	return 1 + FlameRules.PIPE_BOOST_GROW * math.clamp(heat, 0, 1) + FlameRules.PIPE_OVER_GROW * math.clamp(over, 0, 1)
+end
+
 -- Emitters run only near the camera and not under LOW GRAPHICS. remoteOnPhone: a rival's vehicle on a phone-tier device
 -- (nil or false keeps CULL_DIST).
 function FlameRules.active(dist: number, lowGraphics: boolean, remoteOnPhone: boolean?): boolean

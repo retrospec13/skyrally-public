@@ -203,6 +203,8 @@ local badgeBar: Frame? = nil
 local badgeScale: UIScale? = nil
 local shownText = ""
 local arrow: Frame? = nil
+local edgeArrow: Frame? = nil -- v37: the big edge-of-screen marker on the side the shot comes from
+local edgeArrowScale: UIScale? = nil
 local hintLabel: TextLabel? = nil
 local shownHint: string? = nil
 
@@ -311,6 +313,67 @@ local function buildHud()
 	bar.Parent = b
 	b.Parent = sg
 
+	-- v37 (owner: "an incoming-attack warning that is impossible to miss"): a big red marker riding the screen edge on
+	-- the side the shot comes from, a chevron pointing out at it and the shot's item icon, pulsing on every beep.
+	local ea = Instance.new("Frame")
+	ea.Name = "EdgeArrow"
+	ea.AnchorPoint = Vector2.new(0.5, 0.5)
+	ea.Size = UDim2.fromOffset(84, 84)
+	ea.BackgroundTransparency = 1
+	ea.Visible = false
+	local eas = Instance.new("UIScale")
+	eas.Parent = ea
+	local disc = Instance.new("Frame")
+	disc.Name = "Disc"
+	disc.AnchorPoint = Vector2.new(0.5, 0.5)
+	disc.Position = UDim2.fromScale(0.5, 0.5)
+	disc.Size = UDim2.fromOffset(54, 54)
+	disc.BackgroundColor3 = WARN_RED
+	disc.BorderSizePixel = 0
+	local dc = Instance.new("UICorner")
+	dc.CornerRadius = UDim.new(1, 0)
+	dc.Parent = disc
+	local ds = Instance.new("UIStroke")
+	ds.Color = WARN_CREAM
+	ds.Thickness = 3
+	ds.Parent = disc
+	local icon = Instance.new("ImageLabel")
+	icon.Name = "Icon"
+	icon.BackgroundTransparency = 1
+	icon.AnchorPoint = Vector2.new(0.5, 0.5)
+	icon.Position = UDim2.fromScale(0.5, 0.5)
+	icon.Size = UDim2.fromScale(0.86, 0.86)
+	local okIcons, icons = pcall(function()
+		return require(Shared:WaitForChild("UiV2Icons", 2) :: ModuleScript) :: any
+	end)
+	icon.Image = if okIcons and type(icons) == "table" and type(icons.item_red) == "string" then icons.item_red else ""
+	icon.Parent = disc
+	disc.Parent = ea
+	local pointer = Instance.new("Frame")
+	pointer.Name = "Pointer"
+	pointer.AnchorPoint = Vector2.new(0.5, 0.5)
+	pointer.Position = UDim2.fromScale(0.5, 0.5)
+	pointer.Size = UDim2.fromScale(1, 1)
+	pointer.BackgroundTransparency = 1
+	for i, side in { -1, 1 } do
+		local leg = Instance.new("Frame")
+		leg.Name = "Leg" .. i
+		leg.AnchorPoint = Vector2.new(0.5, 0.5)
+		leg.Position = UDim2.new(0.5, side * 8, 0, 4)
+		leg.Size = UDim2.fromOffset(8, 24)
+		leg.Rotation = -side * 42
+		leg.BackgroundColor3 = WARN_RED
+		leg.BorderSizePixel = 0
+		local ls = Instance.new("UIStroke")
+		ls.Color = WARN_CREAM
+		ls.Thickness = 2
+		ls.Parent = leg
+		leg.Parent = pointer
+	end
+	pointer.Parent = ea
+	ea.Parent = sg
+	edgeArrow, edgeArrowScale = ea, eas
+
 	sg.Parent = pg
 	hud, edge, badge, badgeText, badgeBar, badgeScale = sg, e, b, t, bar, sc
 	arrow, hintLabel = a, hl
@@ -411,15 +474,41 @@ local function stepIncoming(now: number)
 		bar.Size = UDim2.new(0.8 * math.clamp(eta / ItemRules.INCOMING.warnSeconds, 0.04, 1), 0, 0, 3)
 	end
 	local ar = arrow
-	if ar then
+	local ea = edgeArrow
+	do
 		local dx, dz = incoming.dx, incoming.dz
 		local cam = workspace.CurrentCamera
 		if dx and dz and cam then
 			local look = cam.CFrame.LookVector
-			ar.Visible = true
-			ar.Rotation = MissileRules.arrowAngle(dx, dz, look.X, look.Z)
+			local deg = MissileRules.arrowAngle(dx, dz, look.X, look.Z)
+			if ar then
+				ar.Visible = true
+				ar.Rotation = deg
+			end
+			if ea then
+				-- On an ellipse just inside the screen edge: ahead = top, behind = bottom (below the vehicle).
+				local rad = math.rad(deg)
+				local vp = cam.ViewportSize
+				local rx, ry = 0.5 - 80 / math.max(vp.X, 1), 0.5 - 70 / math.max(vp.Y, 1)
+				ea.Position = UDim2.fromScale(0.5 + math.sin(rad) * rx, 0.5 - math.cos(rad) * ry)
+				local pointer = ea:FindFirstChild("Pointer")
+				if pointer and pointer:IsA("GuiObject") then
+					pointer.Rotation = deg
+				end
+				ea.Visible = true
+				local eas = edgeArrowScale
+				if eas then
+					local small = vp.Y < 600
+					eas.Scale = (if small then 0.85 else 1.55) * (1 + 0.3 * pulse) * (1 + 0.3 * closeness)
+				end
+			end
 		else
-			ar.Visible = false
+			if ar then
+				ar.Visible = false
+			end
+			if ea then
+				ea.Visible = false
+			end
 		end
 	end
 	local hl = hintLabel

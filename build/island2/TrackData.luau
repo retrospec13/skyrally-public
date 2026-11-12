@@ -311,7 +311,7 @@ local trackData: any = {
 		{ name = "GroundBoost_LedgeRoad", station = 1356.0000, cf = CFrame.new(-4501.1529, 44.3378, 3565.3404, -0.3825, -0.0081, -0.9239, 0.0000, 1.0000, -0.0087, 0.9239, -0.0033, -0.3825) },
 		{ name = "GroundBoost_JumpRunup", station = 2310.6000, cf = CFrame.new(-3914.2277, 47.4895, 4278.1245, -0.9948, 0.0003, -0.1017, 0.0000, 1.0000, 0.0027, 0.1017, 0.0027, -0.9948) },
 		{ name = "GroundBoost_BridgeApproach", station = 3202.0000, cf = CFrame.new(-4320.4292, 39.7929, 4907.1727, -0.0933, 0.0430, 0.9947, 0.0000, 0.9991, -0.0432, -0.9956, -0.0040, -0.0932) },
-		{ name = "GroundBoost_CliffEntry", station = 50.0000, cf = CFrame.new(-5165.3979, 24.5446, 4351.6982, 0.9987, 0.0001, -0.0502, 0.0000, 1.0000, 0.0012, 0.0502, -0.0012, 0.9987) },
+		{ name = "GroundBoost_CliffEntry", station = 39.5000, cf = CFrame.new(-5023.7905, 24.5574, 4370.7642, 0.1150, 0.0000, -0.9934, 0.0000, 1.0000, 0.0000, 0.9934, 0.0000, 0.1150) },
 	},
 	pods = {
 		{ name = "ItemPod_Cavern_Red", station = 380.0000, pos = Vector3.new(-5173.0824, 30.2924, 4020.9719), type = "Red", cubeSet = "Cavern", cubeRank = 1 },
@@ -4382,6 +4382,6 @@ local trackData: any = {
 		corridorSegments = 256,
 		collidableParts = 1797,
 	},
-	source = { plan = "map/island2/plan.json", planSha256 = "5d7122bfd41a02c142303f39a18ed6349140949777e14d72c27009eb3d5e073d", compiler = "not run (--no-compile)" },
+	source = { plan = "map/island2/plan.json", planSha256 = "0da17d28ba68e8cf6e266fa5c3e1414b3d755def087bbb9ea4deda00c7517924", compiler = "tools/map30 @ aa9a451 + patches (build_plan.py sha256 06249ce62258)" },
 }
 return trackData

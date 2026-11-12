@@ -8,6 +8,9 @@
 -- Every number comes from the server (SkyRallyRemotes.StormRequest); every action is a request server/StormShards
 -- validates. Look: NotifySkin.PANELS.stormVendor (owner art drops in there). Layout: StormRules.panelLayout (44 px targets,
 -- phone-compact). Toasts: NotifyKit from NotifySpec rows (shard_gain, dragon_beaten, shard_tier_up, vendor_*).
+-- UI overhaul phase B: the panel and rows draw through UiSkin (panel_wood / row_plank; a NotifySkin image wins when set,
+-- the NotifySkin fills are the flat fallback), buttons through UiSkin.button (buy = btn_primary, tier tabs tab_selected /
+-- tab_idle with a swipe on change). The panel pops in on open and pops out on close, then the ScreenGui disables.
 -- Input: B / gamepad B closes; buttons are Selectable and selection stays in the panel (SelectionGroup).
 local ContextActionService = game:GetService("ContextActionService")
 local GuiService = game:GetService("GuiService")
@@ -22,6 +25,9 @@ local StormConfig = require(Shared:WaitForChild("StormConfig"))
 local NotifySkin = require(Shared:WaitForChild("NotifySkin"))
 local NotifyKit = require(script.Parent:WaitForChild("NotifyKit"))
 local UiSound = require(script.Parent:WaitForChild("UiSound"))
+local UiSkin = require(script.Parent:WaitForChild("UiSkin"))
+local UiMotion = require(script.Parent:WaitForChild("UiMotion"))
+local UiSkinRules = require(Shared:WaitForChild("UiSkinRules"))
 
 local LocalPlayer = Players.LocalPlayer
 
@@ -83,6 +89,14 @@ local function label(parent: Instance, text: string, size: UDim2, pos: UDim2, co
 	l.Text = text
 	l.TextColor3 = color
 	l.Font = f
+	-- UI v2 faces: GothamBlack -> display, the rest -> rounded body; the ink stroke under all of it.
+	l.FontFace = UiSkin.font(if f == Enum.Font.GothamBlack then "display" else "bodyHeavy")
+	if not l:FindFirstChildOfClass("UIStroke") then
+		local st = Instance.new("UIStroke")
+		st.Color = Color3.fromRGB(11, 21, 51)
+		st.Thickness = 1.5
+		st.Parent = l
+	end
 	l.TextScaled = true
 	l.TextXAlignment = align or Enum.TextXAlignment.Left
 	l.TextTruncate = Enum.TextTruncate.AtEnd
@@ -94,22 +108,27 @@ local function label(parent: Instance, text: string, size: UDim2, pos: UDim2, co
 	return l
 end
 
-local function button(parent: Instance, text: string, color: Color3, enabled: boolean, onClick: (() -> ())?): TextButton
-	local b = Instance.new("TextButton")
-	b.AutoButtonColor = enabled
-	b.BackgroundColor3 = color
-	b.BorderSizePixel = 0
-	b.Text = text
-	b.TextColor3 = rgb(SKIN.buttonText)
-	b.Font = font(SKIN.font)
-	b.TextScaled = true
-	b.Selectable = enabled
-	local lim = Instance.new("UITextSizeConstraint")
-	lim.MaxTextSize = 18
-	lim.MinTextSize = 9
-	lim.Parent = b
-	corner(b, 6)
-	UiSound.bind(b, if enabled then "tap" else "deny")
+-- slot: the UiImages button art (default btn_wood); the flat fallback is the NotifySkin colour pill it always was.
+local function button(parent: Instance, text: string, color: Color3, enabled: boolean, onClick: (() -> ())?, slot: string?): GuiButton
+	local b = UiSkin.button(nil, slot or "btn_wood", text, {
+		color = color,
+		corner = 6,
+		textColor = rgb(SKIN.buttonText),
+		font = font(SKIN.font),
+		textScaled = true,
+		maxText = 18,
+		minText = 9,
+		sound = if enabled then "tap" else "deny",
+		selectable = enabled,
+	})
+	if not enabled then
+		if b:IsA("ImageButton") then
+			UiSkin.setEnabled(b, false)
+			b.Active = true -- still takes the press, so the deny knock plays
+		else
+			b.AutoButtonColor = false
+		end
+	end
 	if onClick and enabled then
 		b.Activated:Connect(onClick)
 	end
@@ -118,6 +137,7 @@ local function button(parent: Instance, text: string, color: Color3, enabled: bo
 end
 
 local render: () -> ()
+local vendorScale = 1 -- round 3: the panel's desktop scale (render sets it; the open pop keeps it)
 
 local function fetch(): boolean
 	local reply = invoke("GetState")
@@ -162,13 +182,23 @@ local function act(action: string, onOk: ((any) -> ())?, ...: any)
 	end)
 end
 
-local function close()
+-- silent: a forced close (a race starts) pops out without the close cue.
+local function close(silent: boolean?)
 	if not isOpen then
 		return
 	end
 	isOpen = false
-	if gui then
-		gui.Enabled = false
+	local g = gui
+	local p = panel
+	if g and p and p.Parent == g then
+		-- Pop out, then disable the ScreenGui (an open in the meantime cancels this and pops back in).
+		UiMotion.hide(p, "popOut", function()
+			if not isOpen then
+				g.Enabled = false
+			end
+		end, { silent = silent == true })
+	elseif g then
+		g.Enabled = false
 	end
 	ContextActionService:UnbindAction(CLOSE_ACTION)
 	if GuiService.SelectedObject and panel and GuiService.SelectedObject:IsDescendantOf(panel) then
@@ -190,15 +220,16 @@ local function kindLabel(kind: string): string
 end
 
 local function rowFor(parent: Instance, it: StormConfig.Item, order: number, rowH: number, tierOpen: boolean)
-	local r = Instance.new("Frame")
-	r.Name = it.key
-	r.LayoutOrder = order
-	r.Size = UDim2.new(1, 0, 0, rowH)
-	r.BackgroundColor3 = if tierOpen then rgb(SKIN.row.color) else rgb(SKIN.rowLocked)
-	r.BackgroundTransparency = SKIN.row.alpha
-	r.BorderSizePixel = 0
-	corner(r, 6)
-	r.Parent = parent
+	local r = UiSkin.panel(parent, "row_plank", {
+		name = it.key,
+		layoutOrder = order,
+		size = UDim2.new(1, 0, 0, rowH),
+		color = if tierOpen then rgb(SKIN.row.color) else rgb(SKIN.rowLocked),
+		alpha = SKIN.row.alpha,
+		corner = 6,
+		image = SKIN.row.image, -- the vendor's own art wins over the shared plank
+		slice = SKIN.row.slice,
+	})
 	local tierRow = StormRules.tierById(it.tier)
 	local accent = Instance.new("Frame")
 	accent.BorderSizePixel = 0
@@ -217,7 +248,7 @@ local function rowFor(parent: Instance, it: StormConfig.Item, order: number, row
 	label(r, sub, UDim2.new(1, textW - 16, 0.4, 0), UDim2.new(0, 14, 0.56, 0), rgb(SKIN.muted), font(SKIN.font), 14)
 
 	local bw = 116
-	local function place(b: TextButton)
+	local function place(b: GuiButton)
 		b.Size = UDim2.new(0, bw, 0, math.max(44, rowH - 10))
 		b.Position = UDim2.new(1, -bw - 6, 0.5, -math.max(44, rowH - 10) / 2)
 	end
@@ -246,7 +277,7 @@ local function rowFor(parent: Instance, it: StormConfig.Item, order: number, row
 			act("Buy", function(d: any)
 				NotifyKit.fromSpec("vendor_bought", { name = if type(d) == "table" then d.name else it.name })
 			end, it.key)
-		end))
+		end, "btn_primary"))
 	elseif reason == "short" then
 		place(button(r, "BUY " .. it.price, rgb(SKIN.locked), true, function()
 			UiSound.play("deny")
@@ -273,36 +304,47 @@ render = function()
 			child:Destroy()
 		end
 	end
-	local size = g.AbsoluteSize
-	local L = StormRules.panelLayout(size.X, size.Y, 0)
+	local cam0 = workspace.CurrentCamera
+	local size = if g.AbsoluteSize.Y > 0 or not cam0 then g.AbsoluteSize else cam0.ViewportSize
+	-- v38-flow round 3: on a desktop-height screen the panel is laid out for a smaller virtual screen and scaled up
+	-- (it read as a phone-sized list at 1080p); phones keep k = 1
+	local cam = workspace.CurrentCamera
+	local vpY = if size.Y > 0 then size.Y elseif cam then cam.ViewportSize.Y else 0
+	local k = if vpY >= 720 then math.clamp(vpY / 620, 1, 1.7) else 1
+	vendorScale = k
+	local L = StormRules.panelLayout(size.X / k, size.Y / k, 0)
 	local p = panel
 	if not p or p.Parent ~= g then
-		local fresh = Instance.new("Frame")
-		fresh.Name = "StormVendorPanel"
-		fresh.BackgroundColor3 = rgb(SKIN.panel.color)
-		fresh.BackgroundTransparency = SKIN.panel.alpha
-		fresh.BorderSizePixel = 0
+		-- NotifySkin's vendor art (panel.image) wins; else the shared panel_wood art; else the flat navy card.
+		local fresh = UiSkin.panel(nil, "panel_wood", {
+			name = "StormVendorPanel",
+			color = rgb(SKIN.panel.color),
+			alpha = SKIN.panel.alpha,
+			corner = 10,
+			image = SKIN.panel.image,
+			slice = SKIN.panel.slice,
+		})
 		fresh.SelectionGroup = true
-		corner(fresh, 10)
-		if SKIN.panel.image then
-			local img = Instance.new("ImageLabel")
-			img.BackgroundTransparency = 1
-			img.Size = UDim2.fromScale(1, 1)
-			img.Image = SKIN.panel.image
-			if SKIN.panel.slice then
-				local s = SKIN.panel.slice
-				img.ScaleType = Enum.ScaleType.Slice
-				img.SliceCenter = Rect.new(s[1], s[2], s[3], s[4])
-			end
-			img.Parent = fresh
-		end
 		fresh.Parent = g
 		panel = fresh
 		p = fresh
 	end
 	local p: Frame = p :: Frame
-	p.Position = UDim2.fromOffset(L.x, L.y)
+	if isOpen then
+		p.Visible = true -- before the gamepad selection below (open pops it in right after this render)
+	end
+	p.AnchorPoint = Vector2.new(0.5, 0.5)
+	p.Position = UDim2.fromOffset(math.floor((L.x + L.w / 2) * k), math.floor((L.y + L.h / 2) * k))
 	p.Size = UDim2.fromOffset(L.w, L.h)
+	local sc: UIScale? = p:FindFirstChildOfClass("UIScale")
+	if sc == nil then
+		local n = Instance.new("UIScale")
+		n.Parent = p
+		sc = n
+	end
+	if sc and not UiMotion.isBusy(p) then
+		sc.Scale = k
+	end
 	for _, nm in { "Tabs", "Rows" } do
 		local old = p:FindFirstChild(nm)
 		if old then
@@ -315,9 +357,8 @@ render = function()
 	local head: Frame = if headOld and headOld:IsA("Frame") then headOld else Instance.new("Frame")
 	if head.Parent ~= p then
 		head.Name = "Header"
-		head.BackgroundColor3 = rgb(SKIN.header)
 		head.BorderSizePixel = 0
-		corner(head, 10)
+		UiSkin.style(head, "card", { variant = "tab", S = 1 }) -- UI v2: the dark navy title strip
 		head.Parent = p
 	end
 	head.Size = UDim2.new(1, 0, 0, L.header)
@@ -328,8 +369,13 @@ render = function()
 	label(head, rank, UDim2.new(0.62, 0, 0.4, 0), UDim2.new(0, L.pad + 4, 0.56, 0), rgb(tier.color), font(SKIN.font), 15, nil, "Rank")
 	label(head, string.format("%d Storm Shards", st.shards or 0), UDim2.new(0.38, -60, 0.5, 0), UDim2.new(0.5, 0, 0, 4), rgb(SKIN.text), font(SKIN.font), 20, Enum.TextXAlignment.Right, "Shards")
 	local xOld = head:FindFirstChild("Close")
-	local x: TextButton = if xOld and xOld:IsA("TextButton") then xOld else button(head, "X", rgb(SKIN.locked), true, close)
+	local x: GuiButton = if xOld and xOld:IsA("GuiButton") then xOld else button(head, "", rgb({ 255, 100, 100 }), true, function()
+		close()
+	end, "btn_round")
 	x.Name = "Close"
+	if not x:FindFirstChild("CloseGlyph") then
+		UiSkin.glyph(x, "close", { name = "CloseGlyph", size = UDim2.fromScale(0.7, 0.7), position = UDim2.fromScale(0.5, 0.46), anchor = Vector2.new(0.5, 0.5), zIndex = x.ZIndex + 2 })
+	end
 	x.Size = UDim2.fromOffset(44, 44)
 	x.Position = UDim2.new(1, -50, 0.5, -22)
 
@@ -346,18 +392,22 @@ render = function()
 	list.Parent = tabs
 	local n = #StormConfig.TIERS
 	local myIdx = StormRules.tierIndex(st.lifetime or 0)
-	local firstTab: TextButton? = nil
+	local firstTab: GuiButton? = nil
 	for i, t in StormConfig.TIERS do
 		local open = i <= myIdx
 		local text = if open then string.upper(t.name) else string.format("%s %d", string.upper(t.name), t.at)
-		local b = button(tabs, text, if t.id == activeTier then rgb(t.color) else rgb(SKIN.header), true, function()
+		local on = t.id == activeTier
+		local b = button(tabs, text, if on then rgb(t.color) else rgb(SKIN.header), true, function()
+			if activeTier ~= t.id then
+				UiSound.play(UiSkinRules.cueFor("swipe") or "swipe", nil, 0.7) -- the page slides over under the tab tap
+			end
 			activeTier = t.id
 			render()
-		end)
+		end, if on then "tab_selected" else "tab_idle")
 		b.Size = UDim2.new(1 / n, -6, 1, 0)
 		b.LayoutOrder = i
-		if t.id == activeTier then
-			b.TextColor3 = rgb({ 20, 20, 30 })
+		if on then
+			UiSkin.styleButton(b, { textColor = rgb({ 20, 20, 30 }) })
 			firstTab = b
 		end
 	end
@@ -408,6 +458,17 @@ function StormVendor.open()
 		ContextActionService:BindAction(CLOSE_ACTION, closeAction, false, Enum.KeyCode.ButtonB)
 		UiSound.play("tab")
 		render()
+		local p = panel
+		if p then
+			UiMotion.show(p, "popIn", { scale = vendorScale }) -- the pop garnish under the tab flip
+			task.delay(0.25, function()
+				-- the gui's first AbsoluteSize can land after this open: settle on the scale render computed last
+				local sc = p:FindFirstChildOfClass("UIScale")
+				if isOpen and sc and not UiMotion.isBusy(p) then
+					sc.Scale = vendorScale
+				end
+			end)
+		end
 	end)
 end
 
@@ -474,7 +535,7 @@ function StormVendor.init()
 	-- Leaving the hub (a race starts) closes the panel.
 	RaceAttr.changed("RaceMode", function()
 		if RaceAttr.mine("RaceMode") ~= "hub" then
-			close()
+			close(true)
 		end
 	end)
 end

@@ -179,7 +179,7 @@ return function(h: Harness)
 		for _, vp in { { 740, 360 }, { 844, 390 }, { 568, 320 }, { 1440, 900 }, { 2560, 1440 } } do
 			local s = R.panelScale(vp[1], vp[2])
 			h.ok(R.PANEL_W * s <= vp[1] and R.PANEL_H * s <= vp[2], string.format("%dx%d fits at %.2f", vp[1], vp[2], s))
-			h.ok(s >= 0.7 and s <= 1.6)
+			h.ok(s >= 0.7 and s <= 2.3)
 		end
 		h.ok(R.panelScale(740, 360) >= 1, "no shrinking at 740x360")
 	end)

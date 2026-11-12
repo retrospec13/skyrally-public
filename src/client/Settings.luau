@@ -19,6 +19,10 @@
 -- Touch: drag a bar. Mouse: drag or click. Gamepad: up/down moves the selection, D-pad left/right (or L1/R1) changes the
 -- selected bar, A presses a button, B closes. Keyboard: O opens and closes.
 -- Hub gamepad: L1 and R1 together open it (a race keeps both bumpers for banking). Opening never pauses the game.
+-- Look and motion (UI overhaul phase B): the plaque is UiSkin panel_wood, the gear btn_round with the icon_gear art (the
+-- Frame-drawn cog until it is uploaded), INVITE / DONE / the toggles and the page tabs UiSkin buttons; sliders stay
+-- procedural. With no art (shared/UiImages nil) that is the same flat wood as before. Open enables the ScreenGui, then
+-- the plaque pops in (UiMotion popIn) over a fading dim; close pops it out, then disables the ScreenGui.
 local ContextActionService = game:GetService("ContextActionService")
 local GuiService = game:GetService("GuiService")
 local Players = game:GetService("Players")
@@ -34,6 +38,10 @@ local Rules = require(Shared:WaitForChild("SettingsRules"))
 -- REMARKABLE 4: every button speaks and squashes; a slider ticks the marimba scale as it crosses a notch.
 local UiSound = require(script.Parent:WaitForChild("UiSound"))
 local HudMetrics = require(script.Parent:WaitForChild("HudMetrics"))
+local UiSkin = require(script.Parent:WaitForChild("UiSkin"))
+local UiMotion = require(script.Parent:WaitForChild("UiMotion"))
+local PauseMenu = require(script.Parent:WaitForChild("PauseMenu"))
+local UiSkinRules = require(Shared:WaitForChild("UiSkinRules"))
 
 local LocalPlayer = Players.LocalPlayer
 
@@ -50,7 +58,8 @@ local GREEN = Color3.fromRGB(78, 148, 58)
 local GREEN_RIM = Color3.fromRGB(168, 232, 128)
 local GOLD = Color3.fromRGB(255, 214, 90)
 local DIM = Color3.fromRGB(120, 104, 90)
-local MUTED = Color3.fromRGB(214, 200, 180)
+local MUTED = Color3.fromRGB(190, 200, 230)
+local INK = Color3.fromRGB(11, 21, 51) -- UI v2 ink (outlines, text strokes)
 
 local SEND_DELAY = 0.4 -- s: slider moves become one SettingsEvent message
 local INVITE_TEXT = "INVITE FRIENDS"
@@ -328,8 +337,16 @@ end
 
 local function textStroke(p: Instance, t: number)
 	local s = Instance.new("UIStroke")
-	s.Color = WOOD_DARK
+	s.Color = INK
 	s.Thickness = t
+	-- A skinned art button carries its text in a "Label" child: the outline goes on the text, as on the flat TextButton.
+	-- (v38-flow: a native UiSkin TextButton also shows its text in a "Label" child; a stroke on the hidden button text
+	-- drew a black smear over INVITE FRIENDS / DONE)
+	local lbl = p:FindFirstChild("Label")
+	if lbl and lbl:IsA("TextLabel") and p:IsA("GuiButton") then
+		s:Destroy()
+		return
+	end
 	s.Parent = p
 end
 
@@ -338,8 +355,10 @@ local function label(parent: Instance, name: string, str: string, size: number, 
 	l.Name = name
 	l.BackgroundTransparency = 1
 	l.Font = font or Enum.Font.GothamBlack
+	-- UI v2 faces: GothamBlack -> the heavy italic display face, the rest -> the rounded body face; white on the panel.
+	l.FontFace = UiSkin.font(if font == nil or font == Enum.Font.GothamBlack then "button" else "bodyHeavy")
 	l.TextSize = size
-	l.TextColor3 = CREAM
+	l.TextColor3 = Color3.new(1, 1, 1)
 	l.TextXAlignment = Enum.TextXAlignment.Left
 	l.Text = str
 	l.Active = false
@@ -351,7 +370,8 @@ local function fitText(l: TextLabel, maxSize: number)
 	l.TextScaled = true
 	local c = Instance.new("UITextSizeConstraint")
 	c.MinTextSize = 10
-	c.MaxTextSize = maxSize
+	-- round 3: a text cap is in screen pixels (it ignores the plaque's fit UIScale), so it follows the type scale
+	UiSkin.liveCap(c, maxSize)
 	c.Parent = l
 end
 
@@ -411,17 +431,13 @@ end
 
 -- The gear button: a carved stone/wood square with a cream cog. The HUD and the Garage each make one; the caller sizes
 -- and places it. Pressing it opens or closes the panel.
-function Settings.makeGearButton(parent: Instance, name: string): TextButton
-	local b = Instance.new("TextButton")
-	b.Name = name
-	b.Text = ""
-	b.AutoButtonColor = true
-	b.BackgroundColor3 = WOOD_DARK
-	b.Parent = parent
-	corner(b, 10)
-	stroke(b, RIM, 2)
-	buildCog(b, CREAM, WOOD_DARK)
-	UiSound.bind(b, "stone")
+function Settings.makeGearButton(parent: Instance, name: string): GuiButton
+	local b = UiSkin.button(parent, "btn_round", "", { name = name, color = WOOD_DARK, corner = 10, stroke = RIM, strokeWidth = 2, sound = "stone" })
+	if UiSkin.hasArt("icon_gear") then
+		UiSkin.icon(b, "icon_gear", "", { name = "Cog", size = UDim2.fromScale(0.62, 0.62), position = UDim2.fromScale(0.5, 0.5), anchor = Vector2.new(0.5, 0.5) })
+	else
+		buildCog(b, CREAM, WOOD_DARK) -- no gear art yet: the cog drawn from Frames
+	end
 	b.Activated:Connect(function()
 		toggle()
 	end)
@@ -439,16 +455,17 @@ type SliderRow = {
 	pct: TextLabel,
 	notch: number,
 }
-type ToggleRow = { key: string, button: TextButton, pill: Frame, pillText: TextLabel }
+type ToggleRow = { key: string, button: GuiButton, pill: Frame, pillText: TextLabel }
 
 local built = false
 local gui: ScreenGui
 local backdrop: TextButton
+local holder: Frame -- the plaque's motion frame: UiMotion's pop scales it, so the panel's own fit UIScale stays the viewport fit
 local panel: Frame
 local fit: UIScale
 local hintLabel: TextLabel
-local inviteButton: TextButton
-local doneButton: TextButton
+local inviteButton: GuiButton
+local doneButton: GuiButton
 local sliders: { SliderRow } = {}
 local toggles: { ToggleRow } = {}
 local isOpen = false
@@ -463,17 +480,17 @@ type ExtraPage = { title: string, build: (page: Frame) -> (), onShow: (() -> ())
 local extra: ExtraPage? = nil
 local content: Frame
 local extraFrame: Frame? = nil
-local mainTab: TextButton? = nil
-local extraTab: TextButton? = nil
+local mainTab: GuiButton? = nil
+local extraTab: GuiButton? = nil
 local showingExtra = false
 
-local function paintTab(b: TextButton, active: boolean)
-	b.BackgroundColor3 = if active then WOOD_DARK else WOOD_ROW
-	b.TextColor3 = if active then GOLD else MUTED
-	local s = b:FindFirstChildOfClass("UIStroke")
-	if s then
-		s.Color = if active then BRASS else RIM
-	end
+local function paintTab(b: GuiButton, active: boolean)
+	UiSkin.styleButton(b, {
+		variant = if active then "header" else "tab",
+		color = if active then WOOD_DARK else WOOD_ROW,
+		textColor = if active then GOLD else MUTED,
+		image = UiSkin.artFor(if active then "tab_selected" else "tab_idle"),
+	})
 end
 
 local function showPage(toExtra: boolean)
@@ -526,12 +543,8 @@ end
 local function paintToggle(row: ToggleRow)
 	local on = values[row.key] == true
 	row.pillText.Text = if on then "ON" else "OFF"
-	row.pill.BackgroundColor3 = if on then GREEN else DIM
-	row.pillText.TextColor3 = if on then CREAM else MUTED
-	local s = row.pill:FindFirstChildOfClass("UIStroke")
-	if s then
-		s.Color = if on then GREEN_RIM else RIM
-	end
+	UiSkin.style(row.pill, "chip", { variant = if on then "go" else "disabled", S = 1 })
+	row.pillText.TextColor3 = if on then Color3.new(1, 1, 1) else MUTED
 end
 
 local function paintAll()
@@ -598,9 +611,9 @@ local function inviteFriends()
 		end
 		if not opened then
 			UiSound.play("deny")
-			inviteButton.Text = INVITE_FAIL_TEXT
+			UiSkin.setText(inviteButton, INVITE_FAIL_TEXT)
 			task.wait(2.2)
-			inviteButton.Text = INVITE_TEXT
+			UiSkin.setText(inviteButton, INVITE_TEXT)
 		end
 		inviting = false
 	end)
@@ -652,14 +665,32 @@ function Settings.isOpen(): boolean
 	return isOpen
 end
 
-function Settings.close()
+local dimTween: Tween? = nil
+local function fadeDim(alpha: number, time: number)
+	local tw = dimTween
+	if tw then
+		tw:Cancel()
+	end
+	local nt = TweenService:Create(backdrop, TweenInfo.new(time, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { BackgroundTransparency = alpha })
+	dimTween = nt
+	nt:Play()
+end
+
+-- silent: a forced close (a track switch) pops out without the close cue.
+function Settings.close(silent: boolean?)
 	if not built or not isOpen then
 		return
 	end
 	isOpen = false
 	endDrag()
 	Settings.flush() -- the server hears the final values as the panel closes
-	gui.Enabled = false
+	-- The plaque pops out and the dim fades, then the ScreenGui disables (an open in the meantime pops it back in).
+	fadeDim(1, UiSkinRules.SCRIM.fadeOut)
+	UiMotion.hide(holder, "popOut", function()
+		if not isOpen then
+			gui.Enabled = false
+		end
+	end, { silent = silent == true })
 	ContextActionService:UnbindAction("SkyRallySettingsClose")
 	ContextActionService:UnbindAction("SkyRallySettingsAdjust")
 	local sel = GuiService.SelectedObject
@@ -676,28 +707,35 @@ local function addExtra()
 	if not built or not e or extraTab then
 		return
 	end
-	local function tab(name: string, text: string, x: number, w: number): TextButton
-		local b = Instance.new("TextButton")
-		b.Name = name
-		b.Position = UDim2.fromOffset(x, 8)
-		b.Size = UDim2.fromOffset(w, 28)
-		b.Font = Enum.Font.GothamBlack
-		b.Text = text
-		b.AutoButtonColor = true
-		b.Parent = panel
-		corner(b, 8)
-		stroke(b, RIM, 2)
-		fitText(b :: any, 16)
-		UiSound.bind(b, "tab")
-		return b
+	local function tab(name: string, text: string, x: number, w: number): GuiButton
+		return UiSkin.button(panel, "tab_idle", text, {
+			name = name,
+			position = UDim2.fromOffset(x, 8),
+			size = UDim2.fromOffset(w, 28),
+			font = Enum.Font.GothamBlack,
+			corner = 8,
+			stroke = RIM,
+			strokeWidth = 2,
+			textScaled = true,
+			minText = 10,
+			maxText = 16,
+			sound = "tab",
+		})
 	end
 	local x2 = Rules.PANEL_W - 14 - 92
 	local a = tab("SettingsTab", "SETTINGS", x2 - 6 - 112, 112)
 	local b = tab("PageTab", e.title, x2, 92)
+	-- A page change slides: a soft swipe under the tab flip.
 	a.Activated:Connect(function()
+		if showingExtra then
+			UiSound.play(UiSkinRules.cueFor("swipe") or "swipe", nil, 0.7)
+		end
 		showPage(false)
 	end)
 	b.Activated:Connect(function()
+		if not showingExtra then
+			UiSound.play(UiSkinRules.cueFor("swipe") or "swipe", nil, 0.7)
+		end
 		showPage(true)
 	end)
 	mainTab, extraTab = a, b
@@ -761,22 +799,33 @@ local function build()
 		Settings.close()
 	end)
 
-	panel = Instance.new("Frame")
-	panel.Name = "SettingsPanel"
-	panel.AnchorPoint = Vector2.new(0.5, 0.5)
-	panel.Position = UDim2.fromScale(0.5, 0.5)
-	panel.Size = UDim2.fromOffset(Rules.PANEL_W, Rules.PANEL_H)
-	panel.BackgroundColor3 = WOOD
-	panel.Active = true
+	holder = Instance.new("Frame")
+	holder.Name = "Plaque"
+	holder.AnchorPoint = Vector2.new(0.5, 0.5)
+	holder.Position = UDim2.fromScale(0.5, 0.5)
+	holder.Size = UDim2.fromScale(1, 1)
+	holder.BackgroundTransparency = 1
+	holder.Active = false
+	holder.Parent = gui
+
+	panel = UiSkin.panel(nil, "panel_wood", {
+		name = "SettingsPanel",
+		anchor = Vector2.new(0.5, 0.5),
+		position = UDim2.fromScale(0.5, 0.5),
+		size = UDim2.fromOffset(Rules.PANEL_W, Rules.PANEL_H),
+		color = WOOD,
+		corner = 14,
+		stroke = RIM,
+		strokeWidth = 3,
+		active = true,
+	})
 	-- Gamepad selection never wanders out to the HUD under the dim.
 	panel.SelectionGroup = true
 	panel.SelectionBehaviorUp = Enum.SelectionBehavior.Stop
 	panel.SelectionBehaviorDown = Enum.SelectionBehavior.Stop
 	panel.SelectionBehaviorLeft = Enum.SelectionBehavior.Stop
 	panel.SelectionBehaviorRight = Enum.SelectionBehavior.Stop
-	panel.Parent = gui
-	corner(panel, 14)
-	stroke(panel, RIM, 3)
+	panel.Parent = holder
 	fit = Instance.new("UIScale")
 	fit.Parent = panel
 	-- Every settings row lives in `content` (same offsets as the panel), so an extra page can swap it out.
@@ -803,7 +852,7 @@ local function build()
 	rule.Name = "Rule"
 	rule.Position = UDim2.fromOffset(14, 42)
 	rule.Size = UDim2.fromOffset(Rules.PANEL_W - 28, 2)
-	rule.BackgroundColor3 = WOOD_DARK
+	rule.BackgroundColor3 = INK
 	rule.BorderSizePixel = 0
 	rule.Active = false
 	rule.Parent = content
@@ -845,15 +894,19 @@ local function build()
 		track.Name = "Track"
 		track.Position = UDim2.fromOffset(18, 30)
 		track.Size = UDim2.fromOffset(254, 16)
-		track.BackgroundColor3 = WOOD_DARK
+		track.BackgroundColor3 = Color3.fromRGB(14, 27, 69)
 		track.Active = false
 		track.Parent = b
 		corner(track, 999)
-		stroke(track, RIM, 1.5)
+		stroke(track, INK, 2)
 		local fill = Instance.new("Frame")
 		fill.Name = "Fill"
 		fill.Size = UDim2.fromScale(1, 1)
-		fill.BackgroundColor3 = BRASS
+		fill.BackgroundColor3 = Color3.fromRGB(255, 216, 61)
+		local fg = Instance.new("UIGradient")
+		fg.Rotation = 90
+		fg.Color = ColorSequence.new(Color3.new(1, 1, 1), Color3.fromRGB(255, 160, 40))
+		fg.Parent = fill
 		fill.BorderSizePixel = 0
 		fill.Active = false
 		fill.Parent = track
@@ -862,12 +915,12 @@ local function build()
 		thumb.Name = "Thumb"
 		thumb.AnchorPoint = Vector2.new(0.5, 0.5)
 		thumb.Size = UDim2.fromOffset(28, 28)
-		thumb.BackgroundColor3 = CREAM
+		thumb.BackgroundColor3 = Color3.new(1, 1, 1)
 		thumb.Active = false
 		thumb.ZIndex = 2
 		thumb.Parent = track
 		corner(thumb, 999)
-		stroke(thumb, WOOD_DARK, 2.5)
+		stroke(thumb, INK, 3)
 		local row: SliderRow = { key = key, button = b, track = track, fill = fill, thumb = thumb, pct = pct, notch = 1 }
 		table.insert(sliders, row)
 		table.insert(selectables, b)
@@ -901,28 +954,33 @@ local function build()
 
 	-- Right column: toggles, invite, done.
 	local TOGGLE_PITCH, TOGGLE_H = 46, 40 -- five toggles, then INVITE + DONE, inside PANEL_H
-	local function rightButton(name: string, y: number, color: Color3, rim: Color3): TextButton
-		local b = Instance.new("TextButton")
-		b.Name = name
-		b.Position = UDim2.fromOffset(322, y)
-		b.Size = UDim2.fromOffset(264, 48)
-		b.BackgroundColor3 = color
-		b.Text = ""
-		b.AutoButtonColor = true
-		b.Parent = content
-		corner(b, 10)
-		stroke(b, rim, 2)
+	local function rightButton(name: string, y: number, color: Color3, rim: Color3, slot: string, sound: string, text: string?, variant: string?): GuiButton
+		local b = UiSkin.button(content, slot, text or "", {
+			name = name,
+			variant = variant,
+			position = UDim2.fromOffset(322, y),
+			size = UDim2.fromOffset(264, 48),
+			color = color,
+			corner = 10,
+			stroke = rim,
+			strokeWidth = 2,
+			font = Enum.Font.GothamBlack,
+			textColor = CREAM,
+			sound = sound,
+		})
 		table.insert(selectables, b)
 		return b
 	end
 	for i, key in { "assist", "cameraShake", "lowGraphics", "engineSound", "freeDriving" } do
 		local d = Rules.def(key)
-		local b = rightButton("Toggle_" .. key, 50 + (i - 1) * TOGGLE_PITCH, WOOD_DARK, RIM)
+		local b = rightButton("Toggle_" .. key, 50 + (i - 1) * TOGGLE_PITCH, WOOD_DARK, RIM, "btn_wood", "tap", nil, "tab")
 		b.Size = UDim2.fromOffset(264, TOGGLE_H)
-		local name = label(b, "Label", if d then d.label else "ASSIST", 16)
-		name.Position = UDim2.fromOffset(12, 0)
-		name.Size = UDim2.fromOffset(160, TOGGLE_H)
-		fitText(name, 16)
+		-- round 3: its own name ("ToggleName"): a second "Label" child fought the skin's key label and rendered ~10 px
+		local name = label(b, "ToggleName", if d then d.label else "ASSIST", 16)
+		name.Position = UDim2.new(0, 14, 0.15, 0)
+		name.Size = UDim2.new(1, -100, 0.7, 0)
+		name.ZIndex = b.ZIndex + 2
+		fitText(name, 18)
 		textStroke(name, 1.6)
 		local pill = Instance.new("Frame")
 		pill.Name = "Pill"
@@ -939,7 +997,6 @@ local function build()
 		pt.TextXAlignment = Enum.TextXAlignment.Center
 		local row: ToggleRow = { key = key, button = b, pill = pill, pillText = pt }
 		table.insert(toggles, row)
-		UiSound.bind(b, "tap")
 		b.Activated:Connect(function()
 			if key == "assist" then
 				local setter = assistSetter
@@ -964,25 +1021,17 @@ local function build()
 	end)
 
 	-- INVITE and DONE share the last row (five toggles above them; PANEL_H keeps 740x360 unscaled).
-	inviteButton = rightButton("InviteFriends", 50 + 5 * TOGGLE_PITCH, GREEN, GREEN_RIM)
+	inviteButton = rightButton("InviteFriends", 50 + 5 * TOGGLE_PITCH, GREEN, GREEN_RIM, "btn_primary", "confirm", INVITE_TEXT)
 	inviteButton.Size = UDim2.fromOffset(156, 48)
-	inviteButton.Text = INVITE_TEXT
-	inviteButton.Font = Enum.Font.GothamBlack
-	inviteButton.TextColor3 = CREAM
-	fitText(inviteButton :: any, 18)
+	UiSkin.styleButton(inviteButton, { textScaled = true, minText = 10, maxText = 18 })
 	textStroke(inviteButton, 1.6)
-	UiSound.bind(inviteButton, "confirm")
 	inviteButton.Activated:Connect(inviteFriends)
 
-	doneButton = rightButton("Done", 50 + 5 * TOGGLE_PITCH, WOOD_DARK, RIM)
+	doneButton = rightButton("Done", 50 + 5 * TOGGLE_PITCH, WOOD_DARK, RIM, "btn_wood", "back", "DONE")
 	doneButton.Position = UDim2.fromOffset(322 + 164, 50 + 5 * TOGGLE_PITCH)
 	doneButton.Size = UDim2.fromOffset(100, 48)
-	doneButton.Text = "DONE"
-	doneButton.Font = Enum.Font.GothamBlack
-	doneButton.TextColor3 = CREAM
-	fitText(doneButton :: any, 20)
+	UiSkin.styleButton(doneButton, { textScaled = true, minText = 10, maxText = 20 })
 	textStroke(doneButton, 1.6)
-	UiSound.bind(doneButton, "back")
 	doneButton.Activated:Connect(function()
 		Settings.close()
 	end)
@@ -1045,10 +1094,10 @@ function Settings.open()
 	local sel = GuiService.SelectedObject
 	prevSelection = if sel and not sel:IsDescendantOf(gui) and sel:IsA("GuiObject") then sel else nil
 	gui.Enabled = true
-	-- A small pop, like the other plaques.
-	local target = fit.Scale
-	fit.Scale = target * 0.9
-	TweenService:Create(fit, TweenInfo.new(0.16, Enum.EasingStyle.Back, Enum.EasingDirection.Out), { Scale = target }):Play()
+	-- The plaque pops in (on its motion frame, so the viewport fit scale is untouched) over the dim fading up.
+	backdrop.BackgroundTransparency = 1
+	fadeDim(0.5, UiSkinRules.SCRIM.fadeIn)
+	UiMotion.show(holder, "popIn")
 	-- B closes; the D-pad, bumpers and arrows change a selected bar and pass through otherwise.
 	ContextActionService:BindActionAtPriority(
 		"SkyRallySettingsClose",
@@ -1074,9 +1123,19 @@ function Settings.open()
 	end
 end
 
+-- v38-flow: in a race the gear, O / P and the bumper chord open the pause card (client/PauseMenu: RESUME, RESTART,
+-- OPTIONS -> this plaque, CONTROLS, QUIT); in the hub they open this plaque as before.
+local function inRace(): boolean
+	local m = RaceAttr.mine("RaceMode")
+	return type(m) == "string" and m ~= "hub" and m ~= ""
+end
 toggle = function()
 	if isOpen then
 		Settings.close()
+	elseif inRace() and not PauseMenu.isOpen() then
+		PauseMenu.open()
+	elseif inRace() then
+		PauseMenu.close()
 	else
 		Settings.open()
 	end
@@ -1085,7 +1144,7 @@ Settings.toggle = toggle
 
 ---------------------------------------------------------------------------------------------------- HUD gear and keys
 
-local hudGear: TextButton? = nil
+local hudGear: GuiButton? = nil
 
 -- HUD layout v2: the gear is the first button of the system cluster, right of the item frame under the Roblox nav
 -- (HudLayoutRules rects.gear), in every phase; client/HudPhase hides the cluster on the podium.
@@ -1124,25 +1183,33 @@ function Settings.init()
 	HudMetrics.onChanged(placeHudGear) -- viewport, insets, the nav reserve, the input kind
 	workspace:GetAttributeChangedSignal("TrackSwitching"):Connect(function()
 		if workspace:GetAttribute("TrackSwitching") == true then
-			Settings.close()
+			Settings.close(true)
 		end
 	end)
 	ContextActionService:BindAction("SkyRallySettingsToggle", function(_n, state, _o): Enum.ContextActionResult
 		if state ~= Enum.UserInputState.Begin or UserInputService:GetFocusedTextBox() ~= nil then
 			return Enum.ContextActionResult.Pass
 		end
-		UiSound.play(if isOpen then "back" else "tab")
+		UiSound.play(if isOpen or PauseMenu.isOpen() then "back" else "tab")
 		toggle()
 		return Enum.ContextActionResult.Sink
-	end, false, Enum.KeyCode.O)
-	-- Hub gamepad: both bumpers together. Never sinks, so banking keeps working; in a race it does nothing.
+	end, false, Enum.KeyCode.O, Enum.KeyCode.P)
+	PauseMenu.setOptions(function()
+		Settings.open()
+	end)
+	-- Gamepad: both bumpers together (hub: this plaque; race: the pause card). Never sinks, so banking keeps working.
 	ContextActionService:BindAction("SkyRallySettingsChord", function(_n, state, input): Enum.ContextActionResult
 		local code = input.KeyCode
 		if state == Enum.UserInputState.Begin then
 			held[code] = true
-			if held[Enum.KeyCode.ButtonL1] and held[Enum.KeyCode.ButtonR1] and RaceAttr.mine("RaceMode") == "hub" and not isOpen then
-				UiSound.play("tab")
-				Settings.open()
+			if held[Enum.KeyCode.ButtonL1] and held[Enum.KeyCode.ButtonR1] and not isOpen then
+				if RaceAttr.mine("RaceMode") == "hub" then
+					UiSound.play("tab")
+					Settings.open()
+				elseif not PauseMenu.isOpen() then
+					UiSound.play("tab")
+					PauseMenu.open()
+				end
 			end
 		elseif state == Enum.UserInputState.End or state == Enum.UserInputState.Cancel then
 			held[code] = nil

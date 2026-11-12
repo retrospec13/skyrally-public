@@ -104,16 +104,29 @@ end
 
 ---------------------------------------------------------------------------------------------------- podium (30)
 
-FinaleRules.CEREMONY_SECONDS = 4
+-- v38-flow (owner 2026-11-10: "it comes and goes too quickly"): the moment holds ~7 s, skippable after SKIP_AFTER.
+FinaleRules.CEREMONY_SECONDS = 7
+FinaleRules.SKIP_AFTER = 2
 FinaleRules.CEREMONY_MODES = FinaleRules.PHOTO_MODES
 
 function FinaleRules.ceremonyEligible(mode: any, standingsCount: number): boolean
 	return FinaleRules.CEREMONY_MODES[tostring(mode)] == true and standingsCount >= 3
 end
 
--- Skippable from the second ceremony on (the first one always plays: it is the payoff).
-function FinaleRules.canSkip(viewsBefore: number): boolean
-	return viewsBefore >= 1
+-- Skippable every time, but only after SKIP_AFTER seconds (the drops and the winner's hop always land).
+function FinaleRules.canSkip(_viewsBefore: number): boolean
+	return true
+end
+
+-- The celebration the local driver plays by place (DisplayCars.EMOTE keys): 1st cheers, the podium waves, the rest
+-- point at the camera with a grin (no "loser" pose).
+function FinaleRules.reaction(rank: number?): string
+	if rank == 1 then
+		return "cheer"
+	elseif rank == 2 or rank == 3 then
+		return "wave"
+	end
+	return "point"
 end
 
 export type PodiumPick = { first: any?, second: any?, third: any?, me: any?, meOnPodium: boolean }

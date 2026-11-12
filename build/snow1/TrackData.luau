@@ -445,7 +445,7 @@ local trackData: any = {
 		{ index = 12, station = 4565.0000, cf = CFrame.new(-8070.9797, 52.2172, 644.6659, 0.5797, -0.0011, -0.8148, 0.0000, 1.0000, -0.0013, 0.8148, 0.0008, 0.5797), size = Vector3.new(56, 42, 6) },
 	},
 	rings = {
-		{ name = "BoosterRing_RiverApproach", station = 110.0000, cf = CFrame.new(-7999.1729, 55.0694, 126.0400, 1.0000, -0.0001, -0.0075, 0.0000, 1.0000, -0.0087, 0.0075, 0.0087, 0.9999), coin = false, coinId = nil },
+		{ name = "BoosterRing_RiverApproach", station = 165.0000, cf = CFrame.new(-7999.7912, 55.4516, 71.0183, 0.9999, 0.0001, 0.0145, 0.0000, 1.0000, -0.0066, -0.0145, 0.0066, 0.9999), coin = false, coinId = nil },
 		{ name = "BoosterRing_UnderArch", station = 235.0000, cf = CFrame.new(-8000.0000, 55.9921, 1.0407, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, -0.0080, 0.0000, 0.0080, 1.0000), coin = false, coinId = nil },
 		{ name = "BoosterRing_GorgeBend", station = 680.0000, cf = CFrame.new(-8105.0472, 63.1355, -421.0347, 0.9810, 0.0042, 0.1942, 0.0000, 0.9998, -0.0215, -0.1942, 0.0211, 0.9807), coin = false, coinId = nil },
 		{ name = "BoosterRing_CascadeTop", station = 987.0000, cf = CFrame.new(-8025.1194, 82.3675, -708.6549, 0.9498, -0.0270, -0.3115, 0.0000, 0.9963, -0.0864, 0.3127, 0.0821, 0.9463), coin = false, coinId = nil },
@@ -1040,8 +1040,8 @@ local trackData: any = {
 		{ key = "snow_ice_crystals", pos = Vector3.new(-7986.0000, 95.1230, -1090.0000), scale = 1.5500, snap = true, yaw = 189.0000 },
 		{ key = "snow_ice_crystals", pos = Vector3.new(-8080.0000, 105.5510, -1180.0000), scale = 1.5500, snap = true, yaw = 69.0000 },
 		{ key = "snow_ice_crystals", pos = Vector3.new(-7960.0000, 128.3470, -1240.0000), scale = 1.5500, snap = true, yaw = 214.0000 },
-		{ key = "snow_frozen_rocks", pos = Vector3.new(-7919.3240, 75.9350, 146.5150), scale = 1.2770, snap = true, yaw = 64.4500 },
-		{ key = "snow_pine_cluster", pos = Vector3.new(-7897.2050, 104.9760, 130.6810), scale = 1.3450, snap = true, yaw = 37.1500 },
+		{ key = "snow_frozen_rocks", pos = Vector3.new(-8063.4950, 45.8630, 91.8540), scale = 1.4420, snap = true, yaw = 286.2300 },
+		{ key = "snow_frozen_rocks", pos = Vector3.new(-7919.5100, 74.5040, 89.7590), scale = 1.2770, snap = true, yaw = 64.4500 },
 		{ key = "snow_frozen_rocks", pos = Vector3.new(-8164.0040, 52.9510, -389.2860), scale = 1.1660, snap = true, yaw = 24.9700 },
 		{ key = "snow_frozen_rocks", pos = Vector3.new(-8022.7460, 80.3930, -417.2520), scale = 1.4260, snap = true, yaw = 91.1600 },
 		{ key = "snow_frozen_rocks", pos = Vector3.new(-7954.9840, 92.6300, -665.8620), scale = 1.4490, snap = true, yaw = 35.2400 },
@@ -3439,7 +3439,7 @@ local trackData: any = {
 			size = Vector3.new(24, 2, 60),
 		},
 		{
-			cf = CFrame.new(-7999.1730, 55.0690, 126.0400, 1.0000, 0.0000, -0.0070, 0.0000, 1.0000, -0.0090, 0.0070, 0.0090, 1.0000),
+			cf = CFrame.new(-7999.7910, 55.4520, 71.0180, 1.0000, 0.0000, 0.0150, 0.0000, 1.0000, -0.0070, -0.0150, 0.0070, 1.0000),
 			class = "ParticleEmitter",
 			group = "Weather",
 			name = "RingSparkle_BoosterRing_RiverApproach",
@@ -4120,6 +4120,6 @@ local trackData: any = {
 		corridorSegments = 396,
 		collidableParts = 187,
 	},
-	source = { plan = "map/snow1/plan.json", planSha256 = "b1c558c51682e2c5c9fbf257cd67ceada163ec70b87391ad3b21e2e77da6d690", compiler = "not run (--no-compile)" },
+	source = { plan = "map/snow1/plan.json", planSha256 = "d890cab4aad41033e852f83aa3aec61ac3609f5481172afff599b075f8e6340c", compiler = "tools/map30 @ aa9a451 + patches (build_plan.py sha256 06249ce62258)" },
 }
 return trackData

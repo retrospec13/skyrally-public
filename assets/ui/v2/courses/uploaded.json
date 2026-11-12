@@ -1,0 +1,26 @@
+{
+  "dino4": {
+    "id": 78530256285475,
+    "sha256": "bd2867f171c224516ba8431c0dff948a9841e53f7d89d43adb9a2c51ebce05e7"
+  },
+  "forest1": {
+    "id": 121649227557963,
+    "sha256": "8c42bee9cdabe7242f0f9c5b84ba56efdc609a294d0e9f260a89da246c4bd1f8"
+  },
+  "hub0": {
+    "id": 138869003020816,
+    "sha256": "f895dcc683b22cb088d2a067149257d3fae26307e6e6af97c0480777b72a2a9d"
+  },
+  "island2": {
+    "id": 135034970940653,
+    "sha256": "79c46da7137ec34a42594abb5ed75ee0d2ce8acbf67a6130913f317e9ce5ef8d"
+  },
+  "snow1": {
+    "id": 105748520149435,
+    "sha256": "4c7ebd615a18e74d58407f0a6ee67e3534e20c57623c05a6ebe3c239157a2806"
+  },
+  "space4": {
+    "id": 124808655368679,
+    "sha256": "4a36c38c212d04f37effdf31baa51657119d0031aefc9210e7afc4d9f9a499e3"
+  }
+}

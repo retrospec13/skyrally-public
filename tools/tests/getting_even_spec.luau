@@ -78,9 +78,9 @@ return function(h: Harness)
 		h.eq(ItemRules.grudgeOf(book, "player:1", 21), nil, "the debt is settled")
 		h.eq({ ItemRules.recordHit(book, "player:1", "bot:2", 30) }, { "revenge", 2 }, "answered: re-revenge")
 		h.eq({ ItemRules.recordHit(book, "bot:2", "player:1", 40) }, { "revenge", 3 }, "a feud")
-		h.eq(ItemRules.revengeLabel(1), "REVENGE!")
-		h.eq(ItemRules.revengeLabel(2), "RE-REVENGE!")
-		h.eq(ItemRules.revengeLabel(3), "FEUD x3!")
+		h.eq(ItemRules.revengeLabel(1), "EVEN")
+		h.eq(ItemRules.revengeLabel(2), "EVEN x2")
+		h.eq(ItemRules.revengeLabel(3), "EVEN x3")
 		-- The window: bot 2 now owes player 1, but waits too long.
 		h.eq({ ItemRules.recordHit(book, "player:1", "bot:2", 40 + ItemRules.REVENGE_WINDOW + 1) }, { "hit", 0 }, "too late is just a hit")
 		-- A third racer: the newest attacker is the one you owe.
@@ -95,7 +95,7 @@ return function(h: Harness)
 	h.test("18: no comic hit word comes out of the rules; names are cut for the plank", function()
 		h.eq((ItemRules :: any).comicWord, nil, "the comic word function is gone")
 		h.eq((ItemRules :: any).COMIC_WORDS, nil, "the comic word table is gone")
-		local banned = { "BONK", "BOINK", "DOINK", "OOPS", "WHAM", "POW" }
+		local banned = { "BONK", "BOINK", "DOINK", "OOPS", "WHAM", "POW", "REVENGE", "!" }
 		for chain = 0, 4 do
 			local label = string.upper(ItemRules.revengeLabel(chain))
 			for _, w in banned do
@@ -510,7 +510,7 @@ return function(h: Harness)
 		h.eq(BotPersonality.pickRival({ 6 }, 4), 6)
 	end)
 
-	h.test("18: the GET EVEN! tag is a toast under 1.8 s, re-popped at most once per 4 s by the same racer", function()
+	h.test("18: the PAYBACK tag is a toast under 1.8 s, re-popped at most once per 4 s by the same racer", function()
 		local T = ItemRules.NEMESIS_TOAST
 		h.ok(T.popIn + T.hold + T.fadeOut <= 1.8, "total on screen")
 		local s0, a0 = ItemRules.nemesisToast(0)

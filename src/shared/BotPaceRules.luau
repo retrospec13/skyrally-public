@@ -34,6 +34,33 @@ function BotPaceRules.startDelay(rng: () -> number): number
 	return between(rng, BotPaceRules.DELAY_MIN, BotPaceRules.DELAY_MAX)
 end
 
+-- v37 rocket start for bots, by this race's skill roll (skillFrac 0 = SKILL_MIN .. 1 = SKILL_MAX): "rocket" leaves at GO
+-- with a short ring boost, "burnt" stalls a moment longer than the normal start delay, "normal" is the usual delay.
+-- Better rolls rocket more often and burn less; no bot is ever guaranteed a rocket.
+BotPaceRules.ROCKET_P_MIN = 0.15
+BotPaceRules.ROCKET_P_MAX = 0.55
+BotPaceRules.BURNT_P_MIN = 0.03
+BotPaceRules.BURNT_P_MAX = 0.16
+BotPaceRules.ROCKET_BOOST_SECONDS = 1.0 -- the ring boost (PlaneConfig.BOOST_SPEED) for this long off the line
+BotPaceRules.BURNT_DELAY = 0.9 -- extra seconds on the line after a burnt start
+
+function BotPaceRules.skillFrac(skill: number): number
+	return math.clamp((skill - BotPaceRules.SKILL_MIN) / (BotPaceRules.SKILL_MAX - BotPaceRules.SKILL_MIN), 0, 1)
+end
+
+function BotPaceRules.startGrade(rng: () -> number, skillFrac: number): string
+	local f = math.clamp(skillFrac, 0, 1)
+	local rocket = BotPaceRules.ROCKET_P_MIN + (BotPaceRules.ROCKET_P_MAX - BotPaceRules.ROCKET_P_MIN) * f
+	local burnt = BotPaceRules.BURNT_P_MAX - (BotPaceRules.BURNT_P_MAX - BotPaceRules.BURNT_P_MIN) * f
+	local r = rng()
+	if r < rocket then
+		return "rocket"
+	elseif r < rocket + burnt then
+		return "burnt"
+	end
+	return "normal"
+end
+
 -- raceElapsed of this bot's next slip, drawn after `from` (the race clock now).
 function BotPaceRules.nextSlipAt(rng: () -> number, from: number): number
 	local gap = between(rng, BotPaceRules.SLIP_GAP_MIN, BotPaceRules.SLIP_GAP_MAX)

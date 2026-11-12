@@ -7,7 +7,7 @@
 --     touching = NEAR MISS (both sides at once = SQUEEZE): sparks fly off the wall, a doppler "zwip", a chain point;
 --   one down ray at StyleRules.SKIM_HZ: lava (a lethal hazard part or lava terrain) 1.5-16 studs under the belly =
 --     LAVA SKIM: an ember wake streams off the vehicle, the belly glows orange, a sizzle plays, a chain point (and one
---     every second it lasts), and a "LAVA SKIM!" stamp the first time in a while. On DINO-4 this is the clip.
+--     every second it lasts), and a "LAVA SKIM" stamp the first time in a while. On DINO-4 this is the clip.
 --     The same ray also feels lava up to StyleRules.HEAT_MAX below: a thin rising ember spray that fades with height
 --     (a vehicle passing over or beside the lava lake) and, on a thick particle budget only, a faint charcoal heat haze.
 -- Phone budget: at most 3 raycasts per sample (20 Hz / 10 Hz, never per frame), one pooled burst per effect (Vfx
@@ -345,7 +345,7 @@ function StyleSense.step(dt: number, vehicle: string, hull: BasePart, cf: CFrame
 			StyleChain.event(kind)
 			if now - skimStampClock >= SKIM_STAMP_GAP then
 				skimStampClock = now
-				TrickJuice.callout("LAVA SKIM!", Color3.fromRGB(255, 150, 60), 1.2)
+				TrickJuice.callout("LAVA SKIM", Color3.fromRGB(255, 150, 60), 1.2)
 				LocalPlayer:SetAttribute("LavaSkimCount", ((LocalPlayer:GetAttribute("LavaSkimCount") :: number?) or 0) + 1)
 			end
 		end

@@ -77,6 +77,24 @@ return function(h: Harness)
 		h.ok(R.thunderDelay(0.5) > 0.35 and R.thunderDelay(0.5) < 1.4)
 	end)
 
+	h.test("toolbox audio: every UI toolbox kind names a ToolboxAudio cue whose mix row mirrors the UiSound volume", function()
+		local Ui = h.require("src/shared/UiSoundRules.luau")
+		local n = 0
+		for kind in Ui.TOOLBOX_KINDS do
+			n += 1
+			local cue = Ui.CUE[kind]
+			h.ok(cue ~= nil and Ids[cue] ~= nil, kind .. " cue " .. tostring(cue) .. " has a ToolboxAudio id")
+			if cue and R.CUES[cue] and cue ~= "badge_chime" then
+				h.eq(R.CUES[cue].vol, Ui.VOLUME[kind], kind .. " mix row mirrors UiSoundRules.VOLUME")
+			end
+		end
+		h.ok(n >= 12, "the UI overhaul kinds are wired: " .. n)
+		h.eq(Ui.CUE.notify_high, "badge_chime", "the reward notice reuses the badge chime file")
+		for _, cue in { "rbx_ui_whoosh_1", "rbx_ui_whoosh_2", "rbx_ui_swipe", "rbx_ui_cute_pop", "rbx_ui_select", "rbx_ui_bright_click", "rbx_ui_notify_low", "rbx_ui_back", "rbx_ui_negative", "rbx_ui_purchase", "rbx_ui_hover" } do
+			h.ok(Ids[cue] ~= nil, cue .. " is in ToolboxAudio")
+		end
+	end)
+
 	h.test("toolbox audio: NotifySpec sounds resolve to a cue or an existing stand-in", function()
 		for _, row in Notify.ROWS do
 			if row.sound == "tier_up_sting" or row.sound == "badge_chime" then

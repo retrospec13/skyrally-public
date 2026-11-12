@@ -1927,7 +1927,7 @@ def main() -> None:
         return {"name": name, "station": round(s, 1), "lateral": lateral, "height": height, "coin": False, "coinId": None}
     climb = [lay.s_liftoff + 90, lay.s_liftoff + 240, lay.s_liftoff + 400]
     rings = [
-        ring("BoosterRing_StartArch_1", 112),
+        ring("BoosterRing_StartArch_1", 175),  # v37: was 112, 94 studs from the front grid row (st 18): now 157
         ring("BoosterRing_StartArch_2", 236),
         ring("BoosterRing_Sky_1", climb[0]),
         ring("BoosterRing_Sky_2", climb[1]),

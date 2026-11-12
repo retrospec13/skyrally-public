@@ -6,11 +6,17 @@
 
 Full 45-second v4 trailer preview. The GIF loops without audio. The source kit below still requires Roblox setup and asset remapping.
 
-**A Rojo SOURCE project and editable asset kit, not a one-click full game.** This private release copy includes seven map definitions (DINO-4, TESTSTRIP, HUB-0, SNOW-1, ISLAND-2, FOREST-1 and SPACE-4) and five bosses: Cinderwing, Frosthorn, Clattershell, Emberbeetle and Thunderwright. TESTSTRIP is a development track; this is not a promise of seven finished racing courses.
+## V2 source update
+
+V2 adds Grand Prix races, a new course picker and menu system, a pause menu, race-start and slipstream effects, revised items, and map fixes. The new UI images, frame generator and 19 ElevenLabs-created sound effects are included. See [V2 changes and limits](docs/V2-UPDATE.md).
+
+This is still a source-and-assets kit. Import your assets and replace the hosted IDs before use. Admin and new payments stay disabled by default.
+
+**A Rojo SOURCE project and editable asset kit, not a one-click full game.** This release includes seven map definitions (DINO-4, TESTSTRIP, HUB-0, SNOW-1, ISLAND-2, FOREST-1 and SPACE-4) and five bosses: Cinderwing, Frosthorn, Clattershell, Emberbeetle and Thunderwright. TESTSTRIP is a development track; this is not a promise of seven finished racing courses.
 
 **Before playing:** import/upload the supplied sources under your own Roblox account or group, replace the corresponding asset IDs, then build/sync with Rojo. No packaged `.rbxl` or `.rbxlx` place is included. Existing hosted IDs are references, not a grant of access. Production admin and new payments are disabled by default.
 
-**Large download:** the initial tracked payload was 1,286,274,073 bytes (about 1.29 GB). This cleanup removes 90,376,523 bytes of explicitly rejected intermediates, leaving about 1.20 GB of source and assets. Four retained GLBs are 62.8–65.0 MB each. They exceed GitHub's 50 MiB advisory but stay below its 100 MiB hard file limit; they are actual binaries, not LFS pointers. Deleting files from the current tree does **not** shrink existing Git history or the normal clone download. See [layout and payload notes](docs/SOURCE-KIT-LAYOUT.md).
+**Large download:** the V2 source-and-assets payload is about 1.23 GB. Four retained GLBs are 62.8 to 65.0 MB each. They exceed GitHub's 50 MiB advisory but stay below its 100 MiB hard file limit; they are actual binaries, not LFS pointers. The existing public history is preserved, including earlier deleted files. This update does not shrink the normal clone download. See [layout and payload notes](docs/SOURCE-KIT-LAYOUT.md).
 
 Start with [model source/import instructions](docs/MODEL-SOURCE-IMPORT.md) and the exact [boss roster](models/BOSS-SOURCES.json). Actual GLB geometry, rigs and embedded textures are included locally. Creator Store listings are not needed to share these sources. The optional RBXM/RBXMX and complete game still reference online Roblox assets; a Rojo build is not standalone gameplay acceptance.
 
@@ -19,7 +25,7 @@ Start with [model source/import instructions](docs/MODEL-SOURCE-IMPORT.md) and t
 - `src/`: client/server game code and shared rules.
 - `map/`: editable source plans. `docs/CONTENT.md` and `docs/guides/` explain the content.
 - `build/`: generated maps, TrackData and model/terrain bakes.
-- `assets/`: retained owned models, textures and VFX; audio catalogs/tooling and notices remain, but the raw recordings listed in `EXCLUDED_FILES.json` are omitted. `assets/DEPENDENCIES.json` inventories existing ID candidates; `assets/RIGHTS-INVENTORY.json` lists owned visual files under the approved art grant.
+- `assets/`: retained owned models, textures and VFX, plus [19 V2 sound effects](assets/audio/sfx_v37/README.md). Other recordings listed in `EXCLUDED_FILES.json` are omitted. `assets/DEPENDENCIES.json` inventories existing ID candidates; `assets/RIGHTS-INVENTORY.json` lists owned visual files under the approved art grant.
 - `tools/map/` and `tools/map30/`: map authoring, validation and compiler, with provenance in `tools/map30/SOURCE.txt`.
 - `tools/legacy-builders/`: retained legacy forest/snow builders. `tools/windows/`: optional keyboard-pilot helper. The root DINO-4 builder remains an authoring fixture; see the layout notes.
 - `tools/tests/`: offline Luau/Python tests. Optional Studio bridge helpers have no personal targets and are disabled until explicitly configured.
@@ -59,13 +65,15 @@ Rebuild a map's derived code after changing its plan:
 python3 tools/map/adapt.py map/forest1/plan.json
 ```
 
-Headless tests and Rojo packaging are not Studio gameplay/permission/visual acceptance. The model-bake decoder and checks use `SurfaceAppearance.TexturePackContent.Uri` for current Lune reflection; all 12 serialized model bakes pass. Owner-session instance loads succeed. The earlier direct mesh-URI probe requested texture representations and returned `AssetDelivery403IncorrectAssetType`; it was not a valid public-permission verdict. Roblox documents that `PreloadAsync` does not support SurfaceAppearance or MaterialVariant texture-pack preloading. Check actual rendered materials and non-owner reuse separately.
+Headless tests and Rojo packaging are not Studio gameplay, permission or visual acceptance. With Lune 0.10.5 on the review host, the model-bake spec fails on both the old public tree and V2 with the same SurfaceAppearance/TexturePack findings. V2 does not change those bakes. Do not treat this as an all-green Lune result or proof of recipient access. Check actual rendered materials and non-owner reuse separately.
 
 Recovered boss animation sources for Cinderwing, Clattershell, Emberbeetle and Thunderwright match the shipped clip modules. **Frosthorn's shipped Luau clip module is the authoritative editable source**; its functional animation data is preserved. The recovered animation GLB differs on six attack wing channels and is not represented as a matching export. A historical Blender/GLB round-trip is not required for Luau editing or runtime playback. See `docs/FROSTHORN-ANIMATION.md` for editing and validation, and `assets/RECOVERED-BOSS-SOURCES.json` for source status.
 
 ## Models and licensing
 
-Owned project code is MIT. Owned art/models are CC BY 4.0, credited **Waku Worldwide**. Read `LICENSING.md` for exact scope, attribution and named third-party exclusions. Existing font, compiler and SoundFont notices remain separate. A model being present here or available from Roblox does not establish standalone redistribution rights.
+Owned project code is MIT. Owned art/models and the 19 included V2 ElevenLabs sound effects are CC BY 4.0, credited **Waku Worldwide**. Read `LICENSING.md` for exact scope, attribution and named third-party exclusions. Existing font, compiler and SoundFont notices remain separate. A model being present here or available from Roblox does not establish standalone redistribution rights.
+
+The 3D model work used Tripo and hosted Hunyuan tools, plus project editing and rigging.
 
 GLBs remain in their existing folders to preserve references and avoid duplicating the asset tree. They are ordinary tracked binary files, not LFS pointers. No individual payload file exceeds GitHub's 100 MiB limit. The repository contains browsable source and assets; no separately hosted ZIP is promised here. Nested boss `anim/out/` sources are not ignored. Removed rejected revisions are enumerated in `EXCLUDED_FILES.json`; retained model and rights manifests describe only present files. See `docs/MODEL-SOURCE-IMPORT.md` for import, preview and remapping instructions.
 

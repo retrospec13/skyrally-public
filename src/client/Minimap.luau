@@ -25,7 +25,7 @@ local LocalPlayer = Players.LocalPlayer
 
 local Minimap = {}
 
-local INK = Color3.fromRGB(36, 20, 10)
+local INK = Color3.fromHex("0B1533") -- UI v2 ink
 local WHITE = Color3.fromRGB(255, 255, 255)
 local GOLD = Color3.fromRGB(255, 208, 64)
 local FALLBACK = Color3.fromRGB(200, 200, 205)
@@ -75,6 +75,8 @@ local function build()
 	local sg = Instance.new("ScreenGui")
 	sg.Name = "SkyRallyMinimap"
 	sg.IgnoreGuiInset = true
+	sg.ScreenInsets = Enum.ScreenInsets.None -- placed from HudMetrics rects (insets already applied); the default added the
+	-- device's top inset a second time and pushed the map 20 px down onto the token pill (UI v2 phone capture)
 	sg.ResetOnSpawn = false
 	sg.DisplayOrder = 2
 	sg.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
@@ -87,14 +89,34 @@ local function build()
 	local b = Instance.new("Frame")
 	b.Name = "Body"
 	b.Size = UDim2.fromScale(1, 1)
-	b.BackgroundColor3 = INK
-	b.BackgroundTransparency = 0.6
+	-- UI v2: a navy glass card with a heavy ink outline and a thin light inner rim (docs/design/UI_V2.md).
+	b.BackgroundColor3 = Color3.fromHex("0E1B45")
+	b.BackgroundTransparency = 0.35
 	b.BorderSizePixel = 0
 	b.Visible = false
 	b.Parent = f
 	local c = Instance.new("UICorner")
-	c.CornerRadius = UDim.new(0, 10)
+	c.CornerRadius = UDim.new(0, 14)
 	c.Parent = b
+	local bs = Instance.new("UIStroke")
+	bs.Color = Color3.fromHex("0B1533")
+	bs.Thickness = 3
+	bs.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+	bs.Parent = b
+	local rim = Instance.new("Frame")
+	rim.Name = "Rim"
+	rim.BackgroundTransparency = 1
+	rim.Position = UDim2.fromOffset(3, 3)
+	rim.Size = UDim2.new(1, -6, 1, -6)
+	rim.Parent = b
+	local rc = Instance.new("UICorner")
+	rc.CornerRadius = UDim.new(0, 11)
+	rc.Parent = rim
+	local rs = Instance.new("UIStroke")
+	rs.Color = Color3.fromHex("5CCBFF")
+	rs.Transparency = 0.55
+	rs.Thickness = 1.5
+	rs.Parent = rim
 	local l = Instance.new("Frame")
 	l.Name = "Lines"
 	l.BackgroundTransparency = 1

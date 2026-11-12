@@ -313,7 +313,7 @@ local trackData: any = {
 		{ index = 13, station = 4800.0000, cf = CFrame.new(-995.0534, 80.0352, -5800.4011, 0.9925, 0.0000, 0.1223, 0.0000, 1.0000, 0.0002, -0.1223, -0.0002, 0.9925), size = Vector3.new(56, 42, 6) },
 	},
 	rings = {
-		{ name = "BoosterRing_StartArch_1", station = 112, cf = CFrame.new(-1000.0000, 75.4574, -6311.7679, 1.0000, 0.0000, 0.0000, 0.0000, 0.9999, -0.0164, 0.0000, 0.0164, 0.9999), coin = false, coinId = nil },
+		{ name = "BoosterRing_StartArch_1", station = 175, cf = CFrame.new(-1000.0629, 76.8549, -6374.6053, 1.0000, 0.0001, 0.0032, 0.0000, 0.9996, -0.0269, -0.0032, 0.0269, 0.9996), coin = false, coinId = nil },
 		{ name = "BoosterRing_StartArch_2", station = 236, cf = CFrame.new(-1000.2170, 78.8636, -6435.3685, 1.0000, 0.0000, 0.0010, 0.0000, 0.9991, -0.0414, -0.0010, 0.0414, 0.9991), coin = false, coinId = nil },
 		{ name = "BoosterRing_Sky_1", station = 510.3000, cf = CFrame.new(-983.9554, 120.6950, -6700.0150, 0.9763, -0.0676, -0.2057, 0.0000, 0.9501, -0.3120, 0.2165, 0.3046, 0.9275), coin = false, coinId = nil },
 		{ name = "BoosterRing_Sky_2", station = 660.3000, cf = CFrame.new(-936.2872, 166.4522, -6834.4660, 0.8850, -0.1373, -0.4450, 0.0000, 0.9556, -0.2948, 0.4657, 0.2609, 0.8456), coin = false, coinId = nil },
@@ -3390,7 +3390,7 @@ local trackData: any = {
 			size = Vector3.new(14, 1, 16),
 		},
 		{
-			cf = CFrame.new(-1000.0000, 75.4570, -6311.7680, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, -0.0160, 0.0000, 0.0160, 1.0000),
+			cf = CFrame.new(-1000.0630, 76.8550, -6374.6050, 1.0000, 0.0000, 0.0030, 0.0000, 1.0000, -0.0270, -0.0030, 0.0270, 1.0000),
 			class = "ParticleEmitter",
 			group = "Ambience",
 			name = "RingSparkle_BoosterRing_StartArch_1",
@@ -3899,6 +3899,6 @@ local trackData: any = {
 		corridorSegments = 270,
 		collidableParts = 4779,
 	},
-	source = { plan = "map/forest1/plan.json", planSha256 = "b55f65e17c4d9530b0328b8647520f4a01829d4001ad04175cdf0ebc88ba778b", compiler = "not run (--no-compile)" },
+	source = { plan = "map/forest1/plan.json", planSha256 = "0c8928a4eeba02b31e8640415ac79d429790ce052ac10ab54a76417dcf9a1b02", compiler = "tools/map30 @ aa9a451 + patches (build_plan.py sha256 06249ce62258)" },
 }
 return trackData

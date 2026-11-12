@@ -104,7 +104,7 @@ return function(h: Harness)
 		h.ok(T.rollMinInterval <= TrickRules.ROLL_COOLDOWN, "a real roll every cooldown is always accepted")
 		h.eq(MissileRules.counterHint("plane", nil, false), "DOUBLE-TAP TO DODGE")
 		h.eq(MissileRules.counterHint("car", "green", false), "HOLD ITEM: TRAP BEHIND")
-		h.eq(MissileRules.counterHint("car", "yellow", false), "SHIELD UP!")
+		h.eq(MissileRules.counterHint("car", "yellow", false), "HORN IT AWAY!")
 		h.eq(MissileRules.counterHint("car", nil, false), nil)
 		h.eq(MissileRules.counterHint("car", "green", true), "TRAP BEHIND")
 		for _, row in { MissileRules.counterHint("plane"), MissileRules.counterHint("car", "green") } do

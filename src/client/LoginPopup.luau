@@ -16,6 +16,9 @@ local NotifySpec = require(Shared:WaitForChild("NotifySpec"))
 local OnboardingRules = require(Shared:WaitForChild("OnboardingRules"))
 local NotifyKit = require(script.Parent:WaitForChild("NotifyKit"))
 local Garage = require(script.Parent:WaitForChild("Garage"))
+local TrackFlow = require(script.Parent:WaitForChild("TrackFlow")) -- v38-flow round 3: never over the course board
+local Settings = require(script.Parent:WaitForChild("Settings"))
+local PauseMenu = require(script.Parent:WaitForChild("PauseMenu"))
 local UiSound = require(script.Parent:WaitForChild("UiSound"))
 
 local LocalPlayer = Players.LocalPlayer
@@ -62,6 +65,8 @@ local function gate(): LoginRules.Gate
 		onboarded = LocalPlayer:GetAttribute("Onboarded") == true,
 		garageOpen = Garage.isOpen(),
 		modalOpen = NotifyKit.modalOpen(),
+		-- a modal board (course select, Settings, the pause card) holds every queued popup until it closes
+		menuOpen = TrackFlow.isBoardOpen() or Settings.isOpen() or PauseMenu.isOpen(),
 	}
 end
 

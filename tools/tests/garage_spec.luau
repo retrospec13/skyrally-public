@@ -61,13 +61,24 @@ return function(h: Harness)
 		end
 	end)
 
-	h.test("layout: the 740x360 phone still shows three rows of content at once", function()
-		local L = GarageModel.layout(740, 360, 58)
-		h.ok(L.content.h >= 3 * L.rowH, "content " .. L.content.h .. " < 3 rows")
-		h.eq(L.columns, 1)
+	h.test("layout (UI v2): stage + card grid fit the content; phones are compact with icon tabs; desktop capped", function()
+		for _, vp in { { 740, 360 }, { 844, 390 }, { 1280, 720 }, { 1920, 1080 } } do
+			local L = GarageModel.layout(vp[1], vp[2], 58)
+			local tag = vp[1] .. "x" .. vp[2]
+			h.ok(L.stage.w + L.gap + L.grid.w == L.content.w, tag .. " stage and grid share the content width")
+			h.ok(L.cols >= 2 and L.cols * L.cardW + (L.cols - 1) * L.gap <= L.grid.w - 6, tag .. " cards fit the grid")
+			h.ok(L.cardW >= 100 and L.cardH >= 110, tag .. " cards readable " .. L.cardW .. "x" .. L.cardH)
+			h.ok(L.content.h >= L.cardH, tag .. " a full card row is visible")
+			h.ok(L.stage.h >= 150, tag .. " stage tall enough for the model, name and a 44 px action row")
+			if L.compact then
+				h.ok(L.tabUnit >= 44 and L.tabWide >= 120, tag .. " icon tabs 44 px, the selected tab labelled")
+				h.ok((#GarageModel.TABS - 1) * L.tabUnit + L.tabWide + (#GarageModel.TABS - 1) * L.gap <= L.tabs.w, tag .. " compact tabs fit")
+			end
+		end
+		h.ok(GarageModel.layout(740, 360, 58).compact and GarageModel.layout(844, 390, 36).compact, "phones are compact")
 		local D = GarageModel.layout(1920, 1080, 58)
-		h.eq(D.columns, 2, "desktop uses two columns")
-		h.ok(D.panel.w <= 960 and D.panel.h <= 560, "desktop panel capped")
+		h.ok(not D.compact and D.cols >= 3 and D.cols <= 4, "desktop shows three or four big cards a row")
+		h.ok(D.panel.w <= 1920 * 0.84 + 1 and D.panel.h <= 1080 * 0.86 + 1, "desktop panel fills most of the screen, inside the safe area")
 	end)
 
 	h.test("layout: the hub GARAGE button sits under ADVENTURE, inside the screen, 44 px tall", function()

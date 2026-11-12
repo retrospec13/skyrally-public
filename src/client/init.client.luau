@@ -63,7 +63,7 @@ local function initArgs(name: string): { any }
 				end
 			end,
 		}
-	elseif name == "StormRaceClient" then
+	elseif name == "StormRaceClient" or name == "GrandPrixClient" then
 		return { mods.TrackFlow }
 	end
 	return {}

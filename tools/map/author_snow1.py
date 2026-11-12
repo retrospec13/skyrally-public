@@ -975,11 +975,12 @@ class Dresser:
 
 
 def ring_stations(tr: "Track", land: "Landscape", st_under: float, st_over: float) -> list:
-    """(name, station) of the booster rings (gameplay.rings; also framed by the set dressing)."""
+    """(name, station) of the booster rings (gameplay.rings; also framed by the set dressing). v37: RiverApproach was
+    st_under - 125 (98 studs from the front grid row at st 12); at - 70 nothing boosts within ~150 of the grid."""
     at = tr.station_of
     c1 = land.cascade[1]
     return [
-        ("BoosterRing_RiverApproach", st_under - 125.0), ("BoosterRing_UnderArch", st_under),
+        ("BoosterRing_RiverApproach", st_under - 70.0), ("BoosterRing_UnderArch", st_under),
         ("BoosterRing_GorgeBend", at(-100.0, -420.0)), ("BoosterRing_CascadeTop", c1 + 22.0),
         ("BoosterRing_BasinSweep", at(250.0, -1050.0)), ("BoosterRing_LodgeTurn", at(451.0, -70.0)),
         ("BoosterRing_OverArch", st_over), ("BoosterRing_PineSlope", at(-519.0, 350.0)),

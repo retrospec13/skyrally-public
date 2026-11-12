@@ -71,8 +71,8 @@ CarConfig.DRIFT_SLIDE_RESPONSE = 9
 CarConfig.DRIFT_SPEED_FACTOR = 0.97
 CarConfig.DRIFT_CHARGE_BASE = 1.0 -- charge per second while sliding on the ground
 CarConfig.DRIFT_CHARGE_TIGHT = 0.7 -- extra charge per second at full steer into the drift
-CarConfig.DRIFT_HOP_HEIGHT = 0.9 -- visual hop on drift start (body only, local client)
-CarConfig.DRIFT_HOP_TIME = 0.18
+CarConfig.DRIFT_HOP_HEIGHT = 1.5 -- visual hop on drift start (body only, local client; v38-feel: 0.9 read as a twitch)
+CarConfig.DRIFT_HOP_TIME = 0.24
 
 export type DriftLevel = {
 	name: string,
@@ -94,6 +94,9 @@ CarConfig.DRIFT_LEVELS = {
 	{ name = "Orange", threshold = 1.9, color = { 255, 140, 40 }, boostSpeed = 165, boostDuration = 1.25, boostState = "Overcharge" },
 	{ name = "Zone", threshold = 3.1, color = { 186, 92, 255 }, boostSpeed = 165, boostDuration = 1.6, boostState = "Overcharge" },
 } :: { DriftLevel }
+-- v37: the instant kick per tier (share of the tier's boost speed the car jumps to on release; other boosts use 0.85).
+-- Blue barely kicked (0.85 x 150 = 128, about drift pace); now each tier steps up: 135 -> 157 -> 165 at once.
+CarConfig.DRIFT_KICK = { 0.9, 0.95, 1.0 } :: { number }
 CarConfig.DRIFT_SMOKE_COLOR = { 235, 228, 214 } :: { number } -- sliding but not charged yet
 -- Zone turbo spark colours (workspace ActiveZone): magma gold, ice white, seafoam, meadow lime, neon violet, coral.
 -- The same palette as StyleRules.ZONE_COLOR (the style chain meter); tools/tests/style_spec.luau keeps them equal.
@@ -180,8 +183,19 @@ CarConfig.CAM_YAW_RESPONSE = 5.5 -- (1/s) camera heading lag: drifts swing the c
 CarConfig.CAM_VERTICAL_RESPONSE = 6 -- (1/s) camera height lag: jumps arc, landings settle
 CarConfig.CAM_BASE_FOV = 68
 CarConfig.CAM_SPEED_FOV = 4 -- added at top speed
-CarConfig.CAM_BOOST_FOV = 9 -- added while boosting
-CarConfig.CAM_FOV_RESPONSE = 8
+CarConfig.CAM_BOOST_FOV = 9 -- added while boosting (Standard: pads, items, blue mini-turbo, slipstream)
+CarConfig.CAM_OVERCHARGE_FOV = 13 -- added during an Overcharge boost (orange / zone mini-turbo, overcharged pads, rocket start)
+CarConfig.CAM_FOV_RESPONSE = 8 -- widening (a boost hits at once)
+CarConfig.CAM_FOV_EASE_BACK = 2.6 -- (1/s) narrowing: a boost's FOV eases back over ~1 s instead of snapping (MK8)
+-- v38-feel: the chase camera leans and looks into turns, dips on landings.
+CarConfig.CAM_LEAN_DEG = 2.2 -- camera roll into a full-steer turn at top speed
+CarConfig.CAM_DRIFT_LEAN_DEG = 3.2 -- extra roll into a drift
+CarConfig.CAM_LEAN_RESPONSE = 4
+CarConfig.CAM_DRIFT_LOOK = 5.5 -- studs the look point swings to the inside of a drift (the corner exit stays on screen)
+CarConfig.CAM_DRIFT_SWING = 1.6 -- studs the camera itself slides to the outside of a drift
+CarConfig.CAM_DRIFT_LOOK_RESPONSE = 3
+CarConfig.CAM_LAND_DIP = 0.11 -- camera dip velocity (studs/s) per stud/s of landing impact speed
+CarConfig.CAM_LAND_DIP_MAX = 1.6 -- deepest dip (studs)
 
 -- ---------------------------------------------------------------- visuals
 CarConfig.LEAN_DEG = 5 -- body roll toward the outside of a turn at full steer and speed
@@ -346,6 +360,10 @@ export type Limits = {
 	maxRise: number,
 	maxFall: number,
 	slack: number, -- allowance multiplier on top of the legal speed
+	-- Seconds of slacked travel credited when the vehicle arrives at a server-issued teleport (nil = none: the car).
+	-- V5-1: a plane's first replicated packets after a RETURN frame arrive in a burst (15-24 studs within 20 ms at
+	-- 130 studs/s) that the bare VALIDATION_TOLERANCE refused, sending an honest plane back to its checkpoint.
+	arrivalSeconds: number?,
 }
 
 export type Validator = {
@@ -420,6 +438,29 @@ local function reset(v: Validator, x: number, y: number, z: number, now: number)
 	v.budgetH, v.budgetUp, v.budgetDown = tol, tol, tol
 end
 
+-- Adds `seconds` of slacked legal travel to every budget (never past the caps).
+local function credit(v: Validator, seconds: number)
+	if seconds <= 0 then
+		return
+	end
+	local lim = v.limits or CarConfig.carLimits()
+	local capH, capUp, capDown = CarConfig.budgetCaps(v.limits)
+	v.budgetH = math.min(capH, v.budgetH + lim.maxH * lim.slack * seconds)
+	v.budgetUp = math.min(capUp, v.budgetUp + lim.maxRise * lim.slack * seconds)
+	v.budgetDown = math.min(capDown, v.budgetDown + lim.maxFall * lim.slack * seconds)
+end
+
+-- V5-1: the server held the hull on (x, y, z) since `since` (os.clock()) while the owning client, already told to
+-- respawn there, flew on from it. Judge what the client reports next as legal flight FROM that frame since `since`
+-- (the budget refills over the hold, capped at one VALIDATION_MAX_DT as after any stall), not as an arrival AT it: an
+-- honest plane is ~speed * hold ahead by the time it owns the hull again, and an arrival check corrected it back to
+-- the same frame every hold, forever (FOREST-1, 114+ corrections, no progress for ~1000 s). A client that ignored
+-- the respawn is still far outside that budget and is corrected again.
+function CarConfig.expectFlightFrom(v: Validator, x: number, y: number, z: number, since: number)
+	v.hasGrace = false
+	reset(v, x, y, z, since)
+end
+
 local function refill(v: Validator, now: number)
 	local elapsed = math.max(0, now - v.refillClock)
 	v.refillClock = math.max(v.refillClock, now)
@@ -440,6 +481,7 @@ function CarConfig.observe(v: Validator, x: number, y: number, z: number, now: n
 		if d <= CarConfig.TELEPORT_GRACE_RADIUS then
 			v.hasGrace = false
 			reset(v, x, y, z, now)
+			credit(v, if v.limits and v.limits.arrivalSeconds then v.limits.arrivalSeconds else 0)
 			return "ok", d, CarConfig.TELEPORT_GRACE_RADIUS, 0
 		elseif now < v.graceUntil then
 			return "grace", d, CarConfig.TELEPORT_GRACE_RADIUS, 0

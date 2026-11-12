@@ -39,11 +39,8 @@ local playerGui = player:WaitForChild("PlayerGui")
 
 -- Wood-plank palette (RaceUI / TrackFlow / Garage)
 local CREAM = Color3.fromRGB(250, 242, 222)
-local WOOD = Color3.fromRGB(108, 76, 52)
 local WOOD_DARK = Color3.fromRGB(62, 40, 24)
-local RIM = Color3.fromRGB(188, 168, 142)
-local BRASS = Color3.fromRGB(224, 172, 76)
-local SILHOUETTE = Color3.fromRGB(28, 34, 62)
+local SILHOUETTE = Color3.fromRGB(226, 58, 48) -- UI v2: the red racer plane (was a dark silhouette)
 
 local DESIGN_W, DESIGN_H = 740, 360 -- the smallest phone landscape the HUD is laid out for
 
@@ -250,31 +247,143 @@ canvas.Parent = root
 local canvasScale = Instance.new("UIScale")
 canvasScale.Parent = canvas
 
-local plaque = frame(canvas, "TitlePlaque", UDim2.fromOffset(170, 24), UDim2.fromOffset(400, 94), WOOD, 16)
-stroke(plaque, RIM, 4)
-local grain = Instance.new("UIGradient")
-grain.Rotation = 90
-grain.Color = ColorSequence.new(Color3.fromRGB(142, 102, 70), Color3.fromRGB(92, 64, 42))
-grain.Parent = plaque
-local title = label(plaque, "Title", Rules.TITLE, UDim2.fromScale(0.5, 0.5), UDim2.fromScale(0.94, 0.8), 56, Enum.Font.GothamBlack)
-title.TextScaled = true
-local titleLimit = Instance.new("UITextSizeConstraint")
-titleLimit.MaxTextSize = 60
-titleLimit.MinTextSize = 16
-titleLimit.Parent = title
-label(canvas, "Tagline", Rules.TAGLINE, UDim2.fromOffset(370, 134), UDim2.fromOffset(400, 26), 21, Enum.Font.GothamBold)
+-- UI v2 theme (docs/design/UI_V2.md; ReplicatedFirst cannot use client/UiSkin, so the tokens are repeated here): the
+-- logo as heavy italic white type with a thick ink outline and a gold "RALLY", a slanted gold tagline band, a navy
+-- trough with a glossy gold fill between two checker flags, a racer marker riding the fill, and a tip chip.
+local INK = Color3.fromRGB(11, 21, 51)
+local GOLD = Color3.fromRGB(255, 216, 61)
+-- UI direction v3 faces (same as shared/UiSkinRules.FONT; ReplicatedFirst runs before Shared replicates, so inline)
+local DISPLAY = Font.new("rbxasset://fonts/families/Oswald.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+local BODY = Font.new("rbxasset://fonts/families/RobotoCondensed.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+local function ink(p: Instance, t: number, mode: Enum.ApplyStrokeMode?)
+	local st = Instance.new("UIStroke")
+	st.Color = INK
+	st.Thickness = t
+	st.LineJoinMode = Enum.LineJoinMode.Round
+	st.ApplyStrokeMode = mode or Enum.ApplyStrokeMode.Contextual
+	st.Parent = p
+	return st
+end
+local function themeText(l: TextLabel, face: Font, strokeT: number)
+	l.FontFace = face
+	l.TextColor3 = Color3.new(1, 1, 1)
+	local old = l:FindFirstChildOfClass("UIStroke")
+	if old then
+		old:Destroy()
+	end
+	ink(l, strokeT)
+end
 
-local statusLabel = label(canvas, "Status", Rules.statusText(done), UDim2.fromOffset(370, 262), UDim2.fromOffset(440, 24), 18, Enum.Font.GothamBold)
-local trough = frame(canvas, "Trough", UDim2.fromOffset(150, 280), UDim2.fromOffset(440, 26), WOOD_DARK, 13)
-stroke(trough, RIM, 2.5)
-local fillClip = frame(trough, "FillClip", UDim2.fromOffset(4, 4), UDim2.fromOffset(432, 18), WOOD_DARK, 9)
+local plaque = Instance.new("Frame") -- the logo block (kept as "TitlePlaque" for tools that look it up)
+plaque.Name = "TitlePlaque"
+plaque.BackgroundTransparency = 1
+plaque.Position = UDim2.fromOffset(120, 16)
+plaque.Size = UDim2.fromOffset(500, 108)
+plaque.Rotation = -3
+plaque.Parent = canvas
+local title = label(plaque, "Title", Rules.TITLE, UDim2.fromScale(0.5, 0.5), UDim2.fromScale(1, 1), 92, Enum.Font.GothamBlack)
+title.RichText = true
+title.TextScaled = true
+themeText(title, DISPLAY, 6)
+do -- "Sky" white, the rest gold (the logo lockup); falls back to the plain title for any other name
+	local a, b2 = string.match(Rules.TITLE, "^(Sky)(.+)$")
+	if a and b2 then
+		title.Text = a .. '<font color="#FFD83D">' .. b2 .. "</font>"
+	end
+end
+local band = frame(canvas, "TaglineBand", UDim2.fromOffset(200, 122), UDim2.fromOffset(340, 30), GOLD, 8)
+band.Rotation = -3
+local bandGrad = Instance.new("UIGradient")
+bandGrad.Rotation = 90
+bandGrad.Color = ColorSequence.new(Color3.new(1, 1, 1), Color3.fromRGB(255, 170, 60))
+bandGrad.Parent = band
+ink(band, 3, Enum.ApplyStrokeMode.Border)
+local tagline = label(band, "Tagline", Rules.TAGLINE, UDim2.fromScale(0.5, 0.5), UDim2.fromScale(0.94, 0.8), 19, Enum.Font.GothamBold)
+tagline.FontFace = DISPLAY
+tagline.TextColor3 = INK
+tagline.TextScaled = true
+local tagStroke = tagline:FindFirstChildOfClass("UIStroke")
+if tagStroke then
+	tagStroke:Destroy()
+end
+
+local statusLabel = label(canvas, "Status", Rules.statusText(done), UDim2.fromOffset(370, 256), UDim2.fromOffset(440, 22), 17, Enum.Font.GothamBold)
+themeText(statusLabel, BODY, 2)
+local trough = frame(canvas, "Trough", UDim2.fromOffset(150, 272), UDim2.fromOffset(440, 30), Color3.fromRGB(14, 27, 69), 15)
+ink(trough, 3, Enum.ApplyStrokeMode.Border)
+local fillClip = frame(trough, "FillClip", UDim2.fromOffset(4, 4), UDim2.fromOffset(432, 22), Color3.fromRGB(14, 27, 69), 11)
 fillClip.ClipsDescendants = true
-local fill = frame(fillClip, "Fill", UDim2.new(), UDim2.fromScale(0, 1), BRASS, 9)
+local fill = frame(fillClip, "Fill", UDim2.new(), UDim2.fromScale(0, 1), GOLD, 11)
 local fillGradient = Instance.new("UIGradient")
 fillGradient.Rotation = 90
-fillGradient.Color = ColorSequence.new(Color3.fromRGB(255, 218, 120), Color3.fromRGB(206, 138, 46))
+fillGradient.Color = ColorSequence.new({
+	ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 246, 190)),
+	ColorSequenceKeypoint.new(0.45, Color3.fromRGB(255, 226, 90)),
+	ColorSequenceKeypoint.new(0.47, Color3.fromRGB(255, 196, 40)),
+	ColorSequenceKeypoint.new(1, Color3.fromRGB(240, 130, 20)),
+})
 fillGradient.Parent = fill
-local tipLabel = label(canvas, "Tip", "", UDim2.fromOffset(370, 328), UDim2.fromOffset(700, 28), 20, Enum.Font.GothamBold)
+-- checker flags at both ends of the trough
+for i, x in { -22, 442 } do
+	local flag = frame(trough, "Flag" .. i, UDim2.fromOffset(x, -3), UDim2.fromOffset(20, 36), Color3.new(1, 1, 1), 4)
+	ink(flag, 2.5, Enum.ApplyStrokeMode.Border)
+	flag.ClipsDescendants = true
+	for r = 0, 5 do
+		for c = 0, 2 do
+			if (r + c) % 2 == 0 then
+				frame(flag, "Sq", UDim2.fromScale(c / 3, r / 6), UDim2.new(1 / 3, 1, 1 / 6, 1), INK)
+			end
+		end
+	end
+end
+-- the racer marker riding the fill's edge (a white disc with a red kart dot; layout keeps it on the trough)
+local marker = frame(trough, "Marker", UDim2.new(0, 4, 0.5, 0), UDim2.fromOffset(38, 38), Color3.new(1, 1, 1), 19)
+marker.AnchorPoint = Vector2.new(0.5, 0.5)
+marker.ZIndex = 3
+ink(marker, 3, Enum.ApplyStrokeMode.Border)
+local markerDot = frame(marker, "Kart", UDim2.fromScale(0.5, 0.5), UDim2.fromScale(0.56, 0.56), Color3.fromRGB(226, 58, 48), 11)
+markerDot.AnchorPoint = Vector2.new(0.5, 0.5)
+markerDot.ZIndex = 4
+local markerImg = Instance.new("ImageLabel") -- the race icon from the UI v2 set once Shared replicates
+markerImg.Name = "Icon"
+markerImg.BackgroundTransparency = 1
+markerImg.AnchorPoint = Vector2.new(0.5, 0.5)
+markerImg.Position = UDim2.fromScale(0.5, 0.5)
+markerImg.Size = UDim2.fromScale(0.78, 0.78)
+markerImg.ZIndex = 5
+markerImg.Visible = false
+markerImg.Parent = marker
+task.spawn(function()
+	local shared = ReplicatedStorage:WaitForChild("Shared", 30)
+	local mod = shared and shared:WaitForChild("UiV2Icons", 10)
+	if mod and mod:IsA("ModuleScript") then
+		local ok, icons = pcall(require, mod)
+		if ok and type(icons) == "table" and type(icons.icon_race) == "string" then
+			markerImg.Image = icons.icon_race
+			markerImg.Visible = true
+			markerDot.Visible = false
+		end
+	end
+end)
+
+local tipChip = frame(canvas, "TipChip", UDim2.fromOffset(40, 316), UDim2.fromOffset(660, 34), Color3.fromRGB(14, 27, 69), 12)
+tipChip.BackgroundTransparency = 0.25
+ink(tipChip, 2, Enum.ApplyStrokeMode.Border)
+local tipTag = frame(tipChip, "TipTag", UDim2.fromOffset(6, 5), UDim2.fromOffset(54, 24), GOLD, 7)
+local tipTagText = label(tipTag, "TipText", "TIP", UDim2.fromScale(0.5, 0.5), UDim2.fromScale(1, 1), 16, Enum.Font.GothamBlack)
+tipTagText.FontFace = DISPLAY
+tipTagText.TextColor3 = INK
+local ttStroke = tipTagText:FindFirstChildOfClass("UIStroke")
+if ttStroke then
+	ttStroke:Destroy()
+end
+local tipLabel = label(tipChip, "Tip", "", UDim2.new(0.5, 30, 0.5, 0), UDim2.new(1, -80, 1, -4), 18, Enum.Font.GothamBold)
+themeText(tipLabel, BODY, 1.5)
+tipLabel.TextScaled = true
+local tipLimit = Instance.new("UITextSizeConstraint")
+tipLimit.MaxTextSize = 19
+tipLimit.MinTextSize = 12
+tipLimit.Parent = tipLabel
 
 local function layout()
 	local size = root.AbsoluteSize
@@ -284,6 +393,16 @@ local function layout()
 	local s = math.clamp(math.min(size.X / DESIGN_W, size.Y / DESIGN_H), 0.7, 2.4)
 	canvasScale.Scale = s
 	planeScale.Scale = s
+	-- TextScaled caps apply after the UIScale: scale them too, or the logo and tip stay phone-sized on a big screen.
+	-- the logo: TextScaled and TextSize stop at 100 px (inside this CanvasGroup the UIScale does not lift that), so the
+	-- size goes into a RichText font tag in screen px.
+	local logoPx = 92 -- design px: the canvas UIScale grows it (no size constraint on the logo: those cap after the scale)
+	title.TextScaled = false
+	title.TextSize = math.min(100, logoPx)
+	local a, b2 = string.match(Rules.TITLE, "^(Sky)(.+)$")
+	title.Text = string.format('<font size="%d">%s</font>', logoPx, if a and b2 then a .. '<font color="#FFD83D">' .. b2 .. "</font>" else Rules.TITLE)
+	tipLimit.MaxTextSize = math.clamp(math.floor(19 * s), 12, 60)
+	tipLimit.MinTextSize = math.clamp(math.floor(12 * s), 12, 40)
 	glow.Size = UDim2.fromOffset(300 * s, 300 * s)
 	sun.Size = UDim2.fromOffset(120 * s, 120 * s)
 end
@@ -526,6 +645,7 @@ local function step(dt: number)
 	local fraction = if assetsTotal > 0 then assetsLoaded / assetsTotal else 0
 	shown = Rules.smooth(shown, Rules.progress(done, fraction), dt)
 	fill.Size = UDim2.fromScale(shown, 1)
+	marker.Position = UDim2.new(0, 4 + 432 * shown, 0.5, 0)
 	local text = Rules.statusText(done)
 	if text ~= lastStatus then
 		lastStatus = text
@@ -548,6 +668,10 @@ local function step(dt: number)
 		logLoad(false)
 	end
 	local st = Rules.status(done, t)
+	-- QA only (Studio): workspace QAHoldLoading = true keeps the screen up for captures (the TIMEOUT backup still applies).
+	if RunService:IsStudio() and workspace:GetAttribute("QAHoldLoading") == true and st ~= "timeout" then
+		return
+	end
 	if st == "timeout" then
 		logLoad(true)
 		leave()

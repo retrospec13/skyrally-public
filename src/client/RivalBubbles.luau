@@ -6,7 +6,7 @@
 --   * The rival marker: the rival's name in an accent colour with a flame glyph (shared/RivalRules) over the bot whose
 --     model carries Rival = true (polled once a second), on its speech tab and on its results row. No pill, nothing
 --     covers text. A short sting plays when the rival and the player swap places (player attribute RivalAhead).
---   * setNemesis(plane, name): GET EVEN! over the racer who last hit this player. A brief toast (ItemRules.NEMESIS_TOAST:
+--   * setNemesis(plane, name): PAYBACK over the racer who last hit this player. A brief toast (ItemRules.NEMESIS_TOAST:
 --     0.15 s pop, 1.2 s hold, 0.3 s fade, then disabled and un-adorned; 120x32 px, seen within 120 studs; a repeat hit by
 --     the same racer re-pops it at most once per 4 s). The grudge itself (ItemRules.REVENGE_WINDOW, ended by clearNemesis
 --     when the player gets even) is unchanged and no longer keeps anything on screen.
@@ -353,7 +353,7 @@ local function stepBubbles(now: number)
 end
 
 ------------------------------------------------------------------------------------------------------------------------
--- RIVAL flag and the GET EVEN! nemesis tag
+-- RIVAL flag and the PAYBACK nemesis tag
 ------------------------------------------------------------------------------------------------------------------------
 
 local rivalGui: BillboardGui? = nil
@@ -451,7 +451,7 @@ local function ensureNemesisGui(): (BillboardGui, TextLabel)
 	head.Font = Enum.Font.GothamBlack
 	head.TextSize = 13
 	head.TextColor3 = PAPER
-	head.Text = "GET EVEN!"
+	head.Text = "PAYBACK"
 	local hs = Instance.new("UIStroke")
 	hs.Color = INK
 	hs.Thickness = 1.2
@@ -560,12 +560,32 @@ function RivalBubbles.decorateResults(container: Instance?, standings: any)
 	end
 	local idx = RivalRules.rivalRow(standings, rivalName)
 	local frame = if idx then container:FindFirstChild("Row_" .. tostring(idx)) else nil
-	local nameLabel = if frame then frame:FindFirstChildWhichIsA("TextLabel") else nil
-	if nameLabel then
+	-- the name label by name: the first TextLabel in the row can be the medal's fallback digit (v38-flow)
+	local found = if frame then (frame:FindFirstChild("NameText") or frame:FindFirstChildWhichIsA("TextLabel")) else nil
+	local nameLabel = if found and found:IsA("TextLabel") then found else nil
+	if nameLabel and frame and not frame:FindFirstChild("RivalMark") then -- once per row (the card can be re-decorated)
+		-- v38-flow round 3: the flame rides AFTER the name as its own mark (prefixing it into the text truncated the name
+		-- to "Copper..." in narrow results columns); the label gives up the mark's width and the name keeps its colour.
 		nameLabel.TextColor3 = RIVAL_ACCENT
-		nameLabel.Text = RivalRules.marked(nameLabel.Text)
+		local mark = Instance.new("TextLabel")
+		mark.Name = "RivalMark"
+		mark.BackgroundTransparency = 1
+		mark.Text = RivalRules.GLYPH
+		mark.TextScaled = true
+		mark.AnchorPoint = Vector2.new(0, 0.5)
+		mark.ZIndex = nameLabel.ZIndex + 1
+		mark.Parent = frame
+		-- scale-only geometry (the results card sits under a fit UIScale): the name gives up 8 % of the row, the flame
+		-- stands at the end of the name column, square, 60 % of the row tall
+		local base = nameLabel.Size
+		nameLabel.Size = UDim2.new(base.X.Scale - 0.08, base.X.Offset, base.Y.Scale, base.Y.Offset)
+		mark.AnchorPoint = Vector2.new(0, 0.5)
+		mark.Position = UDim2.new(nameLabel.Position.X.Scale + base.X.Scale - 0.08, nameLabel.Position.X.Offset + base.X.Offset + 2, 0.5, 0)
+		mark.Size = UDim2.fromScale(0.6, 0.6)
+		mark.SizeConstraint = Enum.SizeConstraint.RelativeYY
 	end
 end
+-- (bubbles and the flag use RivalRules.marked; the results row draws RivalRules.GLYPH as its own mark)
 
 ------------------------------------------------------------------------------------------------------------------------
 

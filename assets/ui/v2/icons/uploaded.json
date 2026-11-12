@@ -1,0 +1,230 @@
+{
+  "icon_alert": {
+    "id": 92246143020187,
+    "sha256": "0198668c4b3d97660bb81d8490b215f7db046968f1795c7123789e9d0a3d7267"
+  },
+  "icon_battle": {
+    "id": 79601562623862,
+    "sha256": "3e990b21e01e53108b6fc90e0dc451f766a9e56a9a99aad17218dd49f85f298d"
+  },
+  "icon_cash": {
+    "id": 125716052030851,
+    "sha256": "54cd2df83cea9d4815288c5849094a9e4a8b6bb74f9c54507d65190df14cd855"
+  },
+  "icon_check": {
+    "id": 80111293262467,
+    "sha256": "f550c83873e760f126b2663cd6a7add9387c1f0a8298636351219131a1aa2518"
+  },
+  "icon_close": {
+    "id": 105788180709703,
+    "sha256": "04edea033034ecca98bf2379bb2f95ebdd5be07e4dddccd01f0de2517a77566a"
+  },
+  "icon_coin": {
+    "id": 113262384744874,
+    "sha256": "16c171c5a6df1eb8d73d24cdfdb90b576bcf166068637ab54d06bcfc66f1e47e"
+  },
+  "icon_coins": {
+    "id": 125017684798433,
+    "sha256": "1ce1681152e57e506e90acc27057c38892525597c0e92cee669d483c7ac7a597"
+  },
+  "icon_daily": {
+    "id": 132979843809647,
+    "sha256": "5e265f6486ae2f790e5f4545725e251d6a7c936562f3aa3b4013410004eac01f"
+  },
+  "icon_emote": {
+    "id": 103747164152870,
+    "sha256": "30657186b2cc8bbe21e9408561c50f70c181c49cfffdf0d9f96dc49259971cd0"
+  },
+  "icon_flag": {
+    "id": 85760554367390,
+    "sha256": "4ecd616593134456dc419576a3987538b27c2d3768a79698977a90c3da720334"
+  },
+  "icon_gear": {
+    "id": 100819883768999,
+    "sha256": "388cf22f074dd83c8701f73bd9f860782f6f80ea15e98cf2d9db1685a5bc4eda"
+  },
+  "icon_help": {
+    "id": 92193866065639,
+    "sha256": "e510ec0b5feb259e6aa3e46857ce7bb4f91925ababf7d0232a5ab154a1f8097f"
+  },
+  "icon_horn": {
+    "id": 116760550253793,
+    "sha256": "c66ff85a095532c14d04b42a6d9db32dea3c15207aaadba2bedce3aa13533175"
+  },
+  "icon_hub": {
+    "id": 107944000087656,
+    "sha256": "b085f04f960d1f94a1352a6ce188956f2b4303efb1f92a833e15b0d0cc0f47e1"
+  },
+  "icon_info": {
+    "id": 95137497177828,
+    "sha256": "2b1162729b8661ca3d76dc77274ea2a402885d16fb6b741f0ed902bfb3903039"
+  },
+  "icon_key": {
+    "id": 130654090128969,
+    "sha256": "b70973c715a190e78423c5a1f42c2132105eca0cb8f4fa98f1ed8d52731a335a"
+  },
+  "icon_lock": {
+    "id": 137797729738314,
+    "sha256": "84b9be1b4d37f9c913634057cd347031dff3cccf281b5c08f96527f1b41e3b62"
+  },
+  "icon_medal_1": {
+    "id": 90055143518913,
+    "sha256": "9df5a633889d109093ce542b310361fe37cc65a6fe0f32eae01950dcb94e1cfe"
+  },
+  "icon_medal_2": {
+    "id": 71436645525401,
+    "sha256": "62bd8869e019bb3b10672b36d2bdbac5c908abe0f0f9ba8b1aebbeb1323815b3"
+  },
+  "icon_medal_3": {
+    "id": 103142359356426,
+    "sha256": "e6b42f35b0fe65f102c24c7fe995ed30b097963ac0698b8e510937865f2a4ff5"
+  },
+  "icon_paint": {
+    "id": 77105594122325,
+    "sha256": "d8121a8c4329254c1ddf5b83a15e4c2351985eb329bc47c6a579875f7525fbcf"
+  },
+  "icon_pass": {
+    "id": 75491628932812,
+    "sha256": "26c1a25219e9f2d50f7f8407ee087ec7be9db852277bde942e81df23c0e06b40"
+  },
+  "icon_quick": {
+    "id": 131229284996593,
+    "sha256": "3ab4f21c4d43e30d74191ed8902333ec2f2c05512e79763a0c2de9ecb3803a2e"
+  },
+  "icon_race": {
+    "id": 122411557902327,
+    "sha256": "7a006dffcd963e432fcc789e724c2700e670d3e3ce78f6fe00b339a6c1e04702"
+  },
+  "icon_rematch": {
+    "id": 108942517917148,
+    "sha256": "451594c5ae4eea4d96ad759b1ee686154b79d12a4db7cff80b1213d326cc3a04"
+  },
+  "icon_return": {
+    "id": 88358113916705,
+    "sha256": "ba56f506e1c7a79ceab990d194a0a7667804bcd69425177035ddb4472ca9c6f9"
+  },
+  "icon_shop": {
+    "id": 116092153502709,
+    "sha256": "985d3f6d7c71a06fee96972ab25fe9c5743a747c32e1eea3bdaf1f3053581317"
+  },
+  "icon_star": {
+    "id": 131386900786733,
+    "sha256": "420ed33ff0b0465ea4e8b7f067f85ea082513e1302d61a962cc687a1345f725c"
+  },
+  "icon_stopwatch": {
+    "id": 129247658123304,
+    "sha256": "5d1b21dc038743cc0650d55c8c75a0d6b2dc0c92a5b65f9eef634f7617558a05"
+  },
+  "icon_trail": {
+    "id": 112627334259414,
+    "sha256": "cb91fd376fac236be6c6b958ffc18259af324299f98889e5b36452edd5866af6"
+  },
+  "icon_trophy": {
+    "id": 122539820577311,
+    "sha256": "360ab5086341ce6e7c896fea8475453861216a55826b46b37c72a6b539f7be97"
+  },
+  "icon_wrench": {
+    "id": 81999859139334,
+    "sha256": "5f9a31c2382a549814e462b087f73445c6543a5d98c0f14567062108303c7afd"
+  },
+  "item_blue": {
+    "id": 140483382826869,
+    "sha256": "f8e48f68a4ae89101e7d0a1941514e5e7cd496d387f942e66349bb2a78f8407f"
+  },
+  "item_boom_bomb": {
+    "id": 80725167937987,
+    "sha256": "a7e3e76623d903df062db79240a06b24f2dd593b9ef5a0ad747c7cda6dec3320"
+  },
+  "item_bubble_guard": {
+    "id": 92633216612120,
+    "sha256": "a439be002274802eca51bff5068c017dd6ebe453dd29f8349c73c3147785cadd"
+  },
+  "item_coin_burst": {
+    "id": 95235813881303,
+    "sha256": "5de5c8a76412dda122ac9013dee74a689afe8752ad421fc782b6c3c940c83e3f"
+  },
+  "item_frost_shot": {
+    "id": 133156664101986,
+    "sha256": "55f6725cd59cd8f9823b7f35ae9e320a6efa739e32e69426c4201b8b1610210e"
+  },
+  "item_gift_box": {
+    "id": 82211857129501,
+    "sha256": "ee64ec49d825cfa160d1c9d4dd653b4070b9b28b712378495cafaab4269cb389"
+  },
+  "item_golden_wings": {
+    "id": 89683110761887,
+    "sha256": "8004b90f74ceae48547dd0d20a734ca9414bc4f20be293159904a8918e3a5e7a"
+  },
+  "item_green": {
+    "id": 109454982185473,
+    "sha256": "3b985205f05efb1b1777a589326eb9deda36620a6d1b918499a4d6756d577f5c"
+  },
+  "item_mystery": {
+    "id": 121452453641498,
+    "sha256": "5a8ad4435bd107493e9254ec4f59713291eb5d575e2f183348d1bfed34a3af93"
+  },
+  "item_orbit_missiles": {
+    "id": 92805950737024,
+    "sha256": "c6770486075be77461a3fb3a912bb5f12c47686ea78024066d803c81c54bf9c4"
+  },
+  "item_rainbow": {
+    "id": 91585306816696,
+    "sha256": "873bd61e1573f7d4e20b6fde9bceee528e06a6fbae65b408f89c57bb5353f9cb"
+  },
+  "item_red": {
+    "id": 134164515304123,
+    "sha256": "be1cc0ed64c57c6269208192ba0b096b6d2c532f0532f977a230c1080ad21824"
+  },
+  "item_rocket_rush": {
+    "id": 118952179287562,
+    "sha256": "6f4d9ddfd9309de085de9fab7beaef1b6960495d7d396f508b2836778962a1f7"
+  },
+  "item_storm_bolt": {
+    "id": 122759700838762,
+    "sha256": "c2597d21ea390bd0c9777c9f8b5b89a306e685e790bfd64a29de1e7598ec4b1e"
+  },
+  "item_yellow": {
+    "id": 121658348571108,
+    "sha256": "ef1716362a3b243746b044791cc43182e853265e5bdcf578151b932b42b15db2"
+  },
+  "icon_boss": {
+    "id": 136362346364346,
+    "sha256": "8c60944d24b9c38215aae02fa3af220ad2cde1dfd80a1c0030dee1d269992a98"
+  },
+  "icon_camera": {
+    "id": 139434899410661,
+    "sha256": "fb6c126f67797255d3ad201a90a702dca531f0e6e0d1e7a431b64ceb3baae87d"
+  },
+  "icon_crown": {
+    "id": 97329890655729,
+    "sha256": "22d20d7b6d488d44d086fc96b86dd40e887a07e49fe57bf9eafd0c51a127a222"
+  },
+  "icon_gem": {
+    "id": 99887692070482,
+    "sha256": "ffe049f37938a61749f5d6e26a7600d96e966799d4410894bbe0461b4fc1da34"
+  },
+  "item_coin_pouch": {
+    "id": 87245524140776,
+    "sha256": "e6bd1d871b9e203317f05d116406d4578d5faac6a475d5054e63d5c863a82e8c"
+  },
+  "item_ink_splat": {
+    "id": 96922358018047,
+    "sha256": "d5297eb76fb99cade4ed9f7f64a783147acb4fd314946eccd65b872de0b5aa2a"
+  },
+  "item_item_steal": {
+    "id": 111434857108237,
+    "sha256": "9759149b6ded39b661b869a317d52af44fa563d099aa61631ed5418c6056dfdb"
+  },
+  "item_magnet": {
+    "id": 109835003875901,
+    "sha256": "c1adfbef9c79a9a7d0ad56b023715cd9f197059db0e51242fd32e4c2456553f4"
+  },
+  "item_oil": {
+    "id": 123675009409141,
+    "sha256": "acd10fba2313771e18cdbd560f0d803bea9527bb713086b35eaba30dfba013f5"
+  },
+  "item_spring": {
+    "id": 105624424990963,
+    "sha256": "c60e91e91de29af099bbe115046d30094c6128853b4be782fe66cfcd9debad21"
+  }
+}

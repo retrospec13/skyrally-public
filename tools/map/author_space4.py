@@ -604,12 +604,14 @@ def tron_rung_prefab() -> dict:
 
 
 def tron_chevron_prefab(colour: str) -> dict:
-    """Two stacked forward chevrons flat on the road (local -z = the way the car drives)."""
+    """Two stacked forward chevrons flat on the road (local -z = the way the car drives).
+    v37 (owner: "the arrows are facing the wrong direction"): a bar yawed ry has its long axis along (sin ry, cos ry) in
+    (x, z), so the left arm (x < 0) takes ry < 0 for the tip to sit at the front (-z); it had +40 and the V pointed back."""
     parts = []
     for k in range(2):
         z = 4.0 - k * 7.0
-        parts.append(part("B", -2.6, 0, z, 0.9, 0.14, 6.4, 0, 40, 0, colour, "Neon", NC))
-        parts.append(part("B", 2.6, 0, z, 0.9, 0.14, 6.4, 0, -40, 0, colour, "Neon", NC))
+        parts.append(part("B", -2.15, 0, z, 0.9, 0.14, 6.4, 0, -40, 0, colour, "Neon", NC))  # arms meet at the tip
+        parts.append(part("B", 2.15, 0, z, 0.9, 0.14, 6.4, 0, 40, 0, colour, "Neon", NC))
     return {"parts": parts}
 
 
@@ -627,6 +629,20 @@ def tron_arch_prefab(glow: str) -> dict:
     top = CAP_TOP + 4.0 + TRON_ARCH_B
     parts.append(part("B", 0, top - 1.6, 0, 2.2, 0.6, 2.2, 0, 0, 0, glow, "Neon", nc({"l": [70, 1.5, glow, False]})))
     return {"parts": parts}
+
+
+def turn_board_prefab(sgn: int) -> dict:
+    """v37 turn sign for the walled 90-degree corners: a floating neon board (no post, all nc) hung outside the outer
+    parapet and well above its cap, so the wall and its cap stay a clean drive surface. Navy face toward the driver (+z,
+    who comes from +z), three amber chevrons pointing +x (sgn 1, a right-hand corner) or -x, cyan rim."""
+    P = [part("B", 0, 0, 0, 12.0, 5.0, 0.6, 0, 0, 0, C["navyDark"], "SmoothPlastic", NC),
+         part("B", 0, 2.7, 0.1, 12.6, 0.4, 0.8, 0, 0, 0, C["neonCyan"], "Neon", NC),
+         part("B", 0, -2.7, 0.1, 12.6, 0.4, 0.8, 0, 0, 0, C["neonCyan"], "Neon", NC)]
+    for tx in (-3.4, 0.0, 3.4):
+        for up in (1, -1):  # upper arm runs down to the tip, lower arm up to it (a bar long in x rolled rz runs (cos, sin))
+            P.append(part("B", sgn * (tx - 1.1), up * 1.1, 0.4, 3.3, 0.9, 0.3, 0, 0, -sgn * up * 45, C["neonAmber"], "Neon",
+                          nc({"l": [14, 0.8, C["neonAmber"], False]}) if (tx == 0.0 and up == 1) else NC))
+    return {"parts": P}
 
 
 def streetlamp_prefab(glow: str) -> dict:
@@ -980,7 +996,7 @@ GP_RIM_DEPTH, GP_BAND_DEPTH = 5.0, 3.6
 
 def gate_portal_prefab(open_side: int = 0) -> dict:
     """open_side (+1 local right / -1 local left / 0 none): leave out that vertical side face and its clamp. The offset
-    start pair (lateral -9 at st 92, +9 at st 116) opens its inner side: a full frame would stand that post at lateral
+    start pair (lateral -9 at st 488, +9 at st 512) opens its inner side: a full frame would stand that post at lateral
     -+8..11.6, square on the other start gate's drive line (a phantom pillar every car through that gate drives into)."""
     parts = []
     t = math.tan(math.pi / 8)
@@ -1061,8 +1077,10 @@ def lip_chevron_prefab() -> dict:
     parts = [part("B", 0, 0, 0, 40, 0.14, 5, 0, 0, 0, C["brass"], "Metal", NC)]
     for i in range(5):
         x = -16 + i * 8
-        parts.append(part("W", x - 1.6, 0.05, 0, 0.8, 0.14, 4.0, 0, 45, 0, C["neonAmber"], "Neon", NC))
-        parts.append(part("W", x + 1.6, 0.05, 0, 0.8, 0.14, 4.0, 0, -45, 0, C["neonAmber"], "Neon", NC))
+        # v37: tips forward (-z), as tron_chevron_prefab (the arms had +45 on the left and pointed back at the driver);
+        # flat bars meeting at the tip (0.14-tall wedges hid their thin front ends, so the ^ read as loose dashes)
+        parts.append(part("B", x - 1.45, 0.05, 0, 0.8, 0.14, 4.0, 0, -45, 0, C["neonAmber"], "Neon", NC))
+        parts.append(part("B", x + 1.45, 0.05, 0, 0.8, 0.14, 4.0, 0, 45, 0, C["neonAmber"], "Neon", NC))
     return {"parts": parts}
 
 
@@ -2607,6 +2625,26 @@ def build() -> tuple[dict, dict]:
                   yxz_from_axes(*banked_axes(fr), fr.tangent))
             chevrons += 1
         st += TRON_CHEVRON_STEP
+    # v37: chevron turn boards at the walled 90-degree corners (owner: no turn signage there). Three per corner along the
+    # outer side, hung outside the parapet line and 7+ studs over its cap: nothing touches the wall or the cap surface.
+    turn_boards = 0
+    turn_board_parts = 0  # not the road pass: kept out of the tron part budget below
+    d_total = recs[-1]["d1"]
+    for rec in recs:
+        if rec["kind"] not in ("R", "L") or abs(math.degrees(rec["a1"] - rec["a0"])) < 80:
+            continue
+        sgn = 1 if rec["kind"] == "R" else -1
+        key = "TurnBoard%s" % ("R" if sgn > 0 else "L")
+        prefabs.setdefault(key, turn_board_prefab(sgn))
+        for u in (0.12, 0.42, 0.72):
+            st = (rec["d0"] + rec["length"] * u) * length / d_total
+            fr = route.frame_at(st)
+            outer = -float(sgn)  # a right-hand corner's outside is on the left
+            pos = offset_point(route, st, outer * (WALL_LATERAL + 2.5), CAP_TOP + 9.5)
+            place(key, pos, "Highway/Gantries", yxz_from_axes(fr.right, routelib.UP, (fr.tangent[0], 0.0, fr.tangent[2])))
+            turn_boards += 1
+            turn_board_parts += len(prefabs[key]["parts"])
+    print("turn boards", turn_boards)
     tron_arch_stations = []
     for want in np.arange(130.0, length - 100.0, TRON_ARCH_STEP):
         st_a = 84.0 + 48.0 * round((want - 84.0) / 48.0)
@@ -2619,7 +2657,7 @@ def build() -> tuple[dict, dict]:
         prefabs.setdefault(key, tron_arch_prefab(col))
         fa_ = route.frame_at(st_a)
         place(key, fa_.pos, "Highway/Gantries", yxz_from_axes(*banked_axes(fa_), fa_.tangent))
-    tron_parts = sum(len(prefabs[i["pf"]]["parts"]) for i in instances) - tron_parts_before
+    tron_parts = sum(len(prefabs[i["pf"]]["parts"]) for i in instances) - tron_parts_before - turn_board_parts
     tron_lights = len(tron_arch_stations)
     roof_out = {}
     if ROOFTOP_SHORTCUT:
@@ -3382,9 +3420,11 @@ def build() -> tuple[dict, dict]:
         return round(station_of_design(label, t), 1)
 
     rings = [
-        {"name": "BoostGate_StartLeft", "station": 92.0, "lateral": -9.0, "height": 3.0},
-        {"name": "BoostGate_StartRight", "station": 116.0, "lateral": 9.0, "height": 3.0},
-        {"name": "BoostGate_VaultExit", "station": round(TUNNEL_TO + 30.0, 1), "lateral": 0.0, "height": 3.0},
+        # v37: the offset start pair stood 72-96 studs ahead of the front grid row (every car boosted within 0.3 s of
+        # GO, so the rocket start bought little). It now leads out of the Glass Vault (its offset frames do not fit
+        # inside the vault) in place of the centred BoostGate_VaultExit: nothing boosts within 150 of the grid.
+        {"name": "BoostGate_StartLeft", "station": round(TUNNEL_TO + 12.0, 1), "lateral": -9.0, "height": 3.0},
+        {"name": "BoostGate_StartRight", "station": round(TUNNEL_TO + 36.0, 1), "lateral": 9.0, "height": 3.0},
         {"name": "BoostGate_Downtown", "station": sd("north2", 0.3), "lateral": 0.0, "height": 3.0},
         {"name": "BoostGate_ViaductDive", "station": round(crossings[1][0] - 70.0, 1), "lateral": 0.0, "height": 3.0},
         {"name": "BoostGate_CraterRun", "station": sd("south1", 0.4), "lateral": 0.0, "height": 3.0},

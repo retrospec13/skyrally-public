@@ -21,7 +21,7 @@ return function(h)
 		local low = R.bubbleLayers(false, false, true)
 		h.ok(low.hex and low.edge and not low.swirl and not low.ring)
 		local rs = R.bubbleLayers(true, false, false)
-		h.ok(rs.hex and rs.shimmer and not rs.edge and not rs.swirl and not rs.ring)
+		h.ok(rs.shimmer and not rs.hex and not rs.edge and not rs.swirl and not rs.ring, "respawn: shimmer only, no hex shell (v39)")
 	end)
 
 	h.test("blink window and last-second sparkle boost", function()

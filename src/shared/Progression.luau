@@ -383,6 +383,36 @@ function Progression.newlyUnlocked(before: { [string]: boolean }, after: { [stri
 	return out
 end
 
+-- v38 (results "what is next" bar): the ONE next goal for this profile, in the order the adventure opens: the next
+-- world portal by Sky Tokens, then the hub boss by boss fragments, then the final-boss win that opens SPACE, then the
+-- rest of the Sky Tokens. nil when everything is done. label: the goal's name; have/need: the bar; unit: what fills it.
+export type NextUnlock = { key: string, label: string, have: number, need: number, unit: string }
+function Progression.nextUnlock(profile: ProgressState): NextUnlock?
+	local tokens = Progression.tokenCount(profile)
+	for _, zone in ipairs(Progression.CHAIN_ZONES) do
+		local need = Progression.PORTAL_THRESHOLD[zone]
+		if need and tokens < need then
+			return { key = "portal_" .. zone, label = zone .. " WORLD", have = tokens, need = need, unit = "token" }
+		end
+	end
+	if not Progression.isFinalBossUnlocked(profile) then
+		return {
+			key = "hub_boss",
+			label = "HUB BOSS",
+			have = Progression.bossFragmentCount(profile),
+			need = Progression.FINAL_BOSS_FRAGMENTS,
+			unit = "fragment",
+		}
+	end
+	if profile.finalBoss ~= true then
+		return { key = "portal_SPACE", label = "SPACE WORLD", have = 0, need = 1, unit = "boss" }
+	end
+	if tokens < Progression.TOKENS_TOTAL then
+		return { key = "all_tokens", label = "ALL SKY TOKENS", have = tokens, need = Progression.TOKENS_TOTAL, unit = "token" }
+	end
+	return nil
+end
+
 function Progression.completion(profile: ProgressState): CompletionSummary
 	local tokens = Progression.tokenCount(profile)
 	local keys = Progression.keyCount(profile)

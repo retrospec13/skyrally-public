@@ -37,6 +37,14 @@ HudLayoutRules.THUMB_GROW = 16 -- the steer pad and the right zone keep this muc
 -- so the message lanes keep about 200 px. safeW is optional (nil = not compact).
 HudLayoutRules.COMPACT_SAFE_W = 700
 HudLayoutRules.MINIMAP_COMPACT = 64
+-- UI v2 race HUD (docs/design/UI_V2.md): the item box side and the desktop hero position numeral at S = 1, and the share of
+-- the width the message lanes keep when the item box moves top-left.
+HudLayoutRules.ITEM_BOX = 150
+HudLayoutRules.POS_HERO_W = 260
+HudLayoutRules.POS_HERO_H = 170
+HudLayoutRules.RING_PULSE = 1.25 -- client/TrickJuice: the start ring's pop on the "1"
+HudLayoutRules.POS_PULSE = 1.3 -- client/RaceUI: the position badge's pop on a place change
+HudLayoutRules.ITEM_LANE_MIN = 0.18
 
 function HudLayoutRules.minimapCompact(kind: Kind, safeW: number?): boolean
 	return kind == "touch" and safeW ~= nil and safeW <= HudLayoutRules.COMPACT_SAFE_W
@@ -246,10 +254,13 @@ function HudLayoutRules.compute(vpX: number, vpY: number, ins: Insets, nav: Rect
 	r.nav = { x = nav.x, y = nav.y, w = nav.w, h = nav.h }
 
 	-- Right column (top-right): position, lap/time chip, combo; right-aligned on xr, 4 px apart.
+	-- UI v2 (docs/design/UI_V2.md, Mario Kart 8 placement): racing on a desktop the position numeral is the bottom-right hero
+	-- (placed further down, above the respawn row) and the lap / time chip takes the top-right slot.
+	local racingDesk = o.minimap == true and not o.battle and not touch and vpY >= 600
 	local posW, posH = px(150, S), px(84, S)
 	r.position = { x = xr - posW, y = m.yTop, w = posW, h = posH }
 	local chipW, chipH = px(190, S), px(76, S)
-	r.lapChip = { x = xr - chipW, y = r.position.y + posH + 4, w = chipW, h = chipH }
+	r.lapChip = { x = xr - chipW, y = if racingDesk then m.yTop else r.position.y + posH + 4, w = chipW, h = chipH }
 	local comboW, comboH = px(170, S), px(44, S)
 	r.combo = { x = xr - comboW, y = r.lapChip.y + chipH + 4, w = comboW, h = comboH }
 
@@ -265,7 +276,7 @@ function HudLayoutRules.compute(vpX: number, vpY: number, ins: Insets, nav: Rect
 	local compact = mk and HudLayoutRules.minimapCompact(kind, safeW)
 	local sys = HudLayoutRules.button(56, S)
 	if mk and touch then
-		itemS = math.min(itemS, if compact then 48 else 52) -- display-only on touch (the ITEM stone mirrors it)
+		itemS = math.min(itemS, if compact then 52 else 60) -- display-only on touch (the ITEM stone mirrors it); UI v2: a bigger box
 	end
 	local leftMax: number
 	local laneLeft: number
@@ -280,20 +291,33 @@ function HudLayoutRules.compute(vpX: number, vpY: number, ins: Insets, nav: Rect
 		end
 		-- The item / gear / "?" column: right edge 8 px left of the right column's left edge, from the top margin down.
 		local colRight = r.combo.x
-		for _, k in { "position", "lapChip" } do
+		for _, k in (if racingDesk then { "lapChip" } else { "position", "lapChip" }) :: { string } do
 			local rr = r[k]
 			if rr then
 				colRight = math.min(colRight, rr.x)
 			end
 		end
 		colRight -= 8
-		r.item = { x = colRight - itemS, y = m.yTop, w = itemS, h = itemS }
 		local gap = if touch then 4 else 8
-		r.gear = { x = colRight - sys, y = r.item.y + itemS + gap, w = sys, h = sys }
+		-- UI v2: the item box is the big framed box at the top, centre-left (right of the nav and the minimap), Mario Kart 8
+		-- style, when the message lanes keep their room (ITEM_LANE_MIN of the width). Touch keeps it at the top of the column
+		-- beside the right column (the ITEM stone under the right thumb mirrors it; top-left it cost the lanes half their width).
+		local boxS = if touch then (if compact then 56 else 64) else px(HudLayoutRules.ITEM_BOX, S)
+		local boxX = math.max(nav.x + nav.w, if touch then r.token.x + math.max(r.token.w, math.max(104, px(112, S))) else r.minimap.x + mapS) + (if touch then 8 else 12) -- touch: right of the token chip and the ASSIST pill under it
+		local boxY = m.yTop
+		local laneEdge = math.max(boxX + boxS, r.token.x + r.token.w, r.minimap.x + mapS) + 8
+		local need = if compact then 100 else math.floor(HudLayoutRules.ITEM_LANE_MIN * vpX / 2)
+		if not touch and vpX / 2 - laneEdge >= need then
+			r.item = { x = boxX, y = boxY, w = boxS, h = boxS }
+			r.gear = { x = colRight - sys, y = m.yTop, w = sys, h = sys }
+		else
+			r.item = { x = colRight - itemS, y = m.yTop, w = itemS, h = itemS }
+			r.gear = { x = colRight - sys, y = r.item.y + itemS + gap, w = sys, h = sys }
+		end
 		r.help = { x = colRight - sys, y = r.gear.y + sys + gap, w = sys, h = sys }
 		if not touch then
 			-- Desktop / gamepad ASSIST chip (key T): under the "?", right edge on the column's, within the item frame's width.
-			local aw, ah = math.min(itemS, px(150, S)), math.max(30, px(36, S))
+			local aw, ah = if vpY >= 600 then px(170, S) else math.min(itemS, px(150, S)), if vpY >= 600 then math.max(34, px(40, S)) else math.max(30, px(36, S)) -- UI v2: an icon key wide enough for "ASSIST ON [T]" on one line
 			r.assistChip = { x = colRight - aw, y = r.help.y + sys + gap, w = aw, h = ah }
 			if HudLayoutRules.overlap(r.assistChip, HudLayoutRules.roadBand(vpX, vpY)) or r.assistChip.y + ah > m.yBot then
 				-- A short window: the column reaches the road band, so the chip stands left of the gear instead.
@@ -301,7 +325,7 @@ function HudLayoutRules.compute(vpX: number, vpY: number, ins: Insets, nav: Rect
 			end
 		end
 		leftMax = math.max(r.minimap.x + mapS, r.token.x + r.token.w)
-		laneLeft = leftMax
+		laneLeft = if r.item.x < vpX / 2 then math.max(leftMax, r.item.x + r.item.w) else leftMax
 	else
 		r.item = { x = m.x0, y = itemY, w = itemS, h = itemS }
 		r.gear = { x = m.x0 + itemS + 8, y = itemY, w = sys, h = sys }
@@ -348,6 +372,21 @@ function HudLayoutRules.compute(vpX: number, vpY: number, ins: Insets, nav: Rect
 		local hintH = math.max(34, px(44, S))
 		r.hintChip = { x = m.x0, y = m.yBot - hintH, w = hintW, h = hintH }
 		r.startRing = { x = xr - ringS, y = r.respawn.y - 8 - ringS, w = ringS, h = ringS }
+		if not o.battle and vpY >= 600 then
+			-- UI v2 hero numeral (racing): bottom-right, right of the road band, above the respawn row; the start ring
+			-- (grid only) stands above it.
+			local hw, hh = px(HudLayoutRules.POS_HERO_W, S), px(HudLayoutRules.POS_HERO_H, S)
+			local hero = { x = xr - hw, y = r.respawn.y - 8 - hh, w = hw, h = hh }
+			if racingDesk then
+				r.position = hero
+			end
+			-- v39: the ring keeps clear of the hero slot even while the minimap (and with it the hero numeral) is not on
+			-- yet, so a layout that flips to the racing one at GO never lands the numeral on the disc. The gap also covers
+			-- both pulses (the ring pops to RING_PULSE on the "1", the badge to POS_PULSE on a place change, both about
+			-- their centres), so the GAS disc never touches the numeral, even mid-pulse.
+			local gap = 8 + math.ceil(ringS * (HudLayoutRules.RING_PULSE - 1) / 2) + math.ceil(hh * (HudLayoutRules.POS_PULSE - 1) / 2)
+			r.startRing = { x = xr - ringS, y = hero.y - gap - ringS, w = ringS, h = ringS }
+		end
 	end
 	-- RETURN to course (planes, off course; docs/design/FLIGHT_GUIDE.md 4.3): on the respawn row, directly left of it and
 	-- right of the centre road band (x 70 percent). Touch: a 48 px tall pill; desktop / gamepad: a chip like the respawn
@@ -434,7 +473,9 @@ function HudLayoutRules.compute(vpX: number, vpY: number, ins: Insets, nav: Rect
 		r.battleHud = { x = cx - halfB, y = m.yTop, w = 2 * halfB, h = bh }
 		laneBy = m.yTop + bh + HudLayoutRules.BATTLE_GAP
 	end
-	local toastH = math.max(34, px(40, S))
+	-- v39: on a tall screen the toast chip grows with the type scale (UiSkinRules.typeScale, vpY / 540 in 1..2) so its
+	-- bigger text (NotifyKit lineTextSize) has room: 48 px at 1080p, phones keep 34.
+	local toastH = math.max(34, px(40, S), round(24 * math.clamp(vpY / 540, 1, 2)))
 	r.laneB = { x = cx - halfB, y = laneBy, w = 2 * halfB, h = toastH }
 	local noticeH = math.max(28, px(32, S))
 	r.noticeStack = { x = cx - halfB, y = laneBy + toastH + 4, w = 2 * halfB, h = noticeH }

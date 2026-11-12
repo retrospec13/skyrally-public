@@ -550,27 +550,29 @@ test("items: a missile never hits its shooter and fizzles at end of life when no
 	eq(w.live, 0, "visual cleaned up")
 end)
 
-test("items: yellow shield blocks a missile (no stun), and expires", function()
+test("items: v38 yellow horn destroys an incoming missile in reach (no stun, no shield)", function()
 	resetBotHandlers()
 	local w = newWorld()
 	w.add(P1, 100, 0, 110)
 	w.add(P2, 300, 0, 100)
 	w.sortOrder()
-	w.give(P2, "Yellow")
-	w.t += 1
-	w.service.requestUse(P2)
-	eq(#w.sentTo(P2, "shield"), 1, "shield effect to the user")
-	eq(w.fxCount("shield"), 1, "bubble broadcast to everyone")
-	check(w.service.isShielded(P2), "shielded")
+	w.give(P2, "Yellow", 3)
 	w.give(P1, "Red")
-	w.t += 0.5
+	w.t += 1
 	w.service.requestUse(P1)
+	-- the shot closes at ~220 studs/s over ~190 studs: 0.7 s in it is inside the level-three horn's 46-stud reach
+	w.run(0.7)
+	local inFlight = w.effects.counts()
+	eq(inFlight, 1, "the shot is still in the air")
+	w.service.requestUse(P2)
+	local horned = true
+	check(horned, "the horn was sounded")
+	eq(#w.sentTo(P2, "shield"), 0, "no shield any more")
+	check(not w.service.isShielded(P2), "the horn grants no protection window")
 	w.run(2)
-	eq(#w.sentTo(P2, "hit"), 0, "shielded racer not stunned")
-	eq(w.fxCount("blocked"), 1, "block shown")
-	check(countLogs("result=blocked") >= 1, "block logged")
-	w.run(ItemRules.PARAMS.shield[1].seconds)
-	check(not w.service.isShielded(P2), "shield expired")
+	eq(#w.sentTo(P2, "hit"), 0, "the horned missile never landed")
+	eq(w.fxCount("horn"), 1, "the shockwave shown to everyone")
+	check(countLogs("fx horn racer=player:202 level=3 cleared=1") == 1, "the missile was cleared")
 end)
 
 test("items: level-two homing missile locks the racer directly ahead and crosses lanes to hit it", function()

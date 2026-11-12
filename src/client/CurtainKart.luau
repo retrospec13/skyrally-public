@@ -62,10 +62,16 @@ local ROSTER_EVERY = 1.0 -- who is on the curtain (GetPlayers allocates, so not 
 local PASS_POP_GAP = 0.9
 local PASS_SETTLE = 1.0 -- a rival must be on screen this long before passing them counts
 
-local CREAM = Color3.fromRGB(250, 242, 222)
-local WOOD_DARK = Color3.fromRGB(62, 40, 24)
-local GOLD = Color3.fromRGB(255, 220, 110)
-local INK = Color3.fromRGB(34, 26, 20)
+-- UI v2 tokens (docs/design/UI_V2.md): white text, the navy ink outline, gold numerals.
+local CREAM = Color3.new(1, 1, 1)
+local WOOD_DARK = Color3.fromRGB(11, 21, 51) -- (name kept) the text outline: ink
+local GOLD = Color3.fromRGB(255, 225, 77)
+local INK = Color3.fromRGB(11, 21, 51)
+local WELL = Color3.fromRGB(14, 27, 69)
+-- v38-flow: the kit's faces (shared/UiSkinRules.FONT), not a private copy
+local FONT_RULES = require(Shared:WaitForChild("UiSkinRules")).FONT
+local DISPLAY = Font.new(FONT_RULES.display.family, (Enum.FontWeight :: any)[FONT_RULES.display.weight], (Enum.FontStyle :: any)[FONT_RULES.display.style])
+local BODY = Font.new(FONT_RULES.body.family, (Enum.FontWeight :: any)[FONT_RULES.body.weight], (Enum.FontStyle :: any)[FONT_RULES.body.style])
 
 type Ghost = { xs: { number }, ys: { number }, hs: { number }, n: number }
 type Rival = {
@@ -163,9 +169,10 @@ local ghosts: { [string]: Ghost } = {}
 type Saved = { pos: UDim2, size: UDim2, anchor: Vector2 }
 local borrowed: { [TextLabel]: Saved } = {}
 local HEADER: { [string]: { UDim2 } } = {
-	ZoneName = { UDim2.new(0.5, 0, 0.025, 0), UDim2.new(0.62, 0, 0.1, 0) },
-	TrackName = { UDim2.new(0.5, 0, 0.127, 0), UDim2.new(0.56, 0, 0.06, 0) },
-	Hint = { UDim2.new(0.5, 0, 0.19, 0), UDim2.new(0.6, 0, 0.045, 0) },
+	-- UI v2: the gold zone band (narrower), its checker strip, the track name, the race-line pill
+	ZoneName = { UDim2.new(0.5, 0, 0.022, 0), UDim2.new(0.42, 0, 0.088, 0) },
+	TrackName = { UDim2.new(0.5, 0, 0.135, 0), UDim2.new(0.56, 0, 0.055, 0) },
+	Hint = { UDim2.new(0.5, 0, 0.198, 0), UDim2.new(0.42, 0, 0.042, 0) },
 }
 
 local function loadData()
@@ -198,6 +205,7 @@ local function textLabel(parent: Instance, name: string, font: Enum.Font, color:
 	l.Name = name
 	l.BackgroundTransparency = 1
 	l.Font = font
+	l.FontFace = if font == Enum.Font.GothamBlack then DISPLAY else BODY
 	l.TextScaled = true
 	l.TextColor3 = color
 	l.ZIndex = Z + 4
@@ -239,12 +247,30 @@ local function build(parent: Frame)
 
 	box = Instance.new("Frame")
 	box.Name = "Box"
-	box.BackgroundColor3 = INK
-	box.BackgroundTransparency = 0.82
+	box.BackgroundColor3 = WELL -- the inset map well (layout mixes in a zone-colour wash)
+	box.BackgroundTransparency = 0.15
 	box.BorderSizePixel = 0
 	box.ZIndex = Z
 	box.Parent = r
-	corner(box, UDim.new(0, 14))
+	corner(box, UDim.new(0, 16))
+	local boxInk = Instance.new("UIStroke")
+	boxInk.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+	boxInk.Color = INK
+	boxInk.Thickness = 3
+	boxInk.Parent = box
+	-- readout chips (DEMO LAP left, BEST right) and the steer-hint pill: navy chips behind the labels (layout sizes them)
+	for _, nm in { "LapChip", "BestChip" } do
+		local c = plainFrame(r, nm, Z + 3)
+		c.AnchorPoint = Vector2.zero -- plainFrame centres (road segments); the chips are placed by their corner
+		c.BackgroundColor3 = WELL
+		c.BackgroundTransparency = 0.2
+		corner(c, UDim.new(0, 12))
+		local cs = Instance.new("UIStroke")
+		cs.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+		cs.Color = INK
+		cs.Thickness = 3
+		cs.Parent = c
+	end
 
 	for i = 1, MAX_SEGS do
 		local k = plainFrame(box, "Kerb" .. i, Z + 1)
@@ -354,8 +380,8 @@ local function build(parent: Frame)
 	youLabel.Text = "YOU"
 
 	lapCaption = textLabel(r, "LapCaption", Enum.Font.GothamBold, CREAM)
-	lapLabel = textLabel(r, "LapTime", Enum.Font.GothamBlack, CREAM)
-	bestLabel = textLabel(r, "Best", Enum.Font.GothamBold, GOLD)
+	lapLabel = textLabel(r, "LapTime", Enum.Font.GothamBlack, GOLD)
+	bestLabel = textLabel(r, "Best", Enum.Font.GothamBlack, GOLD) -- v38-flow: numerals in the display face
 	hintLabel = textLabel(r, "SteerHint", Enum.Font.GothamBold, CREAM)
 	popLabel = textLabel(box, "Pop", Enum.Font.GothamBlack, GOLD)
 	popLabel.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -481,7 +507,7 @@ end
 local function layout(parent: Frame, tr: Sim.Track, color: Color3)
 	local vw, vh = parent.AbsoluteSize.X, parent.AbsoluteSize.Y
 	local side = math.max(16, math.floor(vw * 0.04))
-	local top, bottom = math.floor(vh * 0.24), math.floor(vh * 0.96)
+	local top, bottom = math.floor(vh * 0.255), math.floor(vh * 0.95)
 	local bh = bottom - top
 	local bw = math.floor(bh * 16 / 9)
 	if bw > vw - side * 2 then
@@ -501,8 +527,10 @@ local function layout(parent: Frame, tr: Sim.Track, color: Color3)
 	kartW = math.clamp(math.floor(thick * 1.15), 12, 26)
 	kartH = math.floor(kartW * 1.55)
 
-	local roadCol = color:Lerp(Color3.new(1, 1, 1), 0.7)
-	local kerbCol = color:Lerp(Color3.new(0, 0, 0), 0.45)
+	-- UI v2: a white road with an ink kerb on the navy well, a faint zone-colour wash in the well
+	box.BackgroundColor3 = WELL:Lerp(color, 0.22)
+	local roadCol = Color3.new(1, 1, 1):Lerp(color, 0.12)
+	local kerbCol = INK
 	for i = 1, MAX_SEGS do
 		local k, rd = kerbs[i], roads[i]
 		if i <= tr.n then
@@ -562,8 +590,33 @@ local function layout(parent: Frame, tr: Sim.Track, color: Color3)
 	bestLabel.Size = UDim2.fromOffset(lw, math.floor(unit * 0.8))
 	-- Steer hint along the bottom edge inside the box (hidden once the player takes the wheel).
 	local hh = math.max(14, math.floor(bh * 0.08))
-	hintLabel.Position = UDim2.fromOffset(bx + math.floor(bw * 0.1), top + bh - hh - 4)
-	hintLabel.Size = UDim2.fromOffset(math.floor(bw * 0.8), hh)
+	-- a dark pill, about 22 px tall, along the well's bottom edge
+	hh = math.clamp(hh, 18, 30)
+	hintLabel.Position = UDim2.fromOffset(bx + math.floor(bw * 0.25), top + bh - hh - 10)
+	hintLabel.Size = UDim2.fromOffset(math.floor(bw * 0.5), hh)
+	hintLabel.BackgroundTransparency = 0.2
+	hintLabel.BackgroundColor3 = INK
+	if not hintLabel:FindFirstChildOfClass("UICorner") then
+		corner(hintLabel, UDim.new(0.5, 0))
+		local hp = Instance.new("UIPadding")
+		hp.PaddingTop = UDim.new(0.16, 0)
+		hp.PaddingBottom = UDim.new(0.16, 0)
+		hp.Parent = hintLabel
+	end
+	-- the readout chips behind DEMO LAP and BEST
+	local root0 = root
+	local lapChip = if root0 then root0:FindFirstChild("LapChip") :: Frame? else nil
+	local bestChip = if root0 then root0:FindFirstChild("BestChip") :: Frame? else nil
+	if lapChip then
+		lapChip.Position = UDim2.fromOffset(lx - 6, ly - 6)
+		lapChip.Size = UDim2.fromOffset(lw + 12, math.floor(unit * 1.6) + 12)
+		lapChip.Visible = true
+	end
+	if bestChip then
+		bestChip.Position = UDim2.fromOffset(rx - 6, ly + math.floor(unit * 0.3) - 6)
+		bestChip.Size = UDim2.fromOffset(lw + 12, math.floor(unit * 0.8) + 12)
+		bestChip.Visible = true
+	end
 	-- Shared curtain (item 28): position under BEST, the curtain's fastest lap under that; name tags sized to the karts.
 	posLabel.Position = UDim2.fromOffset(rx, ly + math.floor(unit * 1.2))
 	posLabel.Size = UDim2.fromOffset(lw, unit)

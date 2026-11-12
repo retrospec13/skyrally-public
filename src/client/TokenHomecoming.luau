@@ -103,7 +103,9 @@ function TokenHomecoming.busy(): boolean
 end
 
 -- Flies a token from screen point (x0, y0) into the HUD counter. HudExtras holds the count-up until it lands.
-function TokenHomecoming.flyFrom(x0: number, y0: number)
+-- follow: a GUI object the token sits on while it spins (the results card pops in under it: its live centre, not the
+-- point it had when the flight started; that stale point put the coin over the "1ST" title).
+function TokenHomecoming.flyFrom(x0: number, y0: number, follow: GuiObject?)
 	if not gui then
 		build()
 	end
@@ -148,6 +150,11 @@ function TokenHomecoming.flyFrom(x0: number, y0: number)
 			endPx = math.max(14, target.AbsoluteSize.X)
 		end
 		if t < hold then
+			if follow and follow.Parent and follow.AbsoluteSize.X > 0 then
+				x0 = follow.AbsolutePosition.X + follow.AbsoluteSize.X / 2
+				y0 = follow.AbsolutePosition.Y + follow.AbsoluteSize.Y / 2
+				coin.Position = UDim2.fromOffset(x0, y0)
+			end
 			coin.Size = UDim2.fromOffset(TOKEN_PX * (0.15 + 0.85 * spin), TOKEN_PX)
 			return
 		end
@@ -206,7 +213,7 @@ function TokenHomecoming.flyFromGui(obj: GuiObject?)
 	local cam = workspace.CurrentCamera
 	local vp = if cam then cam.ViewportSize else Vector2.new(1280, 720)
 	if obj and obj.Parent and obj.AbsoluteSize.X > 0 then
-		TokenHomecoming.flyFrom(obj.AbsolutePosition.X + obj.AbsoluteSize.X / 2, obj.AbsolutePosition.Y + obj.AbsoluteSize.Y / 2)
+		TokenHomecoming.flyFrom(obj.AbsolutePosition.X + obj.AbsoluteSize.X / 2, obj.AbsolutePosition.Y + obj.AbsoluteSize.Y / 2, obj)
 	else
 		TokenHomecoming.flyFrom(vp.X * 0.5, vp.Y * 0.45)
 	end

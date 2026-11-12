@@ -268,7 +268,9 @@ class Island2Plan(unittest.TestCase):
         f = self.route.frame_at(pad["station"])
         pos = f.offset(pad["lateral"], 0)
         self.assertLess(min(math.hypot(pos[0] - x, pos[2] - z) for x, z in line), 8.0)
-        self.assertGreater(pad["station"], self.gp["startGrid"]["station"] + 24)  # clear of the grid's front row
+        # v37: no free boost at GO: the pad lies 150+ studs (horizontal) from the grid's front row
+        g = self.route.frame_at(self.gp["startGrid"]["station"]).pos
+        self.assertGreater(math.hypot(pos[0] - g[0], pos[2] - g[2]), 150.0)
 
     def test_cliff_line_exit_tell(self):
         # ground chevrons along the run-out on the inland plain, pointing along the road, all off the deck

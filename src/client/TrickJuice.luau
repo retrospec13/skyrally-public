@@ -15,6 +15,7 @@ local Shared = ReplicatedStorage:WaitForChild("Shared")
 -- Audit H13: trick cues go through the EFFECTS slider.
 local Settings = require(script.Parent:WaitForChild("Settings"))
 local HudMetrics = require(script.Parent:WaitForChild("HudMetrics"))
+local HudLayoutRules = require(Shared:WaitForChild("HudLayoutRules"))
 
 local TrickJuice = {}
 
@@ -215,12 +216,28 @@ local function buildRing()
 	-- The GAS!/TAP! slot: HudLayoutRules rects.startRing.
 	b.AnchorPoint = Vector2.zero
 	placeRing(b)
-	b.BackgroundColor3 = Color3.fromRGB(44, 30, 20)
-	b.BackgroundTransparency = 0.25
+	-- UI v2: a round go-green key (gradient, ink outline, white display text); the outline pulses gold on the "1".
+	b.BackgroundColor3 = Color3.fromRGB(90, 230, 115)
+	b.BackgroundTransparency = 0
 	b.AutoButtonColor = false
 	b.Font = Enum.Font.GothamBlack
+	b.FontFace = Font.new("rbxasset://fonts/families/Montserrat.json", Enum.FontWeight.Heavy, Enum.FontStyle.Italic)
 	b.TextScaled = true
-	b.TextColor3 = Color3.fromRGB(250, 242, 222)
+	b.TextColor3 = Color3.new(1, 1, 1)
+	local face = Instance.new("UIGradient")
+	face.Rotation = 90
+	face.Color = ColorSequence.new({
+		ColorSequenceKeypoint.new(0, Color3.new(1, 1, 1)),
+		ColorSequenceKeypoint.new(0.46, Color3.fromRGB(225, 240, 228)),
+		ColorSequenceKeypoint.new(0.47, Color3.fromRGB(190, 215, 196)),
+		ColorSequenceKeypoint.new(1, Color3.fromRGB(80, 140, 95)),
+	})
+	face.Parent = b
+	local textInk = Instance.new("UIStroke")
+	textInk.ApplyStrokeMode = Enum.ApplyStrokeMode.Contextual
+	textInk.Color = Color3.fromRGB(11, 21, 51)
+	textInk.Thickness = 2.5
+	textInk.Parent = b
 	b.TextWrapped = true
 	b.Selectable = false -- never steals gamepad selection on the grid
 	b.Text = "ON 1"
@@ -234,8 +251,8 @@ local function buildRing()
 	corner.CornerRadius = UDim.new(1, 0)
 	corner.Parent = b
 	local stroke = Instance.new("UIStroke")
-	stroke.Thickness = 5
-	stroke.Color = Color3.fromRGB(188, 168, 142)
+	stroke.Thickness = 4
+	stroke.Color = Color3.fromRGB(11, 21, 51)
 	stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 	stroke.Parent = b
 	local sc = Instance.new("UIScale")
@@ -274,23 +291,26 @@ function TrickJuice.setStartRing(show: boolean, green: boolean, onTap: (() -> ()
 		ringGreen = false
 		ringTouch = touch
 		if ringStroke then
-			ringStroke.Color = Color3.fromRGB(188, 168, 142)
+			ringStroke.Color = Color3.fromRGB(11, 21, 51)
 		end
 		if ringBtn then
 			ringBtn.Text = if touch then "TAP ON 1" else "GAS ON 1"
+			ringBtn.BackgroundColor3 = Color3.fromRGB(58, 98, 200)
 			ringBtn.Active = touch
 		end
 	end
 	if show and green ~= ringGreen then
 		ringGreen = green
 		if ringStroke then
-			ringStroke.Color = if green then Color3.fromRGB(110, 255, 120) else Color3.fromRGB(188, 168, 142)
+			ringStroke.Color = if green then Color3.fromRGB(255, 216, 61) else Color3.fromRGB(11, 21, 51)
 		end
 		if ringBtn then
 			ringBtn.Text = if green then (if ringTouch then "TAP!" else "GAS!") elseif ringTouch then "TAP ON 1" else "GAS ON 1"
+			-- waiting: a navy key; the window: the go-green key with the gold rim
+			ringBtn.BackgroundColor3 = if green then Color3.fromRGB(90, 230, 115) else Color3.fromRGB(58, 98, 200)
 		end
 		if green and ringScale then
-			ringScale.Scale = 1.25
+			ringScale.Scale = HudLayoutRules.RING_PULSE -- the layout keeps this much room round the ring
 			TweenService:Create(ringScale, TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.Out), { Scale = 1 }):Play()
 		end
 	end

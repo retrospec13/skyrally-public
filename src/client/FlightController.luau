@@ -29,6 +29,9 @@ local TrickRules = require(Shared:WaitForChild("TrickRules"))
 local DodgeRules = require(Shared:WaitForChild("DodgeRules"))
 local MissileRules = require(Shared:WaitForChild("MissileRules"))
 local TrickJuice = require(script.Parent:WaitForChild("TrickJuice"))
+local StartFx = require(script.Parent:WaitForChild("StartFx")) -- v37 rocket start: exhaust charge glow, whine, GO burst
+local Slipstream = require(script.Parent:WaitForChild("Slipstream")) -- v37: a rival's wake charges a slingshot
+local SlipstreamRules = require(Shared:WaitForChild("SlipstreamRules"))
 -- Way-out rules (trap audit G5, G4, D4-02 fix 4): manual respawn cooldown, stuck watchdog, crash-loop guard.
 local RespawnRules = require(Shared:WaitForChild("RespawnRules"))
 -- Style lane (REMARKABLE Batch 2 items 16-17) and the course leash / alternate lines (trap audit G5.4, G8).
@@ -577,10 +580,17 @@ function FlightController.applyItemEffect(kind: string, data: any)
 		LocalPlayer:SetAttribute("BoostState", "None")
 		LocalPlayer:SetAttribute("ItemStunned", true)
 		StyleChain.breakChain("ItemHit") -- REMARKABLE 17
+		-- v38 (Mario Kart 8): a hit spills coins (ItemRules.COIN_HIT_LOSS) and the top-speed bonus they gave.
+		FlightController.speedPickups = math.max(0, FlightController.speedPickups - ItemRules.COIN_HIT_LOSS)
+		LocalPlayer:SetAttribute("SpeedPickups", FlightController.speedPickups)
 		FlightController.currentSpeed = math.min(FlightController.currentSpeed, PlaneConfig.BASE_SPEED * ItemRules.TUNING.stunSpeedFactor)
 		FlightController.addTrauma(0.55)
 		FlightController.triggerHitStop(0.05)
 		-- REMARKABLE item 14: no crash thud here; ItemClient plays the comic BONK for an item hit (thud as fallback).
+	elseif kind == "coins" then
+		-- v38 Coin Pouch / Item Steal fallback: race coins straight into the count (capped like Speed pods).
+		FlightController.speedPickups = math.min(PlaneConfig.MAX_SPEED_PICKUPS, FlightController.speedPickups + math.max(0, math.floor(tonumber(d.count) or 0)))
+		LocalPlayer:SetAttribute("SpeedPickups", FlightController.speedPickups)
 	elseif kind == "slow" then
 		FlightController.itemSlowTimer = math.clamp(tonumber(d.seconds) or 1, 0, ItemRules.SLOW.maxSeconds)
 		FlightController.itemSlowFactor = math.clamp(tonumber(d.factor) or 1, ItemRules.SLOW.floor, 1)
@@ -1146,7 +1156,7 @@ local function evaluateRingsAndPads(pos: Vector3, lookVec: Vector3, dt: number):
 						local threaded = FlightController.rollTimer > 0 or now - rollEndClock <= THREAD_GRACE
 						if threaded then
 							FlightController.boostTimer = math.max(FlightController.boostTimer, PlaneConfig.BOOST_DURATION + TrickRules.ROLL_RING_BONUS)
-							TrickJuice.callout("THREADED!", TrickJuice.MINT, 1.1)
+							TrickJuice.callout("THREADED", TrickJuice.MINT, 1.1)
 							TrickJuice.play("trick_stuck", 1.2)
 							StyleChain.event("Threaded") -- REMARKABLE 17
 							Vfx.burst("trickLand", CFrame.lookAt(trig.Position, trig.Position + lookVec), 0.8)
@@ -1297,9 +1307,10 @@ local function updateChaseCamera(hullCF: CFrame, dt: number, velocity: Vector3?)
 	-- Boost ignite punch (Vfx.boostPunch): the FOV overshoot rides on top of the smoothed FOV, so the smoothing does not
 	-- swallow it; the queued trauma joins the shake above on the next frame.
 	local fovPunch = if FlightController.hitStopTimer > 0 then 3.5 else 0
-	local targetFov = (if FlightController.boostState ~= "None" then PlaneConfig.CAM_BOOST_FOV else PlaneConfig.CAM_BASE_FOV) + fovPunch
+	local boostFov = if FlightController.boostState == "Overcharge" then PlaneConfig.CAM_OVERCHARGE_FOV else PlaneConfig.CAM_BOOST_FOV
+	local targetFov = (if FlightController.boostState ~= "None" then boostFov else PlaneConfig.CAM_BASE_FOV) + fovPunch
 	local baseFov = cam.FieldOfView - appliedFovKick
-	baseFov = baseFov + (targetFov - baseFov) * math.clamp(dt * 9, 0, 1)
+	baseFov = baseFov + (targetFov - baseFov) * math.clamp(dt * (if targetFov >= baseFov then 9 else PlaneConfig.CAM_FOV_EASE_BACK), 0, 1)
 	appliedFovKick = Vfx.fovKick()
 	cam.FieldOfView = baseFov + appliedFovKick
 	local punchTrauma = Vfx.takeTrauma()
@@ -1326,25 +1337,36 @@ function FlightController.applyStart(goTime: any)
 	TrickJuice.setStartRing(false, false, nil)
 	gridRev = 0
 	if type(goTime) ~= "number" or workspace:GetServerTimeNow() - goTime > 0.5 then
+		StartFx.stop()
 		return
 	end
 	local state = planeStart.state
 	LocalPlayer:SetAttribute("StartResult", state)
-	if state == "perfect" then
+	local h = FlightController.hull
+	if state == "perfect" or state == "good" then
+		-- v37 rocket start: the ring boost speed (BOOST_SPEED) for the grade's time; the callout waits for GO! to clear.
+		local perfect = state == "perfect"
 		FlightController.triggerBoost(false)
-		FlightController.boostTimer = TrickRules.START_BOOST_TIME
-		TrickJuice.play("start_perfect")
-		TrickJuice.callout("PERFECT START!", TrickJuice.BLUE, 1.2)
-		StyleChain.event("PerfectStart") -- REMARKABLE 17
+		FlightController.boostTimer = TrickRules.startBoostTime(state)
+		if h then
+			StartFx.release(h, planeExhaustCF(h), state)
+		end
+		TrickJuice.play("start_perfect", if perfect then 1 else 0.9)
+		task.delay(0.7, TrickJuice.callout, if perfect then "ROCKET START" else "GOOD START", TrickJuice.BLUE, 1.1)
+		if perfect then
+			StyleChain.event("PerfectStart") -- REMARKABLE 17
+		end
 	elseif state == "flooded" then
+		StartFx.stop()
 		planeFloodTimer = TrickRules.FLOOD_TIME
-		local h = FlightController.hull
 		if h then
 			Vfx.burst("floodPuff", planeExhaustCF(h), 1)
 		end
 		TrickJuice.play("start_flood")
-		TrickJuice.callout("FLOODED!", TrickJuice.SOOT, 1.1)
+		task.delay(0.7, TrickJuice.callout, "STALLED", TrickJuice.SOOT, 1.1)
 		FlightController.addTrauma(0.15)
+	else
+		StartFx.stop()
 	end
 	print(string.format("[SkyRally][TRICK] plane start=%s", state))
 end
@@ -1517,13 +1539,18 @@ local function stepFlight(dt: number)
 			if state == "flooded" then
 				revTarget = 0.3 + 0.25 * math.sin(os.clock() * 23)
 				planeFloodPuff -= clampedDt
+				if before ~= "flooded" then
+					require(script.Parent:WaitForChild("Sfx37")).play("burnt_sputter", 0.5) -- v37: the burnt start cough
+				end
 				if before ~= "flooded" or planeFloodPuff <= 0 then
 					planeFloodPuff = 0.7
 					Vfx.burst("floodPuff", planeExhaustCF(hull), 0.35)
 				end
 			end
+			StartFx.step(hull, planeExhaustCF(hull), state, TrickRules.startCharge(planeStart, left))
 			gridRev += (revTarget - gridRev) * math.clamp(clampedDt / 0.15, 0, 1)
 		else
+			StartFx.stop()
 			TrickJuice.setStartRing(false, false, nil)
 			gridRev = 0
 		end
@@ -1759,10 +1786,24 @@ local function stepFlight(dt: number)
 	LocalPlayer:SetAttribute("PlayerSteerX", math.floor(playerSteer.X * 100) / 100)
 	LocalPlayer:SetAttribute("AssistWeight", math.floor(FlightController.assistWeight * 100) / 100)
 
-	-- FLOODED start: the gas is capped for FLOOD_TIME after GO.
+	-- FLOODED (burnt) start: the engine stalls for FLOOD_TIME after GO; a plane cannot stop in the air, so it sags to
+	-- MIN_CRUISE_SPEED (throttle held at full brake) while the soot puffs, then picks up.
 	if planeFloodTimer > 0 then
 		planeFloodTimer = math.max(0, planeFloodTimer - clampedDt)
-		throttle = math.min(throttle, TrickRules.FLOOD_THROTTLE_CAP)
+		throttle = -1
+		throttleReleaseDuration = 0 -- the stall never arms a ring overcharge
+	end
+
+	-- Slipstream (v37): a rival's wake charges a slingshot (the ring boost speed for PLANE_SECONDS). Races only.
+	if RaceAttr.mine("RaceMode") ~= "hub" and FlightController.itemStunTimer <= 0 then
+		if Slipstream.step(clampedDt, hull, FlightController.currentSpeed, 6) then
+			local prevTimer = FlightController.boostTimer
+			FlightController.triggerBoost(false)
+			FlightController.boostTimer = math.max(prevTimer, SlipstreamRules.PLANE_SECONDS)
+			LocalPlayer:SetAttribute("DraftCount", ((LocalPlayer:GetAttribute("DraftCount") :: number?) or 0) + 1)
+		end
+	else
+		Slipstream.stop()
 	end
 
 	-- Dodge / barrel roll (REMARKABLE item 7): DOUBLE-TAP left or right (A/D or arrows, D-pad or stick flick twice, a double
@@ -2120,7 +2161,7 @@ function FlightController.init()
 			TrickJuice.play("trick_stuck", if data.vehicle == "plane" then 1.12 else 0.92)
 			Sfx.play("respawn_pop", 1, 0.58)
 			FlightController.addTrauma(0.25)
-			TrickJuice.callout(if data.vehicle == "plane" then "PLANE!" else "CAR!", if data.vehicle == "plane" then TrickJuice.BLUE else TrickJuice.GOLD, 1.2)
+			TrickJuice.callout(if data.vehicle == "plane" then "PLANE" else "CAR", if data.vehicle == "plane" then TrickJuice.BLUE else TrickJuice.GOLD, 1.2)
 			LocalPlayer:SetAttribute("LastExchange", if type(data.vehicle) == "string" then data.vehicle else nil)
 		end
 	end

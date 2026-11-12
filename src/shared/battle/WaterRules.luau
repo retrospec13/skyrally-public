@@ -100,6 +100,11 @@ WaterRules.LOOK_RUN = 24
 -- (BattleBots aims at Goal.attack when set and only falls back to the nearest rival when it is nil).
 WaterRules.HUMAN_SHOT_GAP = 12
 WaterRules.HOLD_FIRE = "hold"
+-- V4-3 (ISLAND verification: 24 "water unstick" events, the same bot spots over and over, beside the cavern-mouth barrier):
+-- the barrier's invisible collider sits across the road and the rock beside its jambs leaves a pocket a bot drives into
+-- (the pods and patrol cells there read as dry open sand from above) and freezes in. Car bots plan no goal, hunt or path
+-- inside the barrier's footprint grown by this many studs; the barrier, terrain and walls themselves are untouched.
+WaterRules.KEEP_OUT_PAD = 18
 
 export type Step = {
 	step: number, -- 1-based, in time order
@@ -179,7 +184,11 @@ export type Course = {
 	center: Vector3,
 	within: number, -- bots pick dry ground no further than this from the centre (inside the edge pull)
 	board: boolean, -- beach bots may plan gangway trips onto the decks (BOTS_BOARD)
+	keepOut: { KeepOut }?, -- V4-3: ground beside a battle barrier that car bots never pick as a goal or drive a path through
 }
+
+-- A flat oriented box (centre, unit axes, half extents) around a battle barrier, grown by KEEP_OUT_PAD.
+export type KeepOut = { x: number, z: number, ax: number, az: number, bx: number, bz: number, hw: number, hd: number }
 
 export type Motion = {
 	anchor: { [string]: Vector3 }, -- where the entrant was when the window started
@@ -858,8 +867,53 @@ function WaterRules.deckY(battle: any): number?
 	return if type(main) == "table" then num(main.y) else nil
 end
 
+-- Footprints of the plan's battle barriers (modes.battle.barriers: cf = CFrame, collider.size = Vector3), grown by pad.
+function WaterRules.keepOuts(battle: any, pad: number?): { KeepOut }
+	local out: { KeepOut } = {}
+	local list = if type(battle) == "table" then battle.barriers else nil
+	if type(list) ~= "table" then
+		return out
+	end
+	local grow = pad or WaterRules.KEEP_OUT_PAD
+	for _, b in list do
+		if type(b) == "table" and typeof(b.cf) == "CFrame" then
+			local cf: CFrame = b.cf
+			local col = b.collider
+			local size = if type(col) == "table" and typeof(col.size) == "Vector3" then col.size else Vector3.new(30, 0, 3)
+			local right, look = flat(cf.RightVector), flat(cf.LookVector)
+			if right.Magnitude > 1e-3 and look.Magnitude > 1e-3 then
+				right, look = right.Unit, look.Unit
+				table.insert(out, {
+					x = cf.X,
+					z = cf.Z,
+					ax = right.X,
+					az = right.Z,
+					bx = look.X,
+					bz = look.Z,
+					hw = size.X / 2 + grow,
+					hd = size.Z / 2 + grow,
+				})
+			end
+		end
+	end
+	return out
+end
+
+function WaterRules.inKeepOut(list: { KeepOut }?, x: number, z: number): boolean
+	if list then
+		for _, k in list do
+			local dx, dz = x - k.x, z - k.z
+			if math.abs(dx * k.ax + dz * k.az) <= k.hw and math.abs(dx * k.bx + dz * k.bz) <= k.hd then
+				return true
+			end
+		end
+	end
+	return false
+end
+
 function WaterRules.course(battle: any, center: Vector3, within: number, grid: Grid?, rise: number?): Course
 	return {
+		keepOut = WaterRules.keepOuts(battle),
 		tide = WaterRules.tide(battle, rise),
 		grid = grid,
 		gangways = WaterRules.gangways(battle),
@@ -1118,6 +1172,13 @@ function WaterRules.botGoal(course: Course, v: BotView): Goal
 	if not deck and not board then
 		skip = function(x: number, z: number, h: number): boolean
 			return WaterRules.offBeach(course, x, z, h)
+		end
+	end
+	local keep = course.keepOut
+	if not deck and keep and #keep > 0 then
+		local inner = skip
+		skip = function(x: number, z: number, h: number): boolean
+			return WaterRules.inKeepOut(keep, x, z) or (inner ~= nil and inner(x, z, h))
 		end
 	end
 

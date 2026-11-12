@@ -78,6 +78,7 @@
     {
       "id": "178130996",
       "paths": [
+        "src/client/DisplayCars.luau",
         "src/client/PilotPose.luau",
         "src/server/kit/PilotSeat.luau"
       ]
@@ -280,6 +281,7 @@
     {
       "id": "2506281703",
       "paths": [
+        "src/client/DisplayCars.luau",
         "src/client/PilotPose.luau",
         "src/server/kit/PilotSeat.luau"
       ]
@@ -313,13 +315,49 @@
       ]
     },
     {
+      "id": "10128760939",
+      "paths": [
+        "src/shared/ToolboxAudio.luau"
+      ]
+    },
+    {
+      "id": "10128766965",
+      "paths": [
+        "src/shared/ToolboxAudio.luau"
+      ]
+    },
+    {
       "id": "12182258755",
       "paths": [
         "tools/tests/artswap_spec.luau"
       ]
     },
     {
+      "id": "15675024286",
+      "paths": [
+        "src/shared/ToolboxAudio.luau"
+      ]
+    },
+    {
+      "id": "15675028888",
+      "paths": [
+        "src/shared/ToolboxAudio.luau"
+      ]
+    },
+    {
       "id": "15675043410",
+      "paths": [
+        "src/shared/ToolboxAudio.luau"
+      ]
+    },
+    {
+      "id": "15675055424",
+      "paths": [
+        "src/shared/ToolboxAudio.luau"
+      ]
+    },
+    {
+      "id": "15675059323",
       "paths": [
         "src/shared/ToolboxAudio.luau"
       ]
@@ -337,7 +375,37 @@
       ]
     },
     {
+      "id": "17208186900",
+      "paths": [
+        "src/shared/ToolboxAudio.luau"
+      ]
+    },
+    {
+      "id": "17208339919",
+      "paths": [
+        "src/shared/ToolboxAudio.luau"
+      ]
+    },
+    {
+      "id": "17208353912",
+      "paths": [
+        "src/shared/ToolboxAudio.luau"
+      ]
+    },
+    {
       "id": "17208361335",
+      "paths": [
+        "src/shared/ToolboxAudio.luau"
+      ]
+    },
+    {
+      "id": "17208372272",
+      "paths": [
+        "src/shared/ToolboxAudio.luau"
+      ]
+    },
+    {
+      "id": "17208380755",
       "paths": [
         "src/shared/ToolboxAudio.luau"
       ]
@@ -382,6 +450,12 @@
       ]
     },
     {
+      "id": "70807661241168",
+      "paths": [
+        "src/shared/SfxV37Assets.luau"
+      ]
+    },
+    {
       "id": "70943744855332",
       "paths": [
         "assets/materials/space_v1/tiles/uploaded.json",
@@ -416,6 +490,12 @@
       "id": "71307292440010",
       "paths": [
         "src/shared/ArchV3Assets.luau"
+      ]
+    },
+    {
+      "id": "71436645525401",
+      "paths": [
+        "src/shared/UiV2Icons.luau"
       ]
     },
     {
@@ -494,6 +574,12 @@
       ]
     },
     {
+      "id": "72788931089327",
+      "paths": [
+        "src/shared/UiV3Frames.luau"
+      ]
+    },
+    {
       "id": "72928167174420",
       "paths": [
         "src/shared/PayoffImages.luau"
@@ -508,9 +594,21 @@
       ]
     },
     {
+      "id": "73035874743132",
+      "paths": [
+        "src/shared/SfxV37Assets.luau"
+      ]
+    },
+    {
       "id": "73158802886449",
       "paths": [
         "src/shared/SoundscapeAudio.luau"
+      ]
+    },
+    {
+      "id": "73170844219815",
+      "paths": [
+        "src/shared/UiV3Frames.luau"
       ]
     },
     {
@@ -571,6 +669,12 @@
       ]
     },
     {
+      "id": "74071290419121",
+      "paths": [
+        "src/shared/SfxV37Assets.luau"
+      ]
+    },
+    {
       "id": "74224781711953",
       "paths": [
         "assets/materials/forest_v1/tiles/uploaded.json",
@@ -614,6 +718,12 @@
       "id": "75140373018607",
       "paths": [
         "src/shared/ItemAudio.luau"
+      ]
+    },
+    {
+      "id": "75491628932812",
+      "paths": [
+        "src/shared/UiV2Icons.luau"
       ]
     },
     {
@@ -723,6 +833,12 @@
       ]
     },
     {
+      "id": "77105594122325",
+      "paths": [
+        "src/shared/UiV2Icons.luau"
+      ]
+    },
+    {
       "id": "77128619412815",
       "paths": [
         "src/shared/PropModelAssets.luau"
@@ -792,10 +908,22 @@
       ]
     },
     {
+      "id": "78530256285475",
+      "paths": [
+        "src/shared/CourseArt.luau"
+      ]
+    },
+    {
       "id": "79572729185505",
       "paths": [
         "assets/materials/forest_v1/tiles/uploaded.json",
         "src/shared/materials_forest.luau"
+      ]
+    },
+    {
+      "id": "79601562623862",
+      "paths": [
+        "src/shared/UiV2Icons.luau"
       ]
     },
     {
@@ -836,6 +964,12 @@
       ]
     },
     {
+      "id": "80111293262467",
+      "paths": [
+        "src/shared/UiV2Icons.luau"
+      ]
+    },
+    {
       "id": "80155520785020",
       "paths": [
         "assets/materials/snow_v1/tiles/uploaded.json",
@@ -866,6 +1000,12 @@
       "id": "80563464543045",
       "paths": [
         "build/model_bakes/73367619545738.rbxm"
+      ]
+    },
+    {
+      "id": "80725167937987",
+      "paths": [
+        "src/shared/UiV2Icons.luau"
       ]
     },
     {
@@ -936,6 +1076,18 @@
       "id": "81727889411312",
       "paths": [
         "src/shared/SoundscapeAudio.luau"
+      ]
+    },
+    {
+      "id": "81999859139334",
+      "paths": [
+        "src/shared/UiV2Icons.luau"
+      ]
+    },
+    {
+      "id": "82211857129501",
+      "paths": [
+        "src/shared/UiV2Icons.luau"
       ]
     },
     {
@@ -1139,6 +1291,12 @@
       ]
     },
     {
+      "id": "85522660403807",
+      "paths": [
+        "src/shared/SfxV37Assets.luau"
+      ]
+    },
+    {
       "id": "85676032324385",
       "paths": [
         "src/shared/sky/island2.luau"
@@ -1148,6 +1306,12 @@
       "id": "85686218201116",
       "paths": [
         "build/model_bakes/125020544671315.rbxm"
+      ]
+    },
+    {
+      "id": "85760554367390",
+      "paths": [
+        "src/shared/UiV2Icons.luau"
       ]
     },
     {
@@ -1260,6 +1424,12 @@
       "id": "87060016087625",
       "paths": [
         "src/shared/CurtainAudio.luau"
+      ]
+    },
+    {
+      "id": "87245524140776",
+      "paths": [
+        "src/shared/UiV2Icons.luau"
       ]
     },
     {
@@ -1383,6 +1553,18 @@
       ]
     },
     {
+      "id": "88354274182287",
+      "paths": [
+        "src/shared/UiV3Frames.luau"
+      ]
+    },
+    {
+      "id": "88358113916705",
+      "paths": [
+        "src/shared/UiV2Icons.luau"
+      ]
+    },
+    {
       "id": "88527849918733",
       "paths": [
         "assets/materials/snow_v1/tiles/uploaded.json",
@@ -1444,6 +1626,18 @@
         "map/hub0/plan.json",
         "map/island2/plan.json",
         "src/shared/VfxAssets.luau"
+      ]
+    },
+    {
+      "id": "89683110761887",
+      "paths": [
+        "src/shared/UiV2Icons.luau"
+      ]
+    },
+    {
+      "id": "90055143518913",
+      "paths": [
+        "src/shared/UiV2Icons.luau"
       ]
     },
     {
@@ -1550,6 +1744,12 @@
       ]
     },
     {
+      "id": "91585306816696",
+      "paths": [
+        "src/shared/UiV2Icons.luau"
+      ]
+    },
+    {
       "id": "91659868394715",
       "paths": [
         "assets/materials/space_v1/tiles/uploaded.json",
@@ -1578,6 +1778,18 @@
       ]
     },
     {
+      "id": "91914250860066",
+      "paths": [
+        "src/shared/UiV3Frames.luau"
+      ]
+    },
+    {
+      "id": "91936004281228",
+      "paths": [
+        "src/shared/SfxV37Assets.luau"
+      ]
+    },
+    {
       "id": "91970748557330",
       "paths": [
         "src/shared/FoliageModelAssets.luau"
@@ -1603,9 +1815,33 @@
       ]
     },
     {
+      "id": "92115970029610",
+      "paths": [
+        "src/shared/SfxV37Assets.luau"
+      ]
+    },
+    {
+      "id": "92193866065639",
+      "paths": [
+        "src/shared/UiV2Icons.luau"
+      ]
+    },
+    {
       "id": "92200603596874",
       "paths": [
         "src/shared/WorldMomentsAudio.luau"
+      ]
+    },
+    {
+      "id": "92244182230081",
+      "paths": [
+        "src/shared/SfxV37Assets.luau"
+      ]
+    },
+    {
+      "id": "92246143020187",
+      "paths": [
+        "src/shared/UiV2Icons.luau"
       ]
     },
     {
@@ -1629,6 +1865,12 @@
       ]
     },
     {
+      "id": "92633216612120",
+      "paths": [
+        "src/shared/UiV2Icons.luau"
+      ]
+    },
+    {
       "id": "92645791747968",
       "paths": [
         "src/shared/UiAudioAssets.luau"
@@ -1640,6 +1882,12 @@
         "build/model_bakes/manifest.json",
         "default.project.json",
         "src/shared/BossConfig.luau"
+      ]
+    },
+    {
+      "id": "92805950737024",
+      "paths": [
+        "src/shared/UiV2Icons.luau"
       ]
     },
     {
@@ -1788,6 +2036,18 @@
       ]
     },
     {
+      "id": "95137497177828",
+      "paths": [
+        "src/shared/UiV2Icons.luau"
+      ]
+    },
+    {
+      "id": "95235813881303",
+      "paths": [
+        "src/shared/UiV2Icons.luau"
+      ]
+    },
+    {
       "id": "95302879649125",
       "paths": [
         "src/shared/BarrierAudio.luau"
@@ -1797,6 +2057,12 @@
       "id": "95318684909905",
       "paths": [
         "src/shared/AudioAssets.luau"
+      ]
+    },
+    {
+      "id": "95465989727088",
+      "paths": [
+        "src/shared/SfxV37Assets.luau"
       ]
     },
     {
@@ -1876,6 +2142,12 @@
       ]
     },
     {
+      "id": "96922358018047",
+      "paths": [
+        "src/shared/UiV2Icons.luau"
+      ]
+    },
+    {
       "id": "96955416919064",
       "paths": [
         "src/shared/UiAudioAssets.luau"
@@ -1893,6 +2165,12 @@
       "id": "97174792056778",
       "paths": [
         "src/shared/PropV3Assets.luau"
+      ]
+    },
+    {
+      "id": "97329890655729",
+      "paths": [
+        "src/shared/UiV2Icons.luau"
       ]
     },
     {
@@ -1971,6 +2249,12 @@
       "id": "98194334280996",
       "paths": [
         "src/shared/ArchModelAssets.luau"
+      ]
+    },
+    {
+      "id": "98225292703252",
+      "paths": [
+        "src/shared/UiV3Frames.luau"
       ]
     },
     {
@@ -2056,6 +2340,12 @@
       ]
     },
     {
+      "id": "99076284961241",
+      "paths": [
+        "src/shared/SfxV37Assets.luau"
+      ]
+    },
+    {
       "id": "99077326544330",
       "paths": [
         "src/shared/AtmosTexAssets.luau"
@@ -2111,6 +2401,12 @@
       "id": "99741231991015",
       "paths": [
         "default.project.json"
+      ]
+    },
+    {
+      "id": "99887692070482",
+      "paths": [
+        "src/shared/UiV2Icons.luau"
       ]
     },
     {
@@ -2194,6 +2490,12 @@
       "id": "100697863750024",
       "paths": [
         "default.project.json"
+      ]
+    },
+    {
+      "id": "100819883768999",
+      "paths": [
+        "src/shared/UiV2Icons.luau"
       ]
     },
     {
@@ -2333,6 +2635,12 @@
       ]
     },
     {
+      "id": "103142359356426",
+      "paths": [
+        "src/shared/UiV2Icons.luau"
+      ]
+    },
+    {
       "id": "103544530874151",
       "paths": [
         "build/model_bakes/125020544671315.rbxm"
@@ -2344,6 +2652,12 @@
         "assets/materials/snow_v1/tiles/uploaded.json",
         "default.project.json",
         "src/shared/materials_snow.luau"
+      ]
+    },
+    {
+      "id": "103747164152870",
+      "paths": [
+        "src/shared/UiV2Icons.luau"
       ]
     },
     {
@@ -2438,6 +2752,12 @@
       ]
     },
     {
+      "id": "104759489026409",
+      "paths": [
+        "src/shared/UiV3Frames.luau"
+      ]
+    },
+    {
       "id": "104782170740493",
       "paths": [
         "src/shared/PropLibrary.luau"
@@ -2501,10 +2821,22 @@
       ]
     },
     {
+      "id": "105624424990963",
+      "paths": [
+        "src/shared/UiV2Icons.luau"
+      ]
+    },
+    {
       "id": "105667771363155",
       "paths": [
         "assets/materials/dino_v1/tiles/uploaded.json",
         "src/shared/MaterialAssets.luau"
+      ]
+    },
+    {
+      "id": "105748520149435",
+      "paths": [
+        "src/shared/CourseArt.luau"
       ]
     },
     {
@@ -2513,6 +2845,12 @@
         "assets/materials/dino_v1/tiles/uploaded.json",
         "default.project.json",
         "src/shared/MaterialAssets.luau"
+      ]
+    },
+    {
+      "id": "105788180709703",
+      "paths": [
+        "src/shared/UiV2Icons.luau"
       ]
     },
     {
@@ -2549,6 +2887,12 @@
       "id": "106621334478228",
       "paths": [
         "build/model_bakes/70418724316306.rbxm"
+      ]
+    },
+    {
+      "id": "106689197082173",
+      "paths": [
+        "src/shared/UiV3Frames.luau"
       ]
     },
     {
@@ -2624,6 +2968,12 @@
       ]
     },
     {
+      "id": "107944000087656",
+      "paths": [
+        "src/shared/UiV2Icons.luau"
+      ]
+    },
+    {
       "id": "108199447975963",
       "paths": [
         "src/shared/SetPiecesAudio.luau"
@@ -2652,6 +3002,12 @@
       ]
     },
     {
+      "id": "108942517917148",
+      "paths": [
+        "src/shared/UiV2Icons.luau"
+      ]
+    },
+    {
       "id": "109102943023500",
       "paths": [
         "build/model_bakes/125020544671315.rbxm"
@@ -2670,11 +3026,23 @@
       ]
     },
     {
+      "id": "109454982185473",
+      "paths": [
+        "src/shared/UiV2Icons.luau"
+      ]
+    },
+    {
       "id": "109472149744069",
       "paths": [
         "build/model_bakes/107580586112839.rbxm",
         "build/model_bakes/123393240062345.rbxm",
         "build/model_bakes/70418724316306.rbxm"
+      ]
+    },
+    {
+      "id": "109504459472702",
+      "paths": [
+        "src/shared/UiV3Frames.luau"
       ]
     },
     {
@@ -2693,6 +3061,12 @@
       "id": "109756077171596",
       "paths": [
         "src/shared/PropModelAssets.luau"
+      ]
+    },
+    {
+      "id": "109835003875901",
+      "paths": [
+        "src/shared/UiV2Icons.luau"
       ]
     },
     {
@@ -2743,6 +3117,12 @@
       ]
     },
     {
+      "id": "110709492173077",
+      "paths": [
+        "src/shared/SfxV37Assets.luau"
+      ]
+    },
+    {
       "id": "110835552854373",
       "paths": [
         "assets/materials/island_v1/tiles/uploaded.json",
@@ -2751,9 +3131,33 @@
       ]
     },
     {
+      "id": "110868408763520",
+      "paths": [
+        "src/shared/SfxV37Assets.luau"
+      ]
+    },
+    {
+      "id": "110871403800180",
+      "paths": [
+        "src/shared/UiV3Frames.luau"
+      ]
+    },
+    {
+      "id": "110996586384232",
+      "paths": [
+        "src/shared/SfxV37Assets.luau"
+      ]
+    },
+    {
       "id": "111096669320945",
       "paths": [
         "default.project.json"
+      ]
+    },
+    {
+      "id": "111114319060020",
+      "paths": [
+        "src/shared/UiV3Frames.luau"
       ]
     },
     {
@@ -2788,6 +3192,12 @@
       "id": "111416857814804",
       "paths": [
         "src/shared/SfxV2Audio.luau"
+      ]
+    },
+    {
+      "id": "111434857108237",
+      "paths": [
+        "src/shared/UiV2Icons.luau"
       ]
     },
     {
@@ -2841,9 +3251,21 @@
       ]
     },
     {
+      "id": "112509680128593",
+      "paths": [
+        "src/shared/UiV3Frames.luau"
+      ]
+    },
+    {
       "id": "112510447932818",
       "paths": [
         "default.project.json"
+      ]
+    },
+    {
+      "id": "112627334259414",
+      "paths": [
+        "src/shared/UiV2Icons.luau"
       ]
     },
     {
@@ -2872,6 +3294,12 @@
       ]
     },
     {
+      "id": "113262384744874",
+      "paths": [
+        "src/shared/UiV2Icons.luau"
+      ]
+    },
+    {
       "id": "113408161505652",
       "paths": [
         "src/shared/SfxV2Audio.luau"
@@ -2882,6 +3310,12 @@
       "paths": [
         "assets/materials/snow_v1/tiles/uploaded.json",
         "src/shared/materials_snow.luau"
+      ]
+    },
+    {
+      "id": "113684871072849",
+      "paths": [
+        "src/shared/SfxV37Assets.luau"
       ]
     },
     {
@@ -3009,6 +3443,12 @@
       ]
     },
     {
+      "id": "116092153502709",
+      "paths": [
+        "src/shared/UiV2Icons.luau"
+      ]
+    },
+    {
       "id": "116106586386868",
       "paths": [
         "src/shared/WorldMomentsAudio.luau"
@@ -3018,6 +3458,12 @@
       "id": "116125446025672",
       "paths": [
         "src/shared/ArchModelAssets.luau"
+      ]
+    },
+    {
+      "id": "116185865299468",
+      "paths": [
+        "src/shared/UiV3Frames.luau"
       ]
     },
     {
@@ -3065,6 +3511,12 @@
       ]
     },
     {
+      "id": "116760550253793",
+      "paths": [
+        "src/shared/UiV2Icons.luau"
+      ]
+    },
+    {
       "id": "116826011462087",
       "paths": [
         "src/shared/PropV3Assets.luau"
@@ -3102,6 +3554,12 @@
         "assets/materials/space_v1/tiles/uploaded.json",
         "default.project.json",
         "src/shared/materials_space.luau"
+      ]
+    },
+    {
+      "id": "117446319980920",
+      "paths": [
+        "src/shared/SfxV37Assets.luau"
       ]
     },
     {
@@ -3147,6 +3605,12 @@
       "paths": [
         "assets/materials/hub_v1/tiles/uploaded.json",
         "src/shared/materials_hub.luau"
+      ]
+    },
+    {
+      "id": "118545457715639",
+      "paths": [
+        "src/shared/SfxV37Assets.luau"
       ]
     },
     {
@@ -3196,6 +3660,12 @@
       "id": "118916892686809",
       "paths": [
         "src/shared/AudioAssets.luau"
+      ]
+    },
+    {
+      "id": "118952179287562",
+      "paths": [
+        "src/shared/UiV2Icons.luau"
       ]
     },
     {
@@ -3298,6 +3768,12 @@
       ]
     },
     {
+      "id": "120561981645423",
+      "paths": [
+        "src/shared/UiV3Frames.luau"
+      ]
+    },
+    {
       "id": "120626758127697",
       "paths": [
         "src/shared/lighting/forest1.luau"
@@ -3334,9 +3810,33 @@
       ]
     },
     {
+      "id": "121452453641498",
+      "paths": [
+        "src/shared/UiV2Icons.luau"
+      ]
+    },
+    {
       "id": "121534182955980",
       "paths": [
         "src/shared/ItemModelAssets.luau"
+      ]
+    },
+    {
+      "id": "121649227557963",
+      "paths": [
+        "src/shared/CourseArt.luau"
+      ]
+    },
+    {
+      "id": "121658348571108",
+      "paths": [
+        "src/shared/UiV2Icons.luau"
+      ]
+    },
+    {
+      "id": "121678070042721",
+      "paths": [
+        "src/shared/UiV3Frames.luau"
       ]
     },
     {
@@ -3361,6 +3861,12 @@
       "id": "122214313310260",
       "paths": [
         "src/shared/StyleAudio.luau"
+      ]
+    },
+    {
+      "id": "122411557902327",
+      "paths": [
+        "src/shared/UiV2Icons.luau"
       ]
     },
     {
@@ -3392,9 +3898,21 @@
       ]
     },
     {
+      "id": "122539820577311",
+      "paths": [
+        "src/shared/UiV2Icons.luau"
+      ]
+    },
+    {
       "id": "122747552050148",
       "paths": [
         "src/shared/PropLibrary.luau"
+      ]
+    },
+    {
+      "id": "122759700838762",
+      "paths": [
+        "src/shared/UiV2Icons.luau"
       ]
     },
     {
@@ -3459,6 +3977,12 @@
       ]
     },
     {
+      "id": "123318017111751",
+      "paths": [
+        "src/shared/UiV3Frames.luau"
+      ]
+    },
+    {
       "id": "123372081868498",
       "paths": [
         "src/shared/ArchV3Assets.luau"
@@ -3494,6 +4018,12 @@
       "id": "123649166831120",
       "paths": [
         "build/model_bakes/134652238361077.rbxm"
+      ]
+    },
+    {
+      "id": "123675009409141",
+      "paths": [
+        "src/shared/UiV2Icons.luau"
       ]
     },
     {
@@ -3598,6 +4128,12 @@
       ]
     },
     {
+      "id": "124808655368679",
+      "paths": [
+        "src/shared/CourseArt.luau"
+      ]
+    },
+    {
       "id": "124861719399692",
       "paths": [
         "src/shared/PropLibrary.luau"
@@ -3607,6 +4143,12 @@
       "id": "124932748189938",
       "paths": [
         "src/shared/WorldModelAssets.luau"
+      ]
+    },
+    {
+      "id": "125017684798433",
+      "paths": [
+        "src/shared/UiV2Icons.luau"
       ]
     },
     {
@@ -3675,6 +4217,12 @@
       ]
     },
     {
+      "id": "125716052030851",
+      "paths": [
+        "src/shared/UiV2Icons.luau"
+      ]
+    },
+    {
       "id": "125986857819715",
       "paths": [
         "assets/materials/forest_v1/tiles/uploaded.json",
@@ -3737,6 +4285,12 @@
       "id": "126956937294792",
       "paths": [
         "src/shared/VfxAssets.luau"
+      ]
+    },
+    {
+      "id": "127494561969731",
+      "paths": [
+        "src/shared/SfxV37Assets.luau"
       ]
     },
     {
@@ -3858,6 +4412,12 @@
       ]
     },
     {
+      "id": "129247658123304",
+      "paths": [
+        "src/shared/UiV2Icons.luau"
+      ]
+    },
+    {
       "id": "129467780013253",
       "paths": [
         "src/shared/PropModelAssets.luau"
@@ -3893,6 +4453,7 @@
     {
       "id": "129814809454701",
       "paths": [
+        "src/client/ItemsV5Fx.luau",
         "src/shared/ItemTexAssets.luau"
       ]
     },
@@ -3963,6 +4524,12 @@
       ]
     },
     {
+      "id": "130654090128969",
+      "paths": [
+        "src/shared/UiV2Icons.luau"
+      ]
+    },
+    {
       "id": "130987769672111",
       "paths": [
         "assets/materials/forest_v1/tiles/uploaded.json",
@@ -3971,10 +4538,22 @@
       ]
     },
     {
+      "id": "131229284996593",
+      "paths": [
+        "src/shared/UiV2Icons.luau"
+      ]
+    },
+    {
       "id": "131375983952763",
       "paths": [
         "assets/materials/forest_v1/tiles/uploaded.json",
         "src/shared/materials_forest.luau"
+      ]
+    },
+    {
+      "id": "131386900786733",
+      "paths": [
+        "src/shared/UiV2Icons.luau"
       ]
     },
     {
@@ -4093,6 +4672,12 @@
       ]
     },
     {
+      "id": "132979843809647",
+      "paths": [
+        "src/shared/UiV2Icons.luau"
+      ]
+    },
+    {
       "id": "133027409202345",
       "paths": [
         "assets/materials/hub_v1/tiles/uploaded.json",
@@ -4103,6 +4688,12 @@
       "id": "133155387810062",
       "paths": [
         "src/shared/PropModelAssets.luau"
+      ]
+    },
+    {
+      "id": "133156664101986",
+      "paths": [
+        "src/shared/UiV2Icons.luau"
       ]
     },
     {
@@ -4158,6 +4749,18 @@
       ]
     },
     {
+      "id": "134151682366110",
+      "paths": [
+        "src/shared/SfxV37Assets.luau"
+      ]
+    },
+    {
+      "id": "134164515304123",
+      "paths": [
+        "src/shared/UiV2Icons.luau"
+      ]
+    },
+    {
       "id": "134311756655813",
       "paths": [
         "src/shared/ItemAudio.luau"
@@ -4196,6 +4799,12 @@
       ]
     },
     {
+      "id": "134788326908983",
+      "paths": [
+        "src/shared/UiV3Frames.luau"
+      ]
+    },
+    {
       "id": "134906323776644",
       "paths": [
         "build/model_bakes/73367619545738.rbxm"
@@ -4208,6 +4817,18 @@
       ]
     },
     {
+      "id": "135034275520304",
+      "paths": [
+        "src/shared/UiV3Frames.luau"
+      ]
+    },
+    {
+      "id": "135034970940653",
+      "paths": [
+        "src/shared/CourseArt.luau"
+      ]
+    },
+    {
       "id": "135111632840959",
       "paths": [
         "src/server/PlaneBuilder.luau"
@@ -4217,6 +4838,12 @@
       "id": "135165017054527",
       "paths": [
         "src/shared/PortalTexAssets.luau"
+      ]
+    },
+    {
+      "id": "135320666241302",
+      "paths": [
+        "src/shared/SfxV37Assets.luau"
       ]
     },
     {
@@ -4257,6 +4884,12 @@
         "assets/materials/dino_v1/tiles/uploaded.json",
         "default.project.json",
         "src/shared/MaterialAssets.luau"
+      ]
+    },
+    {
+      "id": "136362346364346",
+      "paths": [
+        "src/shared/UiV2Icons.luau"
       ]
     },
     {
@@ -4345,6 +4978,18 @@
       ]
     },
     {
+      "id": "137797729738314",
+      "paths": [
+        "src/shared/UiV2Icons.luau"
+      ]
+    },
+    {
+      "id": "137883766773530",
+      "paths": [
+        "src/shared/UiV3Frames.luau"
+      ]
+    },
+    {
       "id": "137959330266240",
       "paths": [
         "assets/materials/forest_v1/tiles/uploaded.json",
@@ -4390,6 +5035,18 @@
       ]
     },
     {
+      "id": "138512713067485",
+      "paths": [
+        "src/shared/UiV3Frames.luau"
+      ]
+    },
+    {
+      "id": "138539047559247",
+      "paths": [
+        "src/shared/SfxV37Assets.luau"
+      ]
+    },
+    {
       "id": "138703431739769",
       "paths": [
         "assets/materials/island_v1/tiles/uploaded.json",
@@ -4413,6 +5070,12 @@
       "id": "138842690938629",
       "paths": [
         "src/shared/PayoffImages.luau"
+      ]
+    },
+    {
+      "id": "138869003020816",
+      "paths": [
+        "src/shared/CourseArt.luau"
       ]
     },
     {
@@ -4465,6 +5128,12 @@
       "id": "139378797729874",
       "paths": [
         "src/shared/AudioAssets.luau"
+      ]
+    },
+    {
+      "id": "139434899410661",
+      "paths": [
+        "src/shared/UiV2Icons.luau"
       ]
     },
     {
@@ -4537,6 +5206,12 @@
         "assets/materials/forest_v1/tiles/uploaded.json",
         "default.project.json",
         "src/shared/materials_forest.luau"
+      ]
+    },
+    {
+      "id": "140483382826869",
+      "paths": [
+        "src/shared/UiV2Icons.luau"
       ]
     },
     {

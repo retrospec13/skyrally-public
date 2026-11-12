@@ -43,7 +43,7 @@ HudPhaseRules.VISIBLE = {
 	-- "nothing appeared in my inventory". HudExtras still hides the empty slot in the hub (shown while holding or rolling).
 	ItemSlot = { hub = T, countdown = T, race = T, finish = F, results = F, podium = F, battle = T },
 	SkyTokenCounter = { hub = T, countdown = T, race = T, finish = T, results = T, podium = F, battle = T }, -- the "0/14" chip
-	SystemCluster = { hub = T, countdown = T, race = T, finish = T, results = T, podium = F, battle = T }, -- the gear and the "?" (HelpButton)
+	SystemCluster = { hub = T, countdown = T, race = T, finish = T, results = F, podium = F, battle = T }, -- the gear and the "?" (HelpButton); v38-flow: off over the results card (it sat on TOTAL at 844x390)
 	RespawnButton = { hub = T, countdown = F, race = T, finish = F, results = F, podium = F, battle = T },
 	ReturnButton = { hub = F, countdown = F, race = T, finish = F, results = F, podium = F, battle = F }, -- RETURN to course (planes, off course)
 	StyleChainMeter = { hub = F, countdown = F, race = T, finish = F, results = F, podium = F, battle = T },

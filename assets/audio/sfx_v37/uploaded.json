@@ -1,0 +1,78 @@
+{
+  "bomb_fuse": {
+    "id": 135320666241302,
+    "sha256": "c42b5569881b660de33593aa9b89fc8f97f12748ca50f8cd8a6d5ef24b2ecf23"
+  },
+  "burnt_sputter": {
+    "id": 117446319980920,
+    "sha256": "0e30ab27c0d9790491706bc87a8e4f4a7e503d2b7807d10266b593e88eaffa15"
+  },
+  "count_beep": {
+    "id": 138539047559247,
+    "sha256": "a1566cdaa44c1ff1d0475c300568d79459d734763e3adf516615879a1d436b94"
+  },
+  "gift_pop": {
+    "id": 118545457715639,
+    "sha256": "3b600d5a2662cf358534c63f191c54e7e0a4902f3c089c9501f5492721616acd"
+  },
+  "go_beep": {
+    "id": 91936004281228,
+    "sha256": "0ecb497261b04bb540b526f2be4580db482c929ecb65ed537f9812dcbdf419d3"
+  },
+  "golden_loop": {
+    "id": 99076284961241,
+    "sha256": "545b8d32753d2643b8634c6136e6151f6d359514277ba78b25c59df0c618e413"
+  },
+  "gp_fanfare": {
+    "id": 113684871072849,
+    "sha256": "48c3823fb249d9ad5c2c5837375bb77bc24b7a14ad0b5ee2da4774d8d49c8cb7"
+  },
+  "ice_crack": {
+    "id": 95465989727088,
+    "sha256": "e2ea228b9214d5dca017303b5fd8e3ea4e6533e35cdb2de2a2aa561695f9a458"
+  },
+  "missile_whoosh": {
+    "id": 110868408763520,
+    "sha256": "5057c9eb2da4c5a12ef98f324f681aacd671aceab16358d40f5a8ab5a10e0087"
+  },
+  "orbit_hum": {
+    "id": 73035874743132,
+    "sha256": "542a50a9004455d41088e04374973b7456eece3d8a856d6fd9e20b9e2e4a72a2"
+  },
+  "placement_slam": {
+    "id": 70807661241168,
+    "sha256": "5e1a5a71e9145e35ef84a2596aa1adbf19996052b40a66a6c8fe24af64d63345"
+  },
+  "pos_gain": {
+    "id": 74071290419121,
+    "sha256": "37a06d29890e9ef1c14d2692482ab59c454d8c6c8eeb22aba82a9ca21f07d186"
+  },
+  "pos_loss": {
+    "id": 110996586384232,
+    "sha256": "f03f7a7996907c85b143dc3b9cc7fd5f4aef0e5067e222d98a2cbe932ad8429d"
+  },
+  "rocket_loop": {
+    "id": 110709492173077,
+    "sha256": "3056f1629f99b33963f589472245337046d4ed0fc6af090b920d96679ee58dea"
+  },
+  "rs_burst": {
+    "id": 127494561969731,
+    "sha256": "4a1148b355930616bc59ac92fa50df386db3029c1b08e5d9c55d281aa9e6f359"
+  },
+  "rs_charge": {
+    "id": 134151682366110,
+    "sha256": "c3074945dd7c98fbb385d78dbb373441a17c9030678eef1d0702656e468ebfb4"
+  },
+  "tally_tick": {
+    "id": 85522660403807,
+    "sha256": "82c5ef80404d5845e5ff8b5d1113287e5e8eeb3b9ae666f67970819b74796065"
+  },
+  "trophy_sting": {
+    "id": 92244182230081,
+    "sha256": "a37a9b6065ba79caa4982dc8ce82499778ed5a6c1a2a42b22048ac5a7621a7ae"
+  },
+  "ui_big_confirm": {
+    "id": 92115970029610,
+    "sha256": "b0bc7d7c933ae96cc6ebffa963aff959c3096745d95343a5b5e71721df06e45a"
+  }
+}

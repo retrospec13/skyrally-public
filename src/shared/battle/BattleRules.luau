@@ -457,6 +457,14 @@ function BattleRules.decideItem(kind: string, s: ItemSense): (boolean, string)
 			return true, "idle"
 		end
 		return false, "hold"
+	elseif kind == "horn" then
+		-- v38: the horn (yellow) clears a shot about to land and spins a rival alongside.
+		if (s.threatDist and s.threatDist <= 60) or (dist and dist <= 22) then
+			return true, "horn"
+		elseif s.heldFor > 10 then
+			return true, "idle"
+		end
+		return false, "hold"
 	elseif kind == "boost" then
 		if dist and dot and dist > 150 and dot >= 0.7 then
 			return true, "chase"

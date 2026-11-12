@@ -31,14 +31,19 @@ end
 -- on a desktop-class viewport (height >= 600) RaceUI applies this as a UIScale so the card is about 30% of the viewport width
 -- (420 px up to MAX_DESKTOP_W) with row text near 18 px at 1080p, and it also grows with the height. 1.0 on phones.
 ResultsLayoutRules.DESKTOP_MIN_H = 600
-ResultsLayoutRules.DESKTOP_W_SHARE = 0.30
+-- UI v2 (2026-11-10): the finish is a moment, so the desktop card takes about 57 % of the width (1092 px at 1080p)
+-- and its design frame is taller (DESKTOP_DESIGN_H) for a bigger placement numeral and taller standings rows.
+ResultsLayoutRules.DESKTOP_W_SHARE = 0.57
 ResultsLayoutRules.DESIGN_W = 420
-ResultsLayoutRules.MAX_DESKTOP_K = 1.52 -- 420 * 1.52 = 638 px
+ResultsLayoutRules.DESKTOP_DESIGN_H = 300
+ResultsLayoutRules.MAX_DESKTOP_K = 2.7 -- 420 * 2.7 = 1134 px
 function ResultsLayoutRules.desktopScale(vpW: number, vpH: number): number
 	if vpH < ResultsLayoutRules.DESKTOP_MIN_H then
 		return 1
 	end
-	return math.clamp(math.max(ResultsLayoutRules.DESKTOP_W_SHARE * vpW / ResultsLayoutRules.DESIGN_W, vpH / 720), 1, ResultsLayoutRules.MAX_DESKTOP_K)
+	local k = math.clamp(math.max(ResultsLayoutRules.DESKTOP_W_SHARE * vpW / ResultsLayoutRules.DESIGN_W, vpH / 720), 1, ResultsLayoutRules.MAX_DESKTOP_K)
+	-- ... and never taller than the screen leaves room for (the top plaque offset, the countdown line, margins).
+	return math.max(1, math.min(k, (vpH - 140) / ResultsLayoutRules.DESKTOP_DESIGN_H))
 end
 
 -- The results card's rectangle for this viewport (client/RaceUI sizes it from this; client/TrackFlow places the return
@@ -52,7 +57,7 @@ function ResultsLayoutRules.cardRect(vpW: number, vpH: number, insets: Insets, l
 	local w = math.clamp(vpW - 64, 300, 420) * k
 	-- 240 px is the least the card's contents need (rows end at 184, the buttons take the bottom 50): a 220 px card had its fourth
 	-- row under FLY AGAIN / HUB on a 340 px high viewport (the Studio phone emulator's 360 less its status strip).
-	local h = math.clamp(vpH - 110, 240, 252) * k
+	local h = (if k > 1 then ResultsLayoutRules.DESKTOP_DESIGN_H else math.clamp(vpH - 110, 240, 252)) * k
 	-- ... and on a short screen the card rises so that the return countdown still fits under it.
 	local top = math.min(math.floor(58 * plaque) + insets.top, vpH - insets.bottom - ResultsLayoutRules.GAP - ResultsLayoutRules.COUNTDOWN_H - ResultsLayoutRules.GAP - h)
 	top = math.max(top, insets.top)

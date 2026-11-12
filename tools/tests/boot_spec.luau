@@ -173,6 +173,7 @@ return function(h)
 			"CameraNearFade", "FrameGovernor", "VehicleMotion", "PilotPose", "VehicleCreatureAnimator", "QAMultiplayerClient", "AfkBeat",
 			"LeaderboardBoard", "ZoneLighting", "StormVendor", "HubStorm", "PaintShop", "StormRaceClient", "ZoneVisibility",
 			"LiveOpsNotice", -- T1-5 (2026-10-21)
+			"GrandPrixClient", -- v37 Grand Prix
 		}
 		h.eq(#BootRules.INIT_ORDER, #expected)
 		for i, n in expected do

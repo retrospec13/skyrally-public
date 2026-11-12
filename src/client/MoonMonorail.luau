@@ -89,7 +89,8 @@ local function startRace(now: number, ep: number)
 		return
 	end
 	race = { trainAtB = tB, startedAt = now }
-	stamp("RACE THE MOON MONORAIL!", Color3.fromRGB(150, 240, 255))
+	-- uifix: an upper-lane banner, not hero text over the road (owner rule: brief centre text, nothing over the road)
+	toast("Race the monorail!", Color3.fromRGB(150, 240, 255))
 	local x = Rules.monorailAt(now, ep)
 	Kit.sfx("monorail_toot", "monorail_toot", Vector3.new(x, M.trainY + 4, M.viaductZ), 1, 1.1, 1400)
 end

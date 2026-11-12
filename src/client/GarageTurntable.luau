@@ -7,8 +7,8 @@
 --   * TRY on a livery row: a quick spin, a spray-can "psssht" and sparkles, and the copy wears that livery (painted
 --     with the shared livery palette, shared/LiveryPaint; the server still paints the real car only on EQUIP).
 --   * REV: the engine blips, the body squats and shakes; tap REV again quickly and it climbs to the limiter: a wheelie,
---     backfire pops and a comic "BANG!" (FinaleRules.revLevel).
---   * HONK (and every horn's PLAY): the car hops on its springs with a "HONK!" bubble; your equipped horn plays (the
+--     backfire pops (FinaleRules.revLevel). UI v2: no comic words (owner tone rule); the sparkles and sound carry it.
+--   * HONK (and every horn's PLAY): the car hops on its springs ; your equipped horn plays (the
 --     Garage's own preview), or a bulb-horn honk when none is equipped.
 -- Cost: one copy and one turntable part, built when the Garage opens on a cosmetic tab; a RenderStepped camera orbit
 -- only while the toy is on screen; the copy is freed when the Garage closes.
@@ -26,6 +26,7 @@ local VfxAssets = require(Shared:WaitForChild("VfxAssets"))
 local PayoffSound = require(script.Parent:WaitForChild("PayoffSound"))
 local DisplayCars = require(script.Parent:WaitForChild("DisplayCars"))
 local UiSound = require(script.Parent:WaitForChild("UiSound"))
+local ArcadeUi = require(script.Parent:WaitForChild("ArcadeUi")) -- UI v2 look (navy stage, key buttons)
 
 local LocalPlayer = Players.LocalPlayer
 
@@ -83,20 +84,8 @@ local function plateText(prefix: string, key: string?)
 	plate.Text = if item then string.format("%s: %s", prefix, string.upper(item.name)) else "YOUR RIDE"
 end
 
-local function popComic(text: string, color: Color3)
-	comic.Text = text
-	comic.TextColor3 = color
-	comic.Visible = true
-	local sc = comic:FindFirstChildOfClass("UIScale") :: UIScale
-	sc.Scale = 0.2
-	comic.Rotation = math.random(-12, 12)
-	TweenService:Create(sc, TweenInfo.new(0.25, Enum.EasingStyle.Back, Enum.EasingDirection.Out), { Scale = 1 }):Play()
-	task.delay(0.8, function()
-		if comic.Text == text then
-			comic.Visible = false
-		end
-	end)
-end
+-- UI v2 (owner: no comic words): the motion, sparkles and sound carry the moment; no text pops.
+local function popComic(_text: string, _color: Color3) end
 
 local function sparkle(color: Color3)
 	for i, s in sparks do
@@ -187,32 +176,25 @@ local function startAnim(kind: string, seconds: number, level: number?)
 end
 
 local function build(): Frame
-	local f = Instance.new("Frame")
-	f.Name = "Showroom"
-	f.BackgroundColor3 = WOOD_DARK
-	f.BorderSizePixel = 0
-	corner(f, 10)
-	local stroke = Instance.new("UIStroke")
-	stroke.Color = Color3.fromRGB(150, 110, 70)
-	stroke.Thickness = 1.5
-	stroke.Parent = f
+	-- UI v2: a navy inset stage; the copy turns on a dark disc with a gold rim, the name plate along the bottom.
+	local f = ArcadeUi.card(nil, { name = "Showroom", inset = true, radius = 12 })
 	local glow = Instance.new("ImageLabel")
 	glow.Name = "Spotlight"
 	glow.BackgroundTransparency = 1
 	glow.Image = tex("glow_soft")
-	glow.ImageColor3 = Color3.fromRGB(255, 230, 170)
-	glow.ImageTransparency = 0.55
-	glow.Position = UDim2.fromScale(0.02, -0.1)
-	glow.Size = UDim2.fromScale(0.62, 1.25)
+	glow.ImageColor3 = Color3.fromRGB(120, 190, 255)
+	glow.ImageTransparency = 0.35
+	glow.Position = UDim2.fromScale(0.05, -0.15)
+	glow.Size = UDim2.fromScale(0.9, 1.1)
 	glow.Parent = f
 	vpf = Instance.new("ViewportFrame")
 	vpf.Name = "Turntable"
 	vpf.BackgroundTransparency = 1
-	vpf.Position = UDim2.fromScale(0.02, 0.04)
-	vpf.Size = UDim2.fromScale(0.62, 0.92)
-	vpf.Ambient = Color3.fromRGB(150, 140, 130)
-	vpf.LightColor = Color3.fromRGB(255, 244, 220)
-	vpf.LightDirection = Vector3.new(-0.5, -1, -0.4)
+	vpf.Position = UDim2.fromOffset(0, 0)
+	vpf.Size = UDim2.new(1, 0, 1, -48)
+	vpf.Ambient = Color3.fromRGB(225, 228, 238) -- UI v2: showroom light (bright ambient, a front-top key)
+	vpf.LightColor = Color3.fromRGB(255, 255, 255)
+	vpf.LightDirection = Vector3.new(0.4, -0.85, -0.6)
 	vpf.Active = true
 	vpf.Parent = f
 	vcam = Instance.new("Camera")
@@ -225,8 +207,8 @@ local function build(): Frame
 	d.Anchored = true
 	d.Size = Vector3.new(0.6, 13, 13)
 	d.CFrame = CFrame.new(0, -0.3, 0) * CFrame.Angles(0, 0, math.rad(90))
-	d.Color = WOOD
-	d.Material = Enum.Material.WoodPlanks
+	d.Color = Color3.fromRGB(30, 44, 96)
+	d.Material = Enum.Material.SmoothPlastic
 	d.Parent = vpf
 	disc = d
 	local ring = Instance.new("Part")
@@ -264,48 +246,20 @@ local function build(): Frame
 	cs.Thickness = 3
 	cs.Parent = comic
 	Instance.new("UIScale").Parent = comic
-	plate = Instance.new("TextLabel")
-	plate.Name = "Plate"
-	plate.BackgroundColor3 = INK
-	plate.BackgroundTransparency = 0.25
-	plate.Position = UDim2.fromScale(0.66, 0.06)
-	plate.Size = UDim2.new(0.32, 0, 1, -64)
-	plate.Font = Enum.Font.GothamBlack
-	plate.TextScaled = true
-	plate.TextWrapped = true
-	plate.TextColor3 = GOLD
-	plate.Text = "YOUR RIDE"
-	plate.Parent = f
-	corner(plate, 8)
-	local pp = Instance.new("UIPadding")
-	pp.PaddingLeft = UDim.new(0, 6)
-	pp.PaddingRight = UDim.new(0, 6)
-	pp.Parent = plate
-	-- REV and HONK side by side under the plate (44 px targets; they fit the 116 px compact phone strip).
-	local function bigButton(name: string, text: string, color: Color3, x: number, onTap: () -> ()): TextButton
-		local b = Instance.new("TextButton")
-		b.Name = name
-		b.BackgroundColor3 = color
-		b.Position = UDim2.new(x, 0, 1, -50)
-		b.Size = UDim2.new(0.155, 0, 0, 44)
-		b.Font = Enum.Font.GothamBlack
-		b.TextScaled = true
-		b.TextColor3 = CREAM
-		b.Text = text
-		b.Parent = f
-		corner(b, 8)
-		local c = Instance.new("UITextSizeConstraint")
-		c.MaxTextSize = 20
-		c.Parent = b
-		UiSound.bind(b, "tap")
+	plate = ArcadeUi.text(f, { name = "Plate", text = "YOUR RIDE", font = ArcadeUi.FONT.display, maxSize = 20, minSize = 12, color = GOLD })
+	plate.Position = UDim2.new(0, 10, 1, -46)
+	plate.Size = UDim2.new(1, -124, 0, 40)
+	plate.TextTruncate = Enum.TextTruncate.AtEnd
+	-- REV and HONK: two 44 px icon keys in the bottom-right corner of the stage.
+	local function bigButton(name: string, icon: string, variant: string, slot: number, onTap: () -> ())
+		local b = ArcadeUi.button(f, variant, "", { name = name, icon = icon, iconOnly = true, size = UDim2.fromOffset(48, 44), anchor = Vector2.new(1, 1), position = UDim2.new(1, -6 - (slot - 1) * 54, 1, -4), radius = 10 })
 		b.Activated:Connect(onTap)
-		return b
 	end
-	bigButton("Rev", "REV", ORANGE, 0.66, function()
-		GarageTurntable.rev()
-	end)
-	bigButton("Honk", "HONK", GREEN, 0.825, function()
+	bigButton("Honk", "horn", "go", 1, function()
 		GarageTurntable.honk(nil, true)
+	end)
+	bigButton("Rev", "boost", "orange", 2, function()
+		GarageTurntable.rev()
 	end)
 	vpf.InputBegan:Connect(function(input: InputObject)
 		if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
@@ -351,8 +305,8 @@ function GarageTurntable.mount(section: Frame, width: number, compact: boolean)
 		task.delay(0.12, function()
 			PayoffSound.play("hop_boing", 0.9)
 		end)
-		plate.Position = UDim2.fromScale(1.2, 0.06)
-		TweenService:Create(plate, TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.Out), { Position = UDim2.fromScale(0.66, 0.06) }):Play()
+		plate.Position = UDim2.new(-0.6, 10, 1, -46)
+		TweenService:Create(plate, TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.Out), { Position = UDim2.new(0, 10, 1, -46) }):Play()
 	end
 end
 

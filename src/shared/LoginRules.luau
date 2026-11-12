@@ -70,11 +70,12 @@ export type Gate = {
 	onboarded: boolean, -- the Onboarded player attribute
 	garageOpen: boolean,
 	modalOpen: boolean,
+	menuOpen: boolean?, -- v38-flow round 3: a modal board is up (course select, Settings, pause)
 }
 -- May the popup appear this instant? Never in a race, a lobby, the Storm lobby, a map switch or behind the loading screen;
 -- a first-timer sees it only after onboarding; never over the Garage or another modal.
 function LoginRules.canShowNow(g: Gate): boolean
-	return g.hold == nil and g.raceMode == "hub" and g.onboarded == true and not g.garageOpen and not g.modalOpen
+	return g.hold == nil and g.raceMode == "hub" and g.onboarded == true and not g.garageOpen and not g.modalOpen and g.menuOpen ~= true
 end
 
 -- A race taking the screen (v6 minor D2): the countdown (lobby), the map switch and the race itself. A non-race modal that

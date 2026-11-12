@@ -112,6 +112,7 @@ export type RacerInfo = {
 	botId: number?,
 	plane: Instance?, -- the racer's Model, sent to clients so they can anchor visuals to it
 	vehicle: string?, -- "plane" | "car" (missile v3: only a plane can roll a shot off); nil = unknown
+	vel: Vector3?, -- v37: the hull's replicated velocity (players; a shot's launch lead), nil = unknown
 }
 
 -- Same shape as ItemService.BotEffect (kept local so this module loads without the service).
@@ -146,6 +147,8 @@ export type Context = {
 	-- First solid world surface on the segment from -> to (position, normal), or nil. Optional: without it shots
 	-- fly through the world (the Lune specs' open sky).
 	castWorld: ((from: Vector3, to: Vector3) -> (Vector3?, Vector3?))?,
+	-- Studio QA (workspace QAMissileTrace): log each shot's first second against its shooter's nose. nil = off.
+	traceShots: (() -> boolean)?,
 	-- Item 18: records a landed hit (ItemService.noteHit) and returns its kind and chain. Optional.
 	noteHit: ((victim: RacerId, attacker: RacerId, source: string) -> (string, number))?,
 	-- Item 14: one ETA update for a player racer ({eta, homing, count} or {eta = -1, dodged?}). Optional.
@@ -161,6 +164,9 @@ export type Context = {
 	-- (ItemService.absorbHit: true when one was spent).
 	guard: ((racerId: RacerId, seconds: number) -> ())?,
 	absorb: ((racerId: RacerId) -> boolean)?,
+	-- v38 (optional): Item Steal through ItemService (steal: the label taken or nil; holdsStealable: a revealed item).
+	steal: ((thief: RacerId, victim: RacerId) -> string?)?,
+	holdsStealable: ((racerId: RacerId) -> boolean)?,
 }
 
 type Missile = {
@@ -412,6 +418,8 @@ function ItemEffects.new(ctx: Context): Effects
 	-- Items v4: Bubble Guard reflect windows; the shot (or bolt) sent back is fired by reflectBack (set with the hooks).
 	local reflects: { [RacerId]: { untilT: number, left: number, bolts: boolean } } = {}
 	local reflectBack: (from: RacerId, to: RacerId, source: string) -> () = function() end
+	-- v38: when each racer last fired an item boost (the timed answer to a Storm Bolt, stepStorms).
+	local boostedAt: { [RacerId]: number } = {}
 	local stepSpecials: (now: number) -> () = function() end
 	local clearSpecials: () -> () = function() end
 
@@ -469,11 +477,11 @@ function ItemEffects.new(ctx: Context): Effects
 	end
 
 	-- One hit; the second value is true when the projectile or trap is used up by it (a hit, a block, a pop on a
-	-- respawn bubble) rather than passing through. form: the trap's form ("slick", "mine", "bubble") for a trap hit, so the
+	-- respawn bubble) rather than passing through. form: the trap's form ("slick", "mine", "crate") for a trap hit, so the
 	-- client can sound an oil slip against a mine blast.
 	-- Items v4: sources a Bubble Guard sends back, and the item sources the grudge book records.
 	local REFLECTABLE: { [string]: boolean } = { missile = true, frost_shot = true, coin_burst = true, storm = true }
-	local GRUDGE_SOURCES: { [string]: boolean } = { missile = true, trap = true, frost_shot = true, coin_burst = true, storm = true, bomb = true, ram = true }
+	local GRUDGE_SOURCES: { [string]: boolean } = { missile = true, trap = true, frost_shot = true, coin_burst = true, storm = true, bomb = true, ram = true, horn = true }
 
 	-- items v4: onLand runs on a landed hit (the status of a frost or coin shot); with stunSeconds 0 there is no
 	-- spin-out, no hit grace and no "explode", only onLand.
@@ -652,7 +660,7 @@ function ItemEffects.new(ctx: Context): Effects
 	end
 
 	-- Missile v3: the nearest racer ahead of `owner` (at `progress`) a race shot locks; nil when nobody is in reach.
-	local function pickAhead(owner: RacerId, progress: number, strict: boolean?, taken: { [RacerId]: number }?): RacerId?
+	local function pickAhead(owner: RacerId, progress: number, strict: boolean?, taken: { [RacerId]: number }?, minAhead: number?): RacerId?
 		local now = ctx.now()
 		local cands: { MissileRules.Candidate } = {}
 		for _, id in ipairs(ctx.order()) do
@@ -669,7 +677,8 @@ function ItemEffects.new(ctx: Context): Effects
 				end
 			end
 		end
-		return MissileRules.pickTarget(owner, progress, cands, nil, strict, taken)
+		local skip = minAhead or 0
+		return MissileRules.pickTarget(owner, progress + skip, cands, MissileRules.TUNING.lockRange - skip, strict, taken)
 	end
 
 	-- v6 minor D3: is racerId spinning from a hit right now (the post-hit grace; a shot locked on it is wasted)? A respawn
@@ -957,6 +966,12 @@ function ItemEffects.new(ctx: Context): Effects
 			lat, vert = ItemEffects.clampCorridor(lat, vert)
 		end
 		local forward = if info.forward.Magnitude > 0.01 then info.forward.Unit else tan
+		if not free and not inArena and forward:Dot(tan) < TUNING.missileFacingMinDot then
+			-- v37: a car mid-drift, mid-spin or sideways on a wall faces far off the line it travels; a race shot left
+			-- out of its side door and swung onto the course (Studio SPACE-4: launch tanDot 0.0-0.45). It leaves along
+			-- the course instead.
+			forward = tan
+		end
 		if free then
 			-- The race order's "racer ahead" means nothing off the line: aim at whoever is in front of the nose.
 			local cands: { Candidate } = {}
@@ -987,12 +1002,19 @@ function ItemEffects.new(ctx: Context): Effects
 		end
 		if not inArena and not free and shot.relock and params.homing then
 			-- Missile v3: each shot of a volley locks at its own launch (the first target may be spinning by now).
-			target = pickAhead(shot.owner, info.progress, nil, shot.spread)
+			target = pickAhead(shot.owner, info.progress, nil, shot.spread, MissileRules.TUNING.minLockAhead)
 			if shot.spread and target then
 				shot.spread[target] = (shot.spread[target] or 0) + 1
 			end
 		end
-		local launchPos = info.pos + forward * TUNING.missileLaunchAhead
+		-- v37: a player's hull on the server trails what that player sees by about a tenth of a second (10-25 studs at
+		-- race speed), so a shot spawned at the server nose appeared BEHIND the shooter on their own screen and crept out
+		-- from under the tail. Lead it by the hull's velocity over that lag.
+		local lead = if info.isPlayer and info.vel then info.vel * TUNING.missileLaunchLead else Vector3.zero
+		if lead:Dot(forward) < 0 then
+			lead = Vector3.zero
+		end
+		local launchPos = info.pos + forward * TUNING.missileLaunchAhead + lead
 		local now = ctx.now()
 		if shot.forceFree then
 			inArena = true -- items v4: a reflected shot flies free like an arena shot (homing at its own turn rate)
@@ -1006,6 +1028,31 @@ function ItemEffects.new(ctx: Context): Effects
 				return
 			end
 			launchPos, forward = start, heading
+		end
+		-- v37: the course path starts where the shot really is. The racer's station can trail its hull (a server sample,
+		-- an alternate line, a projection hint) by 100+ studs; the blend then dragged a fresh shot straight back past the
+		-- shooter (Studio trace: dirDot -1 on the first step). Slide the start progress along the course to the launch
+		-- point, and take the lane from there.
+		local startProgress = info.progress + TUNING.missileLaunchAhead + lead:Dot(forward)
+		if not (inArena or free) then
+			for _ = 1, 4 do
+				local cpos, ctan = ctx.course(startProgress)
+				local along = (launchPos - cpos):Dot(ctan)
+				if math.abs(along) < 1 then
+					break
+				end
+				startProgress += math.clamp(along, -400, 400)
+			end
+			local cpos, ctan = ctx.course(startProgress)
+			lat, vert = ItemEffects.courseOffset(launchPos, cpos, ctan)
+			if params.count > 1 then
+				lat += TUNING.missileVolleySpread * (((shot.index - 1) % 3) - 1)
+			end
+			lat, vert = ItemEffects.clampCorridor(lat, vert)
+			local trace = ctx.traceShots
+			if trace and trace() then
+				ctx.log(string.format("[SkyRally][ITEM] trace launch owner=%s shift=%.0f tanDot=%.2f lat=%.0f vert=%.0f", shot.owner, startProgress - (info.progress + TUNING.missileLaunchAhead + lead:Dot(forward)), ctan:Dot(forward), lat, vert))
+			end
 		end
 		local m: Missile = {
 			id = newId(),
@@ -1025,7 +1072,7 @@ function ItemEffects.new(ctx: Context): Effects
 				then math.max(params.lifetime, MissileRules.TUNING.lockedLifetime)
 				else params.lifetime),
 			baseExpires = now + params.lifetime,
-			progress = info.progress + TUNING.missileLaunchAhead,
+			progress = startProgress,
 			lat = lat,
 			vert = vert,
 			launchPos = launchPos,
@@ -1130,15 +1177,28 @@ function ItemEffects.new(ctx: Context): Effects
 				local T = MissileRules.TUNING
 				if dist <= T.terminalRange or gap <= T.terminalGap then
 					-- One line-of-sight cast, only once it is close: never home through a wall or a ridge.
+					-- v37 (owner: "missiles are being shot out the wrong direction"): a target beside or behind the shot is
+					-- never homed on directly; that snap sent the shot sideways or straight back past the shooter.
+					local ahead = dist < 1 or (tPos - m.pos).Unit:Dot(m.dir) >= MissileRules.TUNING.terminalCone
 					local cast = ctx.castWorld
-					local clear = cast == nil or cast(m.pos, tPos) == nil
+					local clear = ahead and (cast == nil or cast(m.pos, tPos) == nil)
 					m.pursuing = MissileRules.phase(gap, dist, clear) == "terminal"
 				end
 			end
 			if m.pursuing then
 				local to = tPos - m.pos
 				local stepLen = speed * dt
-				newPos = if to.Magnitude <= stepLen then tPos else m.pos + to.Unit * stepLen
+				if to.Magnitude <= stepLen then
+					newPos = tPos
+				else
+					-- A bounded turn (it curves in, never snaps round); a target that got behind it is a miss: overshoot.
+					local heading = ItemEffects.turnToward(m.dir, to, math.rad(MissileRules.TUNING.terminalTurnDeg) * dt)
+					if to.Unit:Dot(m.dir) < -0.3 then
+						overshoot(m, now, target)
+						heading = m.dir
+					end
+					newPos = m.pos + heading * stepLen
+				end
 			else
 				local tpos, ttan = ctx.course(tInfo.station)
 				local tLat, tVert = ItemEffects.courseOffset(tPos, tpos, ttan)
@@ -1147,10 +1207,13 @@ function ItemEffects.new(ctx: Context): Effects
 				m.vert = approach(m.vert, tVert, m.lateralRate * dt)
 			end
 		end
-		if not m.pursuing then
+		if not m.pursuing and not m.overshoot then
 			local cpos, tan = ctx.course(m.progress)
 			local coursePt = ItemEffects.coursePoint(cpos, tan, m.lat, m.vert)
-			local age = now - m.blendStart
+			-- v37: a volley shot launched inside this step has blendStart a hair after `now`; a negative age put it a
+			-- fraction behind its launch point and turned its heading round for a frame (Studio trace: dirDot -1 at age 0,
+			-- which then let the terminal phase home on a racer behind it).
+			local age = math.max(0, now - m.blendStart)
 			local blend = math.clamp(age / TUNING.missileBlendSeconds, 0, 1)
 			local launchPt = m.launchPos + m.launchDir * (m.speed * age)
 			newPos = launchPt:Lerp(coursePt, blend)
@@ -1176,6 +1239,17 @@ function ItemEffects.new(ctx: Context): Effects
 			m.dir = moved.Unit
 		end
 		m.pos = newPos
+		local trace = ctx.traceShots
+		if trace and now - m.born <= 1 and trace() then
+			local o = ctx.racer(m.owner)
+			if o then
+				-- Measured against the course tangent at the shot (the direction a race shot must travel), and the owner.
+				local _, tanHere = ctx.course(m.progress)
+				local d = newPos - o.pos
+				local f = tanHere
+				ctx.log(string.format("[SkyRally][ITEM] trace shot=%d owner=%s age=%.2f fwd=%.0f side=%.0f up=%.0f dirDot=%.2f ownerLook=%.2f mode=%s tgt=%s", m.id, m.owner, now - m.born, d:Dot(f), d:Dot(f:Cross(UP).Unit), d.Y, m.dir:Dot(f), o.forward:Dot(f), if m.pursuing then "terminal" elseif m.homing then "course-lock" else "course", tostring(m.target)))
+			end
+		end
 		if m.visual ~= nil then
 			ctx.moveVisual(m.visual, CFrame.lookAt(newPos, newPos + m.dir))
 		end
@@ -1528,7 +1602,8 @@ function ItemEffects.new(ctx: Context): Effects
 			return nil
 		end
 		local info = ctx.racer(racerId)
-		return if info then pickAhead(racerId, info.progress) else nil
+		-- v37: a racer level with the nose (or a server sample behind it) is passed over; locking it made the shot U-turn.
+		return if info then pickAhead(racerId, info.progress, nil, nil, MissileRules.TUNING.minLockAhead) else nil
 	end
 
 	local hooks = {}
@@ -1589,6 +1664,7 @@ function ItemEffects.new(ctx: Context): Effects
 
 	function hooks.applyBoost(racerId: RacerId, params: ItemRules.BoostParams, level: number)
 		used(racerId, "boost", level)
+		boostedAt[racerId] = ctx.now() -- v38: a boost inside a Storm Bolt's warning outruns the strike
 		local info = ctx.racer(racerId)
 		local botId = botIdOf(racerId)
 		if botId then
@@ -1895,13 +1971,18 @@ function ItemEffects.new(ctx: Context): Effects
 					since = st.warnAt,
 					random = if dice and not tInfo.isPlayer then dice() else 1,
 				})
-				if how == "roll" and not ctx.isShielded(st.target) then
-					ctx.broadcast("dodge", { pos = tInfo.pos, plane = tInfo.plane, how = "roll" })
+				-- v38 (owner: defence from play, not passive shields): an item boost fired inside the warning outruns it.
+				local boosted = boostedAt[st.target]
+				if how == nil and boosted ~= nil and boosted >= st.warnAt - 0.25 then
+					how = "boost"
+				end
+				if (how == "roll" or how == "boost") and not ctx.isShielded(st.target) then
+					ctx.broadcast("dodge", { pos = tInfo.pos, plane = tInfo.plane, how = how })
 					local warn = ctx.warnIncoming
 					if tInfo.isPlayer and warn then
-						warn(st.target, { eta = -1, dodged = true, how = "roll" })
+						warn(st.target, { eta = -1, dodged = true, how = how })
 					end
-					ctx.log(string.format("[SkyRally][ITEM] storm dodged racer=%s by=%s", st.target, st.owner))
+					ctx.log(string.format("[SkyRally][ITEM] storm dodged racer=%s by=%s how=%s", st.target, st.owner, how))
 				else
 					-- A Bubble Guard that sends the bolt back also stops it chaining on (one bolt, one answer).
 					local rf = reflects[st.target]
@@ -2061,6 +2142,7 @@ function ItemEffects.new(ctx: Context): Effects
 	end
 
 	function clearSpecials()
+		table.clear(boostedAt)
 		table.clear(rams)
 		table.clear(storms)
 		table.clear(reflects)
@@ -2152,6 +2234,116 @@ function ItemEffects.new(ctx: Context): Effects
 				visual = ctx.spawnVisual("bomb", CFrame.new(land), { fuse = p.fuse, radius = p.radius, owner = racerId, from = info.pos }),
 			})
 			ctx.log(string.format("[SkyRally][ITEM] fx bomb racer=%s level=%d at=(%.0f,%.0f,%.0f) fuse=%.1f", racerId, level, land.X, land.Y, land.Z, p.fuse))
+		elseif kind == "horn" then
+			-- v38 HORN: a shockwave from the holder. Shots, traps and bombs inside `clear` are destroyed; a Storm Bolt over
+			-- the holder breaks when the horn sounds inside its warning; racers inside `radius` spin.
+			local cleared = 0
+			for i = #missiles, 1, -1 do
+				local m = missiles[i]
+				if m.owner ~= racerId and (m.pos - info.pos).Magnitude <= p.clear then
+					removeMissile(i, "fizzle")
+					cleared += 1
+				end
+			end
+			for i = #traps, 1, -1 do
+				if (traps[i].pos - info.pos).Magnitude <= p.clear then
+					removeTrap(i, "fizzle")
+					cleared += 1
+				end
+			end
+			for i = #bombs, 1, -1 do
+				local b = bombs[i]
+				if (b.pos - info.pos).Magnitude <= p.clear then
+					table.remove(bombs, i)
+					if b.visual ~= nil then
+						ctx.destroyVisual(b.visual)
+					end
+					ctx.broadcast("fizzle", { pos = b.pos, source = "bomb" })
+					cleared += 1
+				end
+			end
+			for i = #storms, 1, -1 do
+				local st = storms[i]
+				if st.target == racerId and now >= st.warnAt - 0.25 then
+					table.remove(storms, i)
+					ctx.broadcast("fizzle", { pos = info.pos, source = "storm" })
+					cleared += 1
+				end
+			end
+			local spun = 0
+			for _, id in ipairs(ctx.order()) do
+				if id ~= racerId then
+					local r = ctx.racer(id)
+					if r and r.active and (r.pos - info.pos).Magnitude <= p.radius then
+						if strike(id, racerId, "horn", p.spin, r.pos) == "hit" then
+							spun += 1
+						end
+					end
+				end
+			end
+			ctx.broadcast("horn", { plane = info.plane, pos = info.pos, radius = p.radius, clear = p.clear, level = level })
+			ctx.log(string.format("[SkyRally][ITEM] fx horn racer=%s level=%d cleared=%d spun=%d", racerId, level, cleared, spun))
+		elseif kind == "ink_splat" then
+			-- v38 INK: everyone ahead of the user (race order) gets ink; players on screen, bots a short loose slow.
+			local inked = 0
+			for _, id in ipairs(ctx.order()) do
+				if id == racerId then
+					break
+				end
+				local r = ctx.racer(id)
+				if r and r.active and not respawnProtected(id, now) and not ctx.isShielded(id) then
+					inked += 1
+					if r.isPlayer then
+						ctx.sendPlayer(id, "ink", { seconds = p.seconds, level = level, by = racerId })
+					elseif r.botId then
+						ctx.applyToBot(r.botId, { kind = "slow", seconds = p.botSeconds, factor = p.botSlow, source = "ink" })
+					end
+					ctx.broadcast("ink", { plane = r.plane, seconds = p.botSeconds })
+				end
+			end
+			ctx.log(string.format("[SkyRally][ITEM] fx ink racer=%s level=%d inked=%d", racerId, level, inked))
+		elseif kind == "item_steal" then
+			-- v38 STEAL: the nearest racer ahead holding a revealed item (level 2+: the furthest ahead) loses it to the user.
+			local victim: RacerId? = nil
+			local holds = ctx.holdsStealable
+			local order = ctx.order()
+			local selfIdx = table.find(order, racerId) or (#order + 1)
+			local from, to, step = selfIdx - 1, 1, -1
+			if p.furthest then
+				from, to, step = 1, selfIdx - 1, 1
+			end
+			for i = from, to, step do
+				local id = order[i]
+				local r = if id then ctx.racer(id) else nil
+				if r and r.active and (info.progress - r.progress) > -p.reach and holds and holds(id) then
+					victim = id
+					break
+				end
+			end
+			local takeFn = ctx.steal
+			local taken = if victim and takeFn then takeFn(racerId, victim) else nil
+			if taken and victim then
+				local vInfo = ctx.racer(victim)
+				ctx.broadcast("steal", { plane = info.plane, from = if vInfo then vInfo.plane else nil, item = string.match(taken, "^[%w_]+") })
+				ctx.log(string.format("[SkyRally][ITEM] fx steal racer=%s level=%d victim=%s took=%s", racerId, level, victim, taken))
+			else
+				-- Nobody to rob: a handful of coins instead.
+				local n = p.fallback or 3
+				if info.isPlayer then
+					ctx.sendPlayer(racerId, "coins", { count = n, level = level, item = "item_steal" })
+				end
+				specialBoost(racerId, info, 0.6, ItemRules.ROCKET.cruise * ItemRules.COIN.boostFactor, ItemRules.COIN.boostFactor, level, nil, "coin")
+				ctx.broadcast("steal", { plane = info.plane, item = nil })
+				ctx.log(string.format("[SkyRally][ITEM] fx steal racer=%s level=%d victim=none coins=%d", racerId, level, n))
+			end
+		elseif kind == "coin_pouch" then
+			-- v38 COIN POUCH: race coins straight into the user's count (the client caps them as Speed pods are capped).
+			if info.isPlayer then
+				ctx.sendPlayer(racerId, "coins", { count = p.coins, level = level, item = "coin_pouch" })
+			end
+			specialBoost(racerId, info, p.kick, ItemRules.ROCKET.cruise * ItemRules.COIN.boostFactor, ItemRules.COIN.boostFactor, level, nil, "coin")
+			ctx.broadcast("coinPouch", { plane = info.plane, pos = info.pos, count = p.coins })
+			ctx.log(string.format("[SkyRally][ITEM] fx coins racer=%s level=%d coins=%d", racerId, level, p.coins))
 		elseif kind == "frost_shot" or kind == "coin_burst" then
 			fireShots(racerId, ItemRules.statusShot(kind, level), level, { status = kind :: string, statusParams = p } :: any)
 		elseif kind == "bubble_guard" then
@@ -2302,9 +2494,9 @@ local function buildSlick(m: Model, cf: CFrame, ItemTexAssets: { [string]: strin
 	return plate, grounded
 end
 
--- Mine (levels two and three): the navy naval-mine mesh (assets/models/items_v1, nose-less ball, any spin is fine) with a
+-- Mine (level two): the navy naval-mine mesh (assets/models/items_v1, nose-less ball, any spin is fine) with a
 -- neon tip-light ball above the top lug that ItemClient blinks (blinking on the client keeps it off the network).
--- Level three adds a bubble shell. Falls back to the old faceted mine until the mesh cache has loaded.
+-- Falls back to the old faceted mine until the mesh cache has loaded.
 local function buildMine(m: Model, cf: CFrame, scale: number, green: Color3, mesh: MeshPart?): Part
 	local body: Part
 	if mesh then
@@ -2334,6 +2526,65 @@ local function buildMine(m: Model, cf: CFrame, scale: number, green: Color3, mes
 	return body
 end
 
+-- Crate (level three, v39: replaces the old bubble-shelled mine): a block-built TNT crate in the game's faceted style,
+-- warm planks with dark iron edge battens, a red danger band, a steel spike on each side face and the blinking tip
+-- light on a short post on top (ItemClient blinks the part named "Light"). About 4 studs, the size the bubble shell had.
+local CRATE_SIZE = 3.8
+local function buildCrate(m: Model, cf: CFrame): Part
+	local h = CRATE_SIZE / 2
+	local wood = Color3.fromRGB(176, 112, 58)
+	local iron = Color3.fromRGB(52, 48, 46)
+	local red = Color3.fromRGB(212, 52, 38)
+	local body = plainPart("Body", Enum.PartType.Block, Vector3.one * CRATE_SIZE, cf, wood, Enum.Material.WoodPlanks, m)
+	-- the danger band round the middle, a hair proud of the planks
+	plainPart("Band", Enum.PartType.Block, Vector3.new(CRATE_SIZE + 0.08, CRATE_SIZE * 0.3, CRATE_SIZE + 0.08), cf, red, Enum.Material.SmoothPlastic, m)
+	-- the twelve edge battens
+	local t = 0.42
+	for _, axis in { "X", "Y", "Z" } do
+		for _, a in { -1, 1 } do
+			for _, b in { -1, 1 } do
+				local size, off
+				if axis == "X" then
+					size, off = Vector3.new(CRATE_SIZE + 0.1, t, t), Vector3.new(0, a * (h - t / 2 + 0.05), b * (h - t / 2 + 0.05))
+				elseif axis == "Y" then
+					size, off = Vector3.new(t, CRATE_SIZE + 0.1, t), Vector3.new(a * (h - t / 2 + 0.05), 0, b * (h - t / 2 + 0.05))
+				else
+					size, off = Vector3.new(t, t, CRATE_SIZE + 0.1), Vector3.new(a * (h - t / 2 + 0.05), b * (h - t / 2 + 0.05), 0)
+				end
+				plainPart("Edge", Enum.PartType.Block, size, cf * CFrame.new(off), iron, Enum.Material.Metal, m)
+			end
+		end
+	end
+	-- steel spikes out of every side face (two per face, and two on the lid): stepped block-built points (a base plate,
+	-- a 45-degree diamond, a thinner diamond, a tip), gunmetal so the red tip light does not tint them pink
+	local steel = Color3.fromRGB(120, 126, 138)
+	local function spike(base: CFrame)
+		plainPart("SpikeBase", Enum.PartType.Block, Vector3.new(1.1, 1.1, 0.3), base * CFrame.new(0, 0, -0.15), iron, Enum.Material.Metal, m)
+		plainPart("Spike", Enum.PartType.Block, Vector3.new(0.78, 0.78, 1.0), base * CFrame.new(0, 0, -0.75) * CFrame.Angles(0, 0, math.rad(45)), steel, Enum.Material.Metal, m)
+		plainPart("Spike", Enum.PartType.Block, Vector3.new(0.48, 0.48, 0.8), base * CFrame.new(0, 0, -1.6) * CFrame.Angles(0, 0, math.rad(45)), steel, Enum.Material.Metal, m)
+		plainPart("SpikeTip", Enum.PartType.Block, Vector3.new(0.22, 0.22, 0.6), base * CFrame.new(0, 0, -2.25) * CFrame.Angles(0, 0, math.rad(45)), steel, Enum.Material.Metal, m)
+	end
+	for i = 0, 3 do
+		local face = cf * CFrame.Angles(0, math.rad(i * 90), 0)
+		for _, sx in { -0.42, 0.42 } do
+			spike(face * CFrame.new(sx * h * 1.0, (if sx < 0 then 0.42 else -0.42) * h, -h))
+		end
+	end
+	for _, sx in { -0.45, 0.45 } do
+		spike(cf * CFrame.new(sx * h, h, sx * h) * CFrame.Angles(math.rad(90), 0, 0))
+	end
+	plainPart("Post", Enum.PartType.Block, Vector3.new(0.4, 0.5, 0.4), cf * CFrame.new(0, h + 0.25, 0), iron, Enum.Material.Metal, m)
+	local light = plainPart("Light", Enum.PartType.Block, Vector3.new(0.8, 0.8, 0.8), cf * CFrame.new(0, h + 0.85, 0), Color3.fromRGB(255, 60, 40), Enum.Material.Neon, m)
+	local pl = Instance.new("PointLight")
+	pl.Name = "Blink"
+	pl.Color = Color3.fromRGB(255, 70, 50)
+	pl.Range = 8
+	pl.Brightness = 1.2
+	pl.Shadows = false
+	pl.Parent = light
+	return body
+end
+
 local function makeTrap(cf: CFrame, info: { [string]: any }): Model
 	local ItemArt = require(Shared:WaitForChild("ItemArt"))
 	local ItemTexAssets = require(Shared:WaitForChild("ItemTexAssets")) :: { [string]: string }
@@ -2345,12 +2596,10 @@ local function makeTrap(cf: CFrame, info: { [string]: any }): Model
 	local grounded = false
 	if form == "slick" then
 		body, grounded = buildSlick(m, cf, ItemTexAssets)
+	elseif form == "crate" then
+		body = buildCrate(m, cf)
 	else
 		body = buildMine(m, cf, 1.0, green, ItemArt.peek("mine"))
-		if form == "bubble" then
-			local shell = plainPart("Bubble", Enum.PartType.Ball, Vector3.new(7, 7, 7), cf, green, Enum.Material.ForceField, m)
-			shell.Transparency = 0.15
-		end
 	end
 	m.PrimaryPart = body
 	-- Pivot on the upright drop frame (not a rotated body), so the client's spin and bob turn about world up. The slick's
@@ -2557,6 +2806,7 @@ function ItemEffects.liveContext(order: () -> { RacerId }): Context
 				return {
 					pos = rec.hull.Position,
 					forward = rec.hull.CFrame.LookVector,
+					vel = rec.hull.AssemblyLinearVelocity,
 					station = rec.station,
 					progress = progressOf(rec.lap, rec.station, len),
 					-- A crashing plane is mid-tumble/respawn on the client; hitting it would stack two failures.
@@ -2635,6 +2885,9 @@ function ItemEffects.liveContext(order: () -> { RacerId }): Context
 			print(line)
 		end,
 		castWorld = castWorld,
+		traceShots = function(): boolean
+			return game:GetService("RunService"):IsStudio() and workspace:GetAttribute("QAMissileTrace") == true
+		end,
 		-- Items 14 and 18 go out through ItemService's remote (looked up per call, like applyToBot).
 		noteHit = function(victim: RacerId, attacker: RacerId, source: string): (string, number)
 			return ItemService.noteHit(victim, attacker, source)
@@ -2665,6 +2918,12 @@ function ItemEffects.liveContext(order: () -> { RacerId }): Context
 		end,
 		absorb = function(racerId: RacerId): boolean
 			return ItemService.absorbHit(racerId)
+		end,
+		steal = function(thief: RacerId, victim: RacerId): string?
+			return ItemService.steal(thief, victim)
+		end,
+		holdsStealable = function(racerId: RacerId): boolean
+			return ItemService.holdsStealable(racerId)
 		end,
 	}
 	return ctx

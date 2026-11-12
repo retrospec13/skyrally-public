@@ -33,6 +33,30 @@ def upload_records():
             path = REPO / entry.get("file", "")
             if path.is_file() and hashlib.sha256(path.read_bytes()).hexdigest() == entry["sha256"]:
                 out[str(entry["model"])] = entry
+    # tools/vfx/upload_set.py image sets (assets/ui/...): {name: {id, sha256}} beside <name>.png
+    for f in sorted((REPO / "assets" / "ui").rglob("uploaded.json")):
+        try:
+            data = json.loads(f.read_text())
+        except ValueError:
+            continue
+        for name, entry in data.items() if isinstance(data, dict) else []:
+            if not isinstance(entry, dict) or not str(entry.get("id", "")).isdigit() or not entry.get("sha256"):
+                continue
+            path = f.parent / f"{name}.png"
+            if path.is_file() and hashlib.sha256(path.read_bytes()).hexdigest() == entry["sha256"]:
+                out[str(entry["id"])] = entry
+    # tools/vfx/upload_set.py audio sets (assets/audio/...): {name: {id, sha256}} beside <name>.ogg
+    for f in sorted((REPO / "assets" / "audio").rglob("uploaded.json")):
+        try:
+            data = json.loads(f.read_text())
+        except ValueError:
+            continue
+        for name, entry in data.items() if isinstance(data, dict) else []:
+            if not isinstance(entry, dict) or not str(entry.get("id", "")).isdigit() or not entry.get("sha256"):
+                continue
+            path = f.parent / f"{name}.ogg"
+            if path.is_file() and hashlib.sha256(path.read_bytes()).hexdigest() == entry["sha256"]:
+                out[str(entry["id"])] = entry
     return out
 
 

@@ -32,7 +32,7 @@ return function(h)
 		LapTimeChip = { false, true, true, false, false, false, false },
 		ItemSlot = { true, true, true, false, false, false, true }, -- hub: the hub has cubes (item bugs audit)
 		SkyTokenCounter = { true, true, true, true, true, false, true },
-		SystemCluster = { true, true, true, true, true, false, true },
+		SystemCluster = { true, true, true, true, false, false, true },
 		RespawnButton = { true, false, true, false, false, false, true },
 		ReturnButton = { false, false, true, false, false, false, false },
 		StyleChainMeter = { false, false, true, false, false, false, true },
@@ -64,7 +64,7 @@ return function(h)
 
 	h.test("table: results hides position and lap but keeps the token chip and the system cluster; countdown hides RESPAWN", function()
 		h.ok(not R.visible("PositionBadge", "results") and not R.visible("LapTimeChip", "results"))
-		h.ok(R.visible("SkyTokenCounter", "results") and R.visible("SystemCluster", "results"))
+		h.ok(R.visible("SkyTokenCounter", "results") and not R.visible("SystemCluster", "results"))
 		h.ok(not R.visible("RespawnButton", "countdown"))
 		h.ok(not R.visible("TouchControls", "results") and not R.visible("TouchControls", "podium"))
 		h.ok(R.visible("LapTimeChip", "countdown"), "the chip shows a dim 0:00.0 on the grid")

@@ -28,8 +28,14 @@ MissileRules.TUNING = table.freeze({
 	lockRange = 600, -- studs of course progress: the furthest racer ahead a shot locks (about 3 s of closing)
 	terminalRange = 80, -- straight-line studs: from here the shot homes on the hull directly
 	terminalGap = 30, -- or when the course progress gap is this small (racer alongside the shot)
+	-- v37: the terminal phase needs the target in front of the shot (cos of the cone half-angle) and turns at most
+	-- terminalTurnDeg toward it; a racer under minLockAhead studs of progress ahead of the shooter is not locked (it is
+	-- beside the nose, and the server's sample of a player's hull trails the client's by 10-25 studs).
+	terminalCone = 0.17,
+	terminalTurnDeg = 420,
+	minLockAhead = 25,
 	catchUp = 70, -- studs/s a locked shot flies faster than its target while on the course path
-	maxSpeed = 360, -- studs/s cap (overcharge plane 210 + catchUp stays under it)
+	maxSpeed = 420, -- studs/s cap (overcharge plane 210 + catchUp stays under it; v37: base shots fly 320)
 	lockedLifetime = 7.0, -- s a locked shot may live (lockRange / catchUp is about 8.5 s at the worst case; most land < 3 s)
 	overshootSeconds = 0.5, -- a shot that lost its target flies on this long, then fizzles
 	-- Barrel roll dodge: the roll lasts TrickRules.ROLL_TIME (0.45 s); the extra 0.35 s covers the client -> server trip,
@@ -155,9 +161,9 @@ function MissileRules.counterHint(vehicle: string?, held: string?, dragging: boo
 	elseif held == "green" then
 		return "HOLD ITEM: TRAP BEHIND"
 	elseif held == "yellow" then
-		return "SHIELD UP!"
-	elseif held == "bubble_guard" then
-		return "BUBBLE: SEND IT BACK" -- items v4: the reflect window, timed on the beeps
+		return "HORN IT AWAY!" -- v38: the horn destroys a shot inside its ring (timed on the beeps)
+	elseif held == "orbit_missiles" then
+		return "ORBITERS BLOCK IT"
 	end
 	return nil
 end

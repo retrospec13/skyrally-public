@@ -379,6 +379,7 @@ function Gameplay.seatOnSurface(cf: CFrame, exclude: Instance): CFrame
 	-- centre one, sinking the plate 0.25 where the surface is uneven so the pad does not hover over the low side.
 	local centre: number? = nil
 	local best: number? = nil
+	local corners: { Vector3 } = {}
 	for _, off in { Vector3.zero, Vector3.new(7, 0, 11), Vector3.new(-7, 0, 11), Vector3.new(7, 0, -11), Vector3.new(-7, 0, -11) } do
 		local hit = workspace:Raycast(cf:PointToWorldSpace(off) + up * 6, -up * 12, params)
 		if hit and hit.Instance.Transparency < 1 then
@@ -386,8 +387,35 @@ function Gameplay.seatOnSurface(cf: CFrame, exclude: Instance): CFrame
 			if off == Vector3.zero then
 				centre = o
 				best = o
-			elseif centre and o <= centre + 1.6 then
-				best = math.max(best :: number, o)
+			else
+				if centre and math.abs(o - centre) <= 3 then
+					table.insert(corners, hit.Position)
+				end
+				if centre and o <= centre + 1.6 then
+					best = math.max(best :: number, o)
+				end
+			end
+		end
+	end
+	-- v37 (DINO-4 pads 1 and 2 half sunk): on a cross-sloped or banked floor the flat plate buried one side. With all
+	-- four corners hit, tilt the pad onto the plane through them (up to PAD_MAX_TILT) and seat it on that plane.
+	if centre and #corners == 4 then
+		-- corners: FR(+x,+z), FL(-x,+z), BR(+x,-z), BL(-x,-z); the two diagonals span the surface plane
+		local n = (corners[2] - corners[3]):Cross(corners[1] - corners[4])
+		if n.Magnitude > 1e-3 then
+			n = n.Unit
+			if n:Dot(up) < 0 then
+				n = -n
+			end
+			local tilt = math.deg(math.acos(math.clamp(n:Dot(up), -1, 1)))
+			if tilt > 1 and tilt <= 20 then
+				local mid = (corners[1] + corners[2] + corners[3] + corners[4]) / 4
+				local look = cf.LookVector - n * cf.LookVector:Dot(n)
+				if look.Magnitude > 1e-3 then
+					local right = look.Unit:Cross(n)
+					local at = cf.Position + n * ((mid - cf.Position):Dot(n) + 0.45)
+					return CFrame.fromMatrix(at, right, n, -look.Unit)
+				end
 			end
 		end
 	end

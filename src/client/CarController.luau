@@ -56,6 +56,9 @@ local Vfx = require(script.Parent:WaitForChild("Vfx"))
 local ReverseRules = require(Shared:WaitForChild("ReverseRules")) -- reverse v2: brake, stop, hold, then back up (MK rule)
 local TrickRules = require(Shared:WaitForChild("TrickRules"))
 local TrickJuice = require(script.Parent:WaitForChild("TrickJuice"))
+local StartFx = require(script.Parent:WaitForChild("StartFx")) -- v37 rocket start: exhaust charge glow, whine, GO burst
+local Slipstream = require(script.Parent:WaitForChild("Slipstream")) -- v37: a rival's wake charges a slingshot
+local SlipstreamRules = require(Shared:WaitForChild("SlipstreamRules"))
 local RespawnRules = require(Shared:WaitForChild("RespawnRules"))
 -- The magnet reads another player's hull at the engine's replicated pose, never RacerView's stream draw (remote-smooth).
 -- Style lane (REMARKABLE Batch 2 items 15-17: zone turbo, near misses, the style chain) and alternate lines (G8).
@@ -66,6 +69,7 @@ local Mods = {
 	Prof = require(Shared:WaitForChild("Prof")), -- MicroProfiler labels (perf review v21 PF-10)
 	FidelityRules = require(Shared:WaitForChild("FidelityRules")), -- timed hub-boss pads (PadLive, M-2)
 	SplineUtils = require(Shared:WaitForChild("SplineUtils")),
+	Sfx37 = require(script.Parent:WaitForChild("Sfx37")), -- v38-feel: the drift charge whine
 	TrackRegistry = require(Shared:WaitForChild("TrackRegistry")),
 	VfxAssets = require(Shared:WaitForChild("VfxAssets")),
 	FlipFx = require(Shared:WaitForChild("FlipFx")),
@@ -229,6 +233,10 @@ local tideLookupClock = 0
 local camForward = Vector3.new(0, 0, -1)
 local camY = 0
 local camReady = false
+-- v38-feel state (one table: the module is at its top-level local budget): feel.camRoll eased lean into the turn (degrees),
+-- feel.camSide eased drift look-ahead (-1..1), feel.camDip/feel.camDipVel the landing dip spring (studs), flicker* the post-hit /
+-- post-respawn shield blink (local view only, LocalTransparencyModifier).
+local feel = { camRoll = 0, camSide = 0, camDip = 0, camDipVel = 0, flickerTimer = 0, flickerOn = false, flickerParts = {} :: { BasePart } }
 
 -- Remotes
 local flightStateRemote: RemoteEvent? = nil
@@ -319,9 +327,9 @@ local function makeSparkEmitter(parent: Instance): ParticleEmitter
 	pe.Texture = texture("spark_streak")
 	pe.Rate = 0
 	pe.Enabled = false
-	pe.Lifetime = NumberRange.new(0.16, 0.3)
+	pe.Lifetime = NumberRange.new(0.22, 0.42) -- v37: long enough to read from the chase camera (0.16-0.3 vanished)
 	pe.Speed = NumberRange.new(10, 24)
-	pe.SpreadAngle = Vector2.new(35, 25)
+	pe.SpreadAngle = Vector2.new(50, 40)
 	pe.Size = NumberSequence.new({ NumberSequenceKeypoint.new(0, 0.55), NumberSequenceKeypoint.new(1, 0) })
 	pe.Transparency = NumberSequence.new({ NumberSequenceKeypoint.new(0, 0), NumberSequenceKeypoint.new(1, 1) })
 	pe.LightEmission = 1
@@ -437,7 +445,7 @@ end
 local sparkColors: { [string]: ColorSequence } = {}
 local SPARK_SIZE = NumberSequence.new({ NumberSequenceKeypoint.new(0, 0.55), NumberSequenceKeypoint.new(1, 0) })
 local SPARK_SIZE_ZONE = NumberSequence.new({ NumberSequenceKeypoint.new(0, 1.7), NumberSequenceKeypoint.new(1, 0) })
-local SPARK_SIZE_T2 = NumberSequence.new({ NumberSequenceKeypoint.new(0, 1.2), NumberSequenceKeypoint.new(1, 0) })
+local SPARK_SIZE_T2 = NumberSequence.new({ NumberSequenceKeypoint.new(0, 1.7), NumberSequenceKeypoint.new(1, 0) }) -- v37: 1.2 was a few flecks
 local SPARK_SIZE_T1 = NumberSequence.new({ NumberSequenceKeypoint.new(0, 1.9), NumberSequenceKeypoint.new(1, 0) }) -- v21: 1.3 was faint on bright sand
 local function setDriftEffects(rig: Rig, drifting: boolean, level: number, grounded: boolean)
 	local sliding = drifting and grounded
@@ -467,11 +475,12 @@ local function setDriftEffects(rig: Rig, drifting: boolean, level: number, groun
 		pe.Enabled = sliding and lv ~= nil and pscale > 0
 		if lv and seq then
 			-- Other cars (bots, rivals) throw GroundFxRules.REMOTE_SPARK_FRAC of the local rate: the top tier is 170/s per emitter.
-			pe.Rate = Mods.GroundFxRules.sparkRate(if top then 170 elseif level == 2 then 100 else 80, pscale, rig.isLocal)
+			-- v37: tiers 1-2 were flecks next to the top tier (Studio captures sp4d_*): denser, and each tier a clear step up.
+			pe.Rate = Mods.GroundFxRules.sparkRate(if top then 170 elseif level == 2 then 140 else 110, pscale, rig.isLocal)
 			pe.Color = seq
-			pe.LightEmission = if level == 1 then 0.3 else 1 -- additive blue vanishes on bright cobble/sand: tier 1 blends instead
+			pe.LightEmission = if level == 1 then 0.55 else 1 -- additive blue vanishes on bright sand, 0.3 vanished on dark road
 			pe.Size = if top then SPARK_SIZE_ZONE elseif level == 2 then SPARK_SIZE_T2 else SPARK_SIZE_T1
-			pe.Speed = if top then NumberRange.new(22, 46) elseif level == 2 then NumberRange.new(16, 32) else NumberRange.new(10, 22)
+			pe.Speed = if top then NumberRange.new(22, 46) elseif level == 2 then NumberRange.new(16, 34) else NumberRange.new(12, 26)
 		else
 			pe.Rate = 0
 		end
@@ -613,14 +622,19 @@ local function hullCF(): CFrame
 end
 
 -- kind: "Pad" | "MiniTurbo" | "Item" | "Pod"; state is the Vfx/SoundJuice family ("Standard" or "Overcharge").
-function CarController.triggerBoost(kind: string, speed: number, duration: number, state: string)
+-- kick: the share of `speed` the car jumps to at once (default 0.85); mini-turbo tiers step it up (CarConfig.DRIFT_KICK).
+function CarController.triggerBoost(kind: string, speed: number, duration: number, state: string, kick: number?)
+	if floodTimer > 0 and not string.find(kind, "^Item") then
+		return -- v37: a stalled (burnt) start takes no pad / ring boost until the engine catches (SPACE-4's grid rings)
+	end
 	if CarController.boostState ~= "Overcharge" or state == "Overcharge" then
 		CarController.boostState = state
 	end
 	CarController.boostTimer = math.max(CarController.boostTimer, duration)
 	boostSpeed = math.max(if CarController.boostTimer > duration then boostSpeed else 0, speed)
-	if CarController.speed < speed * 0.85 and CarController.grounded then
-		CarController.speed = math.max(CarController.speed, speed * 0.85) -- the kick: boosts must be felt at once
+	local k = kick or 0.85
+	if CarController.speed < speed * k and CarController.grounded then
+		CarController.speed = math.max(CarController.speed, speed * k) -- the kick: boosts must be felt at once
 	end
 	LocalPlayer:SetAttribute("BoostState", CarController.boostState)
 	LocalPlayer:SetAttribute("LastBoostKind", kind)
@@ -632,10 +646,18 @@ function CarController.triggerBoost(kind: string, speed: number, duration: numbe
 	SoundJuice.triggerFeedback("medium", if state == "Overcharge" then "Overcharge" else "Boost")
 end
 
+-- v38-feel: the rising drift charge (MK8's sparks building): the rocket-start charge whine, quiet, restarted a step
+-- higher at every tier so the pitch climbs with the charge; it is 1.5 s long, so a held top tier falls silent (no drone).
+function feel.chargeVoice(level: number)
+	Mods.Sfx37.stop("rs_charge")
+	Mods.Sfx37.play("rs_charge", 0.12 + 0.04 * level, 0.8 + 0.155 * level)
+end
+
 local function endDrift(release: boolean)
 	if not CarController.drifting then
 		return
 	end
+	Mods.Sfx37.stop("rs_charge")
 	local level = CarConfig.driftLevel(CarController.driftCharge)
 	CarController.drifting = false
 	CarController.driftDir = 0
@@ -643,7 +665,8 @@ local function endDrift(release: boolean)
 	CarController.driftLevel = 0
 	if release and level > 0 then
 		local lv = CarConfig.DRIFT_LEVELS[level]
-		CarController.triggerBoost("MiniTurbo", lv.boostSpeed, lv.boostDuration, lv.boostState)
+		CarController.triggerBoost("MiniTurbo", lv.boostSpeed, lv.boostDuration, lv.boostState, CarConfig.DRIFT_KICK[level])
+		Vfx.boostPunch(level >= 2) -- v37: every tier gets the ignite FOV punch (the top two the big one); GroundFx draws the burst
 		LocalPlayer:SetAttribute("LastMiniTurbo", lv.name)
 		if CarController.hull then
 			Mods.GroundFx.release(CarController.hull, level, rgb(CarConfig.driftColor(level, RaceAttr.mine("ActiveZone") :: string?)))
@@ -899,6 +922,7 @@ local function completeRespawn()
 	CarController.lastRespawnAt = lastRespawnClock
 	placeAt(target, CarConfig.RESPAWN_SPEED, true)
 	CarController.invulnTimer = CarConfig.RESPAWN_INVULN
+	feel.flickerTimer = CarConfig.RESPAWN_INVULN
 	CarController.respawning = false
 	LocalPlayer:SetAttribute("Crashing", false)
 	fadePhase = "in"
@@ -918,7 +942,7 @@ local function completeRespawn()
 		if typeof(crashPos) == "Vector3" and RespawnRules.noteCrash(loopGuard, crashPos, os.clock()) then
 			CarController.invulnTimer = math.max(CarController.invulnTimer, RespawnRules.LOOP_INVULN)
 			Vfx.burst("trickLand", hullCF(), 1.2)
-			TrickJuice.callout("RESCUE!", TrickJuice.GOLD, 1.2)
+			TrickJuice.callout("RESCUE", TrickJuice.GOLD, 1.2)
 			LocalPlayer:SetAttribute("RescueGlides", ((LocalPlayer:GetAttribute("RescueGlides") :: number?) or 0) + 1)
 			print("[SkyRally][CAR] rescue (repeat crash)")
 		end
@@ -1073,7 +1097,7 @@ local function landTrick(pos: Vector3, air: number)
 		local turns = math.floor(math.abs(trickTarget) / 360 + 0.5)
 		Vfx.burst("trickLand", groundCF(pos), if turns >= 2 then 1.6 else 1)
 		TrickJuice.play("trick_stuck", if turns >= 2 then 1.12 else 1)
-		TrickJuice.callout(if turns >= 2 then "DOUBLE! STUCK IT!" else "STUCK IT!", TrickJuice.GOLD, 1.1)
+		TrickJuice.callout(if turns >= 2 then "DOUBLE STUCK IT" else "STUCK IT", TrickJuice.GOLD, 1.1)
 		squash = math.max(squash, 0.5)
 		CarController.addTrauma(0.12)
 		LocalPlayer:SetAttribute("LastTrick", if turns >= 2 then "StuckDouble" else "Stuck")
@@ -1159,11 +1183,15 @@ local function stepGrid(dt: number, goTime: number, left: number, steerIn: numbe
 		-- Flooding: the engine bogs and stutters and a black puff coughs out now and then. Let go to recover.
 		revTarget = 0.3 + 0.25 * math.sin(os.clock() * 23)
 		floodPuffClock -= dt
+		if before ~= "flooded" then
+			require(script.Parent:WaitForChild("Sfx37")).play("burnt_sputter", 0.5) -- v37: the burnt start cough
+		end
 		if before ~= "flooded" or floodPuffClock <= 0 then
 			floodPuffClock = 0.7
 			Vfx.burst("floodPuff", exhaustCF(), 0.35)
 		end
 	end
+	StartFx.step(CarController.hull, exhaustCF(), state, TrickRules.startCharge(startState, left))
 	revThrottle += (revTarget - revThrottle) * expAlpha(1 / 0.15, dt)
 	-- Engine pitch through SoundJuice's own speed mapping (0.75 + 0.9 * (speed - 70) / 140), so 0.75 + 0.6 * rev.
 	local pitch = TrickRules.revPitch(revTarget)
@@ -1176,26 +1204,37 @@ local function applyStart(goTime: any)
 	onGrid = false
 	TrickJuice.setStartRing(false, false, nil)
 	if not startPending then
+		StartFx.stop()
 		return
 	end
 	startPending = false
 	if type(goTime) ~= "number" or workspace:GetServerTimeNow() - goTime > 0.5 then
+		StartFx.stop()
 		return -- the hold ended some other way (reset, hub): no start to judge
 	end
 	local state = startState.state
 	LocalPlayer:SetAttribute("StartResult", state)
-	if state == "perfect" then
-		local tier = CarConfig.DRIFT_LEVELS[1]
-		CarController.triggerBoost("Start", tier.boostSpeed, TrickRules.START_BOOST_TIME, "Standard")
-		TrickJuice.play("start_perfect")
-		TrickJuice.callout("PERFECT START!", TrickJuice.BLUE, 1.2)
-		Mods.StyleChain.event("PerfectStart") -- REMARKABLE 17
+	if state == "perfect" or state == "good" then
+		-- v37 rocket start: perfect = the pad boost (an existing legal speed) for START_BOOST_TIME, good = the blue
+		-- mini-turbo speed for START_GOOD_TIME. The callout waits for the GO! numeral to clear.
+		local perfect = state == "perfect"
+		local speed = if perfect then CarConfig.PAD_BOOST_SPEED else CarConfig.DRIFT_LEVELS[1].boostSpeed
+		CarController.triggerBoost("Start", speed, TrickRules.startBoostTime(state), if perfect then "Overcharge" else "Standard")
+		StartFx.release(CarController.hull, exhaustCF(), state)
+		TrickJuice.play("start_perfect", if perfect then 1 else 0.9)
+		task.delay(0.7, TrickJuice.callout, if perfect then "ROCKET START" else "GOOD START", TrickJuice.BLUE, 1.1)
+		if perfect then
+			Mods.StyleChain.event("PerfectStart") -- REMARKABLE 17
+		end
 	elseif state == "flooded" then
+		StartFx.stop()
 		floodTimer = TrickRules.FLOOD_TIME
 		Vfx.burst("floodPuff", exhaustCF(), 1)
 		TrickJuice.play("start_flood")
-		TrickJuice.callout("FLOODED!", TrickJuice.SOOT, 1.1)
+		task.delay(0.7, TrickJuice.callout, "STALLED", TrickJuice.SOOT, 1.1)
 		CarController.addTrauma(0.15)
+	else
+		StartFx.stop()
 	end
 	print(string.format("[SkyRally][TRICK] start=%s", state))
 end
@@ -1483,6 +1522,8 @@ local function unbind()
 	if car then
 		rigs[car] = nil
 	end
+	Slipstream.stop()
+	StartFx.stop()
 	CarController.car = nil
 	CarController.hull = nil
 	local conn = spawnFrameConn
@@ -1585,6 +1626,7 @@ local function updateCamera(dt: number)
 	if not camReady then
 		camForward = travel
 		camY = pos.Y
+		feel.camRoll, feel.camSide, feel.camDip, feel.camDipVel = 0, 0, 0, 0
 		camReady = true
 	else
 		-- Reverse v2: a calmer heading follow while backing up (no whip as the tail swings), v27 response going forward.
@@ -1595,10 +1637,26 @@ local function updateCamera(dt: number)
 	local speedFrac = math.clamp(math.abs(CarController.speed) / CarConfig.TOP_SPEED, 0, 1)
 	local _, revPull = ReverseRules.camera(CarController.speed)
 	local dist = CarConfig.CAM_DISTANCE + CarConfig.CAM_SPEED_PULLBACK * speedFrac + revPull
+	-- v38-feel: drift look-ahead (the look point swings to the inside, the camera slides a little outside), lean into the
+	-- turn, and a landing dip spring (feel.camDipVel is kicked at touchdown). Spin-outs keep the steady frame.
+	local driving = not CarController.spinning and not CarController.respawning
+	local sideTarget = if driving and CarController.drifting then CarController.driftDir else 0
+	feel.camSide += (sideTarget - feel.camSide) * expAlpha(CarConfig.CAM_DRIFT_LOOK_RESPONSE, dt)
+	local rollTarget = if driving
+		then -(CarController.steer * speedFrac * CarConfig.CAM_LEAN_DEG + (if CarController.drifting then CarController.driftDir * CarConfig.CAM_DRIFT_LEAN_DEG else 0))
+		else 0
+	feel.camRoll += (rollTarget - feel.camRoll) * expAlpha(CarConfig.CAM_LEAN_RESPONSE, dt)
+	local sdt = math.min(dt, 0.05)
+	feel.camDipVel += (-90 * feel.camDip - 11 * feel.camDipVel) * sdt
+	feel.camDip = math.clamp(feel.camDip + feel.camDipVel * sdt, -CarConfig.CAM_LAND_DIP_MAX, CarConfig.CAM_LAND_DIP_MAX * 0.5)
+	local right = safeUnit(camForward:Cross(Vector3.yAxis), Vector3.xAxis)
 	local base = Vector3.new(pos.X, camY, pos.Z)
-	local camPos = base - camForward * dist + Vector3.yAxis * CarConfig.CAM_HEIGHT
-	local target = Vector3.new(pos.X, (camY + pos.Y) * 0.5, pos.Z) + camForward * CarConfig.CAM_LOOK_AHEAD + Vector3.yAxis * CarConfig.CAM_LOOK_HEIGHT
-	local cf = CFrame.lookAt(camPos, target)
+	local camPos = base - camForward * dist + Vector3.yAxis * (CarConfig.CAM_HEIGHT + feel.camDip) - right * (feel.camSide * CarConfig.CAM_DRIFT_SWING)
+	local target = Vector3.new(pos.X, (camY + pos.Y) * 0.5, pos.Z)
+		+ camForward * CarConfig.CAM_LOOK_AHEAD
+		+ Vector3.yAxis * (CarConfig.CAM_LOOK_HEIGHT + feel.camDip * 0.4)
+		+ right * (feel.camSide * CarConfig.CAM_DRIFT_LOOK)
+	local cf = CFrame.lookAt(camPos, target) * CFrame.Angles(0, 0, math.rad(feel.camRoll))
 
 	-- Camera-only trauma shake (never touches the simulated car).
 	if CarController.cameraTrauma > 0 then
@@ -1611,7 +1669,9 @@ local function updateCamera(dt: number)
 	cam.CFrame = cf
 
 	local fov = CarConfig.CAM_BASE_FOV + CarConfig.CAM_SPEED_FOV * speedFrac
-	if CarController.boostState ~= "None" then
+	if CarController.boostState == "Overcharge" then
+		fov += CarConfig.CAM_OVERCHARGE_FOV -- v38-feel: the stronger boost reads wider
+	elseif CarController.boostState ~= "None" then
 		fov += CarConfig.CAM_BOOST_FOV
 	end
 	if hitStopTimer > 0 then
@@ -1619,7 +1679,7 @@ local function updateCamera(dt: number)
 	end
 	-- Boost ignite punch (Vfx.boostPunch): the FOV overshoot rides on top of the smoothed FOV; queued trauma joins the shake.
 	local baseFov = cam.FieldOfView - appliedFovKick
-	baseFov += (fov - baseFov) * expAlpha(CarConfig.CAM_FOV_RESPONSE, dt)
+	baseFov += (fov - baseFov) * expAlpha(if fov >= baseFov then CarConfig.CAM_FOV_RESPONSE else CarConfig.CAM_FOV_EASE_BACK, dt)
 	appliedFovKick = Vfx.fovKick()
 	cam.FieldOfView = baseFov + appliedFovKick
 	local punchTrauma = Vfx.takeTrauma()
@@ -1634,6 +1694,25 @@ local function updateLocalVisuals(dt: number, throttle: number)
 	local rig = if car then rigs[car] else nil
 	if not rig then
 		return
+	end
+	-- v38-feel: the shield blink after a spin-out or respawn (MK-style: the kart flickers while it cannot be hit).
+	if feel.flickerTimer > 0 or feel.flickerOn then
+		feel.flickerTimer = math.max(0, feel.flickerTimer - dt)
+		local on = feel.flickerTimer > 0 and (feel.flickerTimer * 14) % 2 < 1
+		if on ~= feel.flickerOn then
+			feel.flickerOn = on
+			if on then
+				table.clear(feel.flickerParts)
+				for _, d in rig.model:GetDescendants() do
+					if d:IsA("BasePart") and d.Transparency < 1 then
+						table.insert(feel.flickerParts, d)
+					end
+				end
+			end
+			for _, p in feel.flickerParts do
+				p.LocalTransparencyModifier = if on then 0.65 else 0
+			end
+		end
 	end
 	-- Landing squash spring and drift hop (body only; Motor6D.Transform stays on this client).
 	squashVel += (-180 * squash - 14 * squashVel) * dt
@@ -1876,6 +1955,12 @@ local function stepCarOnce(rawDt: number)
 	-- adhesion, walls and the rest of the car are untouched).
 	if workspace:GetAttribute("AutoPilot") == true or itemAutoTimer > 0 then
 		steerIn, throttle, driftHeld = autopilotInputs()
+	elseif LocalPlayer:GetAttribute("RaceFinished") == true and RaceAttr.mine("RaceMode") ~= "battle" and RaceAttr.mine("RaceMode") ~= "hub" then
+		-- v38-feel: past the line the car drives itself (MK8): the route's pure pursuit at a cruise, no drifts, so the
+		-- finish swing (client/FinishShow) shows it rolling on instead of stopping dead when the keys let go.
+		steerIn, throttle = autopilotInputs()
+		throttle = math.min(throttle, if math.abs(CarController.speed) > 95 then 0 else 0.7)
+		driftHeld = false
 	else
 		steerIn, throttle, driftHeld = readInputs()
 	end
@@ -1934,7 +2019,7 @@ local function stepCarOnce(rawDt: number)
 		-- Spinning out, or out of a battle (spectating): no control, the car rolls to a stop.
 		steerIn, throttle, driftHeld = 0, 0, false
 	end
-	-- FLOODED start: the engine coughs for FLOOD_TIME with the gas capped (three sputter jolts on the body).
+	-- FLOODED start: the engine stalls for FLOOD_TIME (gas capped at FLOOD_THROTTLE_CAP, sputter jolts on the body).
 	if floodTimer > 0 then
 		local before = floodTimer
 		floodTimer = math.max(0, floodTimer - dt)
@@ -1942,6 +2027,16 @@ local function stepCarOnce(rawDt: number)
 		if math.floor(before / 0.11) ~= math.floor(floodTimer / 0.11) then
 			squash = math.max(squash, 0.3)
 		end
+	end
+	-- Slipstream (v37): in a rival's wake for SlipstreamRules.CHARGE_TIME, the wake slingshots the car (blue
+	-- mini-turbo speed, inside the validator's bound). Races only; never while spun out, stunned or reversing.
+	if RaceAttr.mine("RaceMode") ~= "hub" and not CarController.spinning and CarController.speed > 0 then
+		if Slipstream.step(dt, CarController.hull, CarController.speed, CarConfig.HALF_WIDTH) then
+			CarController.triggerBoost("Draft", SlipstreamRules.CAR_SPEED, SlipstreamRules.CAR_SECONDS, "Standard")
+			LocalPlayer:SetAttribute("DraftCount", ((LocalPlayer:GetAttribute("DraftCount") :: number?) or 0) + 1)
+		end
+	else
+		Slipstream.stop()
 	end
 	CarController.steer += (steerIn - CarController.steer) * expAlpha(CarConfig.STEER_RESPONSE, dt)
 	local steer = CarController.steer
@@ -1968,6 +2063,7 @@ local function stepCarOnce(rawDt: number)
 			CarController.spinning = false
 			spinAngle = 0
 			CarController.invulnTimer = math.max(CarController.invulnTimer, 0.6)
+			feel.flickerTimer = math.max(feel.flickerTimer, 0.6)
 			LocalPlayer:SetAttribute("SpinningOut", false)
 			LocalPlayer:SetAttribute("ItemStunned", false)
 		end
@@ -2019,6 +2115,7 @@ local function stepCarOnce(rawDt: number)
 			if impact > CarConfig.LAND_SQUASH_MIN_SPEED then
 				squash = math.max(squash, 0.25 + 0.75 * s)
 				CarController.addTrauma(0.08 + 0.2 * s)
+				feel.camDipVel = math.min(feel.camDipVel, -impact * CarConfig.CAM_LAND_DIP) -- v38-feel: the camera dips with the landing
 			end
 			LocalPlayer:SetAttribute("LastLandingSpeed", math.floor(impact))
 			if impact > CarConfig.LAND_SQUASH_MIN_SPEED and not hopAir then
@@ -2093,6 +2190,7 @@ local function stepCarOnce(rawDt: number)
 			CarController.driftCharge = 0
 			CarController.driftLevel = 0
 			hopTimer = CarConfig.DRIFT_HOP_TIME
+			feel.chargeVoice(0)
 		end
 		if CarController.drifting then
 			if not driftHeld then
@@ -2104,6 +2202,7 @@ local function stepCarOnce(rawDt: number)
 				local lvl = CarConfig.driftLevel(CarController.driftCharge)
 				if lvl > CarController.driftLevel then
 					CarController.driftLevel = lvl
+					feel.chargeVoice(lvl)
 					-- REMARKABLE 15: each tier has its own crackle (tiers no longer reuse the pickup chime, which
 					-- stays as the fallback until the style cues are uploaded); the zone tier also flashes its burst.
 					if not Mods.StyleChain.sfx("drift_tier" .. lvl) then
@@ -2521,6 +2620,10 @@ function CarController.applyItemEffect(kind: string, data: any)
 		end
 		local level = tonumber(d.level) or 1
 		CarController.triggerBoost("Item", speed, seconds, if level >= 3 and not d.factor then "Overcharge" else "Standard")
+	elseif kind == "coins" then
+		-- v38 Coin Pouch / Item Steal fallback: race coins straight into the count (capped like Speed pods).
+		CarController.speedPickups = math.min(CarConfig.MAX_SPEED_PICKUPS, CarController.speedPickups + math.max(0, math.floor(tonumber(d.count) or 0)))
+		LocalPlayer:SetAttribute("SpeedPickups", CarController.speedPickups)
 	elseif kind == "slow" then
 		itemSlowTimer = math.clamp(tonumber(d.seconds) or 1, 0, Mods.ItemRules.SLOW.maxSeconds)
 		itemSlowFactor = math.clamp(tonumber(d.factor) or 1, Mods.ItemRules.SLOW.floor, 1)
@@ -2533,6 +2636,18 @@ function CarController.applyItemEffect(kind: string, data: any)
 			return
 		end
 		CarController.spinOut("ItemHit", math.clamp(tonumber(d.seconds) or 1.2, 0.2, 4), nil, nil, true)
+		-- v39: the spiked crate (trap level three) also pops the car into a short hop while it spins (ItemRules.TRAP_KNOCK_VY).
+		local knock = if d.source == "trap" then Mods.ItemRules.trapKnockVy(d.form) else 0
+		if knock > 0 and CarController.grounded and not CarController.respawning then
+			velocity += up * math.clamp(knock, 0, 60)
+			CarController.grounded = false -- next probe pass resolves airborne, like a hop
+			CarController.airTime = 0
+			squash = math.min(squash, -0.45)
+			squashVel = 0
+		end
+		-- v38 (Mario Kart 8): a hit spills coins (ItemRules.COIN_HIT_LOSS) and the top-speed bonus they gave.
+		CarController.speedPickups = math.max(0, CarController.speedPickups - Mods.ItemRules.COIN_HIT_LOSS)
+		LocalPlayer:SetAttribute("SpeedPickups", CarController.speedPickups)
 	elseif kind == "magnet" then
 		local target = d.target
 		if typeof(target) == "Instance" and target:IsA("Model") then

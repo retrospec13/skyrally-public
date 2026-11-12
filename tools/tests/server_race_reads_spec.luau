@@ -12,8 +12,8 @@ local process = require("@lune/process")
 type Allow = { count: number, why: string }
 local ALLOW: { [string]: Allow } = {
 	["src/server/TrackDirector.luau"] = {
-		count = 29,
-		why = "the whole-server flow (load, lobby, votes, race end, joiner, leaver) runs only with PER_GROUP false; per group the workspace values are the hub's (RaceMode 'hub') and every group's flow is RaceGroups'",
+		count = 30,
+		why = "the whole-server flow (load, lobby, votes, race end incl. the Grand Prix hand-over, joiner, leaver) runs only with PER_GROUP false; per group the workspace values are the hub's (RaceMode 'hub') and every group's flow is RaceGroups'",
 	},
 	["src/server/init.server.luau"] = {
 		count = 6,

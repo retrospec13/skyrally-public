@@ -20,9 +20,11 @@ export type Layers = { hex: boolean, swirl: boolean, edge: boolean, ring: boolea
 
 -- Which bubble layers exist for a quality tier. Phone drops the swirl and the ring (audit item 6); low graphics keeps
 -- just the hex billboard and the edge sparkles (shield) or the shimmer (respawn).
+-- v39 (owner: "I don't like the shields and bubbles"): respawn protection draws no hex shell any more, only the star
+-- shimmer round the hull (and the local car's invulnerability blink, CarController); the hex stays for the shield.
 function ItemFxRules.bubbleLayers(respawn: boolean, phone: boolean, low: boolean): Layers
 	return {
-		hex = true,
+		hex = not respawn,
 		swirl = not respawn and not phone and not low,
 		edge = not respawn,
 		ring = not respawn and not phone and not low,

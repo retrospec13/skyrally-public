@@ -19,7 +19,7 @@ return function(h)
 			h.eq(lines[1], "Win races, earn Sky Tokens, open new worlds!")
 			h.eq(#lines, 3)
 		end
-		h.contains(R.controlsLine("Touch"), "stone pad")
+		h.contains(R.controlsLine("Touch"), "left pad")
 		h.contains(R.controlsLine("Gamepad"), "stick")
 		h.contains(R.controlsLine("KeyboardMouse"), "A and D")
 	end)

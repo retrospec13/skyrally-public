@@ -301,7 +301,9 @@ SettingsRules.PANEL_W = 600
 SettingsRules.PANEL_H = 336 -- five toggle rows (ASSIST, CAMERA SHAKE, LOW GRAPHICS, ENGINE SOUND, FREE DRIVING), invite + done in one row
 
 function SettingsRules.panelScale(viewportX: number, viewportY: number): number
-	return math.clamp(math.min(viewportX * 0.94 / SettingsRules.PANEL_W, viewportY * 0.94 / SettingsRules.PANEL_H), 0.7, 1.6)
+	-- v38-flow round 2: up to 2.3 so the plaque fills ~70 % of a 1080p screen (1.6 left it a small box)
+	local k = if viewportY >= 600 then 0.72 else 0.94 -- phones keep the near-full-screen fit
+	return math.clamp(math.min(viewportX * k / SettingsRules.PANEL_W, viewportY * k / SettingsRules.PANEL_H), 0.7, 2.3)
 end
 
 -- An extra page's top edge in panel units (client/Settings.setExtraPage; D22: the owner's ADMIN tab): under the header

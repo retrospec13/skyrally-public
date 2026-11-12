@@ -290,6 +290,9 @@ def validate_skyrally(plan: dict, rep: Report) -> bool:
                 if not (isinstance(it, dict) and is_str(it.get("name")) and is_num(it.get("station"))
                         and all(is_num(it.get(f, 0)) for f in fields)):
                     rep.error("gameplay.field", f"gameplay.{kind}[{i}]: needs name, station, {', '.join(fields)}")
+                fc = it.get("facing") if isinstance(it, dict) else None
+                if fc is not None and not (kind == "pads" and is_vec(fc) and math.hypot(fc[0], fc[2]) > 1e-6):
+                    rep.error("gameplay.field", f"gameplay.{kind}[{i}].facing: pads only, a horizontal direction [x, y, z]")
                 sg = it.get("sailGate") if isinstance(it, dict) else None
                 if sg is not None and not (kind == "rings" and isinstance(sg, dict) and is_num(sg.get("rpm")) and sg["rpm"] > 0
                                            and is_num(sg.get("ringDeg")) and is_num(sg.get("phaseDeg", 0))):
@@ -945,8 +948,16 @@ def build_trackdata(plan: dict, route: routelib.Route, gates: dict, source: dict
     pads = []
     for p in gp.get("pads", []) or []:
         f = fr(p["station"])
-        pads.append({"name": p["name"], "station": p["station"],
-                     "cf": cframe(f.cframe(f.offset(p.get("lateral", 0), PAD_LIFT)))})
+        comps = f.cframe(f.offset(p.get("lateral", 0), PAD_LIFT))
+        if p.get("facing") is not None:  # a pad off the main route (an alternate line) faces its own line, not the main tangent
+            look = np.array(p["facing"], float)
+            look[1] = 0.0
+            look /= np.linalg.norm(look)
+            up = np.array([0.0, 1.0, 0.0])
+            right = np.cross(look, up)
+            comps = [*comps[:3], right[0], up[0], -look[0], right[1], up[1], -look[1], right[2], up[2], -look[2]]
+            comps = [round(float(v), 6) for v in comps]
+        pads.append({"name": p["name"], "station": p["station"], "cf": cframe(comps)})
 
     pods = []
     for p in gp.get("pods", []) or []:

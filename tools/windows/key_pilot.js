@@ -24,6 +24,7 @@ const GOAL = argOf('goal') || 'spline';
 const GOAL_QA = GOAL === 'qa';
 const GOAL_VERIFY = GOAL === 'verify';
 const BOOST = argOf('boost') === '1';
+const DRIFT = argOf('drift') === '1'; // cars: real-input drift and mini-turbo release
 // route=x:y:z:v/x:y:z:v -> Lua table literal (numbers only; anything else is dropped)
 const ROUTE_LUA = '{' + argOf('route').split('/').filter(Boolean).map((w) => {
   const n = w.split(':').map(Number);
@@ -32,7 +33,7 @@ const ROUTE_LUA = '{' + argOf('route').split('/').filter(Boolean).map((w) => {
 const SECONDS = Number(secondsArg || 180);
 const ASSIST_OFF = (assistArg || 'assist=off') === 'assist=off';
 const SKILL = Number((skillArg || 'skill=1').split('=')[1] || 1);
-const PLACE = process.env.SKYRALLY_STUDIO_PLACE || 'skyrally_1.rbxlx';
+const PLACE = process.env.SKY_PLACE || process.env.SKYRALLY_STUDIO_PLACE || 'skyrally_1.rbxlx';
 
 const mcp = process.env.SKYRALLY_PILOT_ENABLED === '1'
   ? spawn('cmd.exe', ['/c', 'mcp.bat'], { cwd: process.env.LOCALAPPDATA + '\\Roblox' })
@@ -183,6 +184,7 @@ if not _G.PilotDecide then
 		local keys = {}
 		local dead = (if isCar then 2.5 else 4) + (1 - SKILL) * 10
 		if yawErr > dead then table.insert(keys, 'A') elseif yawErr < -dead then table.insert(keys, 'D') end
+		if isCar and ${DRIFT ? 'true' : 'false'} and spd > 60 and math.abs(yawErr) > (if _G.PilotDrifting then 6 else 16) then table.insert(keys, 'LeftShift') _G.PilotDrifting = true else _G.PilotDrifting = false end
 		if not isCar then
 			local qa = goalPos ~= nil
 			if qa and math.abs(yawErr) > 40 then
@@ -242,6 +244,16 @@ return _G.PilotDecide()`;
   if (!studio) { console.log('NO_OWN_STUDIO'); process.exit(2); }
   const sid = studio.id;
   const call = (name, args, t) => rpc('tools/call', { name, arguments: Object.assign({ studio_id: sid }, args) }, t);
+  // Clear QARespawnAt and pilot inputs left by an earlier Studio-only run.
+  const CLEAR_QA = `local n = 0
+for _, a in { 'AutoPilot', 'QAFollowLine', 'QASteer', 'QAThrottle' } do
+	if workspace:GetAttribute(a) ~= nil then workspace:SetAttribute(a, nil) n += 1 end
+end
+for _, p in game:GetService('Players'):GetPlayers() do
+	if p:GetAttribute('QARespawnAt') ~= nil then p:SetAttribute('QARespawnAt', nil) n += 1 end
+end
+return 'cleared ' .. n`;
+  console.log('clear_qa: ' + text(await call('execute_luau', { datamodel_type: 'Server', code: CLEAR_QA }, 10)).slice(0, 80));
   const out = fs.createWriteStream(outPath);
   const held = new Set();
   const send = async (actions) => { if (actions.length) await call('user_keyboard_input', { datamodel_type: 'Client', actions }, 10); };

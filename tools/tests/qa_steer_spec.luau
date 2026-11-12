@@ -197,4 +197,39 @@ return function(h: Harness)
 			h.ok(not rules:find(bad, 1, true), "no " .. bad)
 		end
 	end)
+
+	h.test("V4-1: pilot attributes are cleared, QARespawnAt too", function()
+		local function obj(t: any)
+			return {
+				GetAttribute = function(_, a: string)
+					return t[a]
+				end,
+				SetAttribute = function(_, a: string, v: any)
+					t[a] = v
+				end,
+			}
+		end
+		local wsT: any = { AutoPilot = true, QASteer = 0.5, QAThrottle = 1, QAFollowLine = "Alt2", Other = 1 }
+		local pT: any = { QARespawnAt = "cf", QAGoal = "keep" }
+		h.eq(Q.clearPilotAttrs(obj(wsT), { obj(pT) }), 5)
+		h.eq(wsT.AutoPilot, nil)
+		h.eq(wsT.QAFollowLine, nil)
+		h.eq(wsT.Other, 1, "unrelated attributes stay")
+		h.eq(pT.QARespawnAt, nil)
+		h.eq(pT.QAGoal, "keep", "QAGoal is BattleCore's")
+		h.eq(Q.clearPilotAttrs(obj(wsT), nil), 0)
+	end)
+
+	h.test("V4-1: a respawn point needs ground", function()
+		h.eq(Q.respawnGroundOk(nil), false)
+		h.eq(Q.respawnGroundOk(0 / 0), false)
+		h.eq(Q.respawnGroundOk(32.9), true)
+		local srv = h.readFile("src/server/init.server.luau")
+		h.ok(srv:find("respawn REFUSED", 1, true), "server refuses groundless points")
+		h.ok(srv:find("one-shot", 1, true), "server clears QARespawnAt")
+		h.ok(srv:find("RunService\"):IsStudio() then\n\tlocal function watchQA", 1, true), "Studio only")
+		for _, f in { "tools/windows/key_pilot.js", "tools/lane.py" } do
+			h.ok(h.readFile(f):find("QARespawnAt", 1, true), f .. " clears QARespawnAt")
+		end
+	end)
 end

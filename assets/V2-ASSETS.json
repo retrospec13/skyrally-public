@@ -1,0 +1,1000 @@
+{
+  "version": "V2",
+  "scope": "New owned UI sources. Existing models, rigs, textures and trailer remain unchanged. No Roblox upload or access grant is implied.",
+  "files": [
+    {
+      "path": "assets/ui/v2/courses/dino4.png",
+      "sha256": "bd2867f171c224516ba8431c0dff948a9841e53f7d89d43adb9a2c51ebce05e7",
+      "bytes": 473346
+    },
+    {
+      "path": "assets/ui/v2/courses/forest1.png",
+      "sha256": "8c42bee9cdabe7242f0f9c5b84ba56efdc609a294d0e9f260a89da246c4bd1f8",
+      "bytes": 468991
+    },
+    {
+      "path": "assets/ui/v2/courses/hub0.png",
+      "sha256": "f895dcc683b22cb088d2a067149257d3fae26307e6e6af97c0480777b72a2a9d",
+      "bytes": 412598
+    },
+    {
+      "path": "assets/ui/v2/courses/island2.png",
+      "sha256": "79c46da7137ec34a42594abb5ed75ee0d2ce8acbf67a6130913f317e9ce5ef8d",
+      "bytes": 462011
+    },
+    {
+      "path": "assets/ui/v2/courses/snow1.png",
+      "sha256": "4c7ebd615a18e74d58407f0a6ee67e3534e20c57623c05a6ebe3c239157a2806",
+      "bytes": 415019
+    },
+    {
+      "path": "assets/ui/v2/courses/space4.png",
+      "sha256": "4a36c38c212d04f37effdf31baa51657119d0031aefc9210e7afc4d9f9a499e3",
+      "bytes": 443097
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_alert.png",
+      "sha256": "0198668c4b3d97660bb81d8490b215f7db046968f1795c7123789e9d0a3d7267",
+      "bytes": 52436
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_battle.png",
+      "sha256": "3e990b21e01e53108b6fc90e0dc451f766a9e56a9a99aad17218dd49f85f298d",
+      "bytes": 68882
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_boss.png",
+      "sha256": "8c60944d24b9c38215aae02fa3af220ad2cde1dfd80a1c0030dee1d269992a98",
+      "bytes": 71642
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_camera.png",
+      "sha256": "fb6c126f67797255d3ad201a90a702dca531f0e6e0d1e7a431b64ceb3baae87d",
+      "bytes": 71513
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_cash.png",
+      "sha256": "54cd2df83cea9d4815288c5849094a9e4a8b6bb74f9c54507d65190df14cd855",
+      "bytes": 62133
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_check.png",
+      "sha256": "f550c83873e760f126b2663cd6a7add9387c1f0a8298636351219131a1aa2518",
+      "bytes": 40032
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_close.png",
+      "sha256": "04edea033034ecca98bf2379bb2f95ebdd5be07e4dddccd01f0de2517a77566a",
+      "bytes": 64145
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_coin.png",
+      "sha256": "16c171c5a6df1eb8d73d24cdfdb90b576bcf166068637ab54d06bcfc66f1e47e",
+      "bytes": 60944
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_coins.png",
+      "sha256": "1ce1681152e57e506e90acc27057c38892525597c0e92cee669d483c7ac7a597",
+      "bytes": 64145
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_crown.png",
+      "sha256": "22d20d7b6d488d44d086fc96b86dd40e887a07e49fe57bf9eafd0c51a127a222",
+      "bytes": 59521
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_daily.png",
+      "sha256": "5e265f6486ae2f790e5f4545725e251d6a7c936562f3aa3b4013410004eac01f",
+      "bytes": 72973
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_emote.png",
+      "sha256": "30657186b2cc8bbe21e9408561c50f70c181c49cfffdf0d9f96dc49259971cd0",
+      "bytes": 71047
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_flag.png",
+      "sha256": "4ecd616593134456dc419576a3987538b27c2d3768a79698977a90c3da720334",
+      "bytes": 58462
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_gear.png",
+      "sha256": "388cf22f074dd83c8701f73bd9f860782f6f80ea15e98cf2d9db1685a5bc4eda",
+      "bytes": 65422
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_gem.png",
+      "sha256": "ffe049f37938a61749f5d6e26a7600d96e966799d4410894bbe0461b4fc1da34",
+      "bytes": 47291
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_help.png",
+      "sha256": "e510ec0b5feb259e6aa3e46857ce7bb4f91925ababf7d0232a5ab154a1f8097f",
+      "bytes": 69566
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_horn.png",
+      "sha256": "c66ff85a095532c14d04b42a6d9db32dea3c15207aaadba2bedce3aa13533175",
+      "bytes": 45606
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_hub.png",
+      "sha256": "b085f04f960d1f94a1352a6ce188956f2b4303efb1f92a833e15b0d0cc0f47e1",
+      "bytes": 64951
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_info.png",
+      "sha256": "2b1162729b8661ca3d76dc77274ea2a402885d16fb6b741f0ed902bfb3903039",
+      "bytes": 63304
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_key.png",
+      "sha256": "b70973c715a190e78423c5a1f42c2132105eca0cb8f4fa98f1ed8d52731a335a",
+      "bytes": 49943
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_lock.png",
+      "sha256": "84b9be1b4d37f9c913634057cd347031dff3cccf281b5c08f96527f1b41e3b62",
+      "bytes": 56921
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_medal_1.png",
+      "sha256": "9df5a633889d109093ce542b310361fe37cc65a6fe0f32eae01950dcb94e1cfe",
+      "bytes": 55063
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_medal_2.png",
+      "sha256": "62bd8869e019bb3b10672b36d2bdbac5c908abe0f0f9ba8b1aebbeb1323815b3",
+      "bytes": 56646
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_medal_3.png",
+      "sha256": "e6b42f35b0fe65f102c24c7fe995ed30b097963ac0698b8e510937865f2a4ff5",
+      "bytes": 57109
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_paint.png",
+      "sha256": "d8121a8c4329254c1ddf5b83a15e4c2351985eb329bc47c6a579875f7525fbcf",
+      "bytes": 61964
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_pass.png",
+      "sha256": "26c1a25219e9f2d50f7f8407ee087ec7be9db852277bde942e81df23c0e06b40",
+      "bytes": 53253
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_quick.png",
+      "sha256": "3ab4f21c4d43e30d74191ed8902333ec2f2c05512e79763a0c2de9ecb3803a2e",
+      "bytes": 42447
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_race.png",
+      "sha256": "7a006dffcd963e432fcc789e724c2700e670d3e3ce78f6fe00b339a6c1e04702",
+      "bytes": 73635
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_rematch.png",
+      "sha256": "451594c5ae4eea4d96ad759b1ee686154b79d12a4db7cff80b1213d326cc3a04",
+      "bytes": 61833
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_return.png",
+      "sha256": "ba56f506e1c7a79ceab990d194a0a7667804bcd69425177035ddb4472ca9c6f9",
+      "bytes": 38865
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_shop.png",
+      "sha256": "985d3f6d7c71a06fee96972ab25fe9c5743a747c32e1eea3bdaf1f3053581317",
+      "bytes": 70137
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_star.png",
+      "sha256": "420ed33ff0b0465ea4e8b7f067f85ea082513e1302d61a962cc687a1345f725c",
+      "bytes": 50570
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_stopwatch.png",
+      "sha256": "5d1b21dc038743cc0650d55c8c75a0d6b2dc0c92a5b65f9eef634f7617558a05",
+      "bytes": 68952
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_trail.png",
+      "sha256": "cb91fd376fac236be6c6b958ffc18259af324299f98889e5b36452edd5866af6",
+      "bytes": 52290
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_trophy.png",
+      "sha256": "360ab5086341ce6e7c896fea8475453861216a55826b46b37c72a6b539f7be97",
+      "bytes": 59981
+    },
+    {
+      "path": "assets/ui/v2/icons/icon_wrench.png",
+      "sha256": "5f9a31c2382a549814e462b087f73445c6543a5d98c0f14567062108303c7afd",
+      "bytes": 49900
+    },
+    {
+      "path": "assets/ui/v2/icons/item_blue.png",
+      "sha256": "f8e48f68a4ae89101e7d0a1941514e5e7cd496d387f942e66349bb2a78f8407f",
+      "bytes": 64920
+    },
+    {
+      "path": "assets/ui/v2/icons/item_boom_bomb.png",
+      "sha256": "a7e3e76623d903df062db79240a06b24f2dd593b9ef5a0ad747c7cda6dec3320",
+      "bytes": 45515
+    },
+    {
+      "path": "assets/ui/v2/icons/item_bubble_guard.png",
+      "sha256": "a439be002274802eca51bff5068c017dd6ebe453dd29f8349c73c3147785cadd",
+      "bytes": 81393
+    },
+    {
+      "path": "assets/ui/v2/icons/item_coin_burst.png",
+      "sha256": "5de5c8a76412dda122ac9013dee74a689afe8752ad421fc782b6c3c940c83e3f",
+      "bytes": 92025
+    },
+    {
+      "path": "assets/ui/v2/icons/item_coin_pouch.png",
+      "sha256": "e6bd1d871b9e203317f05d116406d4578d5faac6a475d5054e63d5c863a82e8c",
+      "bytes": 78292
+    },
+    {
+      "path": "assets/ui/v2/icons/item_frost_shot.png",
+      "sha256": "55f6725cd59cd8f9823b7f35ae9e320a6efa739e32e69426c4201b8b1610210e",
+      "bytes": 82367
+    },
+    {
+      "path": "assets/ui/v2/icons/item_gift_box.png",
+      "sha256": "ee64ec49d825cfa160d1c9d4dd653b4070b9b28b712378495cafaab4269cb389",
+      "bytes": 68866
+    },
+    {
+      "path": "assets/ui/v2/icons/item_golden_wings.png",
+      "sha256": "8004b90f74ceae48547dd0d20a734ca9414bc4f20be293159904a8918e3a5e7a",
+      "bytes": 52319
+    },
+    {
+      "path": "assets/ui/v2/icons/item_green.png",
+      "sha256": "3b985205f05efb1b1777a589326eb9deda36620a6d1b918499a4d6756d577f5c",
+      "bytes": 61955
+    },
+    {
+      "path": "assets/ui/v2/icons/item_ink_splat.png",
+      "sha256": "d5297eb76fb99cade4ed9f7f64a783147acb4fd314946eccd65b872de0b5aa2a",
+      "bytes": 60647
+    },
+    {
+      "path": "assets/ui/v2/icons/item_item_steal.png",
+      "sha256": "9759149b6ded39b661b869a317d52af44fa563d099aa61631ed5418c6056dfdb",
+      "bytes": 69298
+    },
+    {
+      "path": "assets/ui/v2/icons/item_magnet.png",
+      "sha256": "c1adfbef9c79a9a7d0ad56b023715cd9f197059db0e51242fd32e4c2456553f4",
+      "bytes": 57553
+    },
+    {
+      "path": "assets/ui/v2/icons/item_mystery.png",
+      "sha256": "5a8ad4435bd107493e9254ec4f59713291eb5d575e2f183348d1bfed34a3af93",
+      "bytes": 71005
+    },
+    {
+      "path": "assets/ui/v2/icons/item_oil.png",
+      "sha256": "acd10fba2313771e18cdbd560f0d803bea9527bb713086b35eaba30dfba013f5",
+      "bytes": 52262
+    },
+    {
+      "path": "assets/ui/v2/icons/item_orbit_missiles.png",
+      "sha256": "c6770486075be77461a3fb3a912bb5f12c47686ea78024066d803c81c54bf9c4",
+      "bytes": 61167
+    },
+    {
+      "path": "assets/ui/v2/icons/item_rainbow.png",
+      "sha256": "873bd61e1573f7d4e20b6fde9bceee528e06a6fbae65b408f89c57bb5353f9cb",
+      "bytes": 54449
+    },
+    {
+      "path": "assets/ui/v2/icons/item_red.png",
+      "sha256": "be1cc0ed64c57c6269208192ba0b096b6d2c532f0532f977a230c1080ad21824",
+      "bytes": 52626
+    },
+    {
+      "path": "assets/ui/v2/icons/item_rocket_rush.png",
+      "sha256": "6f4d9ddfd9309de085de9fab7beaef1b6960495d7d396f508b2836778962a1f7",
+      "bytes": 53029
+    },
+    {
+      "path": "assets/ui/v2/icons/item_spring.png",
+      "sha256": "c60e91e91de29af099bbe115046d30094c6128853b4be782fe66cfcd9debad21",
+      "bytes": 73576
+    },
+    {
+      "path": "assets/ui/v2/icons/item_storm_bolt.png",
+      "sha256": "c2597d21ea390bd0c9777c9f8b5b89a306e685e790bfd64a29de1e7598ec4b1e",
+      "bytes": 52805
+    },
+    {
+      "path": "assets/ui/v2/icons/item_yellow.png",
+      "sha256": "ef1716362a3b243746b044791cc43182e853265e5bdcf578151b932b42b15db2",
+      "bytes": 56853
+    },
+    {
+      "path": "assets/ui/v2/sheets/boss.png",
+      "sha256": "7e00dd39b33a75cf8f4efaa8c9faac1d2d22e23bf0e59a9cc3c25dbb6c1e6e72",
+      "bytes": 1299987
+    },
+    {
+      "path": "assets/ui/v2/sheets/items.png",
+      "sha256": "baa94938aa2247f1254c025943b79c924a5169b38c5313dd31a2afcd62f39834",
+      "bytes": 5153392
+    },
+    {
+      "path": "assets/ui/v2/sheets/menu.png",
+      "sha256": "4ffd0047dc6eac35e3a26d38ce5c02250a074070b6137862de689c2f3b9e8924",
+      "bytes": 5040135
+    },
+    {
+      "path": "assets/ui/v2/sheets/ui.png",
+      "sha256": "f9d70672b3deffd5e3ba3de517703c6ac54bd2a181dd0b2ec7c1cbf5104bc386",
+      "bytes": 4465451
+    },
+    {
+      "path": "assets/ui/v3/frames/bar_blue.png",
+      "sha256": "744ae1bd365d292cd361c1d8948e678b4f85bf06055922c7cf6c19ae84b2412a",
+      "bytes": 1787
+    },
+    {
+      "path": "assets/ui/v3/frames/bar_danger.png",
+      "sha256": "c64ac1f254c8944337348706e9101bd8cbd969730f49f2b4977240851cbb63fe",
+      "bytes": 1976
+    },
+    {
+      "path": "assets/ui/v3/frames/bar_dark.png",
+      "sha256": "37fb3a521bdc4973aafb1852eeacc436a5f0537be2250cb6ce71967decc7a364",
+      "bytes": 1881
+    },
+    {
+      "path": "assets/ui/v3/frames/bar_light.png",
+      "sha256": "946d50e941f22e1b995a840ba0ed5b41f2b0219afa8a5c7fb49a9f3a3851cb95",
+      "bytes": 1867
+    },
+    {
+      "path": "assets/ui/v3/frames/bar_lime.png",
+      "sha256": "22b734d7cc9ac16479296b8638cd1a304176de1021a013de3789449a2621e3d0",
+      "bytes": 1850
+    },
+    {
+      "path": "assets/ui/v3/frames/bar_yellow.png",
+      "sha256": "443e8b4182b0d6c468f4e53731fced1b8c2db83e42156897bbb8ea7fce1b5daa",
+      "bytes": 1877
+    },
+    {
+      "path": "assets/ui/v3/frames/chip_blue.png",
+      "sha256": "98dcc7a093ea7bfe5f65d6db6a2d9717f256ef01caed8fabf8a7a5758a147716",
+      "bytes": 1325
+    },
+    {
+      "path": "assets/ui/v3/frames/chip_dark.png",
+      "sha256": "8064a9a306ac01056a0a35b2e8eba7dc7462e37af14b7d8d121a6e5e88a03dff",
+      "bytes": 1388
+    },
+    {
+      "path": "assets/ui/v3/frames/cursor_tri.png",
+      "sha256": "cde67792a86225d0a1409a579e979d5b71f0a0006309034867af248bc9291a1c",
+      "bytes": 482
+    },
+    {
+      "path": "assets/ui/v3/frames/frame_blue.png",
+      "sha256": "347a0e58611a3e6f2f2aaeac62f1da8e562471f950d93f81bb45086f075b800c",
+      "bytes": 1645
+    },
+    {
+      "path": "assets/ui/v3/frames/frame_danger.png",
+      "sha256": "8edd9b4bc2f45b1f8a7697742d20e43269edab48b13e81d9baa2acc7e0a9769a",
+      "bytes": 1826
+    },
+    {
+      "path": "assets/ui/v3/frames/frame_dark.png",
+      "sha256": "f7b9b543f7cd8f40645a35f597a4de1e9b6798f007c49c458924bd01f7be1289",
+      "bytes": 1595
+    },
+    {
+      "path": "assets/ui/v3/frames/frame_light.png",
+      "sha256": "6d78217da37a68ec9f9427d84e42f54c9e435da7f3da630b954acbff8ab6f5ce",
+      "bytes": 1683
+    },
+    {
+      "path": "assets/ui/v3/frames/frame_lime.png",
+      "sha256": "9caabcb7a4d0ee9f5999fcf03029dd2b4706c1fbcd8a9aa8c9ceefdbdecc8543",
+      "bytes": 1676
+    },
+    {
+      "path": "assets/ui/v3/frames/frame_yellow.png",
+      "sha256": "a2869aff3f89d6816ff39b730dc99d508d5cda21046c54f74d1a101ce7c68f2e",
+      "bytes": 1633
+    },
+    {
+      "path": "assets/ui/v3/frames/stripe_tile.png",
+      "sha256": "ebfec7302590e2c98c43b4dc9d12074fb6fb0066cdf5dc5354d7fa7627626fdf",
+      "bytes": 302
+    },
+    {
+      "path": "assets/ui/v3/frames/tab_dark.png",
+      "sha256": "ae94af01d571fde64f9d4fcd70263d36849218d56b0814ccf1c0a6432b272ab1",
+      "bytes": 1536
+    },
+    {
+      "path": "assets/ui/v3/frames/tab_light.png",
+      "sha256": "62e19eda8ac464993511f8c4eb0bcfb458d3565a4e6c8e969a90499459a46f1c",
+      "bytes": 1614
+    },
+    {
+      "path": "assets/ui/v3/frames/tab_yellow.png",
+      "sha256": "cf654fa86edfbe798fb903a28fabbd735b1722766ce5f5e261f082092cb593f1",
+      "bytes": 1701
+    }
+  ],
+  "metadata_removed_pixel_preserved": [
+    "assets/ui/v2/sheets/boss.png",
+    "assets/ui/v2/sheets/menu.png",
+    "assets/ui/v2/sheets/items.png",
+    "assets/ui/v2/sheets/ui.png"
+  ],
+  "audio_note": "The 19 ElevenLabs-created source SFX are included under CC BY 4.0, credited to Waku Worldwide, with owner approval. Other historical audio exclusions remain unchanged.",
+  "sanitized_source_sheets": [
+    {
+      "path": "assets/ui/v2/sheets/boss.png",
+      "source_sha256": "3f14081c1c4c263fbfd6c6e57fc6bc332ebaf3299630f33e5d7dc3b1e0a77c77",
+      "sanitized_sha256": "7e00dd39b33a75cf8f4efaa8c9faac1d2d22e23bf0e59a9cc3c25dbb6c1e6e72",
+      "pixels_unchanged": true,
+      "chunks": [
+        "IHDR",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IEND"
+      ]
+    },
+    {
+      "path": "assets/ui/v2/sheets/items.png",
+      "source_sha256": "b667a0a1013f769c692179a7dfd2a7dec8c4c6699c4358dc9348fd1e30ebc636",
+      "sanitized_sha256": "baa94938aa2247f1254c025943b79c924a5169b38c5313dd31a2afcd62f39834",
+      "pixels_unchanged": true,
+      "chunks": [
+        "IHDR",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IEND"
+      ]
+    },
+    {
+      "path": "assets/ui/v2/sheets/menu.png",
+      "source_sha256": "0b84e1f681a8980aadf42395cff3d72871e5915b4120c700315b1340ecad417e",
+      "sanitized_sha256": "4ffd0047dc6eac35e3a26d38ce5c02250a074070b6137862de689c2f3b9e8924",
+      "pixels_unchanged": true,
+      "chunks": [
+        "IHDR",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IEND"
+      ]
+    },
+    {
+      "path": "assets/ui/v2/sheets/ui.png",
+      "source_sha256": "83eaad88af6878d4907c848d54a323276548ea745d8fff6a2999d2df8f6d28c2",
+      "sanitized_sha256": "f9d70672b3deffd5e3ba3de517703c6ac54bd2a181dd0b2ec7c1cbf5104bc386",
+      "pixels_unchanged": true,
+      "chunks": [
+        "IHDR",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IEND"
+      ]
+    }
+  ],
+  "audio_mapping": "assets/audio/sfx_v37/uploaded.json",
+  "audio_sources": "assets/audio/sfx_v37/SOURCES.json",
+  "audio_files": [
+    {
+      "name": "bomb_fuse",
+      "path": "assets/audio/sfx_v37/bomb_fuse.ogg",
+      "sha256": "c42b5569881b660de33593aa9b89fc8f97f12748ca50f8cd8a6d5ef24b2ecf23",
+      "bytes": 21848,
+      "duration_seconds": 1.95,
+      "roblox_id": 135320666241302,
+      "codec": "vorbis",
+      "sample_rate": 44100,
+      "channels": 1,
+      "source": "Created with ElevenLabs for SkyRally, confirmed by the project owner.",
+      "license": "CC-BY-4.0",
+      "credit": "Waku Worldwide"
+    },
+    {
+      "name": "burnt_sputter",
+      "path": "assets/audio/sfx_v37/burnt_sputter.ogg",
+      "sha256": "0e30ab27c0d9790491706bc87a8e4f4a7e503d2b7807d10266b593e88eaffa15",
+      "bytes": 15339,
+      "duration_seconds": 1.178821,
+      "roblox_id": 117446319980920,
+      "codec": "vorbis",
+      "sample_rate": 44100,
+      "channels": 1,
+      "source": "Created with ElevenLabs for SkyRally, confirmed by the project owner.",
+      "license": "CC-BY-4.0",
+      "credit": "Waku Worldwide"
+    },
+    {
+      "name": "count_beep",
+      "path": "assets/audio/sfx_v37/count_beep.ogg",
+      "sha256": "a1566cdaa44c1ff1d0475c300568d79459d734763e3adf516615879a1d436b94",
+      "bytes": 6535,
+      "duration_seconds": 0.4,
+      "roblox_id": 138539047559247,
+      "codec": "vorbis",
+      "sample_rate": 44100,
+      "channels": 1,
+      "source": "Created with ElevenLabs for SkyRally, confirmed by the project owner.",
+      "license": "CC-BY-4.0",
+      "credit": "Waku Worldwide"
+    },
+    {
+      "name": "gift_pop",
+      "path": "assets/audio/sfx_v37/gift_pop.ogg",
+      "sha256": "3b600d5a2662cf358534c63f191c54e7e0a4902f3c089c9501f5492721616acd",
+      "bytes": 9995,
+      "duration_seconds": 0.88,
+      "roblox_id": 118545457715639,
+      "codec": "vorbis",
+      "sample_rate": 44100,
+      "channels": 1,
+      "source": "Created with ElevenLabs for SkyRally, confirmed by the project owner.",
+      "license": "CC-BY-4.0",
+      "credit": "Waku Worldwide"
+    },
+    {
+      "name": "go_beep",
+      "path": "assets/audio/sfx_v37/go_beep.ogg",
+      "sha256": "0ecb497261b04bb540b526f2be4580db482c929ecb65ed537f9812dcbdf419d3",
+      "bytes": 13506,
+      "duration_seconds": 1.0,
+      "roblox_id": 91936004281228,
+      "codec": "vorbis",
+      "sample_rate": 44100,
+      "channels": 1,
+      "source": "Created with ElevenLabs for SkyRally, confirmed by the project owner.",
+      "license": "CC-BY-4.0",
+      "credit": "Waku Worldwide"
+    },
+    {
+      "name": "golden_loop",
+      "path": "assets/audio/sfx_v37/golden_loop.ogg",
+      "sha256": "545b8d32753d2643b8634c6136e6151f6d359514277ba78b25c59df0c618e413",
+      "bytes": 28964,
+      "duration_seconds": 2.7,
+      "roblox_id": 99076284961241,
+      "codec": "vorbis",
+      "sample_rate": 44100,
+      "channels": 1,
+      "source": "Created with ElevenLabs for SkyRally, confirmed by the project owner.",
+      "license": "CC-BY-4.0",
+      "credit": "Waku Worldwide"
+    },
+    {
+      "name": "gp_fanfare",
+      "path": "assets/audio/sfx_v37/gp_fanfare.ogg",
+      "sha256": "48c3823fb249d9ad5c2c5837375bb77bc24b7a14ad0b5ee2da4774d8d49c8cb7",
+      "bytes": 30549,
+      "duration_seconds": 2.731111,
+      "roblox_id": 113684871072849,
+      "codec": "vorbis",
+      "sample_rate": 44100,
+      "channels": 1,
+      "source": "Created with ElevenLabs for SkyRally, confirmed by the project owner.",
+      "license": "CC-BY-4.0",
+      "credit": "Waku Worldwide"
+    },
+    {
+      "name": "ice_crack",
+      "path": "assets/audio/sfx_v37/ice_crack.ogg",
+      "sha256": "e2ea228b9214d5dca017303b5fd8e3ea4e6533e35cdb2de2a2aa561695f9a458",
+      "bytes": 16886,
+      "duration_seconds": 1.131338,
+      "roblox_id": 95465989727088,
+      "codec": "vorbis",
+      "sample_rate": 44100,
+      "channels": 1,
+      "source": "Created with ElevenLabs for SkyRally, confirmed by the project owner.",
+      "license": "CC-BY-4.0",
+      "credit": "Waku Worldwide"
+    },
+    {
+      "name": "missile_whoosh",
+      "path": "assets/audio/sfx_v37/missile_whoosh.ogg",
+      "sha256": "5057c9eb2da4c5a12ef98f324f681aacd671aceab16358d40f5a8ab5a10e0087",
+      "bytes": 12400,
+      "duration_seconds": 1.00424,
+      "roblox_id": 110868408763520,
+      "codec": "vorbis",
+      "sample_rate": 44100,
+      "channels": 1,
+      "source": "Created with ElevenLabs for SkyRally, confirmed by the project owner.",
+      "license": "CC-BY-4.0",
+      "credit": "Waku Worldwide"
+    },
+    {
+      "name": "orbit_hum",
+      "path": "assets/audio/sfx_v37/orbit_hum.ogg",
+      "sha256": "542a50a9004455d41088e04374973b7456eece3d8a856d6fd9e20b9e2e4a72a2",
+      "bytes": 19857,
+      "duration_seconds": 2.7,
+      "roblox_id": 73035874743132,
+      "codec": "vorbis",
+      "sample_rate": 44100,
+      "channels": 1,
+      "source": "Created with ElevenLabs for SkyRally, confirmed by the project owner.",
+      "license": "CC-BY-4.0",
+      "credit": "Waku Worldwide"
+    },
+    {
+      "name": "placement_slam",
+      "path": "assets/audio/sfx_v37/placement_slam.ogg",
+      "sha256": "5e1a5a71e9145e35ef84a2596aa1adbf19996052b40a66a6c8fe24af64d63345",
+      "bytes": 8333,
+      "duration_seconds": 0.751565,
+      "roblox_id": 70807661241168,
+      "codec": "vorbis",
+      "sample_rate": 44100,
+      "channels": 1,
+      "source": "Created with ElevenLabs for SkyRally, confirmed by the project owner.",
+      "license": "CC-BY-4.0",
+      "credit": "Waku Worldwide"
+    },
+    {
+      "name": "pos_gain",
+      "path": "assets/audio/sfx_v37/pos_gain.ogg",
+      "sha256": "37a06d29890e9ef1c14d2692482ab59c454d8c6c8eeb22aba82a9ca21f07d186",
+      "bytes": 7650,
+      "duration_seconds": 0.48,
+      "roblox_id": 74071290419121,
+      "codec": "vorbis",
+      "sample_rate": 44100,
+      "channels": 1,
+      "source": "Created with ElevenLabs for SkyRally, confirmed by the project owner.",
+      "license": "CC-BY-4.0",
+      "credit": "Waku Worldwide"
+    },
+    {
+      "name": "pos_loss",
+      "path": "assets/audio/sfx_v37/pos_loss.ogg",
+      "sha256": "f03f7a7996907c85b143dc3b9cc7fd5f4aef0e5067e222d98a2cbe932ad8429d",
+      "bytes": 6951,
+      "duration_seconds": 0.48,
+      "roblox_id": 110996586384232,
+      "codec": "vorbis",
+      "sample_rate": 44100,
+      "channels": 1,
+      "source": "Created with ElevenLabs for SkyRally, confirmed by the project owner.",
+      "license": "CC-BY-4.0",
+      "credit": "Waku Worldwide"
+    },
+    {
+      "name": "rocket_loop",
+      "path": "assets/audio/sfx_v37/rocket_loop.ogg",
+      "sha256": "3056f1629f99b33963f589472245337046d4ed0fc6af090b920d96679ee58dea",
+      "bytes": 24768,
+      "duration_seconds": 2.31,
+      "roblox_id": 110709492173077,
+      "codec": "vorbis",
+      "sample_rate": 44100,
+      "channels": 1,
+      "source": "Created with ElevenLabs for SkyRally, confirmed by the project owner.",
+      "license": "CC-BY-4.0",
+      "credit": "Waku Worldwide"
+    },
+    {
+      "name": "rs_burst",
+      "path": "assets/audio/sfx_v37/rs_burst.ogg",
+      "sha256": "4a1148b355930616bc59ac92fa50df386db3029c1b08e5d9c55d281aa9e6f359",
+      "bytes": 12020,
+      "duration_seconds": 0.94737,
+      "roblox_id": 127494561969731,
+      "codec": "vorbis",
+      "sample_rate": 44100,
+      "channels": 1,
+      "source": "Created with ElevenLabs for SkyRally, confirmed by the project owner.",
+      "license": "CC-BY-4.0",
+      "credit": "Waku Worldwide"
+    },
+    {
+      "name": "rs_charge",
+      "path": "assets/audio/sfx_v37/rs_charge.ogg",
+      "sha256": "c3074945dd7c98fbb385d78dbb373441a17c9030678eef1d0702656e468ebfb4",
+      "bytes": 16498,
+      "duration_seconds": 1.48,
+      "roblox_id": 134151682366110,
+      "codec": "vorbis",
+      "sample_rate": 44100,
+      "channels": 1,
+      "source": "Created with ElevenLabs for SkyRally, confirmed by the project owner.",
+      "license": "CC-BY-4.0",
+      "credit": "Waku Worldwide"
+    },
+    {
+      "name": "tally_tick",
+      "path": "assets/audio/sfx_v37/tally_tick.ogg",
+      "sha256": "82c5ef80404d5845e5ff8b5d1113287e5e8eeb3b9ae666f67970819b74796065",
+      "bytes": 8734,
+      "duration_seconds": 0.431814,
+      "roblox_id": 85522660403807,
+      "codec": "vorbis",
+      "sample_rate": 44100,
+      "channels": 1,
+      "source": "Created with ElevenLabs for SkyRally, confirmed by the project owner.",
+      "license": "CC-BY-4.0",
+      "credit": "Waku Worldwide"
+    },
+    {
+      "name": "trophy_sting",
+      "path": "assets/audio/sfx_v37/trophy_sting.ogg",
+      "sha256": "a37a9b6065ba79caa4982dc8ce82499778ed5a6c1a2a42b22048ac5a7621a7ae",
+      "bytes": 19759,
+      "duration_seconds": 1.70542,
+      "roblox_id": 92244182230081,
+      "codec": "vorbis",
+      "sample_rate": 44100,
+      "channels": 1,
+      "source": "Created with ElevenLabs for SkyRally, confirmed by the project owner.",
+      "license": "CC-BY-4.0",
+      "credit": "Waku Worldwide"
+    },
+    {
+      "name": "ui_big_confirm",
+      "path": "assets/audio/sfx_v37/ui_big_confirm.ogg",
+      "sha256": "b0bc7d7c933ae96cc6ebffa963aff959c3096745d95343a5b5e71721df06e45a",
+      "bytes": 10288,
+      "duration_seconds": 0.88,
+      "roblox_id": 92115970029610,
+      "codec": "vorbis",
+      "sample_rate": 44100,
+      "channels": 1,
+      "source": "Created with ElevenLabs for SkyRally, confirmed by the project owner.",
+      "license": "CC-BY-4.0",
+      "credit": "Waku Worldwide"
+    }
+  ]
+}

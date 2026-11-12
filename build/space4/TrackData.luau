@@ -438,9 +438,8 @@ local trackData: any = {
 		{ index = 12, station = 4400.0000, cf = CFrame.new(7126.1663, 22.9821, 7636.0969, 0.2204, 0.0516, 0.9741, 0.0000, 0.9986, -0.0529, -0.9754, 0.0117, 0.2201), size = Vector3.new(52, 26, 6) },
 	},
 	rings = {
-		{ name = "BoostGate_StartLeft", station = 92.0000, cf = CFrame.new(6991.0000, 67.1652, 7207.9847, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0063, 0.0000, -0.0063, 1.0000), coin = false, coinId = nil },
-		{ name = "BoostGate_StartRight", station = 116.0000, cf = CFrame.new(7009.0000, 67.0412, 7183.9951, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0029, 0.0000, -0.0029, 1.0000), coin = false, coinId = nil },
-		{ name = "BoostGate_VaultExit", station = 506.0000, cf = CFrame.new(7000.0000, 67.0000, 6794.0040, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000), coin = false, coinId = nil },
+		{ name = "BoostGate_StartLeft", station = 488.0000, cf = CFrame.new(6991.0000, 67.0000, 6812.0040, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000), coin = false, coinId = nil },
+		{ name = "BoostGate_StartRight", station = 512.0000, cf = CFrame.new(7009.0000, 67.0000, 6788.0040, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000, 0.0000, 0.0000, 0.0000, 1.0000), coin = false, coinId = nil },
 		{ name = "BoostGate_Downtown", station = 1746.2000, cf = CFrame.new(7774.2701, 61.1582, 6800.0000, 0.0000, 0.0085, -1.0000, 0.0000, 1.0000, 0.0085, 1.0000, 0.0000, 0.0000), coin = false, coinId = nil },
 		{ name = "BoostGate_ViaductDive", station = 2552.2000, cf = CFrame.new(8364.1099, 52.6519, 7080.6762, -1.0000, 0.0000, 0.0000, 0.0000, 0.9960, 0.0895, 0.0000, 0.0895, -0.9960), coin = false, coinId = nil },
 		{ name = "BoostGate_CraterRun", station = 3254.7000, cf = CFrame.new(8153.9808, 17.0000, 7640.3929, 0.0213, 0.0000, 0.9998, 0.0000, 1.0000, 0.0000, -0.9998, 0.0000, 0.0213), coin = false, coinId = nil },
@@ -2539,6 +2538,6 @@ local trackData: any = {
 		corridorSegments = 396,
 		collidableParts = 1833,
 	},
-	source = { plan = "map/space4/plan.json", planSha256 = "358c17a05d9c4a9a002b128f6d2500e2b87e82c76cf6e15fd1712375ba796621", compiler = "not run (--no-compile)" },
+	source = { plan = "map/space4/plan.json", planSha256 = "15f5c3ae26077ef82ba9749def251584a66fb67493d9db763b6aec8b1a724d10", compiler = "tools/map30 @ aa9a451 + patches (build_plan.py sha256 06249ce62258)" },
 }
 return trackData

@@ -117,7 +117,7 @@ NotifySpec.ROWS = {
 	-- client/LadderNotices, brief, three short lines. "Skip tips" turns every explainer off for the account.
 	{ id = "item_first_explain", feature = "items", surface = "modal", kind = "info", priority = "normal",
 		trigger = "first item ever picked up; shown at the next calm hub moment, once per account", title = "Items",
-		copy = "Drive through cubes to get an item.\nFire it with the ITEM button.\nShields block incoming hits.",
+		copy = "Drive through cubes to get an item.\nFire it with the ITEM button.\nHold a trap behind you to block a shot.",
 		vars = {}, seconds = 0, primary = "Got it", close = "Skip tips" },
 	{ id = "token_first_explain", feature = "maps", surface = "modal", kind = "unlock", priority = "normal",
 		trigger = "first Sky Token ever earned; shown at the next calm hub moment, once per account", title = "Sky Tokens",
@@ -186,15 +186,15 @@ NotifySpec.ROWS = {
 	{ id = "missile_lock_roll", feature = "items", surface = "toast", kind = "warn", priority = "high",
 		trigger = "first missile lock on this player this session, in a plane", copy = "Missile lock! Double-tap left/right to dodge", vars = {}, seconds = 2.6 },
 	{ id = "missile_lock_block", feature = "items", surface = "toast", kind = "warn", priority = "high",
-		trigger = "first missile lock on this player this session, in a car", copy = "Missile locked on! Hold a trap or shield up", vars = {}, seconds = 2.6 },
+		trigger = "first missile lock on this player this session, in a car", copy = "Missile locked on! Trap behind or horn it", vars = {}, seconds = 2.6 },
 	-- Items v4 (docs/design/ITEMS_V4.md): the race's rotation, said once in the countdown (client TrackFlow), and the
 	-- Storm Bolt siren on its target (client ItemsV4Fx), with the answer for the vehicle.
 	{ id = "item_pool", feature = "items", surface = "toast", kind = "info", priority = "normal",
 		trigger = "race countdown starts with specials in the item rotation", copy = "This race: {items}", vars = { "items" }, seconds = 4 },
 	{ id = "storm_warn_roll", feature = "items", surface = "toast", kind = "warn", priority = "high",
-		trigger = "a Storm Bolt is about to strike this player, in a plane", copy = "Storm Bolt! Double-tap left/right or shield", vars = {}, seconds = 2 },
+		trigger = "a Storm Bolt is about to strike this player, in a plane", copy = "Storm Bolt! Roll, horn or boost", vars = {}, seconds = 2 },
 	{ id = "storm_warn_block", feature = "items", surface = "toast", kind = "warn", priority = "high",
-		trigger = "a Storm Bolt is about to strike this player, in a car", copy = "Storm Bolt on you! Shield up", vars = {}, seconds = 2 },
+		trigger = "a Storm Bolt is about to strike this player, in a car", copy = "Storm Bolt on you! Horn or boost now", vars = {}, seconds = 2 },
 } :: { Row }
 
 local byId: { [string]: Row }? = nil

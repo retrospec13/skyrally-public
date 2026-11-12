@@ -24,10 +24,21 @@ local Progression = require(Shared:WaitForChild("Progression"))
 local VfxAssets = require(Shared:WaitForChild("VfxAssets"))
 local RaceFlowRules = require(Shared:WaitForChild("RaceFlowRules")) -- the DNF countdown line (L30)
 local Sfx = require(script.Parent:WaitForChild("Sfx"))
+local ItemShow = require(script.Parent:WaitForChild("ItemShow")) -- v37: the roulette's per-item land sting and v2 item icons
 local HudMetrics = require(script.Parent:WaitForChild("HudMetrics"))
 local HudPhase = require(script.Parent:WaitForChild("HudPhase"))
 -- L27: the first item balloon pickup earns the "how to fire" tip (client/Onboarding decides whether it shows).
 local Onboarding = require(script.Parent:WaitForChild("Onboarding"))
+-- UI overhaul phase C: RESPAWN / RETURN / ASSIST are UiSkin buttons (btn_wood, now with the tap sound and press feel),
+-- the token plaque a sign_hanging, the item slot ring btn_round, notices a toast_slab that swooshes in from the top
+-- (client/UiSkin, client/UiMotion). With no art uploaded the look is the same flat wood; rects are unchanged.
+local UiSkin = require(script.Parent:WaitForChild("UiSkin"))
+local UiMotion = require(script.Parent:WaitForChild("UiMotion"))
+local UiSkinRules = require(Shared:WaitForChild("UiSkinRules"))
+-- UI v2 (docs/design/UI_V2.md "Race HUD"): the big framed item box with the uploaded item icons (shared/UiV2Icons
+-- through ArcadeUi.itemImage), the navy token pill with the star, RESPAWN / RETURN / ASSIST as glossy icon keys.
+local ArcadeUi = require(script.Parent:WaitForChild("ArcadeUi"))
+local UiV2Icons = require(Shared:WaitForChild("UiV2Icons")) :: { [string]: string } -- v38: the coin chip icon
 
 local LocalPlayer = Players.LocalPlayer
 
@@ -56,7 +67,7 @@ local RESPAWN_GLYPH: { [string]: string } = { keyboard = "BKSP", gamepad = "VIEW
 local RETURN_GLYPH: { [string]: string } = { keyboard = "ENTER", gamepad = "Y" } -- FlightController's SkyRallyCourseReturn binds
 -- Item id -> ItemTexAssets icon and glyph (ItemRules.ICON: the classic pairing the pods and the mystery cube use, and
 -- items v4's in-engine icons, "icon art pending" in docs/design/ITEMS_V4.md).
-local CHIP_WOOD = Color3.fromRGB(96, 60, 34)
+local CHIP_WOOD = Color3.new(1, 1, 1) -- UI v2: the chips carry their own navy gradient (white = no tint)
 local CHIP_SAND = Color3.fromRGB(188, 168, 142)
 local CHIP_OFF = Color3.fromRGB(70, 62, 56) -- ASSIST OFF: dimmed wood
 local CHIP_TEXT_ON = Color3.fromRGB(250, 242, 222)
@@ -70,6 +81,7 @@ local COIN_GOLD = Color3.fromRGB(255, 200, 56)
 local COIN_RIM = Color3.fromRGB(150, 92, 14)
 local TOKEN_IDLE_T = 0.04 -- the token chip idles at 88 percent alpha until it changes (was 70: the count was faint over bright sky)
 local SPINNER_DOTS = 8
+local NOTICE_BG = Color3.fromRGB(42, 26, 18)
 
 local function tex(name: string): string
 	local e = (VfxAssets :: any)[name]
@@ -98,6 +110,28 @@ local function stroke(parent: Instance, color: Color3, thickness: number, border
 	end
 	s.Parent = parent
 	return s
+end
+
+-- The object that carries a skinned button's text: the button (flat TextButton) or its "Label" child (art ImageButton).
+local function textOf(b: GuiObject): any
+	local face = b:FindFirstChild("Face")
+	local fl = face and face:FindFirstChild("Label")
+	if fl and fl:IsA("TextLabel") then
+		return fl
+	end
+	local l = b:FindFirstChild("Label")
+	return if l and l:IsA("TextLabel") then l else b
+end
+
+-- A chip's fill: BackgroundColor3 / BackgroundTransparency in the flat look, ImageColor3 / ImageTransparency on the art
+-- (UiSkin.tweenTarget). On the art the wood colour is white (the art's own wood) and a flash colour multiplies in raw:
+-- sign_hanging takes no caller tint, which would drop the gold flash.
+local function chipFill(chip: GuiObject, color: Color3): (GuiObject, string, Color3, string)
+	local target, colorProp, alphaProp = UiSkin.tweenTarget(chip)
+	if colorProp == "ImageColor3" and color == CHIP_WOOD then
+		return target, colorProp, Color3.new(1, 1, 1), alphaProp
+	end
+	return target, colorProp, color, alphaProp
 end
 
 local function scaleOf(obj: GuiObject): UIScale
@@ -154,6 +188,9 @@ local current: Layout? = nil
 
 -- item frame
 local slot: Frame? = nil
+local coinCount: TextLabel? = nil -- v38: the race coin count under the item box
+local coinBox: Frame? = nil
+local coinShown = -1
 local gem: Frame? = nil
 local gemIcon: ImageLabel? = nil
 local gemCaption: TextLabel? = nil -- "ITEM" on an empty slot (v21: an empty grey disc read as a dead widget)
@@ -185,7 +222,7 @@ local COUNT_UP_SECONDS = 0.6
 local tokenAlphaToken = 0
 
 -- respawn control (G5): an icon button on touch, a key-hint chip on desktop / gamepad
-local respawnBtn: TextButton? = nil
+local respawnBtn: GuiButton? = nil
 local respawnWipe: Frame? = nil
 local respawnPress: (() -> ())? = nil
 local respawnStatus: (() -> (boolean, number, boolean))? = nil
@@ -195,7 +232,7 @@ local respawnAlpha = 0.65 -- touch: RESPAWN_IDLE until offered, then a 3 s fade-
 local respawnIsTouch = true
 
 -- RETURN to course (planes off course, docs/design/FLIGHT_GUIDE.md 4.3)
-local returnBtn: TextButton? = nil
+local returnBtn: GuiButton? = nil
 local returnPress: (() -> ())? = nil
 local returnStatus: (() -> (boolean, number))? = nil
 local returnAlpha = 0
@@ -203,13 +240,15 @@ local returnPulse = 0
 local returnFailSeen = 0
 
 -- ASSIST pill / chip (touch pill, desktop chip): the one-tap ASSIST switch in countdown and race
-local autoPill: TextButton? = nil
+local autoPill: GuiButton? = nil
+local autoPillOn: boolean? = nil -- the last state painted (the fill is retinted only on a change)
 local assistPlaced = false -- the layout has a rect for it (race layouts only)
 local assistHandler: ((on: boolean) -> ())? = nil
 
 -- notices
 local noticeStack: Frame? = nil
-type Notice = { frame: Frame, text: TextLabel, spinner: Frame, dots: { Frame }, token: number }
+-- frame: the list slot (Visible, LayoutOrder); plate: the skinned slab inside it that slides (a UIListLayout owns frame's Position).
+type Notice = { frame: Frame, plate: Frame, text: TextLabel, spinner: Frame, dots: { Frame }, token: number }
 local notices: { [string]: Notice } = {}
 local noticeOrder = 0
 local saveHadError = false
@@ -241,15 +280,26 @@ local function paintGem(color: string?)
 		gemCaption.Visible = color == nil
 	end
 	local glyph = gemGlyph
+	local idle = slot and slot:FindFirstChild("Idle")
+	if idle and idle:IsA("ImageLabel") then
+		idle.Visible = color == nil
+	end
+	local rim = slot and slot:FindFirstChild("Rim")
+	local rimStroke = rim and rim:FindFirstChildOfClass("UIStroke")
+	if rimStroke then
+		rimStroke.Color = if color then rgb(ItemRules.colorRgb(color)):Lerp(Color3.new(1, 1, 1), 0.25) else ArcadeUi.C.gold
+	end
 	if color then
 		local ic = ItemRules.iconOf(color)
-		local tex = if ic then ItemTexAssets[ic.tex] else nil
+		-- UI v2: the uploaded glossy item icon (item_<id>) when there is one, the classic texture otherwise.
+		local art = ArcadeUi.itemImage(color)
+		local tex = art or (if ic then ItemTexAssets[ic.tex] else nil)
 		g.BackgroundColor3 = rgb(ItemRules.colorRgb(color))
-		g.BackgroundTransparency = 0
+		g.BackgroundTransparency = 1
 		icon.Image = tex or ""
 		icon.Visible = tex ~= nil
 		if glyph then
-			local mark = if ic then ic.glyph else ""
+			local mark = if ic and not art then ic.glyph else ""
 			glyph.Text = mark
 			glyph.Visible = mark ~= ""
 			-- No texture: the glyph is the whole icon, centred and big; else a badge in the lower right.
@@ -258,7 +308,7 @@ local function paintGem(color: string?)
 		end
 	else
 		g.BackgroundColor3 = EMPTY_GEM
-		g.BackgroundTransparency = 0.35
+		g.BackgroundTransparency = 1
 		icon.Visible = false
 		if glyph then
 			glyph.Visible = false
@@ -322,16 +372,21 @@ local function spinRoulette(final: string, seconds: number)
 				break
 			end
 			paintGem(f.color)
+			local ic = gemIcon
+			if ic then
+				punch(ic, 1.14, 0.09) -- each roulette tick kicks the icon
+			end
 			Sfx.play("vote_pip", 1 + 0.5 * (i / #frames), 0.5)
 		end
 		paintSlot()
-		Sfx.play("pod_pickup", 1.1, 0.7)
+		Sfx.play("pod_pickup", 1.1, 0.5)
+		ItemShow.landSting(final) -- v37: the item's own sting, so each lands with its own sound
 		local s = slot
 		if s then
-			punch(s, 1.22, 0.24)
+			UiMotion.bounce(s) -- the reveal: a settle wobble (silent: pod_pickup is the sound)
 		end
-		punch(g, 1.4, 0.28)
-		flashGem(Color3.new(1, 1, 1))
+		punch(g, 1.6, 0.32)
+		flashGem(rgb(ItemRules.colorRgb(final :: any)))
 	end)
 end
 
@@ -356,6 +411,9 @@ function HudExtras.setItem(color: string?, level: number, roulette: number?, cha
 		return
 	end
 	heldColor, heldLevel = newColor, newLevel
+	if prevColor and not newColor then
+		Onboarding.event("itemUsed") -- v38-flow: the first-race controls strip ticks ITEM off
+	end
 	rouletteToken += 1
 	rollingUntil = 0
 	paintSlot()
@@ -370,7 +428,7 @@ function HudExtras.setItem(color: string?, level: number, roulette: number?, cha
 		punch(s, 1.12, 0.2)
 		spinRoulette(newColor, math.min(roulette, 3))
 	elseif newColor and newColor ~= prevColor then
-		punch(s, 1.22, 0.24)
+		UiMotion.bounce(s) -- pickup
 		punch(g, 1.35, 0.26)
 		flashGem(Color3.new(1, 1, 1))
 	elseif newColor and newLevel > prevLevel then
@@ -456,29 +514,95 @@ end
 local function buildItemSlot(parent: Frame, sk: Skin)
 	local frame = Instance.new("Frame")
 	frame.Name = "ItemSlot"
-	frame.BackgroundColor3 = CHIP_WOOD
-	frame.BackgroundTransparency = CHIP_ALPHA
-	frame.BorderSizePixel = 0
 	frame.Active = false
 	frame.Parent = parent
-	corner(frame, UDim.new(0, 12))
-	stroke(frame, CHIP_SAND, 2, true)
+	-- UI v2: the big framed item box: navy gloss, a heavy ink outline and a gold inner rim (the held item's colour).
+	ArcadeUi.gradient(frame, ArcadeUi.C.panelTop, ArcadeUi.C.panelBot)
+	frame.BackgroundTransparency = 0.05
+	ArcadeUi.corner(frame, UDim.new(0.18, 0))
+	ArcadeUi.stroke(frame, 4)
+	ArcadeUi.shine(frame, 14, 4)
+	local rim = Instance.new("Frame")
+	rim.Name = "Rim"
+	rim.BackgroundTransparency = 1
+	rim.AnchorPoint = Vector2.new(0.5, 0.5)
+	rim.Position = UDim2.fromScale(0.5, 0.5)
+	rim.Size = UDim2.new(1, -10, 1, -10)
+	rim.Active = false
+	rim.Parent = frame
+	ArcadeUi.corner(rim, UDim.new(0.16, 0))
+	ArcadeUi.stroke(rim, 3, ArcadeUi.C.gold)
+	-- Empty: the mystery box icon, faded (the box reads as "an item goes here", never a grey dead disc).
+	local idleArt = ArcadeUi.artOf("mystery")
+	if idleArt then
+		local idle = Instance.new("ImageLabel")
+		idle.Name = "Idle"
+		idle.BackgroundTransparency = 1
+		idle.Image = idleArt
+		idle.ImageTransparency = 0.72
+		idle.ImageColor3 = Color3.fromRGB(150, 175, 230) -- empty reads cool and faint; a held item is full colour
+		idle.ScaleType = Enum.ScaleType.Fit
+		idle.AnchorPoint = Vector2.new(0.5, 0.5)
+		idle.Position = UDim2.fromScale(0.5, 0.48)
+		idle.Size = UDim2.fromScale(0.62, 0.62)
+		idle.Active = false
+		idle.Parent = frame
+	end
 	slot = frame
+
+	-- v38 (design lane, Mario Kart 8): the race coin count under the item box. The coins are the Speed pods (and the
+	-- Coin Pouch): each one is top speed, a hit spills ItemRules.COIN_HIT_LOSS. Gold at the cap.
+	local coinChip = Instance.new("Frame")
+	coinChip.Name = "CoinChip"
+	coinChip.AnchorPoint = Vector2.new(0.5, 0)
+	coinChip.Position = UDim2.new(0.5, 0, 1, 4)
+	coinChip.Size = UDim2.fromScale(0.86, 0.3)
+	coinChip.Active = false
+	coinChip.Parent = frame
+	ArcadeUi.gradient(coinChip, ArcadeUi.C.panelTop, ArcadeUi.C.panelBot)
+	coinChip.BackgroundTransparency = 0.1
+	ArcadeUi.corner(coinChip, UDim.new(0.5, 0))
+	ArcadeUi.stroke(coinChip, 2)
+	local coinIcon = Instance.new("ImageLabel")
+	coinIcon.Name = "Coin"
+	coinIcon.BackgroundTransparency = 1
+	coinIcon.Image = UiV2Icons.icon_coin or ""
+	coinIcon.ScaleType = Enum.ScaleType.Fit
+	coinIcon.AnchorPoint = Vector2.new(0, 0.5)
+	coinIcon.Position = UDim2.new(0, -4, 0.5, 0)
+	coinIcon.Size = UDim2.fromScale(1.25, 1.25)
+	local coinAr = Instance.new("UIAspectRatioConstraint")
+	coinAr.AspectRatio = 1
+	coinAr.Parent = coinIcon
+	coinIcon.ZIndex = 3
+	coinIcon.Parent = coinChip
+	local coinText = ArcadeUi.text(coinChip, {
+		name = "Count",
+		text = "0",
+		font = ArcadeUi.FONT.display,
+		maxSize = 26,
+		minSize = 9,
+		align = Enum.TextXAlignment.Right,
+		position = UDim2.fromScale(0.36, 0),
+		sizeUDim = UDim2.fromScale(0.54, 1),
+		z = 3,
+	})
+	coinCount = coinText
+	coinBox = coinChip
 
 	local g = Instance.new("Frame")
 	g.Name = "ItemGem"
 	g.AnchorPoint = Vector2.new(0.5, 0.5)
 	g.Position = UDim2.fromScale(0.5, 0.45)
-	g.Size = UDim2.fromScale(0.72, 0.72) -- the roulette / icon takes 80 percent of the frame with its rim
+	g.Size = UDim2.fromScale(0.86, 0.86) -- UI v2: the icon fills the box inside its rim
 	g.BorderSizePixel = 0
 	g.Parent = frame
-	corner(g, UDim.new(0.5, 0))
-	stroke(g, sk.darkInk, 2, true)
+	corner(g, UDim.new(0.2, 0))
 	local icon = Instance.new("ImageLabel")
 	icon.Name = "ItemIcon"
 	icon.AnchorPoint = Vector2.new(0.5, 0.5)
 	icon.Position = UDim2.fromScale(0.5, 0.5)
-	icon.Size = UDim2.fromScale(0.74, 0.74)
+	icon.Size = UDim2.fromScale(0.92, 0.92)
 	icon.BackgroundTransparency = 1
 	icon.ScaleType = Enum.ScaleType.Fit
 	icon.ZIndex = 2
@@ -493,7 +617,7 @@ local function buildItemSlot(parent: Frame, sk: Skin)
 	cap.Size = UDim2.fromScale(0.9, 0.34)
 	cap.BackgroundTransparency = 1
 	cap.Font = Enum.Font.GothamBlack
-	cap.Text = "ITEM"
+	cap.Text = if idleArt then "" else "ITEM"
 	cap.TextScaled = true
 	cap.TextColor3 = Color3.fromRGB(236, 224, 200)
 	cap.ZIndex = 2
@@ -523,7 +647,7 @@ local function buildItemSlot(parent: Frame, sk: Skin)
 	shine.Position = UDim2.fromScale(0.3, 0.28)
 	shine.Size = UDim2.fromScale(0.22, 0.22)
 	shine.BackgroundColor3 = Color3.new(1, 1, 1)
-	shine.BackgroundTransparency = 0.5
+	shine.BackgroundTransparency = 1 -- UI v2: the icon art has its own gloss
 	shine.BorderSizePixel = 0
 	shine.ZIndex = 3
 	shine.Parent = g
@@ -617,37 +741,32 @@ local function refreshRespawnLabel()
 	if not b then
 		return
 	end
+	-- UI v2: touch = the round-arrow icon key alone; desktop / gamepad = the icon and "[BKSP] RESPAWN".
+	local lbl = textOf(b)
+	local face = b:FindFirstChild("Face")
+	local glyphIcon = face and face:FindFirstChild("Glyph")
 	if respawnIsTouch then
-		b.Text = "R" -- plain letter: no dependence on a font having the circular-arrow glyph (the keyboard hint names the key)
+		ArcadeUi.setText(b, "")
+		lbl.Visible = false
+		if glyphIcon and glyphIcon:IsA("GuiObject") then
+			glyphIcon.AnchorPoint = Vector2.new(0.5, 0.5)
+			glyphIcon.Position = UDim2.fromScale(0.5, 0.5)
+			glyphIcon.Size = UDim2.fromScale(0.72, 0.72)
+		end
 	else
 		local glyph = respawnGlyph()
-		b.Text = if glyph then string.format("[%s] RESPAWN", glyph) else "RESPAWN"
+		lbl.Visible = true
+		ArcadeUi.setText(b, if glyph then string.format("[%s] RESPAWN", glyph) else "RESPAWN")
+		if glyphIcon and glyphIcon:IsA("GuiObject") then
+			glyphIcon.AnchorPoint = Vector2.new(0, 0.5)
+			glyphIcon.Position = UDim2.new(0, 6, 0.5, 0)
+			glyphIcon.Size = UDim2.fromScale(0.62, 0.62)
+		end
 	end
 end
 
-local function buildRespawnButton(parent: Frame, sk: Skin)
-	local b = Instance.new("TextButton")
-	b.Name = "RespawnButton"
-	b.BackgroundColor3 = RESPAWN_BG
-	b.BackgroundTransparency = RESPAWN_ALPHA
-	b.BorderSizePixel = 0
-	b.AutoButtonColor = true
-	b.Font = Enum.Font.GothamBlack
-	b.TextColor3 = sk.creamText
-	b.TextScaled = true
-	b.Selectable = false
-	b.Visible = false
-	b.ZIndex = 3
-	b.Parent = parent
-	corner(b, UDim.new(0, 10))
-	stroke(b, CHIP_SAND, 2, true)
-	stroke(b, sk.darkInk, 2.4, false) -- the text outline
-	local pad = Instance.new("UIPadding")
-	pad.PaddingLeft = UDim.new(0, 6)
-	pad.PaddingRight = UDim.new(0, 6)
-	pad.PaddingTop = UDim.new(0, 3)
-	pad.PaddingBottom = UDim.new(0, 3)
-	pad.Parent = b
+local function buildRespawnButton(parent: Frame, _sk: Skin)
+	local b = ArcadeUi.button(parent, "navy", "", { name = "RespawnButton", icon = "respawn", sound = "tap", selectable = false, visible = false, z = 3, radius = 12, maxText = 18 })
 	respawnBtn = b
 
 	local wipe = Instance.new("Frame")
@@ -667,8 +786,7 @@ local function buildRespawnButton(parent: Frame, sk: Skin)
 	b.Activated:Connect(function()
 		local press = respawnPress
 		if press then
-			punch(b, 0.9, 0.18)
-			press()
+			press() -- the press squash and tap come from UiSound.bind (UiSkin.button)
 		end
 	end)
 	refreshRespawnLabel()
@@ -705,12 +823,11 @@ local function stepRespawn(dt: number)
 		respawnAlpha = math.max(target, respawnAlpha - dt * 2)
 	end
 	local alpha = if respawnIsTouch then respawnAlpha else 1
-	b.BackgroundTransparency = 1 - (1 - RESPAWN_ALPHA) * alpha
-	b.TextTransparency = 1 - alpha
-	-- Stuck watchdog offer: a gold pulse and, once per offer, a hint naming the control to use.
+	-- Stuck watchdog offer: a gold pulse and, once per offer, a hint naming the control to use. (The fill goes before
+	-- the fade below: an art button's retint resets its state alpha.)
 	if offered then
 		respawnPulse += dt
-		b.BackgroundColor3 = RESPAWN_BG:Lerp(GOLD, 0.35 + 0.35 * math.sin(respawnPulse * 9))
+		ArcadeUi.setVariant(b, if math.sin(respawnPulse * 9) > 0 then "orange" else "header")
 		scaleOf(b).Scale = 1 + 0.08 * math.abs(math.sin(respawnPulse * 4.5))
 		if not respawnOffered then
 			respawnOffered = true
@@ -722,11 +839,12 @@ local function stepRespawn(dt: number)
 		if respawnOffered then
 			respawnOffered = false
 			respawnPulse = 0
-			b.BackgroundColor3 = RESPAWN_BG
+			ArcadeUi.setVariant(b, "navy")
 			scaleOf(b).Scale = 1
 			HudExtras.hideNotice("stuck")
 		end
 	end
+	ArcadeUi.setAlpha(b, 1 - alpha)
 end
 
 ------------------------------------------------------------------------------------------------------------------------
@@ -744,39 +862,18 @@ local function refreshReturnLabel()
 	end
 	local mode = LocalPlayer:GetAttribute("GlyphMode")
 	local glyph = if respawnIsTouch or type(mode) ~= "string" then nil else RETURN_GLYPH[mode]
-	b.Text = if glyph then string.format("[%s] RETURN", glyph) else "RETURN"
+	ArcadeUi.setText(b, if glyph then string.format("[%s] RETURN", glyph) else "RETURN")
 end
 
-local function buildReturnButton(parent: Frame, sk: Skin)
-	local b = Instance.new("TextButton")
-	b.Name = "ReturnButton"
-	b.BackgroundColor3 = RESPAWN_BG -- v22: the same chip as RESPAWN (backing, stroke, opacity)
-	b.BackgroundTransparency = 1
-	b.BorderSizePixel = 0
-	b.AutoButtonColor = true
-	b.Font = Enum.Font.GothamBlack
-	b.TextColor3 = sk.creamText
-	b.TextTransparency = 1
-	b.TextScaled = true
-	b.Selectable = false
-	b.Visible = false
-	b.ZIndex = 3
-	b.Parent = parent
-	corner(b, UDim.new(0, 10))
-	stroke(b, CHIP_SAND, 2, true)
-	stroke(b, sk.darkInk, 2.4, false)
-	local pad = Instance.new("UIPadding")
-	pad.PaddingLeft = UDim.new(0, 8)
-	pad.PaddingRight = UDim.new(0, 8)
-	pad.PaddingTop = UDim.new(0, 4)
-	pad.PaddingBottom = UDim.new(0, 4)
-	pad.Parent = b
+local function buildReturnButton(parent: Frame, _sk: Skin)
+	-- UI v2: an orange key with the round arrow, the same family as RESPAWN; it fades in from fully clear.
+	local b = ArcadeUi.button(parent, "orange", "RETURN", { name = "ReturnButton", icon = "respawn", sound = "tap", selectable = false, visible = false, z = 3, radius = 12, maxText = 18 })
+	ArcadeUi.setAlpha(b, 1)
 	returnBtn = b
 	b.Activated:Connect(function()
 		local press = returnPress
 		if press then
-			punch(b, 0.9, 0.18)
-			press()
+			press() -- squash and tap from UiSound.bind
 		end
 	end)
 	refreshReturnLabel()
@@ -810,9 +907,8 @@ local function stepReturn(dt: number)
 		return
 	end
 	returnPulse += dt
-	b.BackgroundTransparency = 1 - (1 - RESPAWN_ALPHA) * returnAlpha
-	b.TextTransparency = 1 - returnAlpha
-	b.BackgroundColor3 = RESPAWN_BG:Lerp(GOLD, 0.2 + 0.2 * math.sin(returnPulse * 5))
+	scaleOf(b).Scale = 1 + 0.05 * math.abs(math.sin(returnPulse * 5)) -- a soft pulse
+	ArcadeUi.setAlpha(b, 1 - returnAlpha)
 end
 
 -- ASSIST pill (touch) / chip (desktop, key T): shown in countdown and race, a tap flips ASSIST through RaceUI's handler.
@@ -821,33 +917,13 @@ function HudExtras.setAssistHandler(fn: (on: boolean) -> ())
 	assistHandler = fn
 end
 
-local function buildAutoPill(parent: Frame, sk: Skin)
-	local b = Instance.new("TextButton")
-	b.Name = "AutoPill"
-	b.BackgroundColor3 = CHIP_WOOD
-	b.BackgroundTransparency = CHIP_ALPHA
-	b.BorderSizePixel = 0
-	b.AutoButtonColor = true
-	b.Font = Enum.Font.GothamBlack
-	b.TextColor3 = sk.creamText
-	b.TextScaled = true
-	b.Text = "ASSIST ON"
-	b.Selectable = false
-	b.Visible = false
-	b.Parent = parent
-	corner(b, UDim.new(0.5, 0))
-	stroke(b, CHIP_SAND, 2, true)
-	stroke(b, sk.darkInk, 1.8, false)
-	local pad = Instance.new("UIPadding")
-	pad.PaddingLeft = UDim.new(0, 8)
-	pad.PaddingRight = UDim.new(0, 8)
-	pad.PaddingTop = UDim.new(0, 8)
-	pad.PaddingBottom = UDim.new(0, 8)
-	pad.Parent = b
+local function buildAutoPill(parent: Frame, _sk: Skin)
+	autoPillOn = nil -- a rebuilt pill starts unpainted: paint the state on the next step
+	-- UI v2: a steering-wheel key, green while ASSIST is on, grey when off.
+	local b = ArcadeUi.button(parent, "go", "ASSIST ON", { name = "AutoPill", icon = "wheel", sound = "tap", selectable = false, visible = false, radius = 12, maxText = 16, minText = 12 })
 	b.Activated:Connect(function()
 		local fn = assistHandler
 		if fn then
-			punch(b, 0.9, 0.18)
 			fn(LocalPlayer:GetAttribute("AutoThrottle") == false)
 		end
 	end)
@@ -871,7 +947,7 @@ local function setTokenAlpha(transparency: number)
 	if not plaque or not star or not t or not st then
 		return
 	end
-	plaque.BackgroundTransparency = 1 - (1 - CHIP_ALPHA) * (1 - transparency)
+	UiSkin.setAlpha(plaque, 1 - (1 - CHIP_ALPHA) * (1 - transparency))
 	star.ImageTransparency = transparency
 	t.TextTransparency = transparency
 	st.Transparency = transparency
@@ -885,12 +961,15 @@ local function popToken()
 	tokenAlphaToken += 1
 	local my = tokenAlphaToken
 	setTokenAlpha(0)
-	plaque.BackgroundColor3 = GOLD
+	local fillTarget, colorProp, gold, alphaProp = chipFill(plaque, GOLD)
+	local _, _, wood = chipFill(plaque, CHIP_WOOD);
+	(fillTarget :: any)[colorProp] = gold
 	local sc = scaleOf(plaque)
 	sc.Scale = 1.25
 	local info = TweenInfo.new(1.2, Enum.EasingStyle.Quint, Enum.EasingDirection.Out)
 	TweenService:Create(sc, info, { Scale = 1 }):Play()
-	TweenService:Create(plaque, info, { BackgroundColor3 = CHIP_WOOD, BackgroundTransparency = 1 - (1 - CHIP_ALPHA) * (1 - TOKEN_IDLE_T) }):Play()
+	local goal: { [string]: any } = { [colorProp] = wood, [alphaProp] = 1 - (1 - CHIP_ALPHA) * (1 - TOKEN_IDLE_T) }
+	TweenService:Create(fillTarget, info, goal):Play()
 	-- Back to the idle alpha after the hold (a newer pop cancels this one).
 	task.delay(0.5, function()
 		if my ~= tokenAlphaToken then
@@ -950,7 +1029,7 @@ local function playAward(before: number, n: number)
 	popToken()
 	if star then
 		star.ImageColor3 = Color3.new(1, 1, 1)
-		TweenService:Create(star, TweenInfo.new(0.5), { ImageColor3 = COIN_RIM, Rotation = star.Rotation + 360 }):Play()
+		TweenService:Create(star, TweenInfo.new(0.5), { ImageColor3 = Color3.new(1, 1, 1), Rotation = star.Rotation + 360 }):Play()
 	end
 	starBurst()
 	Sfx.play("coin_all", 1, 0.56) -- the award is a coin run, not a second finish fanfare
@@ -1021,12 +1100,12 @@ end
 local function buildTokenCounter(parent: Frame, sk: Skin)
 	local plaque = Instance.new("Frame")
 	plaque.Name = "SkyTokenCounter"
-	plaque.BackgroundColor3 = CHIP_WOOD
-	plaque.BorderSizePixel = 0
 	plaque.Active = false
 	plaque.Parent = parent
-	corner(plaque, UDim.new(0, 10))
-	tokenStroke = stroke(plaque, CHIP_SAND, 2, true)
+	-- UI v2: a navy pill with the gold star icon and the count in the display face.
+	ArcadeUi.gradient(plaque, ArcadeUi.C.panelTop, ArcadeUi.C.panelBot)
+	ArcadeUi.corner(plaque, UDim.new(0.5, 0))
+	tokenStroke = ArcadeUi.stroke(plaque, 3)
 	tokenPlaque = plaque
 
 	-- A solid coin (the soft twinkle sprite alone read as a smudge at 12-20 px): an opaque gold disc with a dark amber rim,
@@ -1037,6 +1116,8 @@ local function buildTokenCounter(parent: Frame, sk: Skin)
 	coin.Position = UDim2.fromScale(0.2, 0.5)
 	coin.Size = UDim2.fromOffset(COIN_MIN, COIN_MIN)
 	coin.BackgroundColor3 = COIN_GOLD
+	coin.BackgroundTransparency = 1 -- UI v2: the star art is the coin
+	coin.Visible = false
 	coin.BorderSizePixel = 0
 	coin.ZIndex = 2
 	coin.Active = false
@@ -1062,13 +1143,16 @@ local function buildTokenCounter(parent: Frame, sk: Skin)
 	star.AnchorPoint = Vector2.new(0.5, 0.5)
 	star.Position = UDim2.fromScale(0.2, 0.5)
 	star.BackgroundTransparency = 1
-	star.Image = tex("star_twinkle")
-	star.ImageColor3 = COIN_RIM
+	star.Image = ArcadeUi.artOf("token") or tex("star_twinkle")
+	star.ImageColor3 = Color3.new(1, 1, 1)
+	star.ScaleType = Enum.ScaleType.Fit
 	star.ZIndex = 3
 	star.Parent = plaque
 	tokenStar = star
 
 	local t = label(plaque, "TokenCount", sk)
+	t.FontFace = ArcadeUi.FONT.display
+	t.TextColor3 = ArcadeUi.C.gold
 	t.AnchorPoint = Vector2.new(1, 0.5)
 	t.Position = UDim2.new(1, -8, 0.5, 0)
 	t.Size = UDim2.fromScale(0.62, 0.8)
@@ -1089,21 +1173,28 @@ local function makeNotice(id: string, sk: Skin): Notice
 	local frame = Instance.new("Frame")
 	frame.Name = "Notice_" .. id
 	frame.Size = UDim2.new(1, 0, 0, 28) -- one line: sizeNotice sets the real height from rects.noticeStack
-	frame.BackgroundColor3 = Color3.fromRGB(42, 26, 18)
-	frame.BackgroundTransparency = 0.1
+	frame.BackgroundTransparency = 1
 	frame.BorderSizePixel = 0
 	frame.Active = false
 	frame.Visible = false
 	frame.Parent = noticeStack
-	corner(frame, UDim.new(0, 10))
-	local st = stroke(frame, TONE_STROKE.info, 2, true)
-	st.Name = "ToneStroke"
+	-- The slab fills the slot and slides inside it (the stack clips, so it drops in from under the stack's top edge).
+	local plate = Instance.new("Frame")
+	plate.Name = "Plate"
+	plate.Size = UDim2.fromScale(1, 1)
+	plate.Active = false
+	plate.Parent = frame
+	UiSkin.style(plate, "toast_slab", { color = NOTICE_BG, alpha = 0.1, corner = 10, stroke = TONE_STROKE.info, strokeWidth = 2, tint = TONE_STROKE.info })
+	local st = plate:FindFirstChildOfClass("UIStroke")
+	if st then
+		st.Name = "ToneStroke"
+	end
 	local pad = Instance.new("UIPadding")
 	pad.PaddingLeft = UDim.new(0, 10)
 	pad.PaddingRight = UDim.new(0, 10)
 	pad.PaddingTop = UDim.new(0, 6)
 	pad.PaddingBottom = UDim.new(0, 6)
-	pad.Parent = frame
+	pad.Parent = plate
 
 	local spinner = Instance.new("Frame")
 	spinner.Name = "Spinner"
@@ -1111,7 +1202,7 @@ local function makeNotice(id: string, sk: Skin): Notice
 	spinner.Position = UDim2.fromScale(0, 0.5)
 	spinner.Size = UDim2.fromOffset(20, 20)
 	spinner.BackgroundTransparency = 1
-	spinner.Parent = frame
+	spinner.Parent = plate
 	local dots: { Frame } = {}
 	for i = 1, SPINNER_DOTS do
 		local a = (i - 1) / SPINNER_DOTS * math.pi * 2
@@ -1136,10 +1227,20 @@ local function makeNotice(id: string, sk: Skin): Notice
 	text.TextTruncate = Enum.TextTruncate.AtEnd
 	text.TextXAlignment = Enum.TextXAlignment.Left
 	text.Active = false
-	text.Parent = frame
+	text.Parent = plate
 	stroke(text, sk.darkInk, 1.2, false)
 
-	return { frame = frame, text = text, spinner = spinner, dots = dots, token = 0 }
+	return { frame = frame, plate = plate, text = text, spinner = spinner, dots = dots, token = 0 }
+end
+
+-- Swoosh the slab back up, then free the slot.
+local function hideNoticeFrame(n: Notice)
+	if not n.frame.Visible or UiMotion.isHiding(n.plate) then
+		return
+	end
+	UiMotion.hide(n.plate, "swooshOut", function()
+		n.frame.Visible = false
+	end, { side = "top", silent = true })
 end
 
 local function sizeNotice(n: Notice)
@@ -1173,22 +1274,20 @@ function HudExtras.showNotice(id: string, text: string, tone: Tone, spinner: boo
 	notice.frame.LayoutOrder = -noticeOrder -- newest on top: the stack is one row and clips the rest
 	notice.text.Text = text
 	notice.spinner.Visible = spinner
-	local st = notice.frame:FindFirstChild("ToneStroke") :: UIStroke?
-	if st then
-		st.Color = TONE_STROKE[tone] or TONE_STROKE.info
-	end
+	-- The tone is the rim (flat) or the slab's tint (art).
+	local toneColor = TONE_STROKE[tone] or TONE_STROKE.info
+	UiSkin.style(notice.plate, "toast_slab", { color = NOTICE_BG, alpha = 0.1, corner = 10, stroke = toneColor, strokeWidth = 2, tint = toneColor })
 	sizeNotice(notice)
-	local wasVisible = notice.frame.Visible
+	local wasVisible = notice.frame.Visible and not UiMotion.isHiding(notice.plate)
 	notice.frame.Visible = true
 	if not wasVisible then
-		notice.frame.BackgroundTransparency = 0.6
-		TweenService:Create(notice.frame, TweenInfo.new(0.12), { BackgroundTransparency = 0.1 }):Play()
-		punch(notice.frame, 0.9, 0.14)
+		-- Drops in from the top with the notify cue (an update of a shown notice stays put and quiet).
+		UiMotion.show(notice.plate, "swooshIn", { side = "top", home = UDim2.new(), cue = UiSkinRules.cueFor("notify"), volume = 0.5 })
 	end
 	if seconds then
 		task.delay(seconds, function()
 			if notice.token == myToken then
-				notice.frame.Visible = false
+				hideNoticeFrame(notice)
 			end
 		end)
 	end
@@ -1198,7 +1297,7 @@ function HudExtras.hideNotice(id: string)
 	local n = notices[id]
 	if n then
 		n.token += 1
-		n.frame.Visible = false
+		hideNoticeFrame(n)
 	end
 end
 
@@ -1286,16 +1385,16 @@ function HudExtras.layout(l: Layout)
 	place(tokenPlaque, rects.token)
 	local star, t = tokenStar, tokenText
 	if star and t and rects.token then
-		local d = math.max(COIN_MIN, math.floor(rects.token.h * 0.72))
+		local d = math.max(COIN_MIN, math.floor(rects.token.h * 1.1)) -- UI v2: the star overhangs the pill
 		local cx = math.floor(d / 2) + 6
 		local coin = tokenCoin
 		if coin then
 			coin.Size = UDim2.fromOffset(d, d)
 			coin.Position = UDim2.new(0, cx, 0.5, 0)
 		end
-		local st = math.floor(d * 0.78)
+		local st = d
 		star.Size = UDim2.fromOffset(st, st)
-		star.Position = UDim2.new(0, cx, 0.5, 0)
+		star.Position = UDim2.new(0, cx - 8, 0.5, 0)
 		t.TextSize = HudLayoutRules.textSize(TB.token, S)
 		fitText(t, t.TextSize) -- "14/14" fills the column at desktop scale
 	end
@@ -1303,19 +1402,19 @@ function HudExtras.layout(l: Layout)
 	respawnIsTouch = l.kind == "touch"
 	place(respawnBtn, rects.respawn)
 	if respawnBtn then
-		fitText(respawnBtn :: any, HudLayoutRules.textSize(if respawnIsTouch then 30 else TB.respawnHint, S))
+		fitText(textOf(respawnBtn), HudLayoutRules.textSize(if respawnIsTouch then 30 else TB.respawnHint, S))
 		refreshRespawnLabel()
 	end
 	place(returnBtn, rects.returnBtn)
 	if returnBtn then
-		fitText(returnBtn :: any, HudLayoutRules.textSize(if respawnIsTouch then 22 else TB.returnBtn, S))
+		fitText(textOf(returnBtn), HudLayoutRules.textSize(if respawnIsTouch then 22 else TB.returnBtn, S))
 		refreshReturnLabel()
 	end
 	-- The ASSIST pill rides the left column on touch; on desktop the chip sits under the "?".
 	place(autoPill, rects.autoPill or rects.assistChip)
 	assistPlaced = (rects.autoPill or rects.assistChip) ~= nil
 	if autoPill then
-		fitText(autoPill :: any, HudLayoutRules.textSize(TB.autoPill, S))
+		fitText(textOf(autoPill :: GuiButton), HudLayoutRules.textSize(TB.autoPill, S))
 	end
 	-- Lane B below the toast: the notice stack.
 	local stack = noticeStack
@@ -1353,9 +1452,34 @@ local function stepDnf()
 	end
 end
 
+local function stepCoins()
+	local label, box = coinCount, coinBox
+	if not label or not box then
+		return
+	end
+	local mode = RaceAttr.mine("RaceMode")
+	local racing = mode ~= nil and mode ~= "hub" and mode ~= "battle"
+	box.Visible = racing
+	if not racing then
+		return
+	end
+	local n = tonumber(LocalPlayer:GetAttribute("SpeedPickups")) or 0
+	if n ~= coinShown then
+		local lost = coinShown >= 0 and n < coinShown
+		local gained = coinShown >= 0 and n > coinShown
+		coinShown = n
+		label.Text = "x" .. tostring(n)
+		label.TextColor3 = if n >= 10 then ArcadeUi.C.gold elseif lost then Color3.fromRGB(255, 120, 100) else ArcadeUi.C.white
+		if gained or lost then
+			ArcadeUi.punch(box, if lost then 1.25 else 1.12, 0.22)
+		end
+	end
+end
+
 local function step(dt: number)
 	spinClock += dt
 	stepDnf()
+	stepCoins()
 	if pendingAward and holdUntil > 0 and os.clock() > holdUntil then
 		HudExtras.releaseTokenAward() -- REMARKABLE 24: a held award whose token never landed still counts up
 	end
@@ -1365,9 +1489,11 @@ local function step(dt: number)
 	if pill then
 		local on = LocalPlayer:GetAttribute("AutoThrottle") ~= false
 		pill.Visible = HudPhase.allows("AssistChip") and assistPlaced
-		pill.Text = (if on then "ASSIST ON" else "ASSIST OFF") .. (if respawnIsTouch then "" else " [T]")
-		pill.BackgroundColor3 = if on then CHIP_WOOD else CHIP_OFF
-		pill.TextColor3 = if on then CHIP_TEXT_ON else CHIP_OFF_TEXT
+		ArcadeUi.setText(pill, (if on then "ASSIST ON" else "ASSIST OFF") .. (if respawnIsTouch then "" else " [T]"))
+		if on ~= autoPillOn then
+			autoPillOn = on
+			ArcadeUi.setVariant(pill, if on then "go" else "disabled")
+		end
 	end
 	hueClock = (hueClock + dt * 0.35) % 1
 	-- Rainbow item: the gem cycles hue so it reads as "rainbow", not purple.
@@ -1384,7 +1510,7 @@ local function step(dt: number)
 			renderTokens(shown)
 			local plaque = tokenPlaque
 			if plaque then
-				punch(plaque, 1.12, 0.12)
+				UiMotion.bounce(plaque) -- each counted step wobbles the sign (coin_all is the sound)
 			end
 		end
 		if t >= 1 then

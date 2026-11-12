@@ -899,7 +899,7 @@ local function stepFlames(rig: Rig, dt: number, boost: string, speed: number)
 		fx.lThr, fx.lHeat, fx.lOver = fx.thr, fx.heat, fx.over
 		for _, f in fx.flames do
 			for _, l in f.layers do
-				local lk = FlameRules.look(l.name, fx.thr, fx.heat, fx.over, f.scale)
+				local lk = FlameRules.look(l.name, fx.thr, fx.heat, fx.over, f.scale * FlameRules.boostScale(f.scale, fx.heat, fx.over))
 				local pe = l.pe
 				pe.Speed = NumberRange.new(lk.speed * 0.85, lk.speed * 1.15)
 				pe.Lifetime = NumberRange.new(lk.life * 0.8, lk.life * 1.2)
@@ -914,7 +914,7 @@ local function stepFlames(rig: Rig, dt: number, boost: string, speed: number)
 	local pscale = Settings.particleScale() -- phone tier / LOW GRAPHICS / frame governor (perf review v21 PF-03)
 	for _, f in fx.flames do
 		for _, l in f.layers do
-			local r = FlameRules.rate(l.name, fx.thr, fx.heat, fx.over, f.scale, now, f.phase, pscale) * (if l.name == "core" then kickMul else 1)
+			local r = FlameRules.rate(l.name, fx.thr, fx.heat, fx.over, f.scale * FlameRules.boostScale(f.scale, fx.heat, fx.over), now, f.phase, pscale) * (if l.name == "core" then kickMul else 1)
 			if math.abs(r - l.lastRate) > 0.5 then
 				l.lastRate = r
 				l.pe.Rate = r

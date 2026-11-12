@@ -53,4 +53,26 @@ function LapChipRules.step(s: State, lap: number, total: number, now: number, mo
 	return text, changed, event
 end
 
+-- v38 (Mario Kart 8 time trial): a split against a reference time (the best lap so far, or the ghost run's same lap).
+-- Returns the delta text ("-0.84" / "+1.20", two decimals) and whether it is faster; nil when there is no reference.
+LapChipRules.SPLIT_FASTER = "#5CFF7A" -- green
+LapChipRules.SPLIT_SLOWER = "#FF6A5C" -- red
+function LapChipRules.split(t: number?, ref: number?): (string?, boolean)
+	if type(t) ~= "number" or type(ref) ~= "number" or t ~= t or ref ~= ref or ref <= 0 or t <= 0 then
+		return nil, false
+	end
+	local d = math.floor(math.abs(t - ref) * 100 + 0.5) / 100
+	local faster = t < ref
+	return string.format("%s%.2f", if faster then "-" else "+", d), faster
+end
+
+-- The split as rich text for a label ('<font color="#5CFF7A">-0.84</font>'), "" without a reference.
+function LapChipRules.splitRich(t: number?, ref: number?): string
+	local text, faster = LapChipRules.split(t, ref)
+	if not text then
+		return ""
+	end
+	return string.format('<font color="%s">%s</font>', if faster then LapChipRules.SPLIT_FASTER else LapChipRules.SPLIT_SLOWER, text)
+end
+
 return LapChipRules
