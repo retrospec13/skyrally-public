@@ -1,14 +1,34 @@
 # SkyRally by Waku Worldwide
 
-## Trailer preview
+![SkyRally racing and flight highlights](media/skyrally-trailer.gif)
 
-![SkyRally v4 trailer: racing and flight across the game's worlds](media/skyrally-trailer-v4.gif)
+[Release v1.0: 18-second cut and 45-second master](https://github.com/retrospec13/skyrally-public/releases/tag/v1.0)
 
-Full 45-second v4 trailer preview. The GIF loops without audio. The source kit below still requires Roblox setup and asset remapping.
+SkyRally is a Roblox kart and plane racing game with 7 map definitions, 5 bosses with rigs and animations, about 260 models, and the full Luau source. It is free to use, with MIT code and CC BY 4.0 art.
+
+## What you can use
+
+- Bosses with rigs and animations.
+- Maps and editable source plans.
+- Vehicle and race code.
+- VFX.
+- UI images and code.
+- 19 sound effects.
+
+<p>
+<a href="media/skyrally-crab-boss.jpg"><img src="media/skyrally-crab-boss.jpg" alt="Crab boss" width="24%"></a>
+<a href="media/skyrally-snow-dogfight.jpg"><img src="media/skyrally-snow-dogfight.jpg" alt="Snow plane dogfight" width="24%"></a>
+<a href="media/skyrally-neon-track.jpg"><img src="media/skyrally-neon-track.jpg" alt="Neon racing track" width="24%"></a>
+<a href="media/skyrally-forest-loop-rings.jpg"><img src="media/skyrally-forest-loop-rings.jpg" alt="Forest flight rings" width="24%"></a>
+</p>
 
 ## V2 source update
 
 V2 adds Grand Prix races, a new course picker and menu system, a pause menu, race-start and slipstream effects, revised items, and map fixes. The new UI images, frame generator and 19 ElevenLabs-created sound effects are included. See [V2 changes and limits](docs/V2-UPDATE.md).
+
+## Setup notes
+
+The source kit below still requires Roblox setup and asset remapping.
 
 This is still a source-and-assets kit. Import your assets and replace the hosted IDs before use. Admin and new payments stay disabled by default.
 
